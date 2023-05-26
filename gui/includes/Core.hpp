@@ -10,13 +10,18 @@
 #include <iostream>
 #include <string>
 #include "../includes/EncapsulationHeader/RayLib.hpp"
+#include "../Utils/MyError.hpp"
 
 namespace ZappyGui {
     class Core {
         public:
-            Core(){};
+            Core();
             ~Core(){};
             int checkArgs(int ac, char **av);
+            int handleConnectionServer(int ac, char **av);
+        protected:
+            int _port;
+            std::string _ip;
         private:
     };
 }
