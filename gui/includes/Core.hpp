@@ -11,6 +11,7 @@
 #include <string>
 #include "../includes/EncapsulationHeader/RayLib.hpp"
 #include "../Utils/MyError.hpp"
+#include "../includes/EncapsulationHeader/ServerConnection.hpp"
 
 namespace ZappyGui {
     class Core {

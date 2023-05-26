@@ -56,22 +56,27 @@ int Core::checkArgs(int ac, char **av)
 
 int Core::handleConnectionServer(int ac, char **av)
 {
-    std::cout << "port: " << _port << std::endl;
-    std::cout << "ip: " << _ip << std::endl;
+    ServerConnection _serverConnection;
+    int sock;
+    std::string message = "Hello World";
+    while (true) {
+        sock = _serverConnection.connectToServer(_port, _ip);
+        _serverConnection.sendToServer(sock, message);
+        std::cout << _serverConnection.receiveFromServer() << std::endl;
+    }
     return 0;
 }
 
 int main(int ac, char **av)
 {
     Core _core;
-
     try {
         _core.checkArgs(ac, av);
+        _core.handleConnectionServer(ac, av);
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 84;
     }
-    _core.handleConnectionServer(ac, av);
     // MyRayLib _raylib;
     // _raylib.MyInitWindow(800, 450, "ZAPPY");
     // while (!_raylib.MyWindowShouldClose())
