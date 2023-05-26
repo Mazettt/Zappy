@@ -1,0 +1,29 @@
+# config files
+.vscode/
+launch.json
+.env
+
+# useless files
+*~
+\#*#
+.#*
+*#
+.#*#
+
+# c
+*.a
+*.o
+vgcore*
+unit_tests*
+a.out
+my_bin
+zappy_server
+zappy_ai
+zappy_gui
+
+# test files
+test*
+tmp/
+*db*.txt
+client_test.c
+client_test
