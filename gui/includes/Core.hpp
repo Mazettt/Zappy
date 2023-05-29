@@ -9,12 +9,12 @@
 
 #include <iostream>
 #include <string>
-#include "../includes/EncapsulationHeader/RayLib.hpp"
 #include "../Utils/MyError.hpp"
-#include "../includes/EncapsulationHeader/ServerConnection.hpp"
+#include "../includes/MyRayLibHeader/Window.hpp"
+#include "../includes/MySocketHeader/Network.hpp"
 
 namespace ZappyGui {
-    class Core {
+   class Core {
         public:
             Core();
             ~Core(){};

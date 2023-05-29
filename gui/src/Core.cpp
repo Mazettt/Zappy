@@ -8,6 +8,8 @@
 #include "../includes/Core.hpp"
 
 using namespace ZappyGui;
+using namespace ZappyNetworking;
+using namespace MyRayLib;
 
 Core::Core()
 {
@@ -56,35 +58,35 @@ int Core::checkArgs(int ac, char **av)
 
 int Core::handleConnectionServer(int ac, char **av)
 {
-    ServerConnection _serverConnection;
+    Networking _networking;
     int sock;
     std::string message = "Hello World";
     while (true) {
-        sock = _serverConnection.connectToServer(_port, _ip);
-        _serverConnection.sendToServer(sock, message);
-        std::cout << _serverConnection.receiveFromServer() << std::endl;
+        sock = _networking.connectToServer(_port, _ip);
+        _networking.sendToServer(sock, message);
+        std::cout << _networking.receiveFromServer() << std::endl;
     }
     return 0;
 }
 
 int main(int ac, char **av)
 {
-    Core _core;
-    try {
-        _core.checkArgs(ac, av);
-        _core.handleConnectionServer(ac, av);
-    } catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        return 84;
-    }
-    // MyRayLib _raylib;
-    // _raylib.MyInitWindow(800, 450, "ZAPPY");
-    // while (!_raylib.MyWindowShouldClose())
-    // {
-    //     _raylib.MyBeginDrawing();
-    //         _raylib.MyClearBackground(RAYWHITE);
-    //         _raylib.MyDrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-    //     _raylib.MyEndDrawing();
+    // Core _core;
+    // try {
+    //     _core.checkArgs(ac, av);
+    //     _core.handleConnectionServer(ac, av);
+    // } catch (std::exception &e) {
+    //     std::cerr << e.what() << std::endl;
+    //     return 84;
     // }
+    MyRayLibWindow _raylibwindow;
+    _raylibwindow.MyInitWindow(800, 450, "ZAPPY");
+    while (!_raylibwindow.MyWindowShouldClose())
+    {
+        _raylibwindow.MyBeginDrawing();
+            _raylibwindow.MyClearBackground(RAYWHITE);
+            // _raylibwindow.MyDrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        _raylibwindow.MyEndDrawing();
+    }
     return 0;
 }

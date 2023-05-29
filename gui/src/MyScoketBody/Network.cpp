@@ -2,33 +2,34 @@
 ** EPITECH PROJECT, 2022
 ** gui
 ** File description:
-** ServerConnection.cpp
+** Network.cpp
 */
 
-#include "../../includes/EncapsulationHeader/ServerConnection.hpp"
+#include "../../includes/MySocketHeader/Network.hpp"
 
 using namespace ZappyGui;
+using namespace ZappyNetworking;
 
-ServerConnection::ServerConnection()
+Networking::Networking()
 {
 }
 
-ServerConnection::~ServerConnection()
+Networking::~Networking()
 {
 }
 
-int ServerConnection::createSocket()
+int Networking::createSocket()
 {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
 
     if (sock == -1)
-        throw MyError("ServerConnection", "Error while creating socket.");
+        throw MyError("Networking", "Error while creating socket.");
     else
         std::cout << "Socket created." << std::endl;
     return sock;
 }
 
-int ServerConnection::connectToServer(int port, std::string ip)
+int Networking::connectToServer(int port, std::string ip)
 {
     int sock = createSocket();
     struct sockaddr_in server;
@@ -37,19 +38,19 @@ int ServerConnection::connectToServer(int port, std::string ip)
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
     if (connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0)
-        throw MyError("ServerConnection", "Error while connecting to server.");
+        throw MyError("Networking", "Error while connecting to server.");
     else
         std::cout << "Connected to server." << std::endl;
     return sock;
 }
 
-int ServerConnection::sendToServer(int sock, std::string message)
+int Networking::sendToServer(int sock, std::string message)
 {
     send(sock, message.c_str(), strlen(message.c_str()), 0);
     return 0;
 }
 
-std::string ServerConnection::receiveFromServer()
+std::string Networking::receiveFromServer()
 {
     int rtread;
     char buffer[1024] = {0};

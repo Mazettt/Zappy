@@ -16,11 +16,11 @@
 #include <unistd.h>
 #include "../../Utils/MyError.hpp"
 
-namespace ZappyGui {
-    class ServerConnection {
+namespace ZappyNetworking {
+    class Networking {
         public:
-            ServerConnection();
-            ~ServerConnection();
+            Networking();
+            ~Networking();
             int createSocket();
             int connectToServer(int port, std::string ip);
             int sendToServer(int sock, std::string message);

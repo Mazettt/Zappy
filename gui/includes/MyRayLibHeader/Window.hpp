@@ -10,17 +10,17 @@
 #include <iostream>
 #include "raylib.h"
 
-namespace ZappyGui {
-    class MyRayLib {
+namespace MyRayLib {
+    class MyRayLibWindow {
         public:
-            MyRayLib(){};
-            ~MyRayLib(){};
+            MyRayLibWindow(){};
+            ~MyRayLibWindow(){};
             void MyInitWindow(int width, int height, const char *title);
             void MyCloseWindow(void);
             bool MyWindowShouldClose(void);
             void MyBeginDrawing(void);
             void MyClearBackground(Color color);
-            void MyDrawText(const char *text, int posX, int posY, int fontSize, Color color);
+            // void MyDrawText(const char *text, int posX, int posY, int fontSize, Color color);
             void MyEndDrawing(void);
         protected:
         private:
