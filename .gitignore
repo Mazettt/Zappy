@@ -18,7 +18,6 @@ unit_tests*
 a.out
 my_bin
 zappy_server
-zappy_ai
 zappy_gui
 
 # test files
