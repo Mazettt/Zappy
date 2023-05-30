@@ -24,7 +24,7 @@ static void add_socket_to_array(zappy_t *zappy, int new_s)
             debug_print("Host connected, ip %s, port %d\n",
                 inet_ntoa(zappy->client[i].command.sa.sin_addr),
                 ntohs(zappy->client[i].command.sa.sin_port));
-            sdprintf(zappy, new_s, "smg Hello from server!\n"); // message from the server
+            sdprintf(zappy, new_s, "WELCOME\n");
             break;
         }
     }

@@ -25,6 +25,8 @@ void close_command_socket(zappy_t *zappy, int i)
         zappy->client[i].last_command = NULL;
     }
     zappy->client[i].type = UNKNOWN;
+    zappy->client[i].team = NULL;
+    zappy->client[i].player = NULL;
     zappy->client[i].passiveMode = false;
 }
 
@@ -33,6 +35,13 @@ void free_word_array(char **arr)
     for (size_t i = 0; arr[i]; ++i)
         free(arr[i]);
     free(arr);
+}
+
+size_t word_array_len(char **arr)
+{
+    size_t len = 0;
+    for (; arr[len]; ++len);
+    return len;
 }
 
 char *get_new_uuid(void)

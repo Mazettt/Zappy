@@ -45,12 +45,44 @@ static void first_select(zappy_t *zappy)
 
 static void free_all(zappy_t *zappy)
 {
+    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
+        free(zappy->game.teams[i].name);
+        free(zappy->game.teams[i].players);
+    }
+    free(zappy->game.teams);
     free(zappy);
+}
+
+static game_t init_game(args_t args)
+{
+    int nbrTeams = word_array_len(args.teamNames);
+    game_t game = {
+        .width = args.width,
+        .height = args.height,
+        .nbrClients = args.clientsNb,
+        .freq = args.freq,
+        .teams = malloc(sizeof(team_t) * nbrTeams),
+        .nbrTeams = nbrTeams
+    };
+
+    for (int i = 0; i < nbrTeams; ++i) {
+        game.teams[i].name = strdup(args.teamNames[i]);
+        game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
+        for (int j = 0; j < args.clientsNb; ++j) {
+            game.teams[i].players[j].pos_x = rand() % args.width;
+            game.teams[i].players[j].pos_y = rand() % args.height;
+            game.teams[i].players[j].level = 1;
+            game.teams[i].players[j].client = NULL;
+        }
+    }
+    return game;
 }
 
 void zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
+    // time_t t = time(NULL);
+    zappy->game = init_game(args);
     first_select(zappy);
     init_main_socket(zappy, args.port);
     while (zappy->main.s) {
@@ -64,6 +96,10 @@ void zappy(args_t args)
             accept_new_connections(zappy);
             read_connections(zappy);
         }
+        // if (time(NULL) - t >= 1) {
+        //     t = time(NULL);
+        //     print_map(zappy);
+        // }
     }
     debug_print("\n%s\n", "Quitting...");
     close_all(zappy);

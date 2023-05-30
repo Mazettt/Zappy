@@ -35,9 +35,29 @@ typedef enum ClientType {
     UNKNOWN
 } ClientType;
 
-typedef struct {
+struct client_s;
+typedef struct client_s client_t;
 
-} game_infos_t;
+typedef struct {
+    int pos_x;
+    int pos_y;
+    int level;
+    client_t *client;
+} player_t;
+
+typedef struct {
+    char *name;
+    player_t *players;
+} team_t;
+
+typedef struct {
+    int width;
+    int height;
+    int nbrClients;
+    int freq;
+    team_t *teams;
+    int nbrTeams;
+} game_t;
 
 typedef struct {
     char *ip;
@@ -50,13 +70,14 @@ typedef struct {
     int addrlen;
 } socket_t;
 
-typedef struct {
+struct client_s {
     socket_t command;
-    // socket_t data;
     char *last_command;
     ClientType type;
+    team_t *team;
+    player_t *player;
     bool passiveMode;
-} client_t;
+};
 
 typedef struct {
     socket_t main;
@@ -66,7 +87,7 @@ typedef struct {
     fd_set writefds;
     int max_fd;
     int port;
-    game_infos_t gi;
+    game_t game;
 } zappy_t;
 
 typedef struct {
@@ -78,7 +99,7 @@ typedef struct {
     int port;
     int width;
     int height;
-    char **names;
+    char **teamNames;
     int clientsNb;
     int freq;
 } args_t;
@@ -107,7 +128,7 @@ void sdprintf(zappy_t *zappy, int fd, char *format, ...);
 void vsdprintf(zappy_t *zappy, int fd, char *format, va_list args);
 void close_command_socket(zappy_t *zappy, int i);
 void free_word_array(char **arr);
-void print_word_array(char **arr);
+size_t word_array_len(char **arr);
 void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
 
@@ -131,5 +152,8 @@ void noop(zappy_t *zappy, char *command, int i);
 
 // parsing
 char *read_file(char *filepath);
+
+// game
+void print_map(zappy_t *zappy);
 
 #endif

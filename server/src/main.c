@@ -28,7 +28,7 @@ void signal_handler(int signum)
 
 args_t get_args(int ac, char **av)
 {
-    args_t args = {.port = 4242, .width = 20, .height = 20, .names = NULL,
+    args_t args = {.port = 4242, .width = 20, .height = 20, .teamNames = NULL,
         .clientsNb = 10, .freq = 100};
 
     for (int i = 1; i < ac; ++i) {
@@ -41,9 +41,9 @@ args_t get_args(int ac, char **av)
         if (!strcmp(av[i], "-n")) {
             ++i;
             for (int count = 0; i < ac && av[i][0] != '-'; ++i) {
-                args.names = realloc(args.names, sizeof(char *) * (count + 2));
-                args.names[count] = av[i];
-                args.names[++count] = NULL;
+                args.teamNames = realloc(args.teamNames, sizeof(char *) * (count + 2));
+                args.teamNames[count] = av[i];
+                args.teamNames[++count] = NULL;
             }
             --i;
         }
@@ -61,8 +61,8 @@ void print_args(args_t args)
     printf("width: %d\n", args.width);
     printf("height: %d\n", args.height);
     printf("names: ");
-    for (int i = 0; args.names && args.names[i]; ++i)
-        printf("%s ", args.names[i]);
+    for (int i = 0; args.teamNames && args.teamNames[i]; ++i)
+        printf("%s ", args.teamNames[i]);
     printf("\nclientsNb: %d\n", args.clientsNb);
     printf("freq: %d\n", args.freq);
 }
@@ -79,6 +79,6 @@ int main(int ac, char **av)
     args_t args = get_args(ac, av);
     print_args(args);
     zappy(args);
-    free(args.names);
+    free(args.teamNames);
     return 0;
 }
