@@ -16,6 +16,9 @@
         if (DEBUG) printf(format, __VA_ARGS__);
     #define client_socket(i) zappy->client[i].command.s
     #define time_limit(x) (x / zappy->game.freq * 1000000)
+    #define cast_pos(x, max) ((x) < 0 ? (max) + (x) : (x) % (max))
+    #define HEIGHT zappy->game.height
+    #define WIDTH zappy->game.width
 
     #include "utils.h"
     #include <sys/socket.h>
