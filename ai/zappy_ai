@@ -10,9 +10,11 @@ import numpy as np
 import math
 import os
 import zappy_parsing as zp
+import zappy_network_utils as znu
 
 def main():
     args = zp.get_args()
+    sock = znu.con_to_server(args)
     print(args)
 
 

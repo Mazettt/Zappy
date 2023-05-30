@@ -30,3 +30,7 @@ def get_args():
         print_usage()
         exit(84)
     return args
+
+def print_log(message):
+    time_now = time.strftime("%H:%M:%S", time.localtime())
+    print("[{}] {}".format(time_now, message))
