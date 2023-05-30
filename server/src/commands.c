@@ -13,6 +13,7 @@
     {"Right", cmd_right},       \
     {"Left", cmd_left},         \
     {"Look", cmd_look},         \
+    {"Inventory", cmd_inventory},\
     {NULL, NULL}                \
 }
 #define graphic_commands {      \

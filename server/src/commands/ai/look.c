@@ -107,5 +107,4 @@ void cmd_look(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
     zappy->game.actions = add_action(zappy->game.actions, time_limit(7), ci, look);
-    sdprintf(zappy, client_socket(ci), "ok\n");
 }

@@ -40,11 +40,6 @@ typedef enum ClientType {
     UNKNOWN
 } ClientType;
 
-struct client_s;
-typedef struct client_s client_t;
-struct zappy_s;
-typedef struct zappy_s zappy_t;
-
 typedef enum Direction {
     NORTH,
     EAST,
@@ -52,11 +47,28 @@ typedef enum Direction {
     WEST
 } Direction;
 
+typedef enum Item {
+    FOOD,
+    LINEMATE,
+    DERAUMERE,
+    SIBUR,
+    MENDIANE,
+    PHIRAS,
+    THYSTAME,
+    NBR_ITEMS
+} Item;
+
+struct client_s;
+typedef struct client_s client_t;
+struct zappy_s;
+typedef struct zappy_s zappy_t;
+
 typedef struct {
     int pos_x;
     int pos_y;
     Direction direction;
     int level;
+    int inventory[NBR_ITEMS];
     client_t *client;
 } player_t;
 
@@ -178,6 +190,7 @@ void cmd_forward(zappy_t *zappy, char *command, int ci);
 void cmd_right(zappy_t *zappy, char *command, int ci);
 void cmd_left(zappy_t *zappy, char *command, int ci);
 void cmd_look(zappy_t *zappy, char *command, int ci);
+void cmd_inventory(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);

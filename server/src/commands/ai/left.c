@@ -24,12 +24,12 @@ static void left(zappy_t *zappy, int ci)
             player->direction = SOUTH;
             break;
     }
-    sdprintf(zappy, client_socket(ci), "Player is now facing %s\n", player->direction == NORTH ? "North" : player->direction == EAST ? "East" : player->direction == SOUTH ? "South" : "West");
+    sdprintf(zappy, client_socket(ci), "ok\n");
+    sdprintf(zappy, client_socket(ci), "Player is now facing %s\n", player->direction == NORTH ? "North" : player->direction == EAST ? "East" : player->direction == SOUTH ? "South" : "West"); //! DEBUG
 }
 
 void cmd_left(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
     zappy->game.actions = add_action(zappy->game.actions, time_limit(7), ci, left);
-    sdprintf(zappy, client_socket(ci), "ok\n");
 }

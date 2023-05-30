@@ -74,6 +74,8 @@ static game_t init_game(args_t args)
             game.teams[i].players[j].pos_y = rand() % args.height;
             game.teams[i].players[j].direction = SOUTH;
             game.teams[i].players[j].level = 1;
+            for (int k = 0; k < NBR_ITEMS; ++k)
+                game.teams[i].players[j].inventory[k] = 0;
             game.teams[i].players[j].client = NULL;
         }
     }

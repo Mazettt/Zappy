@@ -24,12 +24,12 @@ static void forward(zappy_t *zappy, int ci)
             player->pos_x = cast_pos(player->pos_x - 1, WIDTH);
             break;
     }
-    sdprintf(zappy, client_socket(ci), "Player is now in %d %d\n", player->pos_x, player->pos_y);
+    sdprintf(zappy, client_socket(ci), "ok\n");
+    sdprintf(zappy, client_socket(ci), "Player is now in %d %d\n", player->pos_x, player->pos_y); //! DEBUG
 }
 
 void cmd_forward(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
     zappy->game.actions = add_action(zappy->game.actions, time_limit(7), ci, forward);
-    sdprintf(zappy, client_socket(ci), "ok\n");
 }
