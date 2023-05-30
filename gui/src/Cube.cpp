@@ -5,29 +5,38 @@
 ** Cube.cpp
 */
 
-#include "../includes/Cube.hpp"
+#include "../includes/map/Cube.hpp"
 
 using namespace ZappyGui;
 
 Cube::Cube(Vector3 pos, float width, float height, float length, Color color): _pos(pos), _width(width), _height(height), _length(length), _color(color) {};
 
-const Vector3 Cube::getPos() const {
+Cube &Cube::operator=(const Cube &cube) {
+    this->_pos = cube._pos;
+    this->_width = cube._width;
+    this->_height = cube._height;
+    this->_length = cube._length;
+    this->_color = cube._color;
+    return *this;
+}
+
+Vector3 Cube::getPos() const {
     return this->_pos;
 }
 
-const float Cube::getWidth() const {
+float Cube::getWidth() const {
     return this->_width;
 }
 
-const float Cube::getHeight() const {
+float Cube::getHeight() const {
     return this->_height;
 }
 
-const float Cube::getLength() const {
+float Cube::getLength() const {
     return this->_length;
 }
 
-const Color Cube::getColor() const {
+Color Cube::getColor() const {
     return this->_color;
 }
 

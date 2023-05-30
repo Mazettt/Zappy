@@ -15,13 +15,15 @@ namespace ZappyGui {
             float _height;
             float _length;
             Color _color;
+
         public:
             Cube(Vector3 pos, float width, float height, float length, Color color);
-            const Vector3 getPos() const;
-            const float getWidth() const;
-            const float getHeight() const;
-            const float getLength() const;
-            const Color getColor() const;
+            Cube &operator=(const Cube &cube);
+            Vector3 getPos() const;
+            float getWidth() const;
+            float getHeight() const;
+            float getLength() const;
+            Color getColor() const;
             ~Cube();
     };
 }

@@ -6,7 +6,8 @@
 */
 
 #include "../includes/Core.hpp"
-#include "../includes/Cube.hpp"
+#include "../includes/map/Cube.hpp"
+#include "../includes/map/MapTile.hpp"
 
 using namespace ZappyGui;
 using namespace ZappyNetworking;
@@ -14,8 +15,8 @@ using namespace MyRayLib;
 
 Core::Core()
 {
-    _port = 0;
-    _ip = "127.0.0.1";
+    this->_port = 0;
+    this->_ip = "127.0.0.1";
 }
 
 int Core::checkArgs(int ac, char **av)
@@ -34,7 +35,7 @@ int Core::checkArgs(int ac, char **av)
             if (av[i + 1] == NULL)
                 throw MyError("Core", "You put the -p but no port after.");
             try {
-                _port = std::stoi(av[i + 1]);
+                this->_port = std::stoi(av[i + 1]);
             } catch (std::exception &e) {
                 throw MyError("Core", "Port is not a number.");
             }
@@ -50,7 +51,7 @@ int Core::checkArgs(int ac, char **av)
                 else if (av[i + 1][j] < '0' || av[i + 1][j] > '9')
                     throw MyError("Core", "IP adress is not a number.");
                 else
-                    _ip = av[i + 1];
+                    this->_ip = av[i + 1];
             }
         }
     }
@@ -59,11 +60,13 @@ int Core::checkArgs(int ac, char **av)
 
 int Core::handleConnectionServer(int ac, char **av)
 {
+    (void)ac;
+    (void)av;
     Networking _networking;
     int sock;
     std::string message = "Hello World";
     while (true) {
-        sock = _networking.connectToServer(_port, _ip);
+        sock = _networking.connectToServer(this->_port, this->_ip);
         _networking.sendToServer(sock, message);
         std::cout << _networking.receiveFromServer() << std::endl;
     }
@@ -72,6 +75,8 @@ int Core::handleConnectionServer(int ac, char **av)
 
 int main(int ac, char **av)
 {
+    (void)ac;
+    (void)av;
     Core _core;
     // try {
     //     _core.checkArgs(ac, av);
@@ -89,17 +94,15 @@ int main(int ac, char **av)
     float width = 2.0;
     float height = 1.0;
     int length = 2.0;
-    int feur;
-    for (size_t y = 0; y < y_pos; y++) {
-        for (size_t x = 0; x < x_pos; x++) {
+    for (int y = 0; y < y_pos; y++) {
+        for (int x = 0; x < x_pos; x++) {
             Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
             Color color = RED;
-            std::unique_ptr<Cube> cube = std::make_unique<Cube>(cubePosition, width * x, height, length * y, color);
-            _core._mapCube.push_back(std::move(cube));
-            ++feur;
+            Cube cube(cubePosition, width * x, height, length * y, color);
+            std::unique_ptr<MapTile> tile = std::make_unique<MapTile>(cube);
+            _core._map.push_back(std::move(tile));
         }
     }
-    std::cout << "oui " << y_pos * x_pos << " | " << feur << std::endl;
     _raylibwindow.MySetTargetFPS(60);
     _raylibwindow.MyDisableCursor();
     while (!_raylibwindow.MyWindowShouldClose()) {
@@ -108,9 +111,11 @@ int main(int ac, char **av)
         _raylibwindow.MyClearBackground(RAYWHITE);
         _raylibdrawing.MyBegin3DMode(camera);
 
-        for (size_t x = 0; x < (y_pos * x_pos); x++) {
-            _raylibdrawing.MyDrawCubeWires(_core._mapCube[x]->getPos(), _core._mapCube[x]->getWidth(), _core._mapCube[x]->getHeight(), _core._mapCube[x]->getLength(), BLACK);
-            _raylibdrawing.MyDrawCube(_core._mapCube[x]->getPos(), _core._mapCube[x]->getWidth(), _core._mapCube[x]->getHeight(), _core._mapCube[x]->getLength(), _core._mapCube[x]->getColor());
+        for (int x = 0; x < (y_pos * x_pos); x++) {
+            std::unique_ptr<MapTile> &tile = _core._map.at(x);
+            Cube cube = tile->getCube();
+            _raylibdrawing.MyDrawCubeWires(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), BLACK);
+            _raylibdrawing.MyDrawCube(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), cube.getColor());
         }
         _raylibdrawing.MyEnd3DMode();
         _raylibdrawing.~MyRayLibDrawing();
