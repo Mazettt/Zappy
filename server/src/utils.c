@@ -44,11 +44,12 @@ size_t word_array_len(char **arr)
     return len;
 }
 
-char *get_new_uuid(void)
+int get_remaining_slots(zappy_t *zappy, team_t *team)
 {
-    uuid_t uuid;
-    char *uuid_str = malloc(sizeof(char) * UUID_STR_LEN);
-    uuid_generate(uuid);
-    uuid_unparse_lower(uuid, uuid_str);
-    return uuid_str;
+    int slots = 0;
+    for (int j = 0; j < zappy->game.nbrClients; ++j) {
+        if (team->players[j].client == NULL)
+            ++slots;
+    }
+    return slots;
 }

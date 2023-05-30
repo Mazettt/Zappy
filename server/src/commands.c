@@ -14,6 +14,7 @@
     {"Left", cmd_left},         \
     {"Look", cmd_look},         \
     {"Inventory", cmd_inventory},\
+    {"Connect_nbr", cmd_connect_nbr},\
     {NULL, NULL}                \
 }
 #define graphic_commands {      \
@@ -22,21 +23,12 @@
     {NULL, NULL}                \
 }
 
-static int get_remaining_slots(zappy_t *zappy, team_t *team)
-{
-    int slots = 0;
-    for (int j = 0; j < zappy->game.nbrClients; ++j) {
-        if (team->players[j].client == NULL)
-            ++slots;
-    }
-    return slots;
-}
-
 static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
 {
     for (int j = 0; j < zappy->game.nbrClients; ++j) {
         if (team->players[j].client == NULL) {
             team->players[j].client = &zappy->client[ci];
+            zappy->client[ci].team = team;
             zappy->client[ci].player = &team->players[j];
             sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(zappy, team), zappy->game.width, zappy->game.height);
             return;
