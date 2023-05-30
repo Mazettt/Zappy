@@ -29,6 +29,7 @@ def get_args():
     if args["port"] == 0 or args["name"] == "":
         print_usage()
         exit(84)
+    print_log("Arguments: {}".format(args))
     return args
 
 def print_log(message):
