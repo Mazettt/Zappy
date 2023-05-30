@@ -5,7 +5,7 @@
 ** forward.c
 */
 
-#include "../../include/server.h"
+#include "../../../include/server.h"
 
 static void forward(zappy_t *zappy, int i)
 {
@@ -24,7 +24,7 @@ static void forward(zappy_t *zappy, int i)
             player->pos_x = (player->pos_x - 1) % zappy->game.width;
             break;
     }
-    sdprintf(zappy, client_socket(i), "Player moved forward\n");
+    sdprintf(zappy, client_socket(i), "Player is now in %d %d\n", player->pos_x, player->pos_y);
 }
 
 void cmd_forward(zappy_t *zappy, char *command, int i)

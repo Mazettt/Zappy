@@ -172,6 +172,8 @@ void switch_commands(zappy_t *zappy, char *command, int i);
 void cmd_stop(zappy_t *zappy, char *command, int i);
 void cmd_noop(zappy_t *zappy, char *command, int i);
 void cmd_forward(zappy_t *zappy, char *command, int i);
+void cmd_right(zappy_t *zappy, char *command, int i);
+void cmd_left(zappy_t *zappy, char *command, int i);
 
 // parsing
 char *read_file(char *filepath);

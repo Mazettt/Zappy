@@ -10,9 +10,13 @@
     {"stop", cmd_stop},         \
     {"noop", cmd_noop},         \
     {"Forward", cmd_forward},   \
+    {"Right", cmd_right},       \
+    {"Left", cmd_left},         \
     {NULL, NULL}                \
 }
 #define graphic_commands {      \
+    {"stop", cmd_stop},         \
+    {"noop", cmd_noop},         \
     {NULL, NULL}                \
 }
 
