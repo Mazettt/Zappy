@@ -79,14 +79,20 @@ int main(int ac, char **av)
     //     std::cerr << e.what() << std::endl;
     //     return 84;
     // }
-    MyRayLibWindow _raylibwindow;
-    _raylibwindow.MyInitWindow(800, 450, "ZAPPY");
-    while (!_raylibwindow.MyWindowShouldClose())
-    {
-        _raylibwindow.MyBeginDrawing();
-            _raylibwindow.MyClearBackground(RAYWHITE);
-            // _raylibwindow.MyDrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-        _raylibwindow.MyEndDrawing();
+    MyRayLibWindow _raylibwindow(1920, 1080, "ZAPPY");
+    Camera3D camera = _raylibwindow.MySetCameraMode((Vector3){ 0.0f, 10.0f, 10.0f }, (Vector3){ 0.0f, 0.0f, 0.0f }, (Vector3){ 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
+
+    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
+    _raylibwindow.MySetTargetFPS(60);
+    while (!_raylibwindow.MyWindowShouldClose()) {
+        MyRayLibDrawing _raylibdrawing;
+        _raylibwindow.MyClearBackground(RAYWHITE);
+        _raylibdrawing.MyBegin3DMode(camera);
+
+        _raylibdrawing.MyDrawGrid(10, 1.0f);
+
+        _raylibdrawing.MyEnd3DMode();
+        _raylibdrawing.~MyRayLibDrawing();
     }
     return 0;
 }

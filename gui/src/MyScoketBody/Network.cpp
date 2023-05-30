@@ -55,6 +55,7 @@ std::string Networking::receiveFromServer()
     int rtread;
     char buffer[1024] = {0};
     rtread = read(0, buffer, 1024);
+    std::cout << "rtread => " << rtread << std::endl;
     std::cout << "ouais => " << buffer << std::endl;
     return 0;
 }

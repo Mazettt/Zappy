@@ -9,12 +9,12 @@
 
 using namespace MyRayLib;
 
-void MyRayLibWindow::MyInitWindow(int width, int height, const char *title)
+MyRayLibWindow::MyRayLibWindow(int width, int height, const char *title)
 {
     InitWindow(width, height, title);
 }
 
-void MyRayLibWindow::MyCloseWindow(void)
+MyRayLibWindow::~MyRayLibWindow(void)
 {
     CloseWindow();
 }
@@ -24,22 +24,23 @@ bool MyRayLibWindow::MyWindowShouldClose(void)
     return WindowShouldClose();
 }
 
-void MyRayLibWindow::MyBeginDrawing(void)
-{
-    BeginDrawing();
-}
-
 void MyRayLibWindow::MyClearBackground(Color color)
 {
     ClearBackground(color);
 }
 
-// void MyRayLibWindow::MyDrawText(const char *text, int posX, int posY, int fontSize, Color color)
-// {
-//     DrawText(text, posX, posY, fontSize, color);
-// }
-
-void MyRayLibWindow::MyEndDrawing(void)
+void MyRayLibWindow::MySetTargetFPS(int fps)
 {
-    EndDrawing();
+    SetTargetFPS(fps);
+}
+
+Camera3D MyRayLibWindow::MySetCameraMode(Vector3 position, Vector3 target, Vector3 up, float fovy, int mode)
+{
+    Camera3D camera = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    camera.position = position;
+    camera.target = target;
+    camera.up = up;
+    camera.fovy = fovy;
+    camera.projection = mode;
+    return camera;
 }

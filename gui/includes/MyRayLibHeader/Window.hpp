@@ -13,15 +13,12 @@
 namespace MyRayLib {
     class MyRayLibWindow {
         public:
-            MyRayLibWindow(){};
-            ~MyRayLibWindow(){};
-            void MyInitWindow(int width, int height, const char *title);
-            void MyCloseWindow(void);
+            MyRayLibWindow(int width, int height, const char *title);
+            ~MyRayLibWindow();
             bool MyWindowShouldClose(void);
-            void MyBeginDrawing(void);
             void MyClearBackground(Color color);
-            // void MyDrawText(const char *text, int posX, int posY, int fontSize, Color color);
-            void MyEndDrawing(void);
+            void MySetTargetFPS(int fps);
+            Camera3D MySetCameraMode(Vector3 position, Vector3 target, Vector3 up, float fovy, int mode);
         protected:
         private:
     };
