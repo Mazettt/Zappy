@@ -14,3 +14,11 @@ def con_to_server(args):
     sock.connect((args["machine"], args["port"]))
     zp.print_log("Connected to {} on port {}".format(args["machine"], args["port"]))
     return sock
+
+def send_to_server(sock, message):
+    if message[-1] != "\n":
+        message += "\n"
+    sock.send(message.encode())
+
+def recv_from_server(sock):
+    return sock.recv(4096).decode()
