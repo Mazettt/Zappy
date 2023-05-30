@@ -15,6 +15,7 @@
     {"Look", cmd_look},         \
     {"Inventory", cmd_inventory},\
     {"Connect_nbr", cmd_connect_nbr},\
+    {"Fork", cmd_fork},         \
     {NULL, NULL}                \
 }
 #define graphic_commands {      \
@@ -25,12 +26,12 @@
 
 static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
 {
-    for (int j = 0; j < zappy->game.nbrClients; ++j) {
+    for (int j = 0; j < team->nbrClients; ++j) {
         if (team->players[j].client == NULL) {
             team->players[j].client = &zappy->client[ci];
             zappy->client[ci].team = team;
             zappy->client[ci].player = &team->players[j];
-            sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(zappy, team), zappy->game.width, zappy->game.height);
+            sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
             return;
         }
     }

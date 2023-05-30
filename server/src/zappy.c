@@ -79,7 +79,6 @@ static game_t init_game(args_t args)
     game_t game = {
         .width = args.width,
         .height = args.height,
-        .nbrClients = args.clientsNb,
         .freq = args.freq,
         .teams = malloc(sizeof(team_t) * nbrTeams),
         .nbrTeams = nbrTeams,
@@ -88,6 +87,7 @@ static game_t init_game(args_t args)
 
     for (int i = 0; i < nbrTeams; ++i) {
         game.teams[i].name = strdup(args.teamNames[i]);
+        game.teams[i].nbrClients = args.clientsNb;
         game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
         for (int j = 0; j < args.clientsNb; ++j) {
             game.teams[i].players[j].x = rand() % args.width;

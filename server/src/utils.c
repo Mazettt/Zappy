@@ -44,10 +44,10 @@ size_t word_array_len(char **arr)
     return len;
 }
 
-int get_remaining_slots(zappy_t *zappy, team_t *team)
+int get_remaining_slots(team_t *team)
 {
     int slots = 0;
-    for (int j = 0; j < zappy->game.nbrClients; ++j) {
+    for (int j = 0; j < team->nbrClients; ++j) {
         if (team->players[j].client == NULL)
             ++slots;
     }

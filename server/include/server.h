@@ -74,6 +74,7 @@ typedef struct {
 
 typedef struct {
     char *name;
+    int nbrClients;
     player_t *players;
 } team_t;
 
@@ -97,7 +98,6 @@ typedef struct action_s {
 typedef struct {
     int width;
     int height;
-    int nbrClients;
     int freq;
     team_t *teams;
     int nbrTeams;
@@ -175,7 +175,7 @@ void vsdprintf(zappy_t *zappy, int fd, char *format, va_list args);
 void close_command_socket(zappy_t *zappy, int ci);
 void free_word_array(char **arr);
 size_t word_array_len(char **arr);
-int get_remaining_slots(zappy_t *zappy, team_t *team);
+int get_remaining_slots(team_t *team);
 void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
 
@@ -202,6 +202,7 @@ void cmd_left(zappy_t *zappy, char *command, int ci);
 void cmd_look(zappy_t *zappy, char *command, int ci);
 void cmd_inventory(zappy_t *zappy, char *command, int ci);
 void cmd_connect_nbr(zappy_t *zappy, char *command, int ci);
+void cmd_fork(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);
