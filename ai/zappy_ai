@@ -16,6 +16,12 @@ import zappy_network_utils as znu
 def main():
     args = zp.get_args()
     sock = znu.con_to_server(args)
+    while True:
+        command = input("> ")
+        znu.send_to_server(sock, command)
+        zp.print_log("Sent: {}".format(command))
+        response = znu.recv_from_server(sock)
+        zp.print_log("Received: {}".format(response))
 
 
 try:
