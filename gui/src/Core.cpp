@@ -79,14 +79,27 @@ int main(int ac, char **av)
     //     std::cerr << e.what() << std::endl;
     //     return 84;
     // }
-    MyRayLibWindow _raylibwindow;
-    _raylibwindow.MyInitWindow(800, 450, "ZAPPY");
-    while (!_raylibwindow.MyWindowShouldClose())
-    {
-        _raylibwindow.MyBeginDrawing();
-            _raylibwindow.MyClearBackground(RAYWHITE);
-            // _raylibwindow.MyDrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-        _raylibwindow.MyEndDrawing();
+    MyRayLibWindow _raylibwindow(800, 450, "ZAPPY");
+    Camera3D camera = { 0 };
+    camera.position = (Vector3){ 0.0f, 10.0f, 10.0f };  // Camera position
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };      // Camera looking at point
+    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
+    camera.fovy = 45.0f;                                // Camera field-of-view Y
+    camera.projection = CAMERA_PERSPECTIVE;             // Camera mode type
+
+    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
+    _raylibwindow.MySetTargetFPS(60);
+    while (!_raylibwindow.MyWindowShouldClose()) {
+        MyRayLibDrawing _raylibdrawing;
+        _raylibwindow.MyClearBackground(RAYWHITE);
+        _raylibdrawing.MyBegin3DMode(camera);
+        _raylibdrawing.MyDrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
+        _raylibdrawing.MyDrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+        _raylibdrawing.MyDrawGrid(10, 1.0f);
+        _raylibdrawing.MyEnd3DMode();
+        _raylibdrawing.MyDrawText("Welcome to the third dimension!", 10, 40, 20, DARKGRAY);
+        _raylibdrawing.MyDrawFPS(10, 10);
+        _raylibdrawing.~MyRayLibDrawing();
     }
     return 0;
 }

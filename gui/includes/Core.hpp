@@ -10,7 +10,11 @@
 #include <iostream>
 #include <string>
 #include "../Utils/MyError.hpp"
+// RAYLIB HEADERS
 #include "../includes/MyRayLibHeader/Window.hpp"
+#include "../includes/MyRayLibHeader/Draw.hpp"
+
+// NETWORKING HEADERS
 #include "../includes/MySocketHeader/Network.hpp"
 
 namespace ZappyGui {
