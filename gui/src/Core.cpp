@@ -84,12 +84,14 @@ int main(int ac, char **av)
 
     Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
     _raylibwindow.MySetTargetFPS(60);
+    _raylibwindow.MyDisableCursor();
     while (!_raylibwindow.MyWindowShouldClose()) {
+        _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
         MyRayLibDrawing _raylibdrawing;
         _raylibwindow.MyClearBackground(RAYWHITE);
         _raylibdrawing.MyBegin3DMode(camera);
 
-        _raylibdrawing.MyDrawGrid(10, 1.0f);
+        _raylibdrawing.MyDrawGrid(100, 1.0f);
 
         _raylibdrawing.MyEnd3DMode();
         _raylibdrawing.~MyRayLibDrawing();

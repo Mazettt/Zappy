@@ -28,6 +28,8 @@ static void init_zappy(zappy_t *zappy, int port)
         zappy->client[i].command = init_socket(0, sa_buff);
         zappy->client[i].last_command = NULL;
         zappy->client[i].type = UNKNOWN;
+        zappy->client[i].team = NULL;
+        zappy->client[i].player = NULL;
         zappy->client[i].passiveMode = false;
     }
 
