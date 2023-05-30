@@ -62,7 +62,8 @@ static game_t init_game(args_t args)
         .nbrClients = args.clientsNb,
         .freq = args.freq,
         .teams = malloc(sizeof(team_t) * nbrTeams),
-        .nbrTeams = nbrTeams
+        .nbrTeams = nbrTeams,
+        .actions = NULL
     };
 
     for (int i = 0; i < nbrTeams; ++i) {
@@ -71,11 +72,23 @@ static game_t init_game(args_t args)
         for (int j = 0; j < args.clientsNb; ++j) {
             game.teams[i].players[j].pos_x = rand() % args.width;
             game.teams[i].players[j].pos_y = rand() % args.height;
+            game.teams[i].players[j].direction = SOUTH;
             game.teams[i].players[j].level = 1;
             game.teams[i].players[j].client = NULL;
         }
     }
     return game;
+}
+
+void exec_all_actions(zappy_t *zappy)
+{
+    action_t *tmp = zappy->game.actions;
+    while (tmp) {
+        if (exec_action(zappy, tmp))
+            tmp = remove_action(&zappy->game.actions, tmp);
+        else
+            tmp = tmp->next;
+    }
 }
 
 void zappy(args_t args)
@@ -96,6 +109,7 @@ void zappy(args_t args)
             accept_new_connections(zappy);
             read_connections(zappy);
         }
+        exec_all_actions(zappy);
         // if (time(NULL) - t >= 1) {
         //     t = time(NULL);
         //     print_map(zappy);

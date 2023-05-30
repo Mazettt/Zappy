@@ -15,6 +15,7 @@
     #define debug_print(format, ...)    \
         if (DEBUG) printf(format, __VA_ARGS__);
     #define client_socket(i) zappy->client[i].command.s
+    #define time_limit(x) (x / zappy->game.freq * 1000000)
 
     #include "utils.h"
     #include <sys/socket.h>
@@ -22,6 +23,7 @@
     #include <netinet/in.h>
     #include <arpa/inet.h>
     #include <sys/stat.h>
+    #include <sys/time.h>
     #include <fcntl.h>
     #include <signal.h>
     #include <sys/signalfd.h>
@@ -37,10 +39,20 @@ typedef enum ClientType {
 
 struct client_s;
 typedef struct client_s client_t;
+struct zappy_s;
+typedef struct zappy_s zappy_t;
+
+typedef enum Direction {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+} Direction;
 
 typedef struct {
     int pos_x;
     int pos_y;
+    Direction direction;
     int level;
     client_t *client;
 } player_t;
@@ -50,6 +62,15 @@ typedef struct {
     player_t *players;
 } team_t;
 
+typedef struct action_s {
+    struct timeval startTime;
+    time_t duration;
+    int i;
+    void (*func)(zappy_t *, int);
+    struct action_s *prev;
+    struct action_s *next;
+} action_t;
+
 typedef struct {
     int width;
     int height;
@@ -57,6 +78,7 @@ typedef struct {
     int freq;
     team_t *teams;
     int nbrTeams;
+    action_t *actions;
 } game_t;
 
 typedef struct {
@@ -79,7 +101,7 @@ struct client_s {
     bool passiveMode;
 };
 
-typedef struct {
+struct zappy_s {
     socket_t main;
     int fd_sigint;
     client_t client[MAX_CONNECTIONS];
@@ -88,7 +110,7 @@ typedef struct {
     int max_fd;
     int port;
     game_t game;
-} zappy_t;
+};
 
 typedef struct {
     char *name;
@@ -147,13 +169,42 @@ void read_connections(zappy_t *zappy);
 
 // commands.c
 void switch_commands(zappy_t *zappy, char *command, int i);
-void stop(zappy_t *zappy, char *command, int i);
-void noop(zappy_t *zappy, char *command, int i);
+void cmd_stop(zappy_t *zappy, char *command, int i);
+void cmd_noop(zappy_t *zappy, char *command, int i);
+void cmd_forward(zappy_t *zappy, char *command, int i);
 
 // parsing
 char *read_file(char *filepath);
 
 // game
 void print_map(zappy_t *zappy);
+
+/**
+ * @brief add an action to be executed after a certain amount of time
+ *
+ * @param action action linked list
+ * @param duration time to wait before executing the action in microseconds
+ * @param i client index
+ * @param func function to execute
+ * @return action_t* = pointer to the new action
+ */
+action_t *add_action(action_t *action, time_t duration, int i, void (*func)(zappy_t *, int));
+/**
+ * @brief execute the action if the time has passed
+ *
+ * @param zappy zappy struct
+ * @param action action to execute
+ * @return true if the action has been executed
+ * @return false if the action has not been executed
+ */
+bool exec_action(zappy_t *zappy, action_t *action);
+/**
+ * @brief remove an action from the action linked list
+ *
+ * @param head action linked list
+ * @param action action to remove
+ * @return action_t* = pointer to the next action
+ */
+action_t *remove_action(action_t **head, action_t *action);
 
 #endif

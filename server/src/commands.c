@@ -6,10 +6,14 @@
 */
 
 #include "../include/server.h"
-#define commands {  \
-    {"stop", stop}, \
-    {"noop", noop}, \
-    {NULL, NULL}    \
+#define ai_commands {           \
+    {"stop", cmd_stop},         \
+    {"noop", cmd_noop},         \
+    {"Forward", cmd_forward},   \
+    {NULL, NULL}                \
+}
+#define graphic_commands {      \
+    {NULL, NULL}                \
 }
 
 static int get_remaining_slots(zappy_t *zappy, team_t *team)
@@ -35,26 +39,47 @@ static void assign_to_player(zappy_t *zappy, int i, team_t *team)
     sdprintf(zappy, client_socket(i), "ko\n");
 }
 
-void switch_commands(zappy_t *zappy, char *command, int i)
+static void ai_cmds(zappy_t *zappy, char *command, int i)
 {
-    command_t c[] = commands;
-    debug_print("com: %s\n", command);
+    command_t c[] = ai_commands;
     for (size_t a = 0; c[a].name && c[a].func; ++a)
         if (!strncmp(command, c[a].name, strlen(c[a].name))) {
             (*c[a].func)(zappy, command, i);
             return;
         }
-    if (zappy->client[i].type == UNKNOWN) {
-        for (int a = 0; a < zappy->game.nbrTeams; ++a) {
-            if (!strcmp(command, zappy->game.teams[a].name)) {
-                zappy->client[i].type = AI;
-                assign_to_player(zappy, i, &zappy->game.teams[a]);
-                return;
-            }
+    sdprintf(zappy, client_socket(i), "ko\n");
+}
+
+static void graphic_cmds(zappy_t *zappy, char *command, int i)
+{
+    command_t c[] = graphic_commands;
+    for (size_t a = 0; c[a].name && c[a].func; ++a)
+        if (!strncmp(command, c[a].name, strlen(c[a].name))) {
+            (*c[a].func)(zappy, command, i);
+            return;
+        }
+    sdprintf(zappy, client_socket(i), "suc\n");
+}
+
+static void unknown_cmds(zappy_t *zappy, char *command, int i)
+{
+    for (int a = 0; a < zappy->game.nbrTeams; ++a) {
+        if (!strcmp(command, zappy->game.teams[a].name)) {
+            zappy->client[i].type = AI;
+            assign_to_player(zappy, i, &zappy->game.teams[a]);
+            return;
         }
     }
-    if (zappy->client[i].type == GRAPHIC)
-        sdprintf(zappy, client_socket(i), "suc\n");
-    else
-        sdprintf(zappy, client_socket(i), "ko\n");
+    sdprintf(zappy, client_socket(i), "ko\n");
+}
+
+void switch_commands(zappy_t *zappy, char *command, int i)
+{
+    debug_print("com: %s\n", command);
+    if (zappy->client[i].type == AI)
+        ai_cmds(zappy, command, i);
+    else if (zappy->client[i].type == GRAPHIC)
+        graphic_cmds(zappy, command, i);
+    else if (zappy->client[i].type == UNKNOWN)
+        unknown_cmds(zappy, command, i);
 }
