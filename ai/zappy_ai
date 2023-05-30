@@ -1,0 +1,23 @@
+#!/usr/bin/python3
+
+import sys
+import socket
+import select
+import time
+import random
+import tensorflow as tf
+import numpy as np
+import math
+import os
+import zappy_parsing as zp
+
+def main():
+    args = zp.get_args()
+    print(args)
+
+
+try:
+    main()
+except Exception as e:
+    print(e)
+    exit(84)

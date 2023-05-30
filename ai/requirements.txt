@@ -1,0 +1,5 @@
+socket
+tensorflow
+nvidia-tensorrt
+socket
+numpy
