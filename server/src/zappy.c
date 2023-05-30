@@ -98,6 +98,7 @@ void zappy(args_t args)
     zappy->game = init_game(args);
     first_select(zappy);
     init_main_socket(zappy, args.port);
+    print_map(zappy);
     while (zappy->main.s) {
         zappy->max_fd = 0;
         reset_fd(zappy);

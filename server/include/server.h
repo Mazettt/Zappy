@@ -177,12 +177,14 @@ void cmd_noop(zappy_t *zappy, char *command, int ci);
 void cmd_forward(zappy_t *zappy, char *command, int ci);
 void cmd_right(zappy_t *zappy, char *command, int ci);
 void cmd_left(zappy_t *zappy, char *command, int ci);
+void cmd_look(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);
 
 // game
-bool is_player(zappy_t *zappy, int x, int y);
+int nbr_players(zappy_t *zappy, int x, int y);
+char *get_tile_content(zappy_t *zappy, int x, int y);
 void print_map(zappy_t *zappy);
 
 /**
