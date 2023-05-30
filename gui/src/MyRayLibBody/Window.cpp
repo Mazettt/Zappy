@@ -33,3 +33,14 @@ void MyRayLibWindow::MySetTargetFPS(int fps)
 {
     SetTargetFPS(fps);
 }
+
+Camera3D MyRayLibWindow::MySetCameraMode(Vector3 position, Vector3 target, Vector3 up, float fovy, int mode)
+{
+    Camera3D camera = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    camera.position = position;
+    camera.target = target;
+    camera.up = up;
+    camera.fovy = fovy;
+    camera.projection = mode;
+    return camera;
+}
