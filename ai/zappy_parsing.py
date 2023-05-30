@@ -29,4 +29,9 @@ def get_args():
     if args["port"] == 0 or args["name"] == "":
         print_usage()
         exit(84)
+    print_log("Arguments: {}".format(args))
     return args
+
+def print_log(message):
+    time_now = time.strftime("%H:%M:%S", time.localtime())
+    print("[{}] {}".format(time_now, message))

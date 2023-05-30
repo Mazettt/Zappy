@@ -5,15 +5,17 @@ import socket
 import select
 import time
 import random
-import tensorflow as tf
 import numpy as np
 import math
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import tensorflow as tf
 import zappy_parsing as zp
+import zappy_network_utils as znu
 
 def main():
     args = zp.get_args()
-    print(args)
+    sock = znu.con_to_server(args)
 
 
 try:
