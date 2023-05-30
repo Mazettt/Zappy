@@ -8,6 +8,8 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include "Cube.hpp"
 #include <string>
 #include "../Utils/MyError.hpp"
 // RAYLIB HEADERS
@@ -24,6 +26,7 @@ namespace ZappyGui {
             ~Core(){};
             int checkArgs(int ac, char **av);
             int handleConnectionServer(int ac, char **av);
+            std::vector<std::unique_ptr<Cube>> _mapCube;
         protected:
             int _port;
             std::string _ip;
