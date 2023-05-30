@@ -21,4 +21,25 @@ def send_to_server(sock, message):
     sock.send(message.encode())
 
 def recv_from_server(sock):
-    return sock.recv(4096).decode()
+    while True:
+        response = sock.recv(4096).decode()
+        if response != "":
+            break
+    return response
+
+def multiple_recv_from_server(sock, timeout):
+    response = ""
+    start_time = time.time()
+    while True:
+        if time.time() - start_time > timeout:
+            break
+        response += sock.recv(4096).decode()
+        if response != "":
+            break
+    return response
+
+def get_player_infos(sock, args):
+    zp.print_log("Initializing player...")
+    team_cmd = args["team"] + "\n"
+    send_to_server(sock, team_cmd)
+    print(zp.print_log(recv_from_server(sock)))
