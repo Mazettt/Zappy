@@ -12,24 +12,16 @@ static void forward(zappy_t *zappy, int ci)
     player_t *player = zappy->client[ci].player;
     switch (player->direction) {
         case NORTH:
-            player->pos_y = (player->pos_y - 1) % zappy->game.height;
-            if (player->pos_y < 0)
-                player->pos_y = zappy->game.height - 1;
+            player->pos_y = cast_pos(player->pos_y - 1, HEIGHT);
             break;
         case EAST:
-            player->pos_x = (player->pos_x + 1) % zappy->game.width;
-            if (player->pos_x < 0)
-                player->pos_x = zappy->game.width - 1;
+            player->pos_x = cast_pos(player->pos_x + 1, WIDTH);
             break;
         case SOUTH:
-            player->pos_y = (player->pos_y + 1) % zappy->game.height;
-            if (player->pos_y < 0)
-                player->pos_y = zappy->game.height - 1;
+            player->pos_y = cast_pos(player->pos_y + 1, HEIGHT);
             break;
         case WEST:
-            player->pos_x = (player->pos_x - 1) % zappy->game.width;
-            if (player->pos_x < 0)
-                player->pos_x = zappy->game.width - 1;
+            player->pos_x = cast_pos(player->pos_x - 1, WIDTH);
             break;
     }
     sdprintf(zappy, client_socket(ci), "Player is now in %d %d\n", player->pos_x, player->pos_y);
