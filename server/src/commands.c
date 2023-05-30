@@ -16,6 +16,7 @@
     {"Inventory", cmd_inventory},\
     {"Connect_nbr", cmd_connect_nbr},\
     {"Fork", cmd_fork},         \
+    {"Eject", cmd_eject},       \
     {NULL, NULL}                \
 }
 #define graphic_commands {      \

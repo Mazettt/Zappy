@@ -26,6 +26,8 @@ void close_command_socket(zappy_t *zappy, int ci)
     }
     zappy->client[ci].type = UNKNOWN;
     zappy->client[ci].team = NULL;
+    if (zappy->client[ci].player)
+        zappy->client[ci].player->client = NULL;
     zappy->client[ci].player = NULL;
     zappy->client[ci].passiveMode = false;
 }

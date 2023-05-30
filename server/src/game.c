@@ -13,7 +13,8 @@ int nbr_players(zappy_t *zappy, int x, int y)
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
         for (int j = 0; j < zappy->game.teams[i].nbrClients; ++j) {
             if (zappy->game.teams[i].players[j].x == x &&
-                zappy->game.teams[i].players[j].y == y)
+                zappy->game.teams[i].players[j].y == y &&
+                zappy->game.teams[i].players[j].client)
                 ++res;
         }
     }
