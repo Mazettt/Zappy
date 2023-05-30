@@ -34,6 +34,11 @@ void MyRayLibWindow::MySetTargetFPS(int fps)
     SetTargetFPS(fps);
 }
 
+void MyRayLibWindow::MyDisableCursor(void)
+{
+    DisableCursor();
+}
+
 Camera3D MyRayLibWindow::MySetCameraMode(Vector3 position, Vector3 target, Vector3 up, float fovy, int mode)
 {
     Camera3D camera = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -43,4 +48,9 @@ Camera3D MyRayLibWindow::MySetCameraMode(Vector3 position, Vector3 target, Vecto
     camera.fovy = fovy;
     camera.projection = mode;
     return camera;
+}
+
+void MyRayLibWindow::MyUpdateCamera(Camera3D *camera, int mode)
+{
+    UpdateCamera(camera, mode);
 }
