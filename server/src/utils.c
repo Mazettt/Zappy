@@ -7,27 +7,27 @@
 
 #include "../include/server.h"
 
-void close_command_socket(zappy_t *zappy, int i)
+void close_command_socket(zappy_t *zappy, int ci)
 {
-    get_socket_infos(&zappy->client[i].command);
-    if (client_socket(i) != 0) {
-        close(client_socket(i));
+    get_socket_infos(&zappy->client[ci].command);
+    if (client_socket(ci) != 0) {
+        close(client_socket(ci));
         debug_print("Host disconnected, ip %s, port %d\n",
-            inet_ntoa(zappy->client[i].command.sa.sin_addr),
-            ntohs(zappy->client[i].command.sa.sin_port));
+            inet_ntoa(zappy->client[ci].command.sa.sin_addr),
+            ntohs(zappy->client[ci].command.sa.sin_port));
     }
-    client_socket(i) = 0;
-    zappy->client[i].command.addrlen = 0;
-    memset(&zappy->client[i].command.sa, 0,
-        sizeof(zappy->client[i].command.sa));
-    if (zappy->client[i].last_command) {
-        free(zappy->client[i].last_command);
-        zappy->client[i].last_command = NULL;
+    client_socket(ci) = 0;
+    zappy->client[ci].command.addrlen = 0;
+    memset(&zappy->client[ci].command.sa, 0,
+        sizeof(zappy->client[ci].command.sa));
+    if (zappy->client[ci].last_command) {
+        free(zappy->client[ci].last_command);
+        zappy->client[ci].last_command = NULL;
     }
-    zappy->client[i].type = UNKNOWN;
-    zappy->client[i].team = NULL;
-    zappy->client[i].player = NULL;
-    zappy->client[i].passiveMode = false;
+    zappy->client[ci].type = UNKNOWN;
+    zappy->client[ci].team = NULL;
+    zappy->client[ci].player = NULL;
+    zappy->client[ci].passiveMode = false;
 }
 
 void free_word_array(char **arr)

@@ -42,7 +42,7 @@ void accept_new_connections(zappy_t *zappy)
     }
 }
 
-static void parse_command(zappy_t *zappy, int i, char *input) {
+static void parse_command(zappy_t *zappy, int ci, char *input) {
     char *backup_start = NULL;
     char *start = NULL;
     char *end = NULL;
@@ -52,26 +52,26 @@ static void parse_command(zappy_t *zappy, int i, char *input) {
     while ((end = strchr(start, '\n'))){
         char *res = start;
         res[end - start] = 0;
-        res = my_strcat(zappy->client[i].last_command, res);
-        switch_commands(zappy, res, i);
+        res = my_strcat(zappy->client[ci].last_command, res);
+        switch_commands(zappy, res, ci);
         free(res);
-        free(zappy->client[i].last_command);
-        zappy->client[i].last_command = NULL;
+        free(zappy->client[ci].last_command);
+        zappy->client[ci].last_command = NULL;
         start = end + 1;
     }
     if (start && *start)
-        zappy->client[i].last_command = my_strcat(zappy->client[i].last_command, start);
+        zappy->client[ci].last_command = my_strcat(zappy->client[ci].last_command, start);
     free(backup_start);
 }
 
-static void read_connection(zappy_t *zappy, int i)
+static void read_connection(zappy_t *zappy, int ci)
 {
     char buff[1024] = {0};
 
-    if (read(client_socket(i), buff, 1024) == 0)
-        close_command_socket(zappy, i);
+    if (read(client_socket(ci), buff, 1024) == 0)
+        close_command_socket(zappy, ci);
     else
-        parse_command(zappy, i, buff);
+        parse_command(zappy, ci, buff);
 }
 
 void read_connections(zappy_t *zappy)

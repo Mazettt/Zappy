@@ -7,12 +7,12 @@
 
 #include "../include/server.h"
 
-action_t *add_action(action_t *action, time_t duration, int i, void (*func)(zappy_t *, int))
+action_t *add_action(action_t *action, time_t duration, int ci, void (*func)(zappy_t *, int))
 {
     action_t *new = malloc(sizeof(action_t));
     gettimeofday(&new->startTime, NULL);
     new->duration = duration;
-    new->i = i;
+    new->ci = ci;
     new->func = func;
     new->prev = NULL;
     new->next = action;
@@ -27,7 +27,7 @@ bool exec_action(zappy_t *zappy, action_t *action)
     gettimeofday(&now, NULL);
     time_t micro = (now.tv_sec - action->startTime.tv_sec) * 1000000 + now.tv_usec - action->startTime.tv_usec;
     if (micro >= action->duration) {
-        action->func(zappy, action->i);
+        action->func(zappy, action->ci);
         return true;
     }
     return false;

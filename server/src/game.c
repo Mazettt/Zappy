@@ -7,7 +7,7 @@
 
 #include "../include/server.h"
 
-static bool is_player(zappy_t *zappy, int x, int y)
+bool is_player(zappy_t *zappy, int x, int y)
 {
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
         for (int j = 0; j < zappy->game.nbrClients; ++j) {

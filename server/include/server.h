@@ -65,7 +65,7 @@ typedef struct {
 typedef struct action_s {
     struct timeval startTime;
     time_t duration;
-    int i;
+    int ci;
     void (*func)(zappy_t *, int);
     struct action_s *prev;
     struct action_s *next;
@@ -148,7 +148,7 @@ void sdprintf(zappy_t *zappy, int fd, char *format, ...);
  * @param args arguments
  */
 void vsdprintf(zappy_t *zappy, int fd, char *format, va_list args);
-void close_command_socket(zappy_t *zappy, int i);
+void close_command_socket(zappy_t *zappy, int ci);
 void free_word_array(char **arr);
 size_t word_array_len(char **arr);
 void close_all(zappy_t *zappy);
@@ -168,17 +168,18 @@ void accept_new_connections(zappy_t *zappy);
 void read_connections(zappy_t *zappy);
 
 // commands.c
-void switch_commands(zappy_t *zappy, char *command, int i);
-void cmd_stop(zappy_t *zappy, char *command, int i);
-void cmd_noop(zappy_t *zappy, char *command, int i);
-void cmd_forward(zappy_t *zappy, char *command, int i);
-void cmd_right(zappy_t *zappy, char *command, int i);
-void cmd_left(zappy_t *zappy, char *command, int i);
+void switch_commands(zappy_t *zappy, char *command, int ci);
+void cmd_stop(zappy_t *zappy, char *command, int ci);
+void cmd_noop(zappy_t *zappy, char *command, int ci);
+void cmd_forward(zappy_t *zappy, char *command, int ci);
+void cmd_right(zappy_t *zappy, char *command, int ci);
+void cmd_left(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);
 
 // game
+bool is_player(zappy_t *zappy, int x, int y);
 void print_map(zappy_t *zappy);
 
 /**
@@ -190,7 +191,7 @@ void print_map(zappy_t *zappy);
  * @param func function to execute
  * @return action_t* = pointer to the new action
  */
-action_t *add_action(action_t *action, time_t duration, int i, void (*func)(zappy_t *, int));
+action_t *add_action(action_t *action, time_t duration, int ci, void (*func)(zappy_t *, int));
 /**
  * @brief execute the action if the time has passed
  *

@@ -7,9 +7,9 @@
 
 #include "../../../include/server.h"
 
-static void right(zappy_t *zappy, int i)
+static void right(zappy_t *zappy, int ci)
 {
-    player_t *player = zappy->client[i].player;
+    player_t *player = zappy->client[ci].player;
     switch (player->direction) {
         case NORTH:
             player->direction = EAST;
@@ -24,12 +24,12 @@ static void right(zappy_t *zappy, int i)
             player->direction = NORTH;
             break;
     }
-    sdprintf(zappy, client_socket(i), "Player is now facing %s\n", player->direction == NORTH ? "North" : player->direction == EAST ? "East" : player->direction == SOUTH ? "South" : "West");
+    sdprintf(zappy, client_socket(ci), "Player is now facing %s\n", player->direction == NORTH ? "North" : player->direction == EAST ? "East" : player->direction == SOUTH ? "South" : "West");
 }
 
-void cmd_right(zappy_t *zappy, char *command, int i)
+void cmd_right(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(7), i, right);
-    sdprintf(zappy, client_socket(i), "ok\n");
+    zappy->game.actions = add_action(zappy->game.actions, time_limit(7), ci, right);
+    sdprintf(zappy, client_socket(ci), "ok\n");
 }
