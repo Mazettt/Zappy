@@ -49,8 +49,28 @@ static void free_all(zappy_t *zappy)
         free(zappy->game.teams[i].name);
         free(zappy->game.teams[i].players);
     }
+    while (zappy->game.resources)
+        zappy->game.resources = remove_resource(&zappy->game.resources, zappy->game.resources);
     free(zappy->game.teams);
     free(zappy);
+}
+
+static void init_resources(args_t args, game_t *game)
+{
+    for (int i = 0; i < (args.width * args.height * 0.5); ++i)
+        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, FOOD);
+    for (int i = 0; i < (args.width * args.height * 0.3); ++i)
+        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, LINEMATE);
+    for (int i = 0; i < (args.width * args.height * 0.15); ++i)
+        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, DERAUMERE);
+    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
+        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, SIBUR);
+    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
+        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, MENDIANE);
+    for (int i = 0; i < (args.width * args.height * 0.08); ++i)
+        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, PHIRAS);
+    for (int i = 0; i < (args.width * args.height * 0.05); ++i)
+        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, THYSTAME);
 }
 
 static game_t init_game(args_t args)
@@ -70,8 +90,8 @@ static game_t init_game(args_t args)
         game.teams[i].name = strdup(args.teamNames[i]);
         game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
         for (int j = 0; j < args.clientsNb; ++j) {
-            game.teams[i].players[j].pos_x = rand() % args.width;
-            game.teams[i].players[j].pos_y = rand() % args.height;
+            game.teams[i].players[j].x = rand() % args.width;
+            game.teams[i].players[j].y = rand() % args.height;
             game.teams[i].players[j].direction = SOUTH;
             game.teams[i].players[j].level = 1;
             for (int k = 0; k < NBR_ITEMS; ++k)
@@ -79,6 +99,7 @@ static game_t init_game(args_t args)
             game.teams[i].players[j].client = NULL;
         }
     }
+    init_resources(args, &game);
     return game;
 }
 
