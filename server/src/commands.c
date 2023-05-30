@@ -12,6 +12,7 @@
     {"Forward", cmd_forward},   \
     {"Right", cmd_right},       \
     {"Left", cmd_left},         \
+    {"Look", cmd_look},         \
     {NULL, NULL}                \
 }
 #define graphic_commands {      \
