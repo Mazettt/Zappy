@@ -10,5 +10,5 @@
 void cmd_connect_nbr(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    sdprintf(zappy, client_socket(ci), "%d\n", get_remaining_slots(zappy, zappy->client[ci].team));
+    sdprintf(zappy, client_socket(ci), "%d\n", get_remaining_slots(zappy->client[ci].team));
 }

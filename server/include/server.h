@@ -64,8 +64,8 @@ struct zappy_s;
 typedef struct zappy_s zappy_t;
 
 typedef struct {
-    int pos_x;
-    int pos_y;
+    int x;
+    int y;
     Direction direction;
     int level;
     int inventory[NBR_ITEMS];
@@ -74,8 +74,17 @@ typedef struct {
 
 typedef struct {
     char *name;
+    int nbrClients;
     player_t *players;
 } team_t;
+
+typedef struct resource_s {
+    int x;
+    int y;
+    Item type;
+    struct resource_s *prev;
+    struct resource_s *next;
+} resource_t;
 
 typedef struct action_s {
     struct timeval startTime;
@@ -89,11 +98,11 @@ typedef struct action_s {
 typedef struct {
     int width;
     int height;
-    int nbrClients;
     int freq;
     team_t *teams;
     int nbrTeams;
     action_t *actions;
+    resource_t *resources;
 } game_t;
 
 typedef struct {
@@ -166,7 +175,7 @@ void vsdprintf(zappy_t *zappy, int fd, char *format, va_list args);
 void close_command_socket(zappy_t *zappy, int ci);
 void free_word_array(char **arr);
 size_t word_array_len(char **arr);
-int get_remaining_slots(zappy_t *zappy, team_t *team);
+int get_remaining_slots(team_t *team);
 void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
 
@@ -193,6 +202,7 @@ void cmd_left(zappy_t *zappy, char *command, int ci);
 void cmd_look(zappy_t *zappy, char *command, int ci);
 void cmd_inventory(zappy_t *zappy, char *command, int ci);
 void cmd_connect_nbr(zappy_t *zappy, char *command, int ci);
+void cmd_fork(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);
@@ -229,5 +239,34 @@ bool exec_action(zappy_t *zappy, action_t *action);
  * @return action_t* = pointer to the next action
  */
 action_t *remove_action(action_t **head, action_t *action);
+
+/**
+ * @brief add a resource to the resource linked list
+ *
+ * @param resource resource linked list
+ * @param x x position
+ * @param y y position
+ * @param type type of resource
+ * @return resource_t*
+ */
+resource_t *add_resource(resource_t *resource, int x, int y, Item type);
+/**
+ * @brief get the number of resources on a tile
+ *
+ * @param resource resource linked list
+ * @param x x position
+ * @param y y position
+ * @param type type of resource
+ * @return int = number of resources
+ */
+int nbr_resource(resource_t *resource, int x, int y, Item type);
+/**
+ * @brief remove a resource from the resource linked list
+ *
+ * @param head resource linked list
+ * @param resource resource to remove
+ * @return resource_t* = pointer to the next resource
+ */
+resource_t *remove_resource(resource_t **head, resource_t *resource);
 
 #endif
