@@ -18,7 +18,9 @@ namespace MyRayLib {
             bool MyWindowShouldClose(void);
             void MyClearBackground(Color color);
             void MySetTargetFPS(int fps);
+            void MyDisableCursor(void);
             Camera3D MySetCameraMode(Vector3 position, Vector3 target, Vector3 up, float fovy, int mode);
+            void MyUpdateCamera(Camera *camera, int mode);
         protected:
         private:
     };
