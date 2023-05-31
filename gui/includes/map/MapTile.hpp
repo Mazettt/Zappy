@@ -8,14 +8,14 @@
 #pragma once
 #include "Cube.hpp"
 #include "Player.hpp"
-#include "Ressource.hpp"
+#include "../resources/IResource.hpp"
 
 namespace ZappyGui {
     class MapTile {
         private:
             Player _p;
             Cube _cube;
-            Ressource _ressources;
+            IResource _Resources;
         public:
             const Cube getCube() const;
             MapTile(const Cube &cube);
