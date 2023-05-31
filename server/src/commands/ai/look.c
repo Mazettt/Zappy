@@ -15,7 +15,7 @@ static void look_north(zappy_t *zappy, int ci)
     sdprintf(zappy, client_socket(ci), "[%s,", res);
     free(res);
     for (int i = 1; i <= player->level; ++i) {
-        int line_pos = cast_pos(player->y + i, HEIGHT);
+        int line_pos = cast_pos(player->y - i, HEIGHT);
         for (int j = player->x - i; j <= player->x + i; ++j) {
             int col_pos = cast_pos(j, WIDTH);
             char *res = get_tile_content(zappy, col_pos, line_pos);
@@ -53,7 +53,7 @@ static void look_south(zappy_t *zappy, int ci)
     sdprintf(zappy, client_socket(ci), "[%s,", res);
     free(res);
     for (int i = 1; i <= player->level; ++i) {
-        int line_pos = cast_pos(player->y - i, HEIGHT);
+        int line_pos = cast_pos(player->y + i, HEIGHT);
         for (int j = player->x + i; j >= player->x - i; --j) {
             int col_pos = cast_pos(j, WIDTH);
             char *res = get_tile_content(zappy, col_pos, line_pos);
