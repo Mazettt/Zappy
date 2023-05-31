@@ -13,7 +13,7 @@
 namespace ZappyGui {
     class MapTile {
         private:
-            Player _p;
+            // Player _p;
             Cube _cube;
             IResource _Resources;
         public:
