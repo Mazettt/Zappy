@@ -18,6 +18,7 @@
     {"Fork", cmd_fork},         \
     {"Eject", cmd_eject},       \
     {"Take", cmd_take},         \
+    {"Set", cmd_set},           \
     {"Broadcast", cmd_broadcast},\
     {"Incantation", cmd_incantation},\
     {NULL, NULL}                \
