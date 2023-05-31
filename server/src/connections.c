@@ -77,6 +77,6 @@ static void read_connection(zappy_t *zappy, int ci)
 void read_connections(zappy_t *zappy)
 {
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i)
-        if (FD_ISSET(client_socket(i), &zappy->readfds))
+        if (FD_ISSET(client_socket(i), &zappy->readfds) && !(zappy->client[i].player && zappy->client[i].player->incanting))
             read_connection(zappy, i);
 }

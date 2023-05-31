@@ -64,12 +64,19 @@ struct zappy_s;
 typedef struct zappy_s zappy_t;
 
 typedef struct {
+    int base_lvl;
+    int nbr_players;
+    int items[NBR_ITEMS];
+} elev_cond_t;
+
+typedef struct {
     int x;
     int y;
     Direction direction;
     int level;
     int inventory[NBR_ITEMS];
     client_t *client;
+    bool incanting;
 } player_t;
 
 typedef struct {
@@ -207,6 +214,7 @@ void cmd_fork(zappy_t *zappy, char *command, int ci);
 void cmd_eject(zappy_t *zappy, char *command, int ci);
 void cmd_take(zappy_t *zappy, char *command, int ci);
 void cmd_broadcast(zappy_t *zappy, char *command, int ci);
+void cmd_incantation(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);

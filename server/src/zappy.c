@@ -97,6 +97,7 @@ static game_t init_game(args_t args)
             for (int k = 0; k < NBR_ITEMS; ++k)
                 game.teams[i].players[j].inventory[k] = 0;
             game.teams[i].players[j].client = NULL;
+            game.teams[i].players[j].incanting = false;
         }
     }
     init_resources(args, &game);

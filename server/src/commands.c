@@ -19,6 +19,7 @@
     {"Eject", cmd_eject},       \
     {"Take", cmd_take},         \
     {"Broadcast", cmd_broadcast},\
+    {"Incantation", cmd_incantation},\
     {NULL, NULL}                \
 }
 #define graphic_commands {      \
