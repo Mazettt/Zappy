@@ -16,10 +16,10 @@ static void take(zappy_t *zappy, char *command, int ci)
         sdprintf(zappy, client_socket(ci), "ko\n");
         return;
     }
-    resource_t *resource = get_resource(zappy->game.resources, player->x, player->y, item);
-    if (resource) {
+    int *resource = &zappy->game.map[player->x][player->y][item];
+    if (*resource) {
         player->inventory[item] += 1;
-        remove_resource(&zappy->game.resources, resource);
+        *resource -= 1;
         sdprintf(zappy, client_socket(ci), "ok\n");
     } else
         sdprintf(zappy, client_socket(ci), "ko\n");

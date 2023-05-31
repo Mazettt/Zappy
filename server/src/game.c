@@ -36,33 +36,22 @@ char *get_tile_content(zappy_t *zappy, int x, int y)
 
     for (int i = 0; i < nbr_players(zappy, x, y); ++i)
         len += sprintf(res + len, " player");
-    for (int i = 0; i < nbr_resource(zappy->game.resources, x, y, FOOD); ++i)
+    for (int i = 0; i < zappy->game.map[x][y][FOOD]; ++i)
         len += sprintf(res + len, " food");
-    for (int i = 0; i < nbr_resource(zappy->game.resources, x, y, LINEMATE); ++i)
+    for (int i = 0; i < zappy->game.map[x][y][LINEMATE]; ++i)
         len += sprintf(res + len, " linemate");
-    for (int i = 0; i < nbr_resource(zappy->game.resources, x, y, DERAUMERE); ++i)
+    for (int i = 0; i < zappy->game.map[x][y][DERAUMERE]; ++i)
         len += sprintf(res + len, " deraumere");
-    for (int i = 0; i < nbr_resource(zappy->game.resources, x, y, SIBUR); ++i)
+    for (int i = 0; i < zappy->game.map[x][y][SIBUR]; ++i)
         len += sprintf(res + len, " sibur");
-    for (int i = 0; i < nbr_resource(zappy->game.resources, x, y, MENDIANE); ++i)
+    for (int i = 0; i < zappy->game.map[x][y][MENDIANE]; ++i)
         len += sprintf(res + len, " mendiane");
-    for (int i = 0; i < nbr_resource(zappy->game.resources, x, y, PHIRAS); ++i)
+    for (int i = 0; i < zappy->game.map[x][y][PHIRAS]; ++i)
         len += sprintf(res + len, " phiras");
-    for (int i = 0; i < nbr_resource(zappy->game.resources, x, y, THYSTAME); ++i)
+    for (int i = 0; i < zappy->game.map[x][y][THYSTAME]; ++i)
         len += sprintf(res + len, " thystame");
     res[len] = '\0';
     return res;
-}
-
-void print_map(zappy_t *zappy)
-{
-    for (int i = 0; i < zappy->game.height; ++i) {
-        for (int j = 0; j < zappy->game.width; ++j) {
-            printf("%c", nbr_players(zappy, j, i) ? 'P' : '.');
-        }
-        printf("\n");
-    }
-    printf("\n");
 }
 
 int get_direction(int x, int y, int dx, int dy, Direction direction)

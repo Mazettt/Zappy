@@ -18,7 +18,7 @@ static void set(zappy_t *zappy, char *command, int ci)
     }
     if (player->inventory[item] > 0) {
         player->inventory[item] -= 1;
-        zappy->game.resources = add_resource(zappy->game.resources, player->x, player->y, item);
+        zappy->game.map[player->x][player->y][item] += 1;
         sdprintf(zappy, client_socket(ci), "ok\n");
     } else
         sdprintf(zappy, client_socket(ci), "ko\n");

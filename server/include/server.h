@@ -85,14 +85,6 @@ typedef struct {
     player_t *players;
 } team_t;
 
-typedef struct resource_s {
-    int x;
-    int y;
-    Item type;
-    struct resource_s *prev;
-    struct resource_s *next;
-} resource_t;
-
 typedef struct action_s {
     struct timeval startTime;
     time_t duration;
@@ -110,7 +102,7 @@ typedef struct {
     team_t *teams;
     int nbrTeams;
     action_t *actions;
-    resource_t *resources;
+    int ***map;
 } game_t;
 
 typedef struct {
@@ -224,7 +216,6 @@ char *read_file(char *filepath);
 int nbr_players(zappy_t *zappy, int x, int y);
 player_t *parse_players(zappy_t *zappy, int *i, int *j);
 char *get_tile_content(zappy_t *zappy, int x, int y);
-void print_map(zappy_t *zappy);
 /**
  * @brief get the cell around a point where the direction is coming
  *
@@ -279,43 +270,7 @@ bool exec_action(zappy_t *zappy, action_t *action);
  */
 action_t *remove_action(action_t **head, action_t *action);
 
-/**
- * @brief add a resource to the resource linked list
- *
- * @param resource resource linked list
- * @param x x position
- * @param y y position
- * @param type type of resource
- * @return resource_t*
- */
-resource_t *add_resource(resource_t *resource, int x, int y, Item type);
-/**
- * @brief get the number of resources on a tile
- *
- * @param resource resource linked list
- * @param x x position
- * @param y y position
- * @param type type of resource
- * @return int = number of resources
- */
-int nbr_resource(resource_t *resource, int x, int y, Item type);
-/**
- * @brief get a pointer to a resource at a certain position
- *
- * @param resource resource linked list
- * @param x x position
- * @param y y position
- * @param type type of resource
- * @return resource_t* = pointer to the resource or NULL if not found
- */
-resource_t *get_resource(resource_t *resource, int x, int y, Item type);
-/**
- * @brief remove a resource from the resource linked list
- *
- * @param head resource linked list
- * @param resource resource to remove
- * @return resource_t* = pointer to the next resource
- */
-resource_t *remove_resource(resource_t **head, resource_t *resource);
+// resources
+void init_resources(args_t args, game_t *game);
 
 #endif

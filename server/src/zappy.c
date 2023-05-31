@@ -49,28 +49,14 @@ static void free_all(zappy_t *zappy)
         free(zappy->game.teams[i].name);
         free(zappy->game.teams[i].players);
     }
-    while (zappy->game.resources)
-        zappy->game.resources = remove_resource(&zappy->game.resources, zappy->game.resources);
+    for (int i = 0; i < WIDTH; ++i) {
+        for (int j = 0; j < HEIGHT; ++j)
+            free(zappy->game.map[i][j]);
+        free(zappy->game.map[i]);
+    }
+    free(zappy->game.map);
     free(zappy->game.teams);
     free(zappy);
-}
-
-static void init_resources(args_t args, game_t *game)
-{
-    for (int i = 0; i < (args.width * args.height * 0.5); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, FOOD);
-    for (int i = 0; i < (args.width * args.height * 0.3); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, LINEMATE);
-    for (int i = 0; i < (args.width * args.height * 0.15); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, DERAUMERE);
-    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, SIBUR);
-    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, MENDIANE);
-    for (int i = 0; i < (args.width * args.height * 0.08); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, PHIRAS);
-    for (int i = 0; i < (args.width * args.height * 0.05); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, THYSTAME);
 }
 
 static game_t init_game(args_t args)
@@ -90,8 +76,8 @@ static game_t init_game(args_t args)
         game.teams[i].nbrClients = args.clientsNb;
         game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
         for (int j = 0; j < args.clientsNb; ++j) {
-            game.teams[i].players[j].x = rand() % args.width;
-            game.teams[i].players[j].y = rand() % args.height;
+            game.teams[i].players[j].x = /* rand() % args.width */ args.width / 2;      //! DEBUG
+            game.teams[i].players[j].y = /* rand() % args.height */ args.height / 2;    //! DEBUG
             game.teams[i].players[j].direction = SOUTH;
             game.teams[i].players[j].level = 1;
             for (int k = 0; k < NBR_ITEMS; ++k)
@@ -118,11 +104,9 @@ void exec_all_actions(zappy_t *zappy)
 void zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
-    // time_t t = time(NULL);
     zappy->game = init_game(args);
     first_select(zappy);
     init_main_socket(zappy, args.port);
-    print_map(zappy);
     while (zappy->main.s) {
         zappy->max_fd = 0;
         reset_fd(zappy);
@@ -135,10 +119,6 @@ void zappy(args_t args)
             read_connections(zappy);
         }
         exec_all_actions(zappy);
-        // if (time(NULL) - t >= 1) {
-        //     t = time(NULL);
-        //     print_map(zappy);
-        // }
     }
     debug_print("\n%s\n", "Quitting...");
     close_all(zappy);

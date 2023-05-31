@@ -57,7 +57,7 @@ static bool check_incantation(zappy_t *zappy, int ci)
     if (nbr_players < cond.nbr_players)
         return false;
     for (int i = 0; i < NBR_ITEMS; ++i) {
-        if (nbr_resource(zappy->game.resources, player->x, player->y, i) < cond.items[i])
+        if (zappy->game.map[player->x][player->y][i] < cond.items[i])
             return false;
     }
     return true;
@@ -71,12 +71,8 @@ static void incantation(zappy_t *zappy, char *command, int ci)
         return;
     if (check_incantation(zappy, ci)) {
         elev_cond_t cond = elev_cond[player->level - 1];
-        for (int i = 0; i < NBR_ITEMS; ++i) {
-            for (int j = 0; j < cond.items[i]; ++j) {
-                resource_t *resource = get_resource(zappy->game.resources, player->x, player->y, i);
-                remove_resource(&zappy->game.resources, resource);
-            }
-        }
+        for (int i = 0; i < NBR_ITEMS; ++i)
+            zappy->game.map[player->x][player->y][i] -= cond.items[i];
         rankup_players(zappy, player);
     } else
         sdprintf(zappy, client_socket(ci), "ko\n");
