@@ -205,6 +205,7 @@ void cmd_inventory(zappy_t *zappy, char *command, int ci);
 void cmd_connect_nbr(zappy_t *zappy, char *command, int ci);
 void cmd_fork(zappy_t *zappy, char *command, int ci);
 void cmd_eject(zappy_t *zappy, char *command, int ci);
+void cmd_take(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);
@@ -287,6 +288,16 @@ resource_t *add_resource(resource_t *resource, int x, int y, Item type);
  * @return int = number of resources
  */
 int nbr_resource(resource_t *resource, int x, int y, Item type);
+/**
+ * @brief get a pointer to a resource at a certain position
+ *
+ * @param resource resource linked list
+ * @param x x position
+ * @param y y position
+ * @param type type of resource
+ * @return resource_t* = pointer to the resource or NULL if not found
+ */
+resource_t *get_resource(resource_t *resource, int x, int y, Item type);
 /**
  * @brief remove a resource from the resource linked list
  *

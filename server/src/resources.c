@@ -31,6 +31,16 @@ int nbr_resource(resource_t *resource, int x, int y, Item type)
     return count;
 }
 
+resource_t *get_resource(resource_t *resource, int x, int y, Item type)
+{
+    while (resource) {
+        if (resource->x == x && resource->y == y && resource->type == type)
+            return resource;
+        resource = resource->next;
+    }
+    return NULL;
+}
+
 resource_t *remove_resource(resource_t **head, resource_t *resource)
 {
     if (*head == resource)

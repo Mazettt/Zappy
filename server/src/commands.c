@@ -17,6 +17,7 @@
     {"Connect_nbr", cmd_connect_nbr},\
     {"Fork", cmd_fork},         \
     {"Eject", cmd_eject},       \
+    {"Take", cmd_take},         \
     {NULL, NULL}                \
 }
 #define graphic_commands {      \
