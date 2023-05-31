@@ -8,70 +8,70 @@
 #pragma once
 
 namespace MyRayLib {
-    class Vector3D {
+    class MyRayLibVector3D {
         public:
             float x;
             float y;
-            Vector3D() {
+            MyRayLibVector3D() {
                 this->x = 0;
                 this->y = 0;
             }
 
-            Vector3D(float x, float y) {
+            MyRayLibVector3D(float x, float y) {
                 this->x = x;
                 this->y = y;
             }
 
-            Vector3D operator=(const Vector3D &other) {
+            MyRayLibVector3D operator=(const MyRayLibVector3D &other) {
                 this->x = other.x;
                 this->y = other.y;
                 return *this;
             }
 
-            bool operator==(const Vector3D &other) {
+            bool operator==(const MyRayLibVector3D &other) {
                 return (this->x == other.x && this->y == other.y);
             }
 
-            Vector3D operator+(const Vector3D &other) {
-                return Vector3D(this->x + other.x, this->y + other.y);
+            MyRayLibVector3D operator+(const MyRayLibVector3D &other) {
+                return MyRayLibVector3D(this->x + other.x, this->y + other.y);
             }
 
-            Vector3D operator+=(const Vector3D &other) {
+            MyRayLibVector3D operator+=(const MyRayLibVector3D &other) {
                 this->x += other.x;
                 this->y += other.y;
                 return *this;
             }
 
-            Vector3D operator-(const Vector3D &other) {
-                return Vector3D(this->x - other.x, this->y - other.y);
+            MyRayLibVector3D operator-(const MyRayLibVector3D &other) {
+                return MyRayLibVector3D(this->x - other.x, this->y - other.y);
             }
 
-            Vector3D operator-=(const Vector3D &other) {
+            MyRayLibVector3D operator-=(const MyRayLibVector3D &other) {
                 this->x -= other.x;
                 this->y -= other.y;
                 return *this;
             }
 
-            Vector3D operator*(const Vector3D &other) {
-                return Vector3D(this->x * other.x, this->y * other.y);
+            MyRayLibVector3D operator*(const MyRayLibVector3D &other) {
+                return MyRayLibVector3D(this->x * other.x, this->y * other.y);
             }
 
-            Vector3D operator*=(const Vector3D &other) {
+            MyRayLibVector3D operator*=(const MyRayLibVector3D &other) {
                 this->x *= other.x;
                 this->y *= other.y;
                 return *this;
             }
 
-            Vector3D operator/(const Vector3D &other) {
-                return Vector3D(this->x / other.x, this->y / other.y);
+            MyRayLibVector3D operator/(const MyRayLibVector3D &other) {
+                return MyRayLibVector3D(this->x / other.x, this->y / other.y);
             }
 
-            Vector3D operator/=(const Vector3D &other) {
+            MyRayLibVector3D operator/=(const MyRayLibVector3D &other) {
                 this->x /= other.x;
                 this->y /= other.y;
                 return *this;
             }
 
-            ~Vector3D() {};
+            ~MyRayLibVector3D() {};
     };
 }
