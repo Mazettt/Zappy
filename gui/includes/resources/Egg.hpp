@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include <string>
 #include "IResource.hpp"
 
 namespace ZappyGui {
