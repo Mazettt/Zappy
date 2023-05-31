@@ -212,6 +212,31 @@ char *read_file(char *filepath);
 int nbr_players(zappy_t *zappy, int x, int y);
 char *get_tile_content(zappy_t *zappy, int x, int y);
 void print_map(zappy_t *zappy);
+/**
+ * @brief get the cell around a point where the direction is coming
+ *
+ * @param x x coordinate of the point to get the direction
+ * @param y y coordinate of the point to get the direction
+ * @param dx x coordinate of the pointthe direction is coming from
+ * @param dy y coordinate of the pointthe direction is coming from
+ * @param direction direction of the object
+ * @return int = the cell around the point
+ */
+int get_direction(int x, int y, int dx, int dy, Direction direction);
+/**
+ * @brief get the item from a string
+ *
+ * @param item string to get the item from
+ * @return Item and NBR_ITEMS if the item is not found
+ */
+Item get_item(char *item);
+/**
+ * @brief get the string associated to an item
+ *
+ * @param item item to get the string from
+ * @return char* and NULL if the item is not found
+ */
+char *get_item_str(Item item);
 
 /**
  * @brief add an action to be executed after a certain amount of time

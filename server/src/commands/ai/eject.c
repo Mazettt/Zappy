@@ -38,15 +38,12 @@ static void eject(zappy_t *zappy, int ci)
             playerBuff->x == player->x && playerBuff->y == player->y) {
                 playerBuff->x = movex;
                 playerBuff->y = movey;
-                sdprintf(zappy, playerBuff->client->command.s, "eject: %d\n", player->direction); //TODO direction en fonction de la case
+                sdprintf(zappy, playerBuff->client->command.s, "eject: %d\n", get_direction(playerBuff->x, playerBuff->y, player->x, player->y, player->direction));
                 check = true;
             }
         }
     }
-    if (check)
-        sdprintf(zappy, client_socket(ci), "ok\n");
-    else
-        sdprintf(zappy, client_socket(ci), "ko\n");
+    sdprintf(zappy, client_socket(ci), (check ? "ok\n" : "ko\n"));
 }
 
 void cmd_eject(zappy_t *zappy, char *command, int ci)
