@@ -206,6 +206,7 @@ void cmd_connect_nbr(zappy_t *zappy, char *command, int ci);
 void cmd_fork(zappy_t *zappy, char *command, int ci);
 void cmd_eject(zappy_t *zappy, char *command, int ci);
 void cmd_take(zappy_t *zappy, char *command, int ci);
+void cmd_broadcast(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);

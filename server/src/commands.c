@@ -18,6 +18,7 @@
     {"Fork", cmd_fork},         \
     {"Eject", cmd_eject},       \
     {"Take", cmd_take},         \
+    {"Broadcast", cmd_broadcast},\
     {NULL, NULL}                \
 }
 #define graphic_commands {      \
