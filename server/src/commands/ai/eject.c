@@ -31,17 +31,14 @@ static void eject(zappy_t *zappy, char *command, int ci)
             break;
     }
     bool check = false;
-    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
-        team_t *teamBuff = &zappy->game.teams[i];
-        for (int j = 0; j < teamBuff->nbrClients; ++j) {
-            player_t *playerBuff = &teamBuff->players[j];
-            if (playerBuff->client && playerBuff != player &&
-            playerBuff->x == player->x && playerBuff->y == player->y) {
-                playerBuff->x = movex;
-                playerBuff->y = movey;
-                sdprintf(zappy, playerBuff->client->command.s, "eject: %d\n", get_direction(playerBuff->x, playerBuff->y, player->x, player->y, playerBuff->direction));
-                check = true;
-            }
+    player_t *playerBuff = NULL;
+    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+        if (playerBuff->client && playerBuff != player &&
+        playerBuff->x == player->x && playerBuff->y == player->y) {
+            playerBuff->x = movex;
+            playerBuff->y = movey;
+            sdprintf(zappy, playerBuff->client->command.s, "eject: %d\n", get_direction(playerBuff->x, playerBuff->y, player->x, player->y, playerBuff->direction));
+            check = true;
         }
     }
     sdprintf(zappy, client_socket(ci), (check ? "ok\n" : "ko\n"));

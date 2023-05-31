@@ -10,15 +10,23 @@
 int nbr_players(zappy_t *zappy, int x, int y)
 {
     int res = 0;
-    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
-        for (int j = 0; j < zappy->game.teams[i].nbrClients; ++j) {
-            if (zappy->game.teams[i].players[j].x == x &&
-                zappy->game.teams[i].players[j].y == y &&
-                zappy->game.teams[i].players[j].client)
-                ++res;
-        }
+    player_t *playerBuff = NULL;
+    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+        if (playerBuff->x == x && playerBuff->y == y && playerBuff->client)
+            ++res;
     }
     return res;
+}
+
+player_t *parse_players(zappy_t *zappy, int *i, int *j)
+{
+    if (*j >= zappy->game.teams[*i].nbrClients) {
+        *j = 0;
+        ++(*i);
+    }
+    if (*i >= zappy->game.nbrTeams)
+        return NULL;
+    return &zappy->game.teams[*i].players[(*j)++];
 }
 
 char *get_tile_content(zappy_t *zappy, int x, int y)

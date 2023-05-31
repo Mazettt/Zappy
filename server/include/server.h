@@ -221,6 +221,7 @@ char *read_file(char *filepath);
 
 // game
 int nbr_players(zappy_t *zappy, int x, int y);
+player_t *parse_players(zappy_t *zappy, int *i, int *j);
 char *get_tile_content(zappy_t *zappy, int x, int y);
 void print_map(zappy_t *zappy);
 /**

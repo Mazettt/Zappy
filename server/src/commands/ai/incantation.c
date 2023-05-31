@@ -19,39 +19,31 @@ static const elev_cond_t elev_cond[] = {
 
 static void toggle_incanting(zappy_t *zappy, player_t *player, bool incanting)
 {
-    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
-        team_t *teamBuff = &zappy->game.teams[i];
-        for (int j = 0; j < teamBuff->nbrClients; ++j) {
-            player_t *playerBuff = &teamBuff->players[j];
-            if (playerBuff->client && playerBuff->x == player->x && playerBuff->y == player->y && playerBuff->level == player->level)
-                playerBuff->incanting = incanting;
-        }
+    player_t *playerBuff = NULL;
+    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+        if (playerBuff->client && playerBuff->x == player->x && playerBuff->y == player->y && playerBuff->level == player->level)
+            playerBuff->incanting = incanting;
     }
 }
 
 static void rankup_players(zappy_t *zappy, player_t *player)
 {
-    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
-        team_t *teamBuff = &zappy->game.teams[i];
-        for (int j = 0; j < teamBuff->nbrClients; ++j) {
-            player_t *playerBuff = &teamBuff->players[j];
-            if (playerBuff->client && playerBuff->x == player->x && playerBuff->y == player->y && playerBuff->level == player->level)
-                sdprintf(zappy, playerBuff->client->command.s, "Current level: %d\n", ++playerBuff->level);
-        }
+    int lvl = player->level;
+    player_t *playerBuff = NULL;
+    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+        if (playerBuff->client && playerBuff->x == player->x && playerBuff->y == player->y && playerBuff->level == lvl)
+            sdprintf(zappy, playerBuff->client->command.s, "Current level: %d\n", ++playerBuff->level);
     }
 }
 
 static int nbr_players_same_unit_same_lvl(zappy_t *zappy, int lvl, int x, int y)
 {
     int res = 0;
-    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
-        team_t *teamBuff = &zappy->game.teams[i];
-        for (int j = 0; j < teamBuff->nbrClients; ++j) {
-            player_t *playerBuff = &teamBuff->players[j];
-            if (playerBuff->client && playerBuff->level == lvl &&
-            playerBuff->x == x && playerBuff->y == y)
-                res++;
-        }
+    player_t *playerBuff = NULL;
+    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+        if (playerBuff->client && playerBuff->level == lvl &&
+        playerBuff->x == x && playerBuff->y == y)
+            res++;
     }
     return res;
 }
@@ -62,7 +54,7 @@ static bool check_incantation(zappy_t *zappy, int ci)
     int nbr_players = nbr_players_same_unit_same_lvl(zappy, player->level, player->x, player->y);
     elev_cond_t cond = elev_cond[player->level - 1];
 
-    if (nbr_players != cond.nbr_players)
+    if (nbr_players < cond.nbr_players)
         return false;
     for (int i = 0; i < NBR_ITEMS; ++i) {
         if (nbr_resource(zappy->game.resources, player->x, player->y, i) < cond.items[i])
