@@ -89,8 +89,9 @@ typedef struct resource_s {
 typedef struct action_s {
     struct timeval startTime;
     time_t duration;
+    char *command;
     int ci;
-    void (*func)(zappy_t *, int);
+    void (*func)(zappy_t *, char *, int);
     struct action_s *prev;
     struct action_s *next;
 } action_t;
@@ -247,7 +248,7 @@ char *get_item_str(Item item);
  * @param func function to execute
  * @return action_t* = pointer to the new action
  */
-action_t *add_action(action_t *action, time_t duration, int ci, void (*func)(zappy_t *, int));
+action_t *add_action(action_t *action, time_t duration, char *command, int ci, void (*func)(zappy_t *, char *, int));
 /**
  * @brief execute the action if the time has passed
  *

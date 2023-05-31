@@ -7,8 +7,9 @@
 
 #include "../../../include/server.h"
 
-static void my_fork(zappy_t *zappy, int ci)
+static void my_fork(zappy_t *zappy, char *command, int ci)
 {
+    (void)command;
     team_t *team = zappy->client[ci].team;
     team->nbrClients += 1;
     team->players = realloc(team->players, sizeof(player_t) * team->nbrClients);
@@ -26,5 +27,5 @@ static void my_fork(zappy_t *zappy, int ci)
 void cmd_fork(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(42), ci, my_fork);
+    zappy->game.actions = add_action(zappy->game.actions, time_limit(42), strdup(command), ci, my_fork);
 }

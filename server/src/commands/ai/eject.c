@@ -7,8 +7,9 @@
 
 #include "../../../include/server.h"
 
-static void eject(zappy_t *zappy, int ci)
+static void eject(zappy_t *zappy, char *command, int ci)
 {
+    (void)command;
     player_t *player = zappy->client[ci].player;
     int movex = player->x;
     int movey = player->y;
@@ -49,5 +50,5 @@ static void eject(zappy_t *zappy, int ci)
 void cmd_eject(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(42), ci, eject);
+    zappy->game.actions = add_action(zappy->game.actions, time_limit(42), strdup(command), ci, eject);
 }
