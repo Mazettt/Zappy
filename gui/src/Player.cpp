@@ -18,7 +18,9 @@ Player::Player(int playerNumber, Vector2 position, Vector3 orientation, int play
 }
 
 void Player::setDesign(const std::string &modelPath, const std::string &texturePath, const std::string &animationPath) {
-
+    (void)modelPath;
+    (void)texturePath;
+    (void)animationPath;
 }
 
 void Player::move(Vector2 position) {

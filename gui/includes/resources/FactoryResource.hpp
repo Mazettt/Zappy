@@ -13,11 +13,9 @@
 
 namespace ZappyGui {
     class FactoryResource {
-        private:
-            /* data */
         public:
-            FactoryResource(std::string type);
-            std::unique_ptr<IResource> createResource(const std::string &type);
+            FactoryResource();
             ~FactoryResource();
+            static std::unique_ptr<IResource> createResource(const std::string &type);
     };
 }

@@ -11,12 +11,16 @@ using namespace ZappyGui;
 
 Cube::Cube(Vector3 pos, float width, float height, float length, Color color): _pos(pos), _width(width), _height(height), _length(length), _color(color) {};
 
+Cube::Cube(const Cube& other): _pos(other._pos), _width(other._width), _height(other._height), _length(other._length), _color(other._color) {};
+
 Cube &Cube::operator=(const Cube &cube) {
-    this->_pos = cube._pos;
-    this->_width = cube._width;
-    this->_height = cube._height;
-    this->_length = cube._length;
-    this->_color = cube._color;
+    if (this != &cube) {
+        this->_pos = cube._pos;
+        this->_width = cube._width;
+        this->_height = cube._height;
+        this->_length = cube._length;
+        this->_color = cube._color;
+    }
     return *this;
 }
 

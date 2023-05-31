@@ -7,7 +7,8 @@
 
 #include "../includes/Core.hpp"
 #include "../includes/map/Cube.hpp"
-#include "../includes/map/MapTile.hpp"
+#include "../includes/map/Tile.hpp"
+#include "../includes/map/Map.hpp"
 
 using namespace ZappyGui;
 using namespace ZappyNetworking;
@@ -91,18 +92,8 @@ int main(int ac, char **av)
     MyRayLibWindow _raylibwindow(1920, 1080, "ZAPPY");
     Camera3D camera = _raylibwindow.MySetCameraMode((Vector3){ 0.0f, 10.0f, 50.0f }, (Vector3){ 0.0f, 0.0f, 0.0f }, (Vector3){ 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
 
-    float width = 2.0;
-    float height = 1.0;
-    int length = 2.0;
-    for (int y = 0; y < y_pos; y++) {
-        for (int x = 0; x < x_pos; x++) {
-            Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
-            Color color = RED;
-            Cube cube(cubePosition, width * x, height, length * y, color);
-            std::unique_ptr<MapTile> tile = std::make_unique<MapTile>(cube);
-            _core._map.push_back(std::move(tile));
-        }
-    }
+    Map map(x_pos, y_pos);
+
     _raylibwindow.MySetTargetFPS(60);
     _raylibwindow.MyDisableCursor();
     while (!_raylibwindow.MyWindowShouldClose()) {
@@ -111,12 +102,16 @@ int main(int ac, char **av)
         _raylibwindow.MyClearBackground(RAYWHITE);
         _raylibdrawing.MyBegin3DMode(camera);
 
-        for (int x = 0; x < (y_pos * x_pos); x++) {
-            std::unique_ptr<MapTile> &tile = _core._map.at(x);
-            Cube cube = tile->getCube();
-            _raylibdrawing.MyDrawCubeWires(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), BLACK);
-            _raylibdrawing.MyDrawCube(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), cube.getColor());
+        for (int y = 0; y < y_pos; ++y) {
+            for (int x = 0; x < x_pos; ++x) {
+                int key = y * x_pos + x;
+                std::shared_ptr<Tile> &tile = map.getTile(key);
+                Cube cube = tile->getCube();
+                _raylibdrawing.MyDrawCubeWires(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), BLACK);
+                _raylibdrawing.MyDrawCube(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), cube.getColor());
+            }
         }
+
         _raylibdrawing.MyEnd3DMode();
         _raylibdrawing.~MyRayLibDrawing();
     }

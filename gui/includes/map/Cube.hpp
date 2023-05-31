@@ -18,6 +18,7 @@ namespace ZappyGui {
 
         public:
             Cube(Vector3 pos, float width, float height, float length, Color color);
+            Cube(const Cube& other);
             Cube &operator=(const Cube &cube);
             Vector3 getPos() const;
             float getWidth() const;

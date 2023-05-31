@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** gui
 ** File description:
-** Egg.hpp
+** Food.hpp
 */
 
 #pragma once
@@ -10,13 +10,13 @@
 #include "IResource.hpp"
 
 namespace ZappyGui {
-    class Egg: public IResource {
+    class Food: public IResource {
         private:
             Model _model;
             Texture2D _texture;
         public:
-            Egg(const std::string &modelPath, const std::string &texturePath);
-            ~Egg();
+            Food(const std::string &modelPath, const std::string &texturePath);
+            ~Food();
             Model getModel();
             Texture2D getTexture();
     };

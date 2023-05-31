@@ -11,16 +11,16 @@
 
 using namespace ZappyGui;
 
-FactoryResource::FactoryResource(std::string type) {}
+FactoryResource::FactoryResource() {}
+
+FactoryResource::~FactoryResource() {}
 
 std::unique_ptr<IResource> FactoryResource::createResource(const std::string &type) {
     static const std::unordered_map<std::string, std::function<std::unique_ptr<IResource>()>> componentMap {
-        {"egg", []() {return std::make_unique<Egg>("quoi.obj", "feur.png");}}
+        {"food", []() {return std::make_unique<Food>("quoi.obj", "feur.png");}}
     };
     std::unordered_map<std::string, std::function<std::unique_ptr<IResource>()>>::const_iterator it = componentMap.find(type);
     if (it == componentMap.end())
         throw std::out_of_range("Unknown resource type: " + type);
     return it->second();
 }
-
-FactoryResource::~FactoryResource() {}
