@@ -59,6 +59,20 @@ static void free_all(zappy_t *zappy)
     free(zappy);
 }
 
+void init_player(game_t *game, player_t *player, team_t *team)
+{
+    player->id = ++game->playerIdIt;
+    player->x = rand() % game->width;
+    player->y = rand() % game->height;
+    player->direction = SOUTH;
+    player->level = 1;
+    for (int i = 0; i < NBR_ITEMS; ++i)
+        player->inventory[i] = 0;
+    player->team = team;
+    player->client = NULL;
+    player->incanting = false;
+}
+
 static game_t init_game(args_t args)
 {
     int nbrTeams = word_array_len(args.teamNames);
@@ -71,22 +85,15 @@ static game_t init_game(args_t args)
         .actions = NULL
     };
 
-    int id = 0;
+    game.playerIdIt = 0;
     for (int i = 0; i < nbrTeams; ++i) {
         game.teams[i].name = strdup(args.teamNames[i]);
         game.teams[i].nbrClients = args.clientsNb;
         game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
         for (int j = 0; j < args.clientsNb; ++j) {
-            game.teams[i].players[j].id = ++id;
-            game.teams[i].players[j].x = /* rand() % args.width */ args.width / 2;      //! DEBUG
-            game.teams[i].players[j].y = /* rand() % args.height */ args.height / 2;    //! DEBUG
-            game.teams[i].players[j].direction = SOUTH;
-            game.teams[i].players[j].level = 1;
-            for (int k = 0; k < NBR_ITEMS; ++k)
-                game.teams[i].players[j].inventory[k] = 0;
-            game.teams[i].players[j].team = &game.teams[i];
-            game.teams[i].players[j].client = NULL;
-            game.teams[i].players[j].incanting = false;
+            init_player(&game, &game.teams[i].players[j], &game.teams[i]);
+            game.teams[i].players[j].x = args.width / 2;     //! DEBUG
+            game.teams[i].players[j].y = args.height / 2;    //! DEBUG
         }
     }
     init_resources(args, &game);

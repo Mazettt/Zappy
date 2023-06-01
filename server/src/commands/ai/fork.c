@@ -14,13 +14,10 @@ static void my_fork(zappy_t *zappy, char *command, int ci)
     team->nbrClients += 1;
     team->players = realloc(team->players, sizeof(player_t) * team->nbrClients);
     player_t *newplayer = &team->players[team->nbrClients - 1];
-    newplayer->x = rand() % WIDTH;
-    newplayer->y = rand() % HEIGHT;
-    newplayer->direction = SOUTH;
-    newplayer->level = 1;
-    for (int i = 0; i < NBR_ITEMS; ++i)
-        newplayer->inventory[i] = 0;
-    newplayer->client = NULL;
+    init_player(&zappy->game, newplayer, team);
+    newplayer->x = zappy->client[ci].player->x;
+    newplayer->y = zappy->client[ci].player->y;
+    newplayer->direction = rand() % 4;
     sdprintf(zappy, client_socket(ci), "ok\n");
 }
 
