@@ -7,6 +7,14 @@
 
 #include "../../../include/server.h"
 
+static void notify_guis(zappy_t *zappy, player_t *player)
+{
+    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
+        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
+            send_pex(zappy, i, player);
+    }
+}
+
 static void eject(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
@@ -38,6 +46,7 @@ static void eject(zappy_t *zappy, char *command, int ci)
             playerBuff->x = movex;
             playerBuff->y = movey;
             sdprintf(zappy, playerBuff->client->command.s, "eject: %d\n", get_direction(playerBuff->x, playerBuff->y, player->x, player->y, playerBuff->direction));
+            notify_guis(zappy, playerBuff);
             check = true;
         }
     }

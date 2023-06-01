@@ -237,6 +237,8 @@ void cmd_plv(zappy_t *zappy, char *command, int ci);
 // player inventory
 void send_pin(zappy_t *zappy, int ci, player_t *player);
 void cmd_pin(zappy_t *zappy, char *command, int ci);
+// expulsion
+void send_pex(zappy_t *zappy, int ci, player_t *player);
 
 // parsing
 char *read_file(char *filepath);
