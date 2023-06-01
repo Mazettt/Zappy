@@ -5,7 +5,7 @@
 ** Cube.cpp
 */
 
-#include "../includes/map/Cube.hpp"
+#include "../../includes/MapHeader/Cube.hpp"
 
 using namespace ZappyGui;
 

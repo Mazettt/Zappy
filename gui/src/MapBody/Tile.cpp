@@ -1,5 +1,5 @@
-#include "../includes/map/Tile.hpp"
-#include "../includes/resources/FactoryResource.hpp"
+#include "../../includes/MapHeader/Tile.hpp"
+#include "../../includes/resources/FactoryResource.hpp"
 
 using namespace ZappyGui;
 

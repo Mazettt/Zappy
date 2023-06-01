@@ -6,9 +6,9 @@
 */
 
 #include "../includes/Core.hpp"
-#include "../includes/map/Cube.hpp"
-#include "../includes/map/Tile.hpp"
-#include "../includes/map/Map.hpp"
+#include "../includes/MapHeader/Cube.hpp"
+#include "../includes/MapHeader/Tile.hpp"
+#include "../includes/MapHeader/Map.hpp"
 
 using namespace ZappyGui;
 using namespace ZappyNetworking;

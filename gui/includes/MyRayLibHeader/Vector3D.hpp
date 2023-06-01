@@ -22,55 +22,55 @@ namespace MyRayLib {
                 this->y = y;
             }
 
-            MyRayLibVector3D operator=(const MyRayLibVector3D &other) {
-                this->x = other.x;
-                this->y = other.y;
-                return *this;
-            }
+            // MyRayLibVector3D operator=(const MyRayLibVector3D &other) {
+            //     this->x = other.x;
+            //     this->y = other.y;
+            //     return *this;
+            // }
 
-            bool operator==(const MyRayLibVector3D &other) {
-                return (this->x == other.x && this->y == other.y);
-            }
+            // bool operator==(const MyRayLibVector3D &other) {
+            //     return (this->x == other.x && this->y == other.y);
+            // }
 
-            MyRayLibVector3D operator+(const MyRayLibVector3D &other) {
-                return MyRayLibVector3D(this->x + other.x, this->y + other.y);
-            }
+            // MyRayLibVector3D operator+(const MyRayLibVector3D &other) {
+            //     return MyRayLibVector3D(this->x + other.x, this->y + other.y);
+            // }
 
-            MyRayLibVector3D operator+=(const MyRayLibVector3D &other) {
-                this->x += other.x;
-                this->y += other.y;
-                return *this;
-            }
+            // MyRayLibVector3D operator+=(const MyRayLibVector3D &other) {
+            //     this->x += other.x;
+            //     this->y += other.y;
+            //     return *this;
+            // }
 
-            MyRayLibVector3D operator-(const MyRayLibVector3D &other) {
-                return MyRayLibVector3D(this->x - other.x, this->y - other.y);
-            }
+            // MyRayLibVector3D operator-(const MyRayLibVector3D &other) {
+            //     return MyRayLibVector3D(this->x - other.x, this->y - other.y);
+            // }
 
-            MyRayLibVector3D operator-=(const MyRayLibVector3D &other) {
-                this->x -= other.x;
-                this->y -= other.y;
-                return *this;
-            }
+            // MyRayLibVector3D operator-=(const MyRayLibVector3D &other) {
+            //     this->x -= other.x;
+            //     this->y -= other.y;
+            //     return *this;
+            // }
 
-            MyRayLibVector3D operator*(const MyRayLibVector3D &other) {
-                return MyRayLibVector3D(this->x * other.x, this->y * other.y);
-            }
+            // MyRayLibVector3D operator*(const MyRayLibVector3D &other) {
+            //     return MyRayLibVector3D(this->x * other.x, this->y * other.y);
+            // }
 
-            MyRayLibVector3D operator*=(const MyRayLibVector3D &other) {
-                this->x *= other.x;
-                this->y *= other.y;
-                return *this;
-            }
+            // MyRayLibVector3D operator*=(const MyRayLibVector3D &other) {
+            //     this->x *= other.x;
+            //     this->y *= other.y;
+            //     return *this;
+            // }
 
-            MyRayLibVector3D operator/(const MyRayLibVector3D &other) {
-                return MyRayLibVector3D(this->x / other.x, this->y / other.y);
-            }
+            // MyRayLibVector3D operator/(const MyRayLibVector3D &other) {
+            //     return MyRayLibVector3D(this->x / other.x, this->y / other.y);
+            // }
 
-            MyRayLibVector3D operator/=(const MyRayLibVector3D &other) {
-                this->x /= other.x;
-                this->y /= other.y;
-                return *this;
-            }
+            // MyRayLibVector3D operator/=(const MyRayLibVector3D &other) {
+            //     this->x /= other.x;
+            //     this->y /= other.y;
+            //     return *this;
+            // }
 
             ~MyRayLibVector3D() {};
     };

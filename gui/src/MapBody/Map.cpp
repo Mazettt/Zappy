@@ -5,7 +5,7 @@
 ** map.cpp
 */
 
-#include "../includes/map/Map.hpp"
+#include "../../includes/MapHeader/Map.hpp"
 
 using namespace ZappyGui;
 

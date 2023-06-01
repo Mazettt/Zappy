@@ -40,6 +40,9 @@ namespace MyRayLib {
             void MyDrawGrid(int slices, float spacing) {
                 DrawGrid(slices, spacing);
             }
+            void MyDrawModelEx(::Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint) {
+                DrawModelEx(model, position, rotationAxis, rotationAngle, scale, tint);
+            }
         private:
     };
 }

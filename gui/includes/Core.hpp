@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <vector>
-#include "map/Tile.hpp"
+#include "MapHeader/Tile.hpp"
 #include <string>
 #include "../Utils/MyError.hpp"
 // RAYLIB HEADERS
