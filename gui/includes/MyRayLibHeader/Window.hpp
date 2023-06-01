@@ -43,6 +43,9 @@ namespace MyRayLib {
             void MyUpdateCamera(Camera *camera, int mode) {
                 UpdateCamera(camera, mode);
             }
+            bool MyIsKeyPressed(int key) {
+                return IsKeyPressed(key);
+            }
         protected:
         private:
     };
