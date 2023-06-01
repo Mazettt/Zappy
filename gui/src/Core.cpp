@@ -104,10 +104,17 @@ int main(int ac, char **av)
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
     std::unique_ptr<IResource> foodeux = FactoryResource::createResource("phiras");
-    // MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
-    // music.MyPlayMusic();
+    float volumeMusic = 0.5;
+    MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
+    if (music.MyIsMusicReady())
+        music.MyPlayMusic();
     while (!_raylibwindow.MyWindowShouldClose()) {
-        // music.MyUpdateMusic();
+        if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
+            volumeMusic += 0.1f;
+        if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
+            volumeMusic -= 0.1f;
+        music.MySetMusicVolume(volumeMusic);
+        music.MyUpdateMusic();
         _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
         MyRayLib::Draw _raylibdrawing;
         _raylibwindow.MyClearBackground(RAYWHITE);
