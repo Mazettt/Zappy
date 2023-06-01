@@ -7,8 +7,13 @@
 
 #include "../../../include/server.h"
 
+void send_sgt(zappy_t *zappy, int ci)
+{
+    sdprintf(zappy, client_socket(ci), "sgt %d\n", zappy->game.freq);
+}
+
 void cmd_sgt(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    sdprintf(zappy, client_socket(ci), "sgt %d\n", zappy->game.freq);
+    send_sgt(zappy, ci);
 }

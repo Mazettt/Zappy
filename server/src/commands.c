@@ -72,10 +72,10 @@ static void gui_commands(zappy_t *zappy, char *command, int ci)
 
 static void gui_begin(zappy_t *zappy, int ci)
 {
-    cmd_msz(zappy, NULL, ci);
-    cmd_sgt(zappy, NULL, ci);
-    cmd_mct(zappy, NULL, ci);
-    cmd_tna(zappy, NULL, ci);
+    send_msz(zappy, ci);
+    send_sgt(zappy, ci);
+    send_mct(zappy, ci);
+    send_tna(zappy, ci);
 }
 
 static void unknown_commands(zappy_t *zappy, char *command, int ci)

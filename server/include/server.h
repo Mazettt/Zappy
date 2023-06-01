@@ -210,19 +210,23 @@ void cmd_set(zappy_t *zappy, char *command, int ci);
 void cmd_broadcast(zappy_t *zappy, char *command, int ci);
 void cmd_incantation(zappy_t *zappy, char *command, int ci);
 
-
 // map size
+void send_msz(zappy_t *zappy, int ci);
 void cmd_msz(zappy_t *zappy, char *command, int ci);
 // time unit request
+void send_sgt(zappy_t *zappy, int ci);
 void cmd_sgt(zappy_t *zappy, char *command, int ci);
 // tile content
-void bct(zappy_t *zappy, int ci, int x, int y);
-// tile content
+void send_bct(zappy_t *zappy, int ci, int x, int y);
 void cmd_bct(zappy_t *zappy, char *command, int ci);
 // map content (all tiles)
+void send_mct(zappy_t *zappy, int ci);
 void cmd_mct(zappy_t *zappy, char *command, int ci);
 // team names
+void send_tna(zappy_t *zappy, int ci);
 void cmd_tna(zappy_t *zappy, char *command, int ci);
+// connection of a new player
+void send_pnw(zappy_t *zappy, int ci, player_t *player, int player_nbr);
 
 // parsing
 char *read_file(char *filepath);

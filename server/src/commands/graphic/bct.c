@@ -7,7 +7,7 @@
 
 #include "../../../include/server.h"
 
-void bct(zappy_t *zappy, int ci, int x, int y)
+void send_bct(zappy_t *zappy, int ci, int x, int y)
 {
     x = cast_pos(x, zappy->game.width);
     y = cast_pos(y, zappy->game.height);
@@ -26,6 +26,6 @@ void bct(zappy_t *zappy, int ci, int x, int y)
 void cmd_bct(zappy_t *zappy, char *command, int ci)
 {
     char **arr = my_str_to_word_array(command, SEPARATOR);
-    bct(zappy, ci, atoi(arr[1]), atoi(arr[2]));
+    send_bct(zappy, ci, atoi(arr[1]), atoi(arr[2]));
     free_word_array(arr);
 }
