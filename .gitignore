@@ -27,3 +27,4 @@ tmp/
 *db*.txt
 client_test.c
 client_test
+zappy_server_sub
