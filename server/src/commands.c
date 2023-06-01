@@ -44,6 +44,9 @@ static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
             zappy->client[ci].team = team;
             zappy->client[ci].player = &team->players[j];
             sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
+            for (int i = 0; i < MAX_CONNECTIONS; ++i)
+                if (zappy->client[i].command.s && zappy->client[i].type == GUI)
+                    send_pnw(zappy, i, &team->players[j], j);
             return;
         }
     }
@@ -76,6 +79,10 @@ static void gui_begin(zappy_t *zappy, int ci)
     send_sgt(zappy, ci);
     send_mct(zappy, ci);
     send_tna(zappy, ci);
+    player_t *playerBuff = NULL;
+    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));)
+        if (playerBuff->client)
+            send_pnw(zappy, ci, playerBuff, j - 1);
 }
 
 static void unknown_commands(zappy_t *zappy, char *command, int ci)
