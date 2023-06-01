@@ -71,11 +71,13 @@ static game_t init_game(args_t args)
         .actions = NULL
     };
 
+    int id = 0;
     for (int i = 0; i < nbrTeams; ++i) {
         game.teams[i].name = strdup(args.teamNames[i]);
         game.teams[i].nbrClients = args.clientsNb;
         game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
         for (int j = 0; j < args.clientsNb; ++j) {
+            game.teams[i].players[j].id = ++id;
             game.teams[i].players[j].x = /* rand() % args.width */ args.width / 2;      //! DEBUG
             game.teams[i].players[j].y = /* rand() % args.height */ args.height / 2;    //! DEBUG
             game.teams[i].players[j].direction = SOUTH;

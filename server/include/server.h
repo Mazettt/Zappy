@@ -70,6 +70,7 @@ typedef struct {
 } elev_cond_t;
 
 typedef struct {
+    int id;
     int x;
     int y;
     Direction direction;
@@ -226,7 +227,10 @@ void cmd_mct(zappy_t *zappy, char *command, int ci);
 void send_tna(zappy_t *zappy, int ci);
 void cmd_tna(zappy_t *zappy, char *command, int ci);
 // connection of a new player
-void send_pnw(zappy_t *zappy, int ci, player_t *player, int player_nbr);
+void send_pnw(zappy_t *zappy, int ci, player_t *player);
+// player position
+void send_ppo(zappy_t *zappy, int ci, player_t *player);
+void cmd_ppo(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);

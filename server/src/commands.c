@@ -33,6 +33,7 @@ static const command_t gui_cmds[] = {
     {"bct", cmd_bct},
     {"mct", cmd_mct},
     {"tna", cmd_tna},
+    {"ppo", cmd_ppo},
     {NULL, NULL}
 };
 
@@ -46,7 +47,7 @@ static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
             sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
             for (int i = 0; i < MAX_CONNECTIONS; ++i)
                 if (zappy->client[i].command.s && zappy->client[i].type == GUI)
-                    send_pnw(zappy, i, &team->players[j], j);
+                    send_pnw(zappy, i, &team->players[j]);
             return;
         }
     }
@@ -82,7 +83,7 @@ static void gui_begin(zappy_t *zappy, int ci)
     player_t *playerBuff = NULL;
     for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));)
         if (playerBuff->client)
-            send_pnw(zappy, ci, playerBuff, j - 1);
+            send_pnw(zappy, ci, playerBuff);
 }
 
 static void unknown_commands(zappy_t *zappy, char *command, int ci)
