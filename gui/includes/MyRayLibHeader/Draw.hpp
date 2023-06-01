@@ -13,15 +13,33 @@
 namespace MyRayLib {
     class MyRayLibDrawing {
         public:
-            MyRayLibDrawing();
-            ~MyRayLibDrawing();
-            void MyDrawText(const char *text, int posX, int posY, int fontSize, Color color);
-            void MyDrawFPS(int posX, int posY);
-            void MyBegin3DMode(Camera3D camera);
-            void MyEnd3DMode(void);
-            void MyDrawCube(Vector3 position, float width, float height, float length, Color color);
-            void MyDrawCubeWires(Vector3 position, float width, float height, float length, Color color);
-            void MyDrawGrid(int slices, float spacing);
+            MyRayLibDrawing() {
+                BeginDrawing();
+            }
+            ~MyRayLibDrawing() {
+                EndDrawing();
+            }
+            void MyDrawText(const char *text, int posX, int posY, int fontSize, Color color) {
+                DrawText(text, posX, posY, fontSize, color);
+            }
+            void MyDrawFPS(int posX, int posY) {
+                DrawFPS(posX, posY);
+            }
+            void MyBegin3DMode(Camera3D camera) {
+                BeginMode3D(camera);
+            }
+            void MyEnd3DMode(void) {
+                EndMode3D();
+            }
+            void MyDrawCube(Vector3 position, float width, float height, float length, Color color) {
+                DrawCube(position, width, height, length, color);
+            }
+            void MyDrawCubeWires(Vector3 position, float width, float height, float length, Color color) {
+                DrawCubeWires(position, width, height, length, color);
+            }
+            void MyDrawGrid(int slices, float spacing) {
+                DrawGrid(slices, spacing);
+            }
         private:
     };
 }
