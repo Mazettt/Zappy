@@ -10,6 +10,9 @@
 #include "../includes/MapHeader/Tile.hpp"
 #include "../includes/MapHeader/Map.hpp"
 
+#include "../includes/MapHeader/Map.hpp"
+#include "../includes/resources/FactoryResource.hpp"
+
 using namespace ZappyGui;
 using namespace ZappyNetworking;
 using namespace MyRayLib;
@@ -96,12 +99,16 @@ int main(int ac, char **av)
 
     _raylibwindow.MySetTargetFPS(60);
     _raylibwindow.MyDisableCursor();
+    Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
+    Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
+
+    std::unique_ptr<IResource> foodeux = FactoryResource::createResource("food");
+
     while (!_raylibwindow.MyWindowShouldClose()) {
         _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
-        MyRayLibDrawing _raylibdrawing;
+        MyRayLib::Draw _raylibdrawing;
         _raylibwindow.MyClearBackground(RAYWHITE);
         _raylibdrawing.MyBegin3DMode(camera);
-
         for (int y = 0; y < y_pos; ++y) {
             for (int x = 0; x < x_pos; ++x) {
                 int key = y * x_pos + x;
@@ -111,9 +118,12 @@ int main(int ac, char **av)
                 _raylibdrawing.MyDrawCube(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), cube.getColor());
             }
         }
-
+        moveSkin.z += 0.01;
+        player.draw();
+        player.move(moveSkin);
+        foodeux->draw();
         _raylibdrawing.MyEnd3DMode();
-        _raylibdrawing.~MyRayLibDrawing();
+        _raylibdrawing.~Draw();
     }
     return 0;
 }

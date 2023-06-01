@@ -10,17 +10,22 @@
 
 using namespace ZappyGui;
 
-Food::Food(const std::string &modelPath, const std::string &texturePath) {
-    (void)modelPath;
-    (void)texturePath;
+Food::Food():
+    _model(MyRayLib::Model("./assets/Stones/rock.fbx")),
+    _texture(MyRayLib::Texture2D("./assets/Stones/texture.png")) {
+    this->_orientationAxis = { 0.0f, 1.0f, 0.0f };
+    this->_rotationAngle = -90.0;
+    this->_scale = {1.0f, 1.0f, 1.0f};
+    this->_position = {0.0f, 0.0f, 0.0f};
 }
 
 Food::~Food() {}
 
-Model Food::getModel() {
-    return this->_model;
+void Food::setPosition(int x, int z) {
+    this->_position.x = x;
+    this->_position.z = z;
 }
 
-Texture2D Food::getTexture() {
-    return this->_texture;
+void Food::draw() {
+    MyRayLib::Draw::MyDrawModel(this->_model.getModel(), this->_position, this->_rotationAngle, MyRayLib::MyRayLibColor::White());
 }

@@ -11,8 +11,7 @@
 namespace ZappyGui {
     class IResource {
         public:
-            Model getModel();
-            Texture2D getTexture();
-            Model getIQM();
+            virtual void draw() = 0;
+            virtual void setPosition(int x, int y) = 0;
     };
 }

@@ -23,7 +23,9 @@ namespace ZappyGui {
             int _playerLevel;
             int _playerNumber;
             std::string _teamName;
-            Vector3 _orientation;
+            Vector3 _orientationAxis;
+            float _rotationAngle;
+            Vector3 _scale;
             Vector3 _position;
             MyRayLib::Model _skinModel;
             MyRayLib::Texture2D _skinTexture;
@@ -31,11 +33,11 @@ namespace ZappyGui {
             int _animationFrameCounter;
             MyRayLib::AnimationsModel _animation;
         public:
-            Player(int playerNumber, Vector3 position, Vector3 orientation, int playerLevel, const std::string &teamName);
-            void setDesign(const std::string &skinModelPath, const std::string &skinTexturePath, const std::string &animationPath);
+            Player(int playerNumber, int playerLevel, const std::string &teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale);
             void move(Vector3 position);
             void upgrade(int level);
             void inventory();
+            void draw();
             ~Player() {};
     };
 }

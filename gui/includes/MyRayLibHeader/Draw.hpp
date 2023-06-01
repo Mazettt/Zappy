@@ -11,12 +11,12 @@
 #include "raylib.h"
 
 namespace MyRayLib {
-    class MyRayLibDrawing {
+    class Draw {
         public:
-            MyRayLibDrawing() {
+            Draw() {
                 BeginDrawing();
             }
-            ~MyRayLibDrawing() {
+            ~Draw() {
                 EndDrawing();
             }
             void MyDrawText(const char *text, int posX, int posY, int fontSize, Color color) {
@@ -40,8 +40,11 @@ namespace MyRayLib {
             void MyDrawGrid(int slices, float spacing) {
                 DrawGrid(slices, spacing);
             }
-            void MyDrawModelEx(::Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint) {
+            static void MyDrawModelEx(::Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint) {
                 DrawModelEx(model, position, rotationAxis, rotationAngle, scale, tint);
+            }
+            static void MyDrawModel(::Model model, Vector3 position, float rotationAngle, Color tint) {
+                DrawModel(model, position, rotationAngle, tint);
             }
         private:
     };

@@ -9,7 +9,7 @@
 #include <string>
 #include "raylib.h"
 
-namespace ZappyGui {
+namespace MyRayLib {
     class MyRayLibColor {
         public:
             unsigned char red;

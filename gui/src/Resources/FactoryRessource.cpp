@@ -17,7 +17,7 @@ FactoryResource::~FactoryResource() {}
 
 std::unique_ptr<IResource> FactoryResource::createResource(const std::string &type) {
     static const std::unordered_map<std::string, std::function<std::unique_ptr<IResource>()>> componentMap {
-        {"food", []() {return std::make_unique<Food>("quoi.obj", "feur.png");}}
+        {"food", []() {return std::make_unique<Food>();}}
     };
     std::unordered_map<std::string, std::function<std::unique_ptr<IResource>()>>::const_iterator it = componentMap.find(type);
     if (it == componentMap.end())

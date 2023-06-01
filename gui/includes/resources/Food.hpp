@@ -9,15 +9,24 @@
 #include <string>
 #include "IResource.hpp"
 
+#include "../MyRayLibHeader/Draw.hpp"
+#include "../MyRayLibHeader/Color.hpp"
+#include "../MyRayLibHeader/Model.hpp"
+#include "../MyRayLibHeader/Texture.hpp"
+
 namespace ZappyGui {
     class Food: public IResource {
         private:
-            Model _model;
-            Texture2D _texture;
+            Vector3 _orientationAxis;
+            float _rotationAngle;
+            Vector3 _scale;
+            Vector3 _position;
+            MyRayLib::Model _model;
+            MyRayLib::Texture2D _texture;
         public:
-            Food(const std::string &modelPath, const std::string &texturePath);
+            Food();
             ~Food();
-            Model getModel();
-            Texture2D getTexture();
+            void setPosition(int x, int y);
+            void draw();
     };
 }
