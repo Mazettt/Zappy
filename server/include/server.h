@@ -185,6 +185,7 @@ void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
 
 // zappy.c
+void kill_player(player_t *player);
 void init_player(game_t *game, player_t *player, team_t *team);
 void zappy(args_t args);
 
