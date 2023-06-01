@@ -59,18 +59,6 @@ static void free_all(zappy_t *zappy)
     free(zappy);
 }
 
-void kill_player(player_t *player)
-{
-    player->direction = rand() % 4;
-    player->level = 1;
-    for (int i = 0; i < NBR_ITEMS; ++i)
-        player->inventory[i] = 0;
-    player->client->team = NULL;
-    player->client->player = NULL;
-    player->client = NULL;
-    player->incanting = false;
-}
-
 void init_player(game_t *game, player_t *player, team_t *team)
 {
     player->id = ++game->playerIdIt;

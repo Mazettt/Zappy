@@ -185,7 +185,7 @@ void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
 
 // zappy.c
-void kill_player(player_t *player);
+void kill_player(zappy_t *zappy, player_t *player);
 void init_player(game_t *game, player_t *player, team_t *team);
 void zappy(args_t args);
 
@@ -255,6 +255,8 @@ void send_pie(zappy_t *zappy, int ci, player_t *player, bool result);
 void send_pdr(zappy_t *zappy, int ci, player_t *player, Item type);
 // resource collecting
 void send_pgt(zappy_t *zappy, int ci, player_t *player, Item type);
+// player death
+void send_pdi(zappy_t *zappy, int ci, player_t *player);
 
 // parsing
 char *read_file(char *filepath);
