@@ -35,6 +35,7 @@ static const command_t gui_cmds[] = {
     {"tna", cmd_tna},
     {"ppo", cmd_ppo},
     {"plv", cmd_plv},
+    {"pin", cmd_pin},
     {NULL, NULL}
 };
 

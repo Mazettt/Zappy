@@ -23,6 +23,7 @@ void cmd_plv(zappy_t *zappy, char *command, int ci)
     for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
         if (playerBuff->client && playerBuff->id == id) {
             send_plv(zappy, ci, playerBuff);
+            free_word_array(arr);
             return;
         }
     }
