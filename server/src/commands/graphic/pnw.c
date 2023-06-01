@@ -15,6 +15,6 @@ void send_pnw(zappy_t *zappy, int ci, player_t *player)
         player->y,
         player->direction + 1,
         player->level,
-        player->client->team->name
+        player->team->name
     );
 }

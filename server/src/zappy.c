@@ -84,6 +84,7 @@ static game_t init_game(args_t args)
             game.teams[i].players[j].level = 1;
             for (int k = 0; k < NBR_ITEMS; ++k)
                 game.teams[i].players[j].inventory[k] = 0;
+            game.teams[i].players[j].team = &game.teams[i];
             game.teams[i].players[j].client = NULL;
             game.teams[i].players[j].incanting = false;
         }

@@ -58,6 +58,8 @@ typedef enum Item {
     NBR_ITEMS
 } Item;
 
+struct team_s;
+typedef struct team_s team_t;
 struct client_s;
 typedef struct client_s client_t;
 struct zappy_s;
@@ -76,15 +78,16 @@ typedef struct {
     Direction direction;
     int level;
     int inventory[NBR_ITEMS];
+    team_t *team;
     client_t *client;
     bool incanting;
 } player_t;
 
-typedef struct {
+struct team_s {
     char *name;
     int nbrClients;
     player_t *players;
-} team_t;
+};
 
 typedef struct action_s {
     struct timeval startTime;
