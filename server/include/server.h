@@ -251,6 +251,11 @@ void send_pbc(zappy_t *zappy, int ci, player_t *player, char *message);
 void send_pic(zappy_t *zappy, int ci, player_t **players);
 // end of incantation
 void send_pie(zappy_t *zappy, int ci, player_t *player, bool result);
+// resource dropping
+void send_pdr(zappy_t *zappy, int ci, player_t *player, Item type);
+// resource collecting
+void send_pgt(zappy_t *zappy, int ci, player_t *player, Item type);
+
 // parsing
 char *read_file(char *filepath);
 
