@@ -12,6 +12,7 @@
 
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/resources/FactoryResource.hpp"
+#include "../includes/MyRayLibHeader/Music.hpp"
 
 using namespace ZappyGui;
 using namespace ZappyNetworking;
@@ -103,8 +104,10 @@ int main(int ac, char **av)
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
     std::unique_ptr<IResource> foodeux = FactoryResource::createResource("food");
-
+    MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
+    music.MyPlayMusic();
     while (!_raylibwindow.MyWindowShouldClose()) {
+        music.MyUpdateMusic();
         _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
         MyRayLib::Draw _raylibdrawing;
         _raylibwindow.MyClearBackground(RAYWHITE);
