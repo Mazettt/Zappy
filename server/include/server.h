@@ -35,7 +35,7 @@
     #include <stdarg.h>
 
 typedef enum ClientType {
-    GRAPHIC,
+    GUI,
     AI,
     UNKNOWN
 } ClientType;
@@ -196,6 +196,7 @@ void read_connections(zappy_t *zappy);
 void switch_commands(zappy_t *zappy, char *command, int ci);
 void cmd_stop(zappy_t *zappy, char *command, int ci);
 void cmd_noop(zappy_t *zappy, char *command, int ci);
+
 void cmd_forward(zappy_t *zappy, char *command, int ci);
 void cmd_right(zappy_t *zappy, char *command, int ci);
 void cmd_left(zappy_t *zappy, char *command, int ci);
@@ -208,6 +209,20 @@ void cmd_take(zappy_t *zappy, char *command, int ci);
 void cmd_set(zappy_t *zappy, char *command, int ci);
 void cmd_broadcast(zappy_t *zappy, char *command, int ci);
 void cmd_incantation(zappy_t *zappy, char *command, int ci);
+
+
+// map size
+void cmd_msz(zappy_t *zappy, char *command, int ci);
+// time unit request
+void cmd_sgt(zappy_t *zappy, char *command, int ci);
+// tile content
+void bct(zappy_t *zappy, int ci, int x, int y);
+// tile content
+void cmd_bct(zappy_t *zappy, char *command, int ci);
+// map content (all tiles)
+void cmd_mct(zappy_t *zappy, char *command, int ci);
+// team names
+void cmd_tna(zappy_t *zappy, char *command, int ci);
 
 // parsing
 char *read_file(char *filepath);
