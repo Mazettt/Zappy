@@ -17,41 +17,57 @@ static const elev_cond_t elev_cond[] = {
     {7, 6, {0, 2, 2, 2, 2, 2, 1}}
 };
 
-static void toggle_incanting(zappy_t *zappy, player_t *player, bool incanting)
+static bool can_incant(player_t *player, player_t *basePlayer)
+{
+    return player->client && player->x == basePlayer->x && player->y == basePlayer->y && player->level == basePlayer->level;
+}
+
+static void toggle_incanting(zappy_t *zappy, player_t *basePlayer, bool incanting)
 {
     player_t *playerBuff = NULL;
     for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
-        if (playerBuff->client && playerBuff->x == player->x && playerBuff->y == player->y && playerBuff->level == player->level)
+        if (can_incant(playerBuff, basePlayer))
             playerBuff->incanting = incanting;
     }
 }
 
-static void rankup_players(zappy_t *zappy, player_t *player)
+static void rankup_players(zappy_t *zappy, player_t *basePlayer)
 {
-    int lvl = player->level;
+    player_t backupBasePlayer = *basePlayer;
     player_t *playerBuff = NULL;
     for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
-        if (playerBuff->client && playerBuff->x == player->x && playerBuff->y == player->y && playerBuff->level == lvl)
+        if (can_incant(playerBuff, &backupBasePlayer))
             sdprintf(zappy, playerBuff->client->command.s, "Current level: %d\n", ++playerBuff->level);
     }
 }
 
-static int nbr_players_same_unit_same_lvl(zappy_t *zappy, int lvl, int x, int y)
+static int nbr_players_incantation(zappy_t *zappy, player_t *basePlayer)
 {
     int res = 0;
     player_t *playerBuff = NULL;
     for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
-        if (playerBuff->client && playerBuff->level == lvl &&
-        playerBuff->x == x && playerBuff->y == y)
+        if (can_incant(playerBuff, basePlayer))
             res++;
     }
     return res;
 }
 
+static player_t **get_incantation_players(zappy_t *zappy, player_t *basePlayer)
+{
+    player_t **players = malloc(sizeof(player_t *) * (nbr_players_incantation(zappy, basePlayer) + 1));
+    int index = 0;
+    player_t *playerBuff = NULL;
+    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));)
+        if (can_incant(playerBuff, basePlayer))
+            players[index++] = playerBuff;
+    players[index] = NULL;
+    return players;
+}
+
 static bool check_incantation(zappy_t *zappy, int ci)
 {
     player_t *player = zappy->client[ci].player;
-    int nbr_players = nbr_players_same_unit_same_lvl(zappy, player->level, player->x, player->y);
+    int nbr_players = nbr_players_incantation(zappy, player);
     elev_cond_t cond = elev_cond[player->level - 1];
 
     if (nbr_players < cond.nbr_players)
@@ -79,6 +95,14 @@ static void incantation(zappy_t *zappy, char *command, int ci)
     toggle_incanting(zappy, player, false);
 }
 
+static void notify_guis(zappy_t *zappy, player_t **players)
+{
+    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
+        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
+            send_pic(zappy, i, players);
+    }
+}
+
 void cmd_incantation(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
@@ -90,4 +114,7 @@ void cmd_incantation(zappy_t *zappy, char *command, int ci)
     else
         sdprintf(zappy, client_socket(ci), "ko\n");
     toggle_incanting(zappy, player, true);
+    player_t **players = get_incantation_players(zappy, player);
+    notify_guis(zappy, players);
+    free(players);
 }

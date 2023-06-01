@@ -241,6 +241,8 @@ void cmd_pin(zappy_t *zappy, char *command, int ci);
 void send_pex(zappy_t *zappy, int ci, player_t *player);
 // broadcast
 void send_pbc(zappy_t *zappy, int ci, player_t *player, char *message);
+// start of incantation
+void send_pic(zappy_t *zappy, int ci, player_t **players);
 
 // parsing
 char *read_file(char *filepath);
