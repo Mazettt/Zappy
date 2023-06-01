@@ -17,9 +17,8 @@
 namespace ZappyGui {
     class Food: public IResource {
         private:
-            Vector3 _orientationAxis;
-            float _rotationAngle;
             Vector3 _scale;
+            float _rotationAngle;
             Vector3 _position;
             MyRayLib::Model _model;
             MyRayLib::Texture2D _texture;

@@ -11,12 +11,12 @@
 using namespace ZappyGui;
 
 Food::Food():
-    _model(MyRayLib::Model("./assets/Stones/rock.fbx")),
-    _texture(MyRayLib::Texture2D("./assets/Stones/texture.png")) {
-    this->_orientationAxis = { 0.0f, 1.0f, 0.0f };
-    this->_rotationAngle = -90.0;
-    this->_scale = {1.0f, 1.0f, 1.0f};
-    this->_position = {0.0f, 0.0f, 0.0f};
+    _model(MyRayLib::Model("./assets/Food/pizza.obj")),
+    _texture(MyRayLib::Texture2D("./assets/Food/pizza.png")) {
+    this->_rotationAngle = 1.0f;
+    this->_position = {0.0f, 0.8f, 0.0f};
+    this->_scale  = { 0.06f, 0.06f, 0.06f };
+    this->_texture.MySetMaterialTexture(this->_model.getModel(), MATERIAL_MAP_DIFFUSE);
 }
 
 Food::~Food() {}
@@ -27,5 +27,5 @@ void Food::setPosition(int x, int z) {
 }
 
 void Food::draw() {
-    MyRayLib::Draw::MyDrawModel(this->_model.getModel(), this->_position, this->_rotationAngle, MyRayLib::MyRayLibColor::White());
+    MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->_position, { 0.0f, 0.0f, 0.0f }, this->_rotationAngle, this->_scale, MyRayLib::MyRayLibColor::White());
 }

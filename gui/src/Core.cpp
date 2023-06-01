@@ -103,11 +103,11 @@ int main(int ac, char **av)
     Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
-    std::unique_ptr<IResource> foodeux = FactoryResource::createResource("food");
-    MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
-    music.MyPlayMusic();
+    std::unique_ptr<IResource> foodeux = FactoryResource::createResource("phiras");
+    // MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
+    // music.MyPlayMusic();
     while (!_raylibwindow.MyWindowShouldClose()) {
-        music.MyUpdateMusic();
+        // music.MyUpdateMusic();
         _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
         MyRayLib::Draw _raylibdrawing;
         _raylibwindow.MyClearBackground(RAYWHITE);
