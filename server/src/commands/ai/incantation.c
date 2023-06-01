@@ -79,6 +79,22 @@ static bool check_incantation(zappy_t *zappy, int ci)
     return true;
 }
 
+static void notify_guis_start(zappy_t *zappy, player_t **players)
+{
+    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
+        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
+            send_pic(zappy, i, players);
+    }
+}
+
+static void notify_guis_end(zappy_t *zappy, player_t *player, bool result)
+{
+    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
+        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
+            send_pie(zappy, i, player, result);
+    }
+}
+
 static void incantation(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
@@ -90,17 +106,12 @@ static void incantation(zappy_t *zappy, char *command, int ci)
         for (int i = 0; i < NBR_ITEMS; ++i)
             zappy->game.map[player->x][player->y][i] -= cond.items[i];
         rankup_players(zappy, player);
-    } else
+        notify_guis_end(zappy, player, true);
+    } else {
         sdprintf(zappy, client_socket(ci), "ko\n");
-    toggle_incanting(zappy, player, false);
-}
-
-static void notify_guis(zappy_t *zappy, player_t **players)
-{
-    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
-            send_pic(zappy, i, players);
+        notify_guis_end(zappy, player, false);
     }
+    toggle_incanting(zappy, player, false);
 }
 
 void cmd_incantation(zappy_t *zappy, char *command, int ci)
@@ -115,6 +126,6 @@ void cmd_incantation(zappy_t *zappy, char *command, int ci)
         sdprintf(zappy, client_socket(ci), "ko\n");
     toggle_incanting(zappy, player, true);
     player_t **players = get_incantation_players(zappy, player);
-    notify_guis(zappy, players);
+    notify_guis_start(zappy, players);
     free(players);
 }

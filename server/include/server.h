@@ -243,7 +243,8 @@ void send_pex(zappy_t *zappy, int ci, player_t *player);
 void send_pbc(zappy_t *zappy, int ci, player_t *player, char *message);
 // start of incantation
 void send_pic(zappy_t *zappy, int ci, player_t **players);
-
+// end of incantation
+void send_pie(zappy_t *zappy, int ci, player_t *player, bool result);
 // parsing
 char *read_file(char *filepath);
 
