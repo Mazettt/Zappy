@@ -5,7 +5,10 @@
 ** Cube.hpp
 */
 #pragma once
-#include "raylib.h"
+#include "../MyRayLibHeader/Vector3D.hpp"
+#include "../MyRayLibHeader/Draw.hpp"
+#include "../MyRayLibHeader/Color.hpp"
+// #include "raylib.h"
 
 namespace ZappyGui {
     class Cube {
@@ -25,6 +28,7 @@ namespace ZappyGui {
             float getHeight() const;
             float getLength() const;
             Color getColor() const;
+            void draw();
             ~Cube();
     };
 }

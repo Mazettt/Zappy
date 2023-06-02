@@ -104,7 +104,7 @@ int main(int ac, char **av)
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
     std::unique_ptr<IResource> foodeux = FactoryResource::createResource("phiras");
-    float volumeMusic = 0.5;
+    float volumeMusic = 0.0;
     MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
@@ -123,9 +123,7 @@ int main(int ac, char **av)
             for (int x = 0; x < x_pos; ++x) {
                 int key = y * x_pos + x;
                 std::shared_ptr<Tile> &tile = map.getTile(key);
-                Cube cube = tile->getCube();
-                _raylibdrawing.MyDrawCubeWires(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), BLACK);
-                _raylibdrawing.MyDrawCube(cube.getPos(), cube.getWidth(), cube.getHeight(), cube.getLength(), cube.getColor());
+                tile->draw();
             }
         }
         moveSkin.z += 0.01;

@@ -4,8 +4,8 @@
 using namespace ZappyGui;
 
 Tile::Tile(const Cube &cube): _cube(cube) {
-    this->_Resources.resize(7);
     // int i = 0;
+    // this->_Resources.resize(7);
     // this->_Resources[i++] = std::make_pair(FactoryResource::createResource("food"), 0);
     // this->_Resources[i++] = std::make_pair(FactoryResource::createResource("linemate"), 0);
     // this->_Resources[i++] = std::make_pair(FactoryResource::createResource("deraumere"), 0);
@@ -21,6 +21,12 @@ const Cube Tile::getCube() const {
 
 void Tile::addResource(int keyResource, int quantity) {
     this->_Resources[keyResource].second += quantity;
+}
+
+void Tile::draw() {
+    this->_cube.draw();
+    // resource
+    //player if exist
 }
 
 Tile::~Tile() {}

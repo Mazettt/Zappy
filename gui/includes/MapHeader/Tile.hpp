@@ -22,5 +22,6 @@ namespace ZappyGui {
             ~Tile();
             const Cube getCube() const;
             void addResource(int keyResource, int quantity);
+            void draw();
     };
 }

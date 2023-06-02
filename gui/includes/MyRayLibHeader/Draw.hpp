@@ -31,10 +31,10 @@ namespace MyRayLib {
             void MyEnd3DMode(void) {
                 EndMode3D();
             }
-            void MyDrawCube(Vector3 position, float width, float height, float length, Color color) {
+            static void MyDrawCube(Vector3 position, float width, float height, float length, Color color) {
                 DrawCube(position, width, height, length, color);
             }
-            void MyDrawCubeWires(Vector3 position, float width, float height, float length, Color color) {
+            static void MyDrawCubeWires(Vector3 position, float width, float height, float length, Color color) {
                 DrawCubeWires(position, width, height, length, color);
             }
             void MyDrawGrid(int slices, float spacing) {
