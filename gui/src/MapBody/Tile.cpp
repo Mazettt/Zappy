@@ -43,7 +43,7 @@ void Tile::draw(const FactoryResource &factory) {
         IResource::resourceType type = std::get<0>(resource);
         float x_pos = std::get<1>(resource);
         float z_pos = std::get<2>(resource);
-        factory.getResourceMap().at(type)->setPosition(x_pos, z_pos);
+        factory.getResourceMap().at(type)->setPosition(this->_cube.getPos().x + x_pos, this->_cube.getPos().z + z_pos);
         factory.getResourceMap().at(type)->draw();
     }
     //player if exist

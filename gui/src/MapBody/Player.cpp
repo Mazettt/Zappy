@@ -32,7 +32,7 @@ void Player::upgrade(int level) {
 }
 
 void Player::draw() {
-    this->_animation.MyUpdateModelAnimation(this->_skinModel.getModel(), 0);
+    this->_animation.MyUpdateModelAnimation(this->_skinModel.getModel(), 2);
     MyRayLib::Draw::MyDrawModelEx(this->_skinModel.getModel(), this->_position, this->_orientationAxis, this->_rotationAngle, this->_scale, MyRayLib::MyRayLibColor::White());
 }
 

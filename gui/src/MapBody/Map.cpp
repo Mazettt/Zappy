@@ -17,6 +17,7 @@ Map::Map(int x, int y): _factory(FactoryResource()) {
     this->_sizeY = y;
     this->_map.resize(x * y);
 
+    int i = 0;
     Color color = RED;
     for (int y = 0; y < this->_sizeY; ++y) {
         for (int x = 0; x < this->_sizeX; ++x) {
@@ -25,39 +26,10 @@ Map::Map(int x, int y): _factory(FactoryResource()) {
             Cube cube(cubePosition, widthCube, heightCube, lengthCube, color);
             std::shared_ptr<Tile> tile = std::make_shared<Tile>(cube);
             this->_map[key] = std::move(tile);
+            this->_map[key]->addResource(IResource::resourceType::DERAUMERE);
+            this->_map[key]->addResource(IResource::resourceType::LINEMATE);
         }
     }
-    int i = 0;
-    this->_map[i++]->addResource(IResource::resourceType::FOOD);
-    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
-    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
-    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
-    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
-    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
-    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
-    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
-    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
-    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
-    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
-    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
-    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
-    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
-    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
-    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
-    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
-    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
-    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
-    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
-    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
-    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
-    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
-    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
-    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
-    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
-    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
-    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
-    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
-    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
 }
 
 std::vector<std::shared_ptr<Tile>> Map::getMap() {
