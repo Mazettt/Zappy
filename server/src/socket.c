@@ -27,10 +27,12 @@ static void init_zappy(zappy_t *zappy, int port)
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
         zappy->client[i].command = init_socket(0, sa_buff);
         zappy->client[i].last_command = NULL;
+        zappy->client[i].cmdBuff = NULL;
         zappy->client[i].type = UNKNOWN;
         zappy->client[i].team = NULL;
         zappy->client[i].player = NULL;
         zappy->client[i].passiveMode = false;
+        memset(&zappy->client[i].action, 0, sizeof(action_t));
     }
 
     sigset_t s;

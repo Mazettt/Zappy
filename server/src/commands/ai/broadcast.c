@@ -27,5 +27,5 @@ static void broadcast(zappy_t *zappy, char *command, int ci)
 void cmd_broadcast(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(7), strdup(command), ci, broadcast);
+    add_action(&zappy->client[ci], time_limit(7), command, broadcast);
 }

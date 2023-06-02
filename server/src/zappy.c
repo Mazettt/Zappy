@@ -81,8 +81,7 @@ static game_t init_game(args_t args)
         .height = args.height,
         .freq = args.freq,
         .teams = malloc(sizeof(team_t) * nbrTeams),
-        .nbrTeams = nbrTeams,
-        .actions = NULL
+        .nbrTeams = nbrTeams
     };
 
     game.playerIdIt = 0;
@@ -100,20 +99,10 @@ static game_t init_game(args_t args)
     return game;
 }
 
-void exec_all_actions(zappy_t *zappy)
-{
-    action_t *tmp = zappy->game.actions;
-    while (tmp) {
-        if (exec_action(zappy, tmp))
-            tmp = remove_action(&zappy->game.actions, tmp);
-        else
-            tmp = tmp->next;
-    }
-}
-
 void zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
+    struct timeval tv = {0, 0};
     zappy->game = init_game(args);
     first_select(zappy);
     init_main_socket(zappy, args.port);
@@ -121,14 +110,13 @@ void zappy(args_t args)
         zappy->max_fd = 0;
         reset_fd(zappy);
         select(zappy->max_fd + 1, &zappy->readfds,
-            &zappy->writefds, NULL, NULL);
+            &zappy->writefds, NULL, &tv);
         if (FD_ISSET(zappy->fd_sigint, &zappy->readfds))
             break;
         else {
             accept_new_connections(zappy);
             read_connections(zappy);
         }
-        exec_all_actions(zappy);
     }
     debug_print("\n%s\n", "Quitting...");
     close_all(zappy);

@@ -25,6 +25,6 @@ static void my_fork(zappy_t *zappy, char *command, int ci)
 void cmd_fork(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(42), strdup(command), ci, my_fork);
+    add_action(&zappy->client[ci], time_limit(42), command, my_fork);
     notif_guis(send_pfk(zappy, notif_it, zappy->client[ci].player));
 }

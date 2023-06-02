@@ -48,5 +48,5 @@ static void eject(zappy_t *zappy, char *command, int ci)
 void cmd_eject(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(42), strdup(command), ci, eject);
+    add_action(&zappy->client[ci], time_limit(7), command, eject);
 }

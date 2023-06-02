@@ -32,5 +32,5 @@ static void right(zappy_t *zappy, char *command, int ci)
 void cmd_right(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(7), strdup(command), ci, right);
+    add_action(&zappy->client[ci], time_limit(7), command, right);
 }

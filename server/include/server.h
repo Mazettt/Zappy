@@ -99,10 +99,7 @@ typedef struct action_s {
     struct timeval startTime;
     time_t duration;
     char *command;
-    int ci;
     void (*func)(zappy_t *, char *, int);
-    struct action_s *prev;
-    struct action_s *next;
 } action_t;
 
 typedef struct {
@@ -112,7 +109,6 @@ typedef struct {
     int playerIdIt;
     team_t *teams;
     int nbrTeams;
-    action_t *actions;
     int ***map;
 } game_t;
 
@@ -127,13 +123,21 @@ typedef struct {
     int addrlen;
 } socket_t;
 
+typedef struct cmd_buff_s {
+    char *c;
+    struct cmd_buff_s *prev;
+    struct cmd_buff_s *next;
+} cmd_buff_t;
+
 struct client_s {
     socket_t command;
     char *last_command;
+    cmd_buff_t *cmdBuff;
     ClientType type;
     team_t *team;
     player_t *player;
     bool passiveMode;
+    action_t action;
 };
 
 struct zappy_s {
@@ -301,35 +305,15 @@ Item get_item(char *item);
  */
 char *get_item_str(Item item);
 
-/**
- * @brief add an action to be executed after a certain amount of time
- *
- * @param action action linked list
- * @param duration time to wait before executing the action in microseconds
- * @param i client index
- * @param func function to execute
- * @return action_t* = pointer to the new action
- */
-action_t *add_action(action_t *action, time_t duration, char *command, int ci, void (*func)(zappy_t *, char *, int));
-/**
- * @brief execute the action if the time has passed
- *
- * @param zappy zappy struct
- * @param action action to execute
- * @return true if the action has been executed
- * @return false if the action has not been executed
- */
-bool exec_action(zappy_t *zappy, action_t *action);
-/**
- * @brief remove an action from the action linked list
- *
- * @param head action linked list
- * @param action action to remove
- * @return action_t* = pointer to the next action
- */
-action_t *remove_action(action_t **head, action_t *action);
+void add_action(client_t *client, time_t duration, char *command, void (*func)(zappy_t *, char *, int));
+void remove_action(action_t *action);
+void exec_action(zappy_t *zappy, action_t *action, int ci);
 
 // resources
 void init_resources(args_t args, game_t *game);
+
+// cmd buff
+void add_cmd_buff(client_t *client, char *command);
+void remove_first_cmd_buff(client_t *client);
 
 #endif

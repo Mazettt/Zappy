@@ -103,7 +103,7 @@ void cmd_incantation(zappy_t *zappy, char *command, int ci)
     (void)command;
     player_t *player = zappy->client[ci].player;
 
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(300), strdup(command), ci, incantation);
+    add_action(&zappy->client[ci], time_limit(300), command, incantation);
     if (check_incantation(zappy, ci))
         sdprintf(zappy, client_socket(ci), "Elevation underway\n");
     else

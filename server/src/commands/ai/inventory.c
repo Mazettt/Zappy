@@ -26,5 +26,5 @@ static void inventory(zappy_t *zappy, char *command, int ci)
 void cmd_inventory(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(1), strdup(command), ci, inventory);
+    add_action(&zappy->client[ci], time_limit(1), command, inventory);
 }

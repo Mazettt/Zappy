@@ -53,7 +53,7 @@ static void parse_command(zappy_t *zappy, int ci, char *input) {
         char *res = start;
         res[end - start] = 0;
         res = my_strcat(zappy->client[ci].last_command, res);
-        switch_commands(zappy, res, ci);
+        add_cmd_buff(&zappy->client[ci], res);
         free(res);
         free(zappy->client[ci].last_command);
         zappy->client[ci].last_command = NULL;
@@ -77,6 +77,11 @@ static void read_connection(zappy_t *zappy, int ci)
 void read_connections(zappy_t *zappy)
 {
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i)
-        if (FD_ISSET(client_socket(i), &zappy->readfds) && !(zappy->client[i].player && zappy->client[i].player->incanting))
+        if (zappy->client[i].action.func)
+            exec_action(zappy, &zappy->client[i].action, i);
+        else if (zappy->client[i].cmdBuff) {
+            switch_commands(zappy, zappy->client[i].cmdBuff->c, i);
+            remove_first_cmd_buff(&zappy->client[i]);
+        } else if (FD_ISSET(client_socket(i), &zappy->readfds))
             read_connection(zappy, i);
 }

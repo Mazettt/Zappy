@@ -7,44 +7,27 @@
 
 #include "../include/server.h"
 
-action_t *add_action(action_t *action, time_t duration, char *command, int ci, void (*func)(zappy_t *, char *, int))
+void add_action(client_t *client, time_t duration, char *command, void (*func)(zappy_t *, char *, int))
 {
-    action_t *new = malloc(sizeof(action_t));
-    gettimeofday(&new->startTime, NULL);
-    new->duration = duration;
-    new->command = command;
-    new->ci = ci;
-    new->func = func;
-    new->prev = NULL;
-    new->next = action;
-    if (action)
-        action->prev = new;
-    return new;
+    gettimeofday(&client->action.startTime, NULL);
+    client->action.duration = duration;
+    client->action.command = strdup(command);
+    client->action.func = func;
 }
 
-bool exec_action(zappy_t *zappy, action_t *action)
+void remove_action(action_t *action)
+{
+    free(action->command);
+    memset(action, 0, sizeof(action_t));
+}
+
+void exec_action(zappy_t *zappy, action_t *action, int ci)
 {
     struct timeval now;
     gettimeofday(&now, NULL);
     time_t micro = (now.tv_sec - action->startTime.tv_sec) * 1000000 + now.tv_usec - action->startTime.tv_usec;
     if (micro >= action->duration) {
-        action->func(zappy, action->command, action->ci);
-        return true;
+        action->func(zappy, action->command, ci);
+        remove_action(action);
     }
-    return false;
-}
-
-action_t *remove_action(action_t **head, action_t *action)
-{
-    if (*head == action)
-        *head = action->next;
-    action_t *prev = action->prev;
-    action_t *next = action->next;
-    if (prev)
-        prev->next = next;
-    if (next)
-        next->prev = prev;
-    free(action->command);
-    free(action);
-    return next;
 }
