@@ -27,7 +27,37 @@ Map::Map(int x, int y): _factory(FactoryResource()) {
             this->_map[key] = std::move(tile);
         }
     }
-    this->_map[0]->addResource(IResource::resourceType::DERAUMERE);
+    int i = 0;
+    this->_map[i++]->addResource(IResource::resourceType::FOOD);
+    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
+    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
+    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
+    this->_map[i++]->addResource(IResource::resourceType::DERAUMERE);
+    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
+    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
+    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
+    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
+    this->_map[i++]->addResource(IResource::resourceType::LINEMATE);
+    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
+    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
+    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
+    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
+    this->_map[i++]->addResource(IResource::resourceType::MENDIANE);
+    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
+    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
+    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
+    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
+    this->_map[i++]->addResource(IResource::resourceType::PHIRAS);
+    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
+    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
+    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
+    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
+    this->_map[i++]->addResource(IResource::resourceType::SIBUR);
+    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
+    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
+    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
+    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
+    this->_map[i++]->addResource(IResource::resourceType::THYSTAME);
 }
 
 std::vector<std::shared_ptr<Tile>> Map::getMap() {
