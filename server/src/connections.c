@@ -69,7 +69,7 @@ static void read_connection(zappy_t *zappy, int ci)
     char buff[1024] = {0};
 
     if (read(client_socket(ci), buff, 1024) == 0)
-        close_command_socket(zappy, ci);
+        close_command_socket(zappy, &zappy->client[ci]);
     else
         parse_command(zappy, ci, buff);
 }

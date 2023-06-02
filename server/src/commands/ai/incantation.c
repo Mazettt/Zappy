@@ -22,20 +22,11 @@ static bool can_incant(player_t *player, player_t *basePlayer)
     return player->client && player->x == basePlayer->x && player->y == basePlayer->y && player->level == basePlayer->level;
 }
 
-static void toggle_incanting(zappy_t *zappy, player_t *basePlayer, bool incanting)
-{
-    player_t *playerBuff = NULL;
-    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
-        if (can_incant(playerBuff, basePlayer))
-            playerBuff->incanting = incanting;
-    }
-}
-
 static void rankup_players(zappy_t *zappy, player_t *basePlayer)
 {
     player_t backupBasePlayer = *basePlayer;
     player_t *playerBuff = NULL;
-    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next) {
         if (can_incant(playerBuff, &backupBasePlayer))
             sdprintf(zappy, playerBuff->client->command.s, "Current level: %d\n", ++playerBuff->level);
     }
@@ -45,7 +36,7 @@ static int nbr_players_incantation(zappy_t *zappy, player_t *basePlayer)
 {
     int res = 0;
     player_t *playerBuff = NULL;
-    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next) {
         if (can_incant(playerBuff, basePlayer))
             res++;
     }
@@ -57,7 +48,7 @@ static player_t **get_incantation_players(zappy_t *zappy, player_t *basePlayer)
     player_t **players = malloc(sizeof(player_t *) * (nbr_players_incantation(zappy, basePlayer) + 1));
     int index = 0;
     player_t *playerBuff = NULL;
-    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));)
+    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next)
         if (can_incant(playerBuff, basePlayer))
             players[index++] = playerBuff;
     players[index] = NULL;
@@ -95,7 +86,6 @@ static void incantation(zappy_t *zappy, char *command, int ci)
         sdprintf(zappy, client_socket(ci), "ko\n");
         notif_guis(send_pie(zappy, notif_it, player, false));
     }
-    toggle_incanting(zappy, player, false);
 }
 
 void cmd_incantation(zappy_t *zappy, char *command, int ci)
@@ -108,7 +98,6 @@ void cmd_incantation(zappy_t *zappy, char *command, int ci)
         sdprintf(zappy, client_socket(ci), "Elevation underway\n");
     else
         sdprintf(zappy, client_socket(ci), "ko\n");
-    toggle_incanting(zappy, player, true);
     player_t **players = get_incantation_players(zappy, player);
     notif_guis(send_pic(zappy, notif_it, players));
     free(players);

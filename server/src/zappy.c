@@ -47,7 +47,8 @@ static void free_all(zappy_t *zappy)
 {
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
         free(zappy->game.teams[i].name);
-        free(zappy->game.teams[i].players);
+        while (zappy->game.teams[i].players)
+            kill_player(zappy, zappy->game.teams[i].players);
     }
     for (int i = 0; i < WIDTH; ++i) {
         for (int j = 0; j < HEIGHT; ++j)
@@ -57,20 +58,6 @@ static void free_all(zappy_t *zappy)
     free(zappy->game.map);
     free(zappy->game.teams);
     free(zappy);
-}
-
-void init_player(game_t *game, player_t *player, team_t *team)
-{
-    player->id = ++game->playerIdIt;
-    player->x = rand() % game->width;
-    player->y = rand() % game->height;
-    player->direction = rand() % 4;
-    player->level = 1;
-    for (int i = 0; i < NBR_ITEMS; ++i)
-        player->inventory[i] = 0;
-    player->team = team;
-    player->client = NULL;
-    player->incanting = false;
 }
 
 static game_t init_game(args_t args)
@@ -88,12 +75,7 @@ static game_t init_game(args_t args)
     for (int i = 0; i < nbrTeams; ++i) {
         game.teams[i].name = strdup(args.teamNames[i]);
         game.teams[i].nbrClients = args.clientsNb;
-        game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
-        for (int j = 0; j < args.clientsNb; ++j) {
-            init_player(&game, &game.teams[i].players[j], &game.teams[i]);
-            game.teams[i].players[j].x = args.width / 2;     //! DEBUG
-            game.teams[i].players[j].y = args.height / 2;    //! DEBUG
-        }
+        game.teams[i].players = NULL;
     }
     init_resources(args, &game);
     return game;

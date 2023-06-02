@@ -41,19 +41,13 @@ static const command_t gui_cmds[] = {
 
 static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
 {
-    for (int j = 0; j < team->nbrClients; ++j) {
-        if (team->players[j].client == NULL) {
-            team->players[j].client = &zappy->client[ci];
-            zappy->client[ci].team = team;
-            zappy->client[ci].player = &team->players[j];
-            sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
-            for (int i = 0; i < MAX_CONNECTIONS; ++i)
-                if (zappy->client[i].command.s && zappy->client[i].type == GUI)
-                    send_pnw(zappy, i, &team->players[j]);
-            return;
-        }
+    if (nbr_players_in_team(team) >= team->nbrClients) { //TODO check avec les eggs aussi
+        sdprintf(zappy, client_socket(ci), "ko\n");
+        return;
     }
-    sdprintf(zappy, client_socket(ci), "ko\n");
+    player_t *new = add_player(zappy, team, &zappy->client[ci]);
+    sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
+    notif_guis(send_pnw(zappy, notif_it, new));
 }
 
 static void ai_commands(zappy_t *zappy, char *command, int ci)
@@ -83,7 +77,7 @@ static void gui_begin(zappy_t *zappy, int ci)
     send_mct(zappy, ci);
     send_tna(zappy, ci);
     player_t *playerBuff = NULL;
-    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));)
+    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next)
         if (playerBuff->client)
             send_pnw(zappy, ci, playerBuff);
 }

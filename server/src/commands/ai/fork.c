@@ -12,9 +12,7 @@ static void my_fork(zappy_t *zappy, char *command, int ci)
     (void)command;
     team_t *team = zappy->client[ci].team;
     team->nbrClients += 1;
-    team->players = realloc(team->players, sizeof(player_t) * team->nbrClients);
-    player_t *newplayer = &team->players[team->nbrClients - 1];
-    init_player(&zappy->game, newplayer, team);
+    player_t *newplayer = add_player(zappy, team, &zappy->client[ci]);
     newplayer->x = zappy->client[ci].player->x;
     newplayer->y = zappy->client[ci].player->y;
     newplayer->direction = rand() % 4;

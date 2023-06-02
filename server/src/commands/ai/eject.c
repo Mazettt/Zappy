@@ -32,7 +32,7 @@ static void eject(zappy_t *zappy, char *command, int ci)
     }
     bool check = false;
     player_t *playerBuff = NULL;
-    for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
+    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next) {
         if (playerBuff->client && playerBuff != player &&
         playerBuff->x == player->x && playerBuff->y == player->y) {
             playerBuff->x = movex;

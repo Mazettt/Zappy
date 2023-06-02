@@ -77,7 +77,7 @@ typedef struct {
     int items[NBR_ITEMS];
 } elev_cond_t;
 
-typedef struct {
+typedef struct player_s {
     int id;
     int x;
     int y;
@@ -86,7 +86,9 @@ typedef struct {
     int inventory[NBR_ITEMS];
     team_t *team;
     client_t *client;
-    bool incanting;
+
+    struct player_s *prev;
+    struct player_s *next;
 } player_t;
 
 struct team_s {
@@ -187,7 +189,7 @@ void sdprintf(zappy_t *zappy, int fd, char *format, ...);
  * @param args arguments
  */
 void vsdprintf(zappy_t *zappy, int fd, char *format, va_list args);
-void close_command_socket(zappy_t *zappy, int ci);
+void close_command_socket(zappy_t *zappy, client_t *client);
 void free_word_array(char **arr);
 size_t word_array_len(char **arr);
 int get_remaining_slots(team_t *team);
@@ -195,8 +197,6 @@ void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
 
 // zappy.c
-void kill_player(zappy_t *zappy, player_t *player);
-void init_player(game_t *game, player_t *player, team_t *team);
 void zappy(args_t args);
 
 // socket.c
@@ -275,9 +275,14 @@ void send_enw(zappy_t *zappy, int ci, player_t *player, player_t *egg);
 // parsing
 char *read_file(char *filepath);
 
-// game
+// player
+player_t *parse_players(zappy_t *zappy, int *i, player_t *current);
+void kill_player(zappy_t *zappy, player_t *player);
+player_t *add_player(zappy_t *zappy, team_t *team, client_t *client);
 int nbr_players(zappy_t *zappy, int x, int y);
-player_t *parse_players(zappy_t *zappy, int *i, int *j);
+int nbr_players_in_team(team_t *team);
+
+// game
 char *get_tile_content(zappy_t *zappy, int x, int y);
 /**
  * @brief get the cell around a point where the direction is coming
