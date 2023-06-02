@@ -18,7 +18,8 @@ namespace ZappyGui {
                 MENDIANE,
                 PHIRAS,
                 SIBUR,
-                THYSTAME
+                THYSTAME,
+                PLAYER
             };
             virtual void draw() = 0;
             virtual void setPosition(float x, float z) = 0;

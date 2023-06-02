@@ -17,7 +17,6 @@ Map::Map(int x, int y): _factory(FactoryResource()) {
     this->_sizeY = y;
     this->_map.resize(x * y);
 
-    int i = 0;
     Color color = RED;
     for (int y = 0; y < this->_sizeY; ++y) {
         for (int x = 0; x < this->_sizeX; ++x) {

@@ -14,3 +14,4 @@
 #include "Mendiane.hpp"
 #include "Phiras.hpp"
 #include "Thystame.hpp"
+#include "PlayerResource.hpp"
