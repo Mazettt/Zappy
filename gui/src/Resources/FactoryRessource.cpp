@@ -30,3 +30,19 @@ std::unique_ptr<IResource> FactoryResource::createResource(const std::string &ty
         throw std::out_of_range("Unknown resource type: " + type);
     return it->second();
 }
+
+std::unique_ptr<IResource> FactoryResource::createResource(int type) {
+    static const std::unordered_map<int, std::function<std::unique_ptr<IResource>()>> componentMap {
+        {0, []() {return std::make_unique<Food>();}},
+        {1, []() {return std::make_unique<Linemate>();}},
+        {2, []() {return std::make_unique<Deraumere>();}},
+        {3, []() {return std::make_unique<Sibur>();}},
+        {4, []() {return std::make_unique<Mendiane>();}},
+        {5, []() {return std::make_unique<Phiras>();}},
+        {6, []() {return std::make_unique<Thystame>();}}
+    };
+    std::unordered_map<int, std::function<std::unique_ptr<IResource>()>>::const_iterator it = componentMap.find(type);
+    if (it == componentMap.end())
+        throw std::out_of_range("Unknown resource type: " + type);
+    return it->second();
+}

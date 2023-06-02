@@ -14,16 +14,20 @@ Thystame::Thystame():
     _model(MyRayLib::Model("./assets/Stones/stone_model.obj")),
     _texture(MyRayLib::Texture2D("./assets/Stones/thystame.png")) {
     this->_rotationAngle = 1.0f;
-    this->_position = {0.0f, 0.8f, 0.0f};
-    this->_scale  = { 0.06f, 0.06f, 0.06f };
+    this->_position = {0.0f, 0.08f, 0.0f};
+    this->_scale = { 0.04f, 0.04f, 0.04f };
     this->_texture.MySetMaterialTexture(this->_model.getModel(), MATERIAL_MAP_DIFFUSE);
 }
 
 Thystame::~Thystame() {}
 
-void Thystame::setPosition(int x, int z) {
+void Thystame::setPosition(float x, float z) {
     this->_position.x = x;
     this->_position.z = z;
+}
+
+Vector3 Thystame::getPosition() {
+    return this->_position;
 }
 
 void Thystame::draw() {

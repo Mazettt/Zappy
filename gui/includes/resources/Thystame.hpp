@@ -25,7 +25,8 @@ namespace ZappyGui {
         public:
             Thystame();
             ~Thystame();
-            void setPosition(int x, int y);
+            void setPosition(float x, float z);
+            Vector3 getPosition();
             void draw();
     };
 }

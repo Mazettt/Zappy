@@ -12,6 +12,7 @@ namespace ZappyGui {
     class IResource {
         public:
             virtual void draw() = 0;
-            virtual void setPosition(int x, int y) = 0;
+            virtual void setPosition(float x, float z) = 0;
+            virtual Vector3 getPosition() = 0;
     };
 }
