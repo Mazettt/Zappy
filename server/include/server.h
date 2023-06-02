@@ -17,6 +17,12 @@
     #define client_socket(i) zappy->client[i].command.s
     #define time_limit(x) (x / zappy->game.freq * 1000000)
     #define cast_pos(x, max) ((x) < 0 ? (max) + (x) : (x) % (max))
+    #define notif_it it
+    #define notif_guis(func) \
+        for (int it = 0; it < MAX_CONNECTIONS; ++it) { \
+            if (zappy->client[it].command.s && zappy->client[it].type == GUI) \
+                func; \
+        }
     #define HEIGHT zappy->game.height
     #define WIDTH zappy->game.width
 
@@ -257,6 +263,10 @@ void send_pdr(zappy_t *zappy, int ci, player_t *player, Item type);
 void send_pgt(zappy_t *zappy, int ci, player_t *player, Item type);
 // player death
 void send_pdi(zappy_t *zappy, int ci, player_t *player);
+// egg laying by the player
+void send_pfk(zappy_t *zappy, int ci, player_t *player);
+// an egg was laid by a player
+void send_enw(zappy_t *zappy, int ci, player_t *player, player_t *egg);
 
 // parsing
 char *read_file(char *filepath);

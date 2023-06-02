@@ -7,19 +7,11 @@
 
 #include "../../../include/server.h"
 
-static void notify_guis(zappy_t *zappy, player_t *player, char *message)
-{
-    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
-            send_pbc(zappy, i, player, message);
-    }
-}
-
 static void broadcast(zappy_t *zappy, char *command, int ci)
 {
     char *text = command + 10;
     player_t *player = zappy->client[ci].player;
-    notify_guis(zappy, player, text);
+    notif_guis(send_pbc(zappy, notif_it, player, text));
     player_t *playerBuff = NULL;
     for (int i = 0, j = 0; (playerBuff = parse_players(zappy, &i, &j));) {
         if (playerBuff->client && playerBuff != player) {

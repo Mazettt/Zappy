@@ -7,17 +7,9 @@
 
 #include "../include/server.h"
 
-static void notify_guis(zappy_t *zappy, player_t *player)
-{
-    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
-            send_pdi(zappy, i, player);
-    }
-}
-
 void kill_player(zappy_t *zappy, player_t *player)
 {
-    notify_guis(zappy, player);
+    notif_guis(send_pdi(zappy, notif_it, player));
     player->direction = rand() % 4;
     player->level = 1;
     for (int i = 0; i < NBR_ITEMS; ++i)

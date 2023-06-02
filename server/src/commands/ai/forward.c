@@ -7,14 +7,6 @@
 
 #include "../../../include/server.h"
 
-static void notify_guis(zappy_t *zappy, player_t *player)
-{
-    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
-            send_ppo(zappy, i, player);
-    }
-}
-
 static void forward(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
@@ -33,7 +25,7 @@ static void forward(zappy_t *zappy, char *command, int ci)
             player->x = cast_pos(player->x - 1, WIDTH);
             break;
     }
-    notify_guis(zappy, player);
+    notif_guis(send_ppo(zappy, notif_it, player));
     sdprintf(zappy, client_socket(ci), "ok\n");
     sdprintf(zappy, client_socket(ci), "Player is now in %d %d\n", player->x, player->y); //! DEBUG
 }

@@ -19,10 +19,12 @@ static void my_fork(zappy_t *zappy, char *command, int ci)
     newplayer->y = zappy->client[ci].player->y;
     newplayer->direction = rand() % 4;
     sdprintf(zappy, client_socket(ci), "ok\n");
+    notif_guis(send_enw(zappy, notif_it, zappy->client[ci].player, newplayer));
 }
 
 void cmd_fork(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
     zappy->game.actions = add_action(zappy->game.actions, time_limit(42), strdup(command), ci, my_fork);
+    notif_guis(send_pfk(zappy, notif_it, zappy->client[ci].player));
 }

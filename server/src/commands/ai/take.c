@@ -7,14 +7,6 @@
 
 #include "../../../include/server.h"
 
-static void notify_guis(zappy_t *zappy, player_t *player, Item type)
-{
-    for (int i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (zappy->client[i].command.s && zappy->client[i].type == GUI)
-            send_pgt(zappy, i, player, type);
-    }
-}
-
 static void take(zappy_t *zappy, char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
@@ -29,7 +21,7 @@ static void take(zappy_t *zappy, char *command, int ci)
         player->inventory[item] += 1;
         *resource -= 1;
         sdprintf(zappy, client_socket(ci), "ok\n");
-        notify_guis(zappy, player, item);
+        notif_guis(send_pgt(zappy, notif_it, player, item));
     } else
         sdprintf(zappy, client_socket(ci), "ko\n");
     free_word_array(args);
