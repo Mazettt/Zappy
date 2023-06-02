@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include "Tile.hpp"
+#include "../resources/FactoryResource.hpp"
 
 namespace ZappyGui {
     class Map {
@@ -16,11 +17,13 @@ namespace ZappyGui {
             int _sizeX;
             int _sizeY;
             std::vector<std::shared_ptr<Tile>> _map;
+            FactoryResource _factory;
         public:
             Map(int x, int y);
             ~Map();
             std::vector<std::shared_ptr<Tile>> getMap();
             std::shared_ptr<Tile> &getTile(int key);
-            void addResourceForTile(int posX, int posY, int keyResource, int quantity);
+            void addResourceForTile(int posX, int posY, IResource::resourceType type);
+            void draw();
     };
 }

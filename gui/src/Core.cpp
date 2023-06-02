@@ -11,7 +11,6 @@
 #include "../includes/MapHeader/Map.hpp"
 
 #include "../includes/MapHeader/Map.hpp"
-#include "../includes/resources/FactoryResource.hpp"
 #include "../includes/MyRayLibHeader/Music.hpp"
 
 using namespace ZappyGui;
@@ -103,7 +102,6 @@ int main(int ac, char **av)
     Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
-    // std::unique_ptr<IResource> foodeux = FactoryResource::createResource("phiras");
     float volumeMusic = 0.0;
     MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     if (music.MyIsMusicReady())
@@ -119,17 +117,10 @@ int main(int ac, char **av)
         MyRayLib::Draw _raylibdrawing;
         _raylibwindow.MyClearBackground(RAYWHITE);
         _raylibdrawing.MyBegin3DMode(camera);
-        for (int y = 0; y < y_pos; ++y) {
-            for (int x = 0; x < x_pos; ++x) {
-                int key = y * x_pos + x;
-                std::shared_ptr<Tile> &tile = map.getTile(key);
-                tile->draw();
-            }
-        }
+        map.draw();
         moveSkin.z += 0.01;
         player.draw();
         player.move(moveSkin);
-        // foodeux->draw();
         _raylibdrawing.MyEnd3DMode();
         _raylibdrawing.~Draw();
     }
