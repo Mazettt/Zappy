@@ -10,9 +10,9 @@
 using namespace ZappyGui;
 
 Player::Player(int playerNumber, int playerLevel, const std::string &teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale):
-    _skinModel(MyRayLib::Model("./assets/garf_marche.iqm")),
+    _skinModel(MyRayLib::Model("./assets/thegarf.iqm")),
     _skinTexture(MyRayLib::Texture2D("./assets/T_Garfield_BC.png")),
-    _animation(MyRayLib::AnimationsModel("./assets/garf_marche.iqm")) {
+    _animation(MyRayLib::AnimationsModel("./assets/thegarf.iqm")) {
     this->_playerNumber = playerNumber;
     this->_position = position;
     this->_orientationAxis = orientationAxis;
