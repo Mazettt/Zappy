@@ -9,10 +9,10 @@ import math
 import os
 import zappy_parsing as zp
 
-def con_to_server(args):
+def con_to_server(machine, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((args["machine"], args["port"]))
-    zp.print_log("Connected to {} on port {}".format(args["machine"], args["port"]))
+    sock.connect((machine, port))
+    zp.print_log("Connected to {} on port {}".format(machine, port))
     return sock
 
 def send_to_server(sock: socket.socket, message: str):
@@ -40,10 +40,9 @@ def multiple_recv_from_server(sock, timeout):
         exit(0)
     return response
 
-def get_player_infos(sock, args):
+def get_player_infos(sock, team):
     zp.print_log("Initializing player...")
     time.sleep(2)
-    team = args["name"]
     send_to_server(sock, team)
     response = multiple_recv_from_server(sock, 10)
     zp.print_log("Player initialized")
