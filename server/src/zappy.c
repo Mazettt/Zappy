@@ -49,6 +49,8 @@ static void free_all(zappy_t *zappy)
         free(zappy->game.teams[i].name);
         while (zappy->game.teams[i].players)
             kill_player(zappy, zappy->game.teams[i].players);
+        while (zappy->game.teams[i].eggs)
+            kill_egg(zappy, zappy->game.teams[i].eggs);
     }
     for (int i = 0; i < WIDTH; ++i) {
         for (int j = 0; j < HEIGHT; ++j)
@@ -72,10 +74,12 @@ static game_t init_game(args_t args)
     };
 
     game.playerIdIt = 0;
+    game.eggIdIt = 0;
     for (int i = 0; i < nbrTeams; ++i) {
         game.teams[i].name = strdup(args.teamNames[i]);
         game.teams[i].nbrClients = args.clientsNb;
         game.teams[i].players = NULL;
+        game.teams[i].eggs = NULL;
     }
     init_resources(args, &game);
     return game;

@@ -7,7 +7,7 @@
 
 #include "../../../include/server.h"
 
-void send_enw(zappy_t *zappy, int ci, player_t *player, player_t *egg)
+void send_enw(zappy_t *zappy, int ci, player_t *player, egg_t *egg)
 {
     sdprintf(zappy, client_socket(ci), "enw %d %d %d %d\n",
         egg->id,
