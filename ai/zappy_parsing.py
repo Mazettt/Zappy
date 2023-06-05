@@ -35,3 +35,11 @@ def get_args():
 def print_log(message):
     time_now = time.strftime("%H:%M:%S", time.localtime())
     print("[{}] {}".format(time_now, message))
+
+def parse_player_infos(infos):
+    client_num = int(infos.split("\n")[0])
+    map_x = int(infos.split("\n")[1].split(" ")[0])
+    map_y = int(infos.split("\n")[1].split(" ")[1])
+    print_log("Client number: {}".format(client_num))
+    print_log("Map size: {}x{}".format(map_x, map_y))
+    return client_num, map_x, map_y

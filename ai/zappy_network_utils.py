@@ -15,31 +15,36 @@ def con_to_server(args):
     zp.print_log("Connected to {} on port {}".format(args["machine"], args["port"]))
     return sock
 
-def send_to_server(sock, message):
-    if message[-1] != "\n":
-        message += "\n"
-    sock.send(message.encode())
+def send_to_server(sock: socket.socket, message: str):
+    if message[-1] != '\n':
+        message += '\n'
+    zp.print_log("Sending: {}".format(message))
+    sock.sendall(message.encode())
 
 def recv_from_server(sock):
-    while True:
-        response = sock.recv(4096).decode()
-        if response != "":
-            break
+    response = sock.recv(4096).decode()
+    zp.print_log("Received: {}".format(response))
+    if response == "dead\n":
+        exit(0)
     return response
 
 def multiple_recv_from_server(sock, timeout):
     response = ""
     start_time = time.time()
-    while True:
-        if time.time() - start_time > timeout:
-            break
+    while time.time() - start_time < timeout:
         response += sock.recv(4096).decode()
-        if response != "":
+        if response[-1] == '\n':
             break
+    zp.print_log("Received: {}".format(response))
+    if response == "dead\n":
+        exit(0)
     return response
 
 def get_player_infos(sock, args):
     zp.print_log("Initializing player...")
-    team_cmd = args["team"] + "\n"
-    send_to_server(sock, team_cmd)
-    print(zp.print_log(recv_from_server(sock)))
+    time.sleep(2)
+    team = args["name"]
+    send_to_server(sock, team)
+    response = multiple_recv_from_server(sock, 10)
+    zp.print_log("Player initialized")
+    return response
