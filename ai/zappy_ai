@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+
+import sys
+import socket
+import select
+import time
+import random
+import numpy as np
+import math
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import tensorflow as tf
+import zappy_parsing as zp
+import zappy_network_utils as znu
+
+class Player:
+    X = 0
+    Y = 0
+    LVL = 1
+    ORIENT = 0 # 0 = N, 1 = E, 2 = S, 3 = W
+    INV = [0, 0, 0, 0, 0, 0, 0]
+    TEAM = ""
+    VISION = []
+    VISION_SIZE = 0
+    VISION_CENTER = 0
+    PLAYER_NB = 0
+    LIFE_UNIT = 10
+
+class Commands:
+    FORWARD = {"Forward", 7}
+    RIGHT = {"Right", 7}
+    LEFT = {"Left", 7}
+    LOOK = {"Look", 7}
+    INVENTORY = {"Inventory", 1}
+    BROADCAST = {"Broadcast", 7}
+    CONNECT_NBR = {"Connect_nbr", 0}
+    FORK = {"Fork", 42}
+    EJECT = {"Eject", 7}
+    TAKE = {"Take", 7}
+    SET = {"Set", 7}
+    INCANTATION = {"Incantation", 300}
+
+
+def main():
+    args = zp.get_args()
+    sock = znu.con_to_server(args)
+    zp.print_log(znu.recv_from_server(sock))
+    Player = znu.get_player_infos(sock, args)
+    input()
+
+
+
+try:
+    main()
+except Exception as e:
+    print(e)
+    exit(84)
