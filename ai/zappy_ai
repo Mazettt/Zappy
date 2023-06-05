@@ -40,7 +40,7 @@ def main():
     p.PLAYER_NB = client_num
     p.TEAM = args["name"]
     p.VISION_SIZE = 1 + (p.LVL - 1) * 2
-    print(zc.inventory(sock))
+    print(zc.look(sock, map_x, map_y))
 
 
 

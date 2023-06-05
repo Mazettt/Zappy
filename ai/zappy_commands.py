@@ -40,10 +40,17 @@ def left(sock: socket.socket):
     resp = znu.multiple_recv_from_server(sock, Commands.LEFT[1])
     return resp
 
-def look(sock: socket.socket):
+def look(sock: socket.socket, map_x: int, map_y: int):
     znu.send_to_server(sock, "Look\n")
     resp = znu.multiple_recv_from_server(sock, 20)
-    return resp
+    # [ player food food food food food food food food food food food food food food food food food food food food food food food food food food food phiras, food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food linemate linemate deraumere phiras, food food food food food food food food food food food food food food food food food food food food food food food food, food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food food linemate deraumere ]
+    map_game = []
+    resp = resp.split(',')
+    for line in resp:
+        line = line.split(' ')
+        map_game.append(line)
+    print(map_game)
+    return map_game
 
 def inventory(sock: socket.socket):
     znu.send_to_server(sock, "Inventory\n")
