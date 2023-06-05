@@ -10,13 +10,12 @@
 
 using namespace ZappyGui;
 
-Mendiane::Mendiane():
-    _model(MyRayLib::Model("./assets/Stones/stone_model.obj")),
-    _texture(MyRayLib::Texture2D("./assets/Stones/mendiane.png")) {
+Mendiane::Mendiane(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const Vector3 &position):
+    _model(model),
+    _texture(texture) {
     this->_rotationAngle = 1.0f;
-    this->_position = {0.0f, 0.08f, 0.0f};
+    this->_position = position;
     this->_scale = { 0.04f, 0.04f, 0.04f };
-    this->_texture.MySetMaterialTexture(this->_model.getModel(), MATERIAL_MAP_DIFFUSE);
 }
 
 Mendiane::~Mendiane() {}
@@ -26,10 +25,14 @@ void Mendiane::setPosition(float x, float z) {
     this->_position.z = z;
 }
 
-Vector3 Mendiane::getPosition() {
+const Vector3 &Mendiane::getPosition() {
     return this->_position;
 }
 
 void Mendiane::draw() {
     MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->_position, { 0.0f, 0.0f, 0.0f }, this->_rotationAngle, this->_scale, MyRayLib::MyRayLibColor::White());
+}
+
+IResource::resourceType Mendiane::getType() {
+    return IResource::resourceType::MENDIANE;
 }

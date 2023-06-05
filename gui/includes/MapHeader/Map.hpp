@@ -17,7 +17,7 @@ namespace ZappyGui {
             int _sizeX;
             int _sizeY;
             std::vector<std::shared_ptr<Tile>> _map;
-            FactoryResource _factory;
+            ResourceManager _manager;
         public:
             Map(int x, int y);
             ~Map();
