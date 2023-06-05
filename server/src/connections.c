@@ -66,6 +66,8 @@ static void parse_command(zappy_t *zappy, int ci, char *input) {
 
 static void read_connection(zappy_t *zappy, int ci)
 {
+    if (!FD_ISSET(client_socket(ci), &zappy->readfds))
+        return;
     char buff[1024] = {0};
 
     if (read(client_socket(ci), buff, 1024) == 0)
@@ -76,12 +78,20 @@ static void read_connection(zappy_t *zappy, int ci)
 
 void read_connections(zappy_t *zappy)
 {
-    for (size_t i = 0; i < MAX_CONNECTIONS; ++i)
+    for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
+        if (!client_socket(i))
+            continue;
+        if (zappy->client[i].type == AI && !check_food(zappy, zappy->client[i].player)) {
+            sdprintf(zappy, client_socket(i), "dead\n");
+            close_command_socket(zappy, &zappy->client[i]);
+            continue;
+        }
         if (zappy->client[i].action.func)
             exec_action(zappy, &zappy->client[i].action, i);
         else if (zappy->client[i].cmdBuff) {
             switch_commands(zappy, zappy->client[i].cmdBuff->c, i);
             remove_first_cmd_buff(&zappy->client[i]);
-        } else if (FD_ISSET(client_socket(i), &zappy->readfds))
+        } else
             read_connection(zappy, i);
+    }
 }

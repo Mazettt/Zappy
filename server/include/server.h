@@ -15,7 +15,7 @@
     #define debug_print(format, ...)    \
         if (DEBUG) printf(format, __VA_ARGS__);
     #define client_socket(i) zappy->client[i].command.s
-    #define time_limit(x) (x / zappy->game.freq * 1000000)
+    #define time_limit(x) ((time_t)((float)(x) / (float)(zappy->game.freq) * 1000000))
     #define cast_pos(x, max) ((x) < 0 ? (max) + (x) : (x) % (max))
     #define notif_it it
     #define notif_guis(func) \
@@ -86,6 +86,8 @@ typedef struct player_s {
     int inventory[NBR_ITEMS];
     team_t *team;
     client_t *client;
+    struct timeval startTime;
+    time_t timeUntilDie;
 
     struct player_s *prev;
     struct player_s *next;
@@ -301,6 +303,9 @@ void kill_player(zappy_t *zappy, player_t *player);
 player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client);
 int nbr_players(zappy_t *zappy, int x, int y);
 int nbr_players_in_team(team_t *team);
+
+// food
+bool check_food(zappy_t *zappy, player_t *player);
 
 // egg
 egg_t *add_egg(zappy_t *zappy, team_t *team);
