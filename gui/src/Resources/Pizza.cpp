@@ -1,38 +1,38 @@
 /*
 ** EPITECH PROJECT, 2022
-** zappy
+** gui
 ** File description:
-** Sibur.hpp
+** Pizza.cpp
 */
 
 #include <string>
-#include "../../includes/resources/Sibur.hpp"
+#include "../../includes/resources/Pizza.hpp"
 
 using namespace ZappyGui;
 
-Sibur::Sibur(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const Vector3 &position):
+Pizza::Pizza(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const Vector3 &position):
     _model(model),
     _texture(texture) {
     this->_rotationAngle = 1.0f;
     this->_position = position;
-    this->_scale = { 0.04f, 0.04f, 0.04f };
+    this->_scale  = { 0.01f, 0.01f, 0.01f };
 }
 
-Sibur::~Sibur() {}
+Pizza::~Pizza() {}
 
-void Sibur::setPosition(float x, float z) {
+void Pizza::setPosition(float x, float z) {
     this->_position.x = x;
     this->_position.z = z;
 }
 
-const Vector3 &Sibur::getPosition() {
+const Vector3 &Pizza::getPosition() {
     return this->_position;
 }
 
-void Sibur::draw() {
+void Pizza::draw() {
     MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->_position, { 0.0f, 0.0f, 0.0f }, this->_rotationAngle, this->_scale, MyRayLib::MyRayLibColor::White());
 }
 
-IResource::resourceType Sibur::getType() {
-    return IResource::resourceType::SIBUR;
+IResource::resourceType Pizza::getType() {
+    return IResource::resourceType::PIZZA;
 }

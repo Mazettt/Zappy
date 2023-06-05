@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** gui
 ** File description:
-** Food.hpp
+** Pizza.hpp
 */
 
 #pragma once
@@ -15,18 +15,19 @@
 #include "../MyRayLibHeader/Texture.hpp"
 
 namespace ZappyGui {
-    class Food: public IResource {
+    class Pizza: public IResource {
         private:
             Vector3 _scale;
             float _rotationAngle;
             Vector3 _position;
-            MyRayLib::Model _model;
-            MyRayLib::Texture2D _texture;
+            const MyRayLib::Model &_model;
+            const MyRayLib::Texture2D &_texture;
         public:
-            Food();
-            ~Food();
+            Pizza(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const Vector3 &position);
+            ~Pizza();
+            IResource::resourceType getType();
             void setPosition(float x, float z);
-            Vector3 getPosition();
+            const Vector3 &getPosition();
             void draw();
     };
 }

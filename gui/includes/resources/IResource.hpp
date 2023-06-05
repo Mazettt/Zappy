@@ -12,7 +12,9 @@ namespace ZappyGui {
     class IResource {
         public:
             enum resourceType {
+                STONE,
                 FOOD,
+                PIZZA,
                 DERAUMERE,
                 LINEMATE,
                 MENDIANE,
@@ -22,7 +24,8 @@ namespace ZappyGui {
                 PLAYER
             };
             virtual void draw() = 0;
+            virtual IResource::resourceType getType() = 0;
             virtual void setPosition(float x, float z) = 0;
-            virtual Vector3 getPosition() = 0;
+            virtual const Vector3 &getPosition() = 0;
     };
 }

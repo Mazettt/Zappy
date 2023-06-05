@@ -11,16 +11,14 @@
 #include <map>
 #include "IResource.hpp"
 #include "Resources.hpp"
+#include "ResourceManager.hpp"
+#include "../MyRayLibHeader/Model.hpp"
 
 namespace ZappyGui {
     class FactoryResource {
-        private:
-            std::map<IResource::resourceType, std::unique_ptr<IResource>> _resourceMap;
         public:
             FactoryResource();
             ~FactoryResource();
-            const std::map<IResource::resourceType, std::unique_ptr<IResource>> &getResourceMap() const;
-            static std::unique_ptr<IResource> createResourceTest(IResource::resourceType type);
-            void loadEveryResources();
+            static std::unique_ptr<IResource> createResource(IResource::resourceType type, const Vector3 &position, const ResourceManager &manager);
     };
 }
