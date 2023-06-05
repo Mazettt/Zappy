@@ -289,6 +289,8 @@ void send_enw(zappy_t *zappy, int ci, player_t *player, egg_t *egg);
 void send_ebo(zappy_t *zappy, int ci, egg_t *egg);
 // death of an egg
 void send_edi(zappy_t *zappy, int ci, egg_t *egg);
+// message from the server
+void send_smg(zappy_t *zappy, int ci, char *msg);
 
 // parsing
 char *read_file(char *filepath);
