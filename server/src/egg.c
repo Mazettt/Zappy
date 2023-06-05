@@ -14,10 +14,16 @@ egg_t *add_egg(zappy_t *zappy, team_t *team)
     new->x = rand() % zappy->game.width;
     new->y = rand() % zappy->game.height;
     new->team = team;
+    new->next = NULL;
 
-    new->prev = NULL;
-    new->next = team->eggs;
-    team->eggs = new;
+    egg_t *tmp = team->eggs;
+    while (tmp && tmp->next)
+        tmp = tmp->next;
+    new->prev = tmp;
+    if (tmp)
+        tmp->next = new;
+    else
+        team->eggs = new;
     return new;
 }
 
@@ -34,13 +40,13 @@ static void remove_egg(egg_t *egg)
 
 void kill_egg(zappy_t *zappy, egg_t *egg)
 {
-    // notif_guis(send_edi);
+    notif_guis(send_edi(zappy, notif_it, egg));
     remove_egg(egg);
 }
 
 player_t *hatch_egg(zappy_t *zappy, egg_t *egg, client_t *client)
 {
-    // notif_guis(send_ebo);
+    notif_guis(send_ebo(zappy, notif_it, egg));
     player_t *new = add_player(zappy, egg, client);
     remove_egg(egg);
     return new;

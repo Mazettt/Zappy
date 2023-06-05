@@ -282,6 +282,10 @@ void send_pdi(zappy_t *zappy, int ci, player_t *player);
 void send_pfk(zappy_t *zappy, int ci, player_t *player);
 // an egg was laid by a player
 void send_enw(zappy_t *zappy, int ci, player_t *player, egg_t *egg);
+// player connection for an egg
+void send_ebo(zappy_t *zappy, int ci, egg_t *egg);
+// death of an egg
+void send_edi(zappy_t *zappy, int ci, egg_t *egg);
 
 // parsing
 char *read_file(char *filepath);
