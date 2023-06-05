@@ -62,34 +62,31 @@ static void free_all(zappy_t *zappy)
     free(zappy);
 }
 
-static game_t init_game(args_t args)
+static void init_game(zappy_t *zappy, args_t args)
 {
     int nbrTeams = word_array_len(args.teamNames);
-    game_t game = {
-        .width = args.width,
-        .height = args.height,
-        .freq = args.freq,
-        .teams = malloc(sizeof(team_t) * nbrTeams),
-        .nbrTeams = nbrTeams
-    };
-
-    game.playerIdIt = 0;
-    game.eggIdIt = 0;
+    zappy->game.width = args.width;
+    zappy->game.height = args.height;
+    zappy->game.freq = args.freq;
+    zappy->game.teams = malloc(sizeof(team_t) * nbrTeams);
+    zappy->game.nbrTeams = nbrTeams;
+    zappy->game.playerIdIt = 0;
+    zappy->game.eggIdIt = 0;
     for (int i = 0; i < nbrTeams; ++i) {
-        game.teams[i].name = strdup(args.teamNames[i]);
-        game.teams[i].nbrClients = args.clientsNb;
-        game.teams[i].players = NULL;
-        game.teams[i].eggs = NULL;
+        zappy->game.teams[i].name = strdup(args.teamNames[i]);
+        zappy->game.teams[i].players = NULL;
+        zappy->game.teams[i].eggs = NULL;
+        for (int j = 0; j < args.clientsNb; ++j)
+            add_egg(zappy, &zappy->game.teams[i]);
     }
-    init_resources(args, &game);
-    return game;
+    init_resources(args, &zappy->game);
 }
 
 void zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
     struct timeval tv = {0, 0};
-    zappy->game = init_game(args);
+    init_game(zappy, args);
     first_select(zappy);
     init_main_socket(zappy, args.port);
     while (zappy->main.s) {

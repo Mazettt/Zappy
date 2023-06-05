@@ -41,13 +41,13 @@ static const command_t gui_cmds[] = {
 
 static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
 {
-    if (nbr_players_in_team(team) >= team->nbrClients) { //TODO check avec les eggs aussi
+    if (team->eggs) {
+        player_t *new = hatch_egg(zappy, team->eggs, &zappy->client[ci]);
+        sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
+        notif_guis(send_pnw(zappy, notif_it, new));
+        zappy->client[ci].type = AI;
+    } else
         sdprintf(zappy, client_socket(ci), "ko\n");
-        return;
-    }
-    player_t *new = add_player(zappy, team, &zappy->client[ci]);
-    sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
-    notif_guis(send_pnw(zappy, notif_it, new));
 }
 
 static void ai_commands(zappy_t *zappy, char *command, int ci)
@@ -91,7 +91,6 @@ static void unknown_commands(zappy_t *zappy, char *command, int ci)
     }
     for (int a = 0; a < zappy->game.nbrTeams; ++a) {
         if (!strcmp(command, zappy->game.teams[a].name)) {
-            zappy->client[ci].type = AI;
             assign_to_player(zappy, ci, &zappy->game.teams[a]);
             return;
         }

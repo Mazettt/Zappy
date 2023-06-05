@@ -31,23 +31,23 @@ void kill_player(zappy_t *zappy, player_t *player)
     free(player);
 }
 
-player_t *add_player(zappy_t *zappy, team_t *team, client_t *client)
+player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
 {
     player_t *new = malloc(sizeof(player_t));
     new->id = ++zappy->game.playerIdIt;
-    new->x = rand() % zappy->game.width;
-    new->y = rand() % zappy->game.height;
+    new->x = egg->x;
+    new->y = egg->y;
     new->direction = rand() % 4;
     new->level = 1;
     for (int i = 0; i < NBR_ITEMS; ++i)
         new->inventory[i] = 0;
-    new->team = team;
+    new->team = egg->team;
     new->client = client;
-    client->team = team;
+    client->team = egg->team;
     client->player = new;
     new->prev = NULL;
-    new->next = team->players;
-    team->players = new;
+    new->next = egg->team->players;
+    egg->team->players = new;
     return new;
 }
 

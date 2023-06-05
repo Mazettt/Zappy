@@ -96,7 +96,6 @@ typedef struct egg_s {
     int x;
     int y;
     team_t *team;
-    player_t *player;
 
     struct egg_s *prev;
     struct egg_s *next;
@@ -104,7 +103,6 @@ typedef struct egg_s {
 
 struct team_s {
     char *name;
-    int nbrClients;
     player_t *players;
     egg_t *eggs;
 };
@@ -291,13 +289,14 @@ char *read_file(char *filepath);
 // player
 player_t *parse_players(zappy_t *zappy, int *i, player_t *current);
 void kill_player(zappy_t *zappy, player_t *player);
-player_t *add_player(zappy_t *zappy, team_t *team, client_t *client);
+player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client);
 int nbr_players(zappy_t *zappy, int x, int y);
 int nbr_players_in_team(team_t *team);
 
 // egg
-egg_t *add_egg(zappy_t *zappy, player_t *player);
+egg_t *add_egg(zappy_t *zappy, team_t *team);
 void kill_egg(zappy_t *zappy, egg_t *egg);
+player_t *hatch_egg(zappy_t *zappy, egg_t *egg, client_t *client);
 int nbr_eggs_in_team(team_t *team);
 
 // game

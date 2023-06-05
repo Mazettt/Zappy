@@ -40,6 +40,5 @@ size_t word_array_len(char **arr)
 
 int get_remaining_slots(team_t *team)
 {
-    int slots = nbr_players_in_team(team);
-    return team->nbrClients - slots;
+    return nbr_eggs_in_team(team);
 }
