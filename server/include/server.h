@@ -244,6 +244,9 @@ void cmd_msz(zappy_t *zappy, char *command, int ci);
 // time unit request
 void send_sgt(zappy_t *zappy, int ci);
 void cmd_sgt(zappy_t *zappy, char *command, int ci);
+// time unit modification
+void send_sst(zappy_t *zappy, int ci);
+void cmd_sst(zappy_t *zappy, char *command, int ci);
 // tile content
 void send_bct(zappy_t *zappy, int ci, int x, int y);
 void cmd_bct(zappy_t *zappy, char *command, int ci);

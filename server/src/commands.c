@@ -30,6 +30,7 @@ static const command_t gui_cmds[] = {
     {"noop", cmd_noop},
     {"msz", cmd_msz},
     {"sgt", cmd_sgt},
+    {"sst", cmd_sst},
     {"bct", cmd_bct},
     {"mct", cmd_mct},
     {"tna", cmd_tna},
