@@ -36,11 +36,12 @@ def main():
     p_infos = znu.get_player_infos(sock, args)
     zp.print_log("Player: {}".format(p_infos))
     client_num, map_x, map_y = zp.parse_player_infos(p_infos)
+    p = Player()
+    p.PLAYER_NB = client_num
+    p.TEAM = args["name"]
+    p.VISION_SIZE = 1 + (p.LVL - 1) * 2
+    print(zc.inventory(sock))
 
 
 
-try:
-    main()
-except Exception as e:
-    print(e)
-    exit(84)
+main()

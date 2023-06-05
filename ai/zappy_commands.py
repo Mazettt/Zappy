@@ -26,29 +26,34 @@ class Commands:
     INCANTATION = {"Incantation\n", 300}
 
 def forward(sock: socket.socket):
-    znu.send_to_server(sock, Commands.FORWARD[0])
+    znu.send_to_server(sock, "Forward\n")
     resp = znu.multiple_recv_from_server(sock, Commands.FORWARD[1])
     return resp
 
 def right(sock: socket.socket):
-    znu.send_to_server(sock, Commands.RIGHT[0])
+    znu.send_to_server(sock, "Right\n")
     resp = znu.multiple_recv_from_server(sock, Commands.RIGHT[1])
     return resp
 
 def left(sock: socket.socket):
-    znu.send_to_server(sock, Commands.LEFT[0])
+    znu.send_to_server(sock, "Left\n")
     resp = znu.multiple_recv_from_server(sock, Commands.LEFT[1])
     return resp
 
 def look(sock: socket.socket):
-    znu.send_to_server(sock, Commands.LOOK[0])
-    resp = znu.multiple_recv_from_server(sock, Commands.LOOK[1])
+    znu.send_to_server(sock, "Look\n")
+    resp = znu.multiple_recv_from_server(sock, 20)
     return resp
 
 def inventory(sock: socket.socket):
-    znu.send_to_server(sock, Commands.INVENTORY[0])
-    resp = znu.multiple_recv_from_server(sock, Commands.INVENTORY[1])
-    return resp
+    znu.send_to_server(sock, "Inventory\n")
+    resp = znu.multiple_recv_from_server(sock, 20)
+    inventory = {}
+    resp = resp.split(',')
+    for item in resp:
+        item = item.split(' ')
+        inventory[item[1]] = int(item[2])
+    return inventory
 
 def broadcast_text(sock: socket.socket, text: str):
     znu.send_to_server(sock, "{} {}".format(Commands.BROADCAST[0], text))
@@ -56,17 +61,17 @@ def broadcast_text(sock: socket.socket, text: str):
     return resp
 
 def unused_connect_nbr(sock: socket.socket):
-    znu.send_to_server(sock, Commands.CONNECT_NBR[0])
+    znu.send_to_server(sock, "Connect_nbr\n")
     resp = znu.multiple_recv_from_server(sock, Commands.CONNECT_NBR[1])
     return resp
 
 def fork(sock: socket.socket):
-    znu.send_to_server(sock, Commands.FORK[0])
+    znu.send_to_server(sock, "Fork\n")
     resp = znu.multiple_recv_from_server(sock, Commands.FORK[1])
     return resp
 
 def eject(sock: socket.socket):
-    znu.send_to_server(sock, Commands.EJECT[0])
+    znu.send_to_server(sock, "Eject\n")
     resp = znu.multiple_recv_from_server(sock, Commands.EJECT[1])
     return resp
 
