@@ -24,5 +24,8 @@ namespace MyRayLib {
             const ::Model getModel() const {
                 return _model;
             }
+            void operator=(const ::Model &model) {
+                _model = model;
+            }
     };
 }

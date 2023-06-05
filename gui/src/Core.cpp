@@ -9,6 +9,7 @@
 #include "../includes/MapHeader/Cube.hpp"
 #include "../includes/MapHeader/Tile.hpp"
 #include "../includes/MapHeader/Map.hpp"
+#include "../includes/MyRayLibHeader/Skybox.hpp"
 
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Music.hpp"
@@ -102,11 +103,13 @@ int main(int ac, char **av)
     Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
-    float volumeMusic = 0.0;
+    float volumeMusic = 0.3;
     MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
+    MyRayLib::Draw _raylibdrawing;
     while (!_raylibwindow.MyWindowShouldClose()) {
+        _raylibdrawing.MyDrawFPS(10, 35);
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
             volumeMusic += 0.1f;
         if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
@@ -114,7 +117,6 @@ int main(int ac, char **av)
         music.MySetMusicVolume(volumeMusic);
         music.MyUpdateMusic();
         _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
-        MyRayLib::Draw _raylibdrawing;
         _raylibwindow.MyClearBackground(RAYWHITE);
         _raylibdrawing.MyBegin3DMode(camera);
         map.draw();
@@ -126,3 +128,67 @@ int main(int ac, char **av)
     }
     return 0;
 }
+
+// int main(void)
+// {
+//     const int screenWidth = 1920;
+//     const int screenHeight = 1080;
+
+//     InitWindow(screenWidth, screenHeight, "raylib [models] example - skybox loading and drawing");
+
+//     Camera camera = { 0 };
+//     camera.position = (Vector3){ 1.0f, 1.0f, 1.0f };
+//     camera.target = (Vector3){ 4.0f, 1.0f, 4.0f };
+//     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
+//     camera.fovy = 45.0f;
+//     camera.projection = CAMERA_PERSPECTIVE;
+
+//     MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
+//     skyboxMesh.MyLoadFromMesh(skyboxMesh._cube);
+
+//     int a[1] = { MATERIAL_MAP_CUBEMAP };
+//     int b[1] = { skyboxMesh._useHDR ? 1 : 0 };
+//     int c[1] = { skyboxMesh._useHDR ? 1 : 0 };
+//     int d[1] = { 0 };
+
+//     skyboxMesh._skybox.materials[0].shader = skyboxMesh.MyLoadShader("./assets/Skybox/skybox.vs", "./assets/Skybox/skybox.fs");
+
+//     skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "environmentMap"), a, SHADER_UNIFORM_INT);
+//     skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "doGamma"), b, SHADER_UNIFORM_INT);
+//     skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "vflipped"), c, SHADER_UNIFORM_INT);
+
+//     skyboxMesh._shdrCubemap = skyboxMesh.MyLoadShader("./assets/Skybox/cubemap.vs", "./assets/Skybox/cubemap.fs");
+//     skyboxMesh.MySetShaderValue(skyboxMesh._shdrCubemap, skyboxMesh.MyGetShaderLocation(skyboxMesh._shdrCubemap, "environmentMap"), a, SHADER_UNIFORM_INT);
+
+//     if (skyboxMesh._useHDR) {
+//         skyboxMesh.MyTextCopy(skyboxMesh._skyboxFileName, "./assets/Skybox/skybox.png");
+//         skyboxMesh._panorama = skyboxMesh.MyLoadTexture(skyboxMesh._skyboxFileName);
+//         skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = skyboxMesh.MyGenTextureCubemap(skyboxMesh._shdrCubemap, skyboxMesh._panorama, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+//     } else {
+//         skyboxMesh._img = skyboxMesh.MyLoadImage("./assets/Skybox/skybox.png");
+//         skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(skyboxMesh._img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
+//         UnloadImage(skyboxMesh._img);
+//     }
+//     DisableCursor();
+//     SetTargetFPS(60);
+//     while (!WindowShouldClose()) {
+//         UpdateCamera(&camera, CAMERA_FIRST_PERSON);
+//         BeginDrawing();
+//             ClearBackground(RAYWHITE);
+//             BeginMode3D(camera);
+//                 skyboxMesh.MyrlDisableBackfaceCulling();
+//                 skyboxMesh.MyrlDisableDepthMask();
+//                     DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+//                 skyboxMesh.MyrlEnableBackfaceCulling();
+//                 skyboxMesh.MyrlEnableDepthMask();
+//                 DrawGrid(10, 1.0f);
+//             EndMode3D();
+//             DrawFPS(10, 10);
+//         EndDrawing();
+//     }
+//     skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
+//     skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
+//     skyboxMesh.MyUnloadModel(skyboxMesh._skybox);
+//     CloseWindow();
+//     return 0;
+// }
