@@ -30,7 +30,7 @@ BIN	=	vgcore*	\
 # flags
 FLAGS	=	-g
 
-CFLAGS	+=	-std=c++20 -Wall -Wextra -lpthread -lraylib -lGL -lm -ldl -lrt -lX11
+CFLAGS	+=	-std=c++2a -Wall -Wextra -lpthread -lraylib -lGL -lm -ldl -lrt -lX11
 
 TESTS_FLAGS	=	--coverage	\
 				-lcriterion
