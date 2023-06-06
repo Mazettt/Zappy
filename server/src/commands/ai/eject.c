@@ -21,9 +21,8 @@ static void destroy_eggs(zappy_t *zappy, player_t *player)
     }
 }
 
-static void eject(zappy_t *zappy, char *command, int ci)
+static void eject(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     player_t *player = zappy->client[ci].player;
     int movex = player->x;
     int movey = player->y;

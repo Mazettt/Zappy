@@ -83,9 +83,8 @@ static void look_west(zappy_t *zappy, int ci)
     sdprintf(zappy, client_socket(ci), "]\n");
 }
 
-static void look(zappy_t *zappy, char *command, int ci)
+static void look(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     player_t *player = zappy->client[ci].player;
 
     switch (player->direction) {
@@ -106,6 +105,5 @@ static void look(zappy_t *zappy, char *command, int ci)
 
 void cmd_look(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
     add_action(&zappy->client[ci], time_limit(7), command, look);
 }

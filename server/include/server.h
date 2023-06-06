@@ -25,6 +25,7 @@
         }
     #define HEIGHT zappy->game.height
     #define WIDTH zappy->game.width
+    #define unused __attribute__((unused))
 
     #include "utils.h"
     #include <sys/socket.h>

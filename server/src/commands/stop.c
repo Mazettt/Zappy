@@ -18,9 +18,8 @@ void close_all(zappy_t *zappy)
     }
 }
 
-void cmd_stop(zappy_t *zappy, char *command, int ci)
+void cmd_stop(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     sdprintf(zappy, client_socket(ci), "%s\n", "Server shutting down.");
     close_all(zappy);
 }

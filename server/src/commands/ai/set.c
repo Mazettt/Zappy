@@ -28,6 +28,5 @@ static void set(zappy_t *zappy, char *command, int ci)
 
 void cmd_set(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
     add_action(&zappy->client[ci], time_limit(7), command, set);
 }

@@ -7,8 +7,7 @@
 
 #include "../../include/server.h"
 
-void cmd_noop(zappy_t *zappy, char *command, int ci)
+void cmd_noop(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     sdprintf(zappy, client_socket(ci), "%s\n", "Command okay.");
 }

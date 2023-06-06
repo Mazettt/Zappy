@@ -14,8 +14,7 @@ void send_mct(zappy_t *zappy, int ci)
             send_bct(zappy, ci, x, y);
 }
 
-void cmd_mct(zappy_t *zappy, char *command, int ci)
+void cmd_mct(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     send_mct(zappy, ci);
 }

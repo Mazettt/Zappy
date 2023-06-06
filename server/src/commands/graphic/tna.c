@@ -13,8 +13,7 @@ void send_tna(zappy_t *zappy, int ci)
         sdprintf(zappy, client_socket(ci), "tna %s\n", zappy->game.teams[i].name);
 }
 
-void cmd_tna(zappy_t *zappy, char *command, int ci)
+void cmd_tna(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     send_tna(zappy, ci);
 }

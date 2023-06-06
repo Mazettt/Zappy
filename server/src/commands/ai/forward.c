@@ -7,9 +7,8 @@
 
 #include "../../../include/server.h"
 
-static void forward(zappy_t *zappy, char *command, int ci)
+static void forward(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     player_t *player = zappy->client[ci].player;
     switch (player->direction) {
         case NORTH:
@@ -32,6 +31,5 @@ static void forward(zappy_t *zappy, char *command, int ci)
 
 void cmd_forward(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
     add_action(&zappy->client[ci], time_limit(7), command, forward);
 }

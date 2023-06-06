@@ -70,9 +70,8 @@ static bool check_incantation(zappy_t *zappy, int ci)
     return true;
 }
 
-static void incantation(zappy_t *zappy, char *command, int ci)
+static void incantation(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     player_t *player = zappy->client[ci].player;
     if (!player)
         return;
@@ -90,7 +89,6 @@ static void incantation(zappy_t *zappy, char *command, int ci)
 
 void cmd_incantation(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
     player_t *player = zappy->client[ci].player;
 
     add_action(&zappy->client[ci], time_limit(300), command, incantation);

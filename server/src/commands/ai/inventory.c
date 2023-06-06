@@ -7,9 +7,8 @@
 
 #include "../../../include/server.h"
 
-static void inventory(zappy_t *zappy, char *command, int ci)
+static void inventory(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     player_t *player = zappy->client[ci].player;
 
     sdprintf(zappy, client_socket(ci), "[%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d]\n",
@@ -25,6 +24,5 @@ static void inventory(zappy_t *zappy, char *command, int ci)
 
 void cmd_inventory(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
     add_action(&zappy->client[ci], time_limit(1), command, inventory);
 }

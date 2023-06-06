@@ -7,9 +7,8 @@
 
 #include "../../../include/server.h"
 
-static void my_fork(zappy_t *zappy, char *command, int ci)
+static void my_fork(zappy_t *zappy, unused char *command, int ci)
 {
-    (void)command;
     team_t *team = zappy->client[ci].team;
     egg_t *newegg = add_egg(zappy, team);
     newegg->x = zappy->client[ci].player->x;
@@ -20,7 +19,6 @@ static void my_fork(zappy_t *zappy, char *command, int ci)
 
 void cmd_fork(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
     add_action(&zappy->client[ci], time_limit(42), command, my_fork);
     notif_guis(send_pfk(zappy, notif_it, zappy->client[ci].player));
 }
