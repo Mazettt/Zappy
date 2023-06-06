@@ -10,6 +10,7 @@
 #include "../includes/MapHeader/Tile.hpp"
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Skybox.hpp"
+#include "../includes/MyRayLibHeader/Button.hpp"
 
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Music.hpp"
@@ -94,19 +95,22 @@ int main(int ac, char **av)
     int x_pos = 10;
     int y_pos = 10;
     MyRayLibWindow _raylibwindow(1920, 1080, "ZAPPY");
-    Camera3D camera = _raylibwindow.MySetCameraMode((Vector3){ 0.0f, 10.0f, 50.0f }, (Vector3){ 0.0f, 0.0f, 0.0f }, (Vector3){ 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
+    Camera3D camera = _raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
 
     Map map(x_pos, y_pos);
 
     _raylibwindow.MySetTargetFPS(60);
-    _raylibwindow.MyDisableCursor();
+    // _raylibwindow.MyDisableCursor();
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
-    float volumeMusic = 0.0;
+    float volumeMusic = 0.5;
     MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
     MyRayLib::Draw _raylibdrawing;
+
+    Button button("./assets/Buttons/button.png","./assets/Buttons/buttonfx.wav");
+    button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 1080/2.0f - button.button.height/3/2.0f, (float)button.button.width, button.frameHeight);
     // MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
     // skyboxMesh.MyLoadFromMesh(skyboxMesh._cube);
 
@@ -133,25 +137,54 @@ int main(int ac, char **av)
     //     skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(skyboxMesh._img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
     //     skyboxMesh.MyUnloadImage(skyboxMesh._img);
     // }
+    bool menu = true;
     while (!_raylibwindow.MyWindowShouldClose()) {
-        _raylibdrawing.MyDrawFPS(10, 35);
-        if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
-            volumeMusic += 0.1f;
-        if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
-            volumeMusic -= 0.1f;
-        music.MySetMusicVolume(volumeMusic);
-        music.MyUpdateMusic();
-        _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
-        _raylibwindow.MyClearBackground(RAYWHITE);
-        _raylibdrawing.MyBegin3DMode(camera);
-        // skyboxMesh.MyrlDisableBackfaceCulling();
-        // skyboxMesh.MyrlDisableDepthMask();
-        // DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
-        map.draw();
-        moveSkin.z += 0.01;
-        // skyboxMesh.MyrlEnableBackfaceCulling();
-        // skyboxMesh.MyrlEnableDepthMask();
-        _raylibdrawing.MyEnd3DMode();
+        if (menu) {
+            button.mousePoint = GetMousePosition();
+            button.btnAction = false;
+
+            if (button.MyCheckCollisionPointRec(button.mousePoint, button.btnBounds)) {
+                if (button.MyIsMouseButtonDown(MOUSE_BUTTON_LEFT))
+                    button.btnState = 2;
+                else
+                    button.btnState = 1;
+
+                if (button.MyIsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+                    button.btnAction = true;
+            }
+            else
+                button.btnState = 0;
+
+            if (button.btnAction) {
+                button.MyPlaySound(button.SoundButton);
+                menu = false;
+            }
+
+            button.sourceRec.y = button.btnState*button.frameHeight;
+            _raylibwindow.MyBeginDrawing();
+            _raylibwindow.MyClearBackground(RAYWHITE);
+            button.MyDrawTextureRec(button.button, button.sourceRec, (Vector2){ button.btnBounds.x, button.btnBounds.y }, WHITE);
+            _raylibwindow.MyEndDrawing();
+        } else {
+            _raylibdrawing.MyDrawFPS(10, 35);
+            if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
+                volumeMusic += 0.1f;
+            if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
+                volumeMusic -= 0.1f;
+            music.MySetMusicVolume(volumeMusic);
+            music.MyUpdateMusic();
+            _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
+            _raylibwindow.MyClearBackground(RAYWHITE);
+            _raylibdrawing.MyBegin3DMode(camera);
+            // skyboxMesh.MyrlDisableBackfaceCulling();
+            // skyboxMesh.MyrlDisableDepthMask();
+            // DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+            map.draw();
+            moveSkin.z += 0.01;
+            // skyboxMesh.MyrlEnableBackfaceCulling();
+            // skyboxMesh.MyrlEnableDepthMask();
+            _raylibdrawing.MyEnd3DMode();
+        }
         _raylibdrawing.~Draw();
     }
     // skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);

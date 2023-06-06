@@ -19,6 +19,12 @@ namespace MyRayLib {
             ~MyRayLibWindow() {
                 CloseWindow();
             }
+            void MyBeginDrawing(void) {
+                BeginDrawing();
+            }
+            void MyEndDrawing(void) {
+                EndDrawing();
+            }
             bool MyWindowShouldClose(void) {
                 return WindowShouldClose();
             }
