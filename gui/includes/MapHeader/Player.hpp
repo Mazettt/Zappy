@@ -19,12 +19,12 @@
 namespace ZappyGui {
     class Player: public PlayerArguments {
         private:
-            const MyRayLib::Model &_model;
+            MyRayLib::Model &_model;
             const MyRayLib::Texture2D &_texture;
-            // MyRayLib::AnimationsModel _animation;
+            MyRayLib::AnimationsModel &_animation;
 
         public:
-            Player(const PlayerArguments &playerArgs, const MyRayLib::Model &model, const MyRayLib::Texture2D &texture);
+            Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
             void draw();
             ~Player() {};
     };

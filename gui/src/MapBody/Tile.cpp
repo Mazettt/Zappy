@@ -30,11 +30,12 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
     this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.08, z_pos + this->_cube.getPos().z}, manager));
 }
 
-void Tile::addPlayer(const ResourceManager &manager, IResource::resourceType type, const PlayerArguments &playerArgs) {
-    auto &model = manager.getModel(type);
-    auto &texture = manager.getTexture(type);
-    this->_players.push_back(std::make_unique<Player>(playerArgs, model, texture));
-}
+// void Tile::addPlayer(const ResourceManager &manager, IResource::resourceType type, const PlayerArguments &playerArgs) {
+    // auto &model = manager.getModel(type);
+    // auto &texture = manager.getTexture(type);
+    // MyRayLib::Model newModel = Model(manager.getModel(type).getModel());
+    // this->_players.push_back(std::make_unique<Player>(playerArgs, newModel, texture));
+// }
 
 void Tile::draw() {
     this->_cube.draw();
@@ -43,10 +44,10 @@ void Tile::draw() {
     for (int i = 0; i < nbrResource; ++i) {
         this->_resources.at(i)->draw();
     }
-    int nbrPlayer = this->_players.size();
-    for (int i = 0; i < nbrPlayer; ++i) {
-        this->_players.at(i)->draw();
-    }
+    // int nbrPlayer = this->_players.size();
+    // for (int i = 0; i < nbrPlayer; ++i) {
+    //     this->_players.at(i)->draw();
+    // }
 }
 
 Tile::~Tile() {}

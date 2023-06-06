@@ -30,5 +30,6 @@ namespace ZappyGui {
             const MyRayLib::Texture2D &getTexture(IResource::resourceType type) const;
             MyRayLib::AnimationsModel &getAnimation(IResource::resourceType type);
             void setMaterialTexture(IResource::resourceType type);
+            MyRayLib::Model &getPlayerModel();
     };
 }

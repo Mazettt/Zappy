@@ -18,7 +18,10 @@ namespace MyRayLib {
             Model(const std::string &path){
                 _model = LoadModel(path.c_str());
             }
-            ~Model(){
+            Model(const ::Model &other) {
+                this->_model = other;
+            }
+            ~Model() {
                 UnloadModel(_model);
             }
             const ::Model getModel() const {

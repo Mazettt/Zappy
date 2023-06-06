@@ -71,6 +71,12 @@ const MyRayLib::Model &ResourceManager::getModel(IResource::resourceType type) c
     return *_models.at(type);
 }
 
+MyRayLib::Model &ResourceManager::getPlayerModel() {
+    if (_models.find(IResource::resourceType::PLAYER) == _models.end())
+        throw std::runtime_error("Model not loaded: " + IResource::resourceType::PLAYER);
+    return *_models.at(IResource::resourceType::PLAYER);
+}
+
 const MyRayLib::Texture2D &ResourceManager::getTexture(IResource::resourceType type) const {
     if (_textures.find(type) == _textures.end())
         throw std::runtime_error("Texture not loaded: " + type);
@@ -80,7 +86,7 @@ const MyRayLib::Texture2D &ResourceManager::getTexture(IResource::resourceType t
 MyRayLib::AnimationsModel &ResourceManager::getAnimation(IResource::resourceType type) {
     if (_animations.find(type) == _animations.end())
         throw std::runtime_error("Animation not loaded: " + type);
-    return *_animations[type];
+    return *_animations.at(type);
 }
 
 void ResourceManager::setMaterialTexture(IResource::resourceType type) {

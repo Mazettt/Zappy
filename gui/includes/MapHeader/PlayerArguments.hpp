@@ -26,11 +26,12 @@ namespace ZappyGui {
             float _rotationAngle;
             Vector3 _scale;
             int _animationFrameCounter;
+            int _animationType;
 
         public:
-            PlayerArguments(): _playerLevel(0), _playerNumber(0), _teamName(""), _position({0.0, 0.0, 0.0}), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _animationFrameCounter(0) {};
-            PlayerArguments(int playerLevel, int playerNumber, std::string teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale, int animationFrameCounter):
-                _playerLevel(playerLevel), _playerNumber(playerNumber), _teamName(teamName), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(animationFrameCounter) {
+            PlayerArguments(): _playerLevel(0), _playerNumber(0), _teamName(""), _position({0.0, 0.0, 0.0}), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _animationFrameCounter(0), _animationType(0) {};
+            PlayerArguments(int playerLevel, int playerNumber, std::string teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale, int animationFrameCounter, int playerArgs):
+                _playerLevel(playerLevel), _playerNumber(playerNumber), _teamName(teamName), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(animationFrameCounter), _animationType(playerArgs) {
             };
             PlayerArguments(const PlayerArguments &playerArgs) {
             this->_playerLevel = playerArgs.getPlayerLevel();
@@ -41,8 +42,12 @@ namespace ZappyGui {
             this->_rotationAngle = playerArgs.getRotationAngle();
             this->_scale = playerArgs.getScale();
             this->_animationFrameCounter = playerArgs.getAnimationFrameCounter();
+            this->_animationType = playerArgs.getAnimationType();
             };
             ~PlayerArguments() {};
+            int getAnimationType() const {
+                return _animationType;
+            }
             int getPlayerLevel() const {
                 return _playerLevel;
             }

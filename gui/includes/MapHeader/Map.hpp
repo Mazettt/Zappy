@@ -16,6 +16,7 @@ namespace ZappyGui {
         private:
             Vector2 _size;
             std::vector<std::shared_ptr<Tile>> _map;
+            std::vector<std::unique_ptr<Player>> _players;
             ResourceManager _manager;
         public:
             Map(int x, int y);
