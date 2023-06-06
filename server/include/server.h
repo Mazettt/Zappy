@@ -183,6 +183,7 @@ typedef struct {
 } args_t;
 
 char *my_strcat(char *dest , char const *src);
+bool is_num(char *str);
 char *my_itoa(int nb);
 char **my_str_to_word_array(char const *str, char *sep);
 
@@ -297,6 +298,8 @@ void send_edi(zappy_t *zappy, int ci, egg_t *egg);
 void send_smg(zappy_t *zappy, int ci, char *msg);
 // end of the game
 void send_seg(zappy_t *zappy, int ci, team_t *winningTeam);
+// command parameter
+void send_sbp(zappy_t *zappy, int ci);
 
 // parsing
 char *read_file(char *filepath);
