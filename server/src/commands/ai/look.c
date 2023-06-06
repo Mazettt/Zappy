@@ -15,7 +15,7 @@ static void look_north(zappy_t *zappy, int ci)
     sdprintf(zappy, client_socket(ci), "[%s,", res);
     free(res);
     for (int i = 1; i <= player->level; ++i) {
-        int line_pos = cast_pos(player->y + i, HEIGHT);
+        int line_pos = cast_pos(player->y - i, HEIGHT);
         for (int j = player->x - i; j <= player->x + i; ++j) {
             int col_pos = cast_pos(j, WIDTH);
             char *res = get_tile_content(zappy, col_pos, line_pos);
@@ -53,7 +53,7 @@ static void look_south(zappy_t *zappy, int ci)
     sdprintf(zappy, client_socket(ci), "[%s,", res);
     free(res);
     for (int i = 1; i <= player->level; ++i) {
-        int line_pos = cast_pos(player->y - i, HEIGHT);
+        int line_pos = cast_pos(player->y + i, HEIGHT);
         for (int j = player->x + i; j >= player->x - i; --j) {
             int col_pos = cast_pos(j, WIDTH);
             char *res = get_tile_content(zappy, col_pos, line_pos);
@@ -83,7 +83,7 @@ static void look_west(zappy_t *zappy, int ci)
     sdprintf(zappy, client_socket(ci), "]\n");
 }
 
-static void look(zappy_t *zappy, int ci)
+static void look(zappy_t *zappy, unused char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
 
@@ -105,6 +105,5 @@ static void look(zappy_t *zappy, int ci)
 
 void cmd_look(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(7), ci, look);
+    add_action(&zappy->client[ci], time_limit(7), command, look);
 }

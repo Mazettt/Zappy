@@ -7,40 +7,31 @@
 
 #include "../include/server.h"
 
-resource_t *add_resource(resource_t *resource, int x, int y, Item type)
+void init_resources(args_t args, game_t *game)
 {
-    resource_t *new = malloc(sizeof(resource_t));
-    new->x = x;
-    new->y = y;
-    new->type = type;
-    new->prev = NULL;
-    new->next = resource;
-    if (resource)
-        resource->prev = new;
-    return new;
-}
-
-int nbr_resource(resource_t *resource, int x, int y, Item type)
-{
-    int count = 0;
-    while (resource) {
-        if (resource->x == x && resource->y == y && resource->type == type)
-            ++count;
-        resource = resource->next;
+    game->map = malloc(sizeof(int **) * args.width);
+    for (int i = 0; i < args.width; ++i) {
+        game->map[i] = malloc(sizeof(int *) * args.height);
+        for (int j = 0; j < args.height; ++j) {
+            game->map[i][j] = malloc(sizeof(int) * NBR_ITEMS);
+            for (int k = 0; k < NBR_ITEMS; ++k)
+                game->map[i][j][k] = 0;
+        }
     }
-    return count;
-}
+    for (int i = 0; i < (args.width * args.height * 0.5); ++i)
+        game->map[rand() % args.width][rand() % args.height][FOOD] += 1;
+    for (int i = 0; i < (args.width * args.height * 0.3); ++i)
+        game->map[rand() % args.width][rand() % args.height][LINEMATE] += 1;
+    for (int i = 0; i < (args.width * args.height * 0.15); ++i)
+        game->map[rand() % args.width][rand() % args.height][DERAUMERE] += 1;
+    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
+        game->map[rand() % args.width][rand() % args.height][SIBUR] += 1;
+    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
+        game->map[rand() % args.width][rand() % args.height][MENDIANE] += 1;
+    for (int i = 0; i < (args.width * args.height * 0.08); ++i)
+        game->map[rand() % args.width][rand() % args.height][PHIRAS] += 1;
+    for (int i = 0; i < (args.width * args.height * 0.05); ++i)
+        game->map[rand() % args.width][rand() % args.height][THYSTAME] += 1;
 
-resource_t *remove_resource(resource_t **head, resource_t *resource)
-{
-    if (*head == resource)
-        *head = resource->next;
-    resource_t *prev = resource->prev;
-    resource_t *next = resource->next;
-    if (prev)
-        prev->next = next;
-    if (next)
-        next->prev = prev;
-    free(resource);
-    return next;
+    game->map[args.width / 2][args.height / 2][LINEMATE] += 1; //! DEBUG
 }

@@ -47,97 +47,60 @@ static void free_all(zappy_t *zappy)
 {
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
         free(zappy->game.teams[i].name);
-        free(zappy->game.teams[i].players);
+        while (zappy->game.teams[i].players)
+            kill_player(zappy, zappy->game.teams[i].players);
+        while (zappy->game.teams[i].eggs)
+            kill_egg(zappy, zappy->game.teams[i].eggs);
     }
-    while (zappy->game.resources)
-        zappy->game.resources = remove_resource(&zappy->game.resources, zappy->game.resources);
+    for (int i = 0; i < WIDTH; ++i) {
+        for (int j = 0; j < HEIGHT; ++j)
+            free(zappy->game.map[i][j]);
+        free(zappy->game.map[i]);
+    }
+    free(zappy->game.map);
     free(zappy->game.teams);
     free(zappy);
 }
 
-static void init_resources(args_t args, game_t *game)
-{
-    for (int i = 0; i < (args.width * args.height * 0.5); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, FOOD);
-    for (int i = 0; i < (args.width * args.height * 0.3); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, LINEMATE);
-    for (int i = 0; i < (args.width * args.height * 0.15); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, DERAUMERE);
-    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, SIBUR);
-    for (int i = 0; i < (args.width * args.height * 0.1); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, MENDIANE);
-    for (int i = 0; i < (args.width * args.height * 0.08); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, PHIRAS);
-    for (int i = 0; i < (args.width * args.height * 0.05); ++i)
-        game->resources = add_resource(game->resources, rand() % args.width, rand() % args.height, THYSTAME);
-}
-
-static game_t init_game(args_t args)
+static void init_game(zappy_t *zappy, args_t args)
 {
     int nbrTeams = word_array_len(args.teamNames);
-    game_t game = {
-        .width = args.width,
-        .height = args.height,
-        .freq = args.freq,
-        .teams = malloc(sizeof(team_t) * nbrTeams),
-        .nbrTeams = nbrTeams,
-        .actions = NULL
-    };
-
+    zappy->game.width = args.width;
+    zappy->game.height = args.height;
+    zappy->game.freq = args.freq;
+    zappy->game.teams = malloc(sizeof(team_t) * nbrTeams);
+    zappy->game.nbrTeams = nbrTeams;
+    zappy->game.winningTeam = NULL;
+    zappy->game.playerIdIt = 0;
+    zappy->game.eggIdIt = 0;
     for (int i = 0; i < nbrTeams; ++i) {
-        game.teams[i].name = strdup(args.teamNames[i]);
-        game.teams[i].nbrClients = args.clientsNb;
-        game.teams[i].players = malloc(sizeof(player_t) * args.clientsNb);
-        for (int j = 0; j < args.clientsNb; ++j) {
-            game.teams[i].players[j].x = rand() % args.width;
-            game.teams[i].players[j].y = rand() % args.height;
-            game.teams[i].players[j].direction = SOUTH;
-            game.teams[i].players[j].level = 1;
-            for (int k = 0; k < NBR_ITEMS; ++k)
-                game.teams[i].players[j].inventory[k] = 0;
-            game.teams[i].players[j].client = NULL;
-        }
+        zappy->game.teams[i].name = strdup(args.teamNames[i]);
+        zappy->game.teams[i].players = NULL;
+        zappy->game.teams[i].eggs = NULL;
+        for (int j = 0; j < args.clientsNb; ++j)
+            add_egg(zappy, &zappy->game.teams[i]);
     }
-    init_resources(args, &game);
-    return game;
-}
-
-void exec_all_actions(zappy_t *zappy)
-{
-    action_t *tmp = zappy->game.actions;
-    while (tmp) {
-        if (exec_action(zappy, tmp))
-            tmp = remove_action(&zappy->game.actions, tmp);
-        else
-            tmp = tmp->next;
-    }
+    init_resources(args, &zappy->game);
 }
 
 void zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
-    // time_t t = time(NULL);
-    zappy->game = init_game(args);
+    struct timeval tv = {0, 0};
+    init_game(zappy, args);
     first_select(zappy);
     init_main_socket(zappy, args.port);
-    print_map(zappy);
     while (zappy->main.s) {
         zappy->max_fd = 0;
         reset_fd(zappy);
         select(zappy->max_fd + 1, &zappy->readfds,
-            &zappy->writefds, NULL, NULL);
+            &zappy->writefds, NULL, &tv);
         if (FD_ISSET(zappy->fd_sigint, &zappy->readfds))
             break;
         else {
             accept_new_connections(zappy);
             read_connections(zappy);
         }
-        exec_all_actions(zappy);
-        // if (time(NULL) - t >= 1) {
-        //     t = time(NULL);
-        //     print_map(zappy);
-        // }
     }
     debug_print("\n%s\n", "Quitting...");
     close_all(zappy);

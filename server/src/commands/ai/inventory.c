@@ -7,7 +7,7 @@
 
 #include "../../../include/server.h"
 
-static void inventory(zappy_t *zappy, int ci)
+static void inventory(zappy_t *zappy, unused char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
 
@@ -24,6 +24,5 @@ static void inventory(zappy_t *zappy, int ci)
 
 void cmd_inventory(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(1), ci, inventory);
+    add_action(&zappy->client[ci], time_limit(1), command, inventory);
 }
