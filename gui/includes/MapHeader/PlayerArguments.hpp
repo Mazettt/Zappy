@@ -20,24 +20,27 @@ namespace ZappyGui {
             int _playerLevel;
             int _playerNumber;
             std::string _teamName;
+            Vector3 _position;
+
             Vector3 _orientationAxis;
             float _rotationAngle;
             Vector3 _scale;
-            Vector3 _position;
             int _animationFrameCounter;
 
         public:
-            PlayerArguments(): _playerLevel(0), _playerNumber(0), _teamName(""), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _position({0.0, 0.0, 0.0}), _animationFrameCounter(0) {};
-            PlayerArguments(int playerLevel, int playerNumber, std::string teamName, Vector3 orientationAxis, float rotationAngle, Vector3 scale, Vector3 position, int animationFrameCounter):
-            _playerLevel(playerLevel), _playerNumber(playerNumber), _teamName(teamName), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _position(position), _animationFrameCounter(animationFrameCounter) {};
+            PlayerArguments(): _playerLevel(0), _playerNumber(0), _teamName(""), _position({0.0, 0.0, 0.0}), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _animationFrameCounter(0) {};
+            PlayerArguments(int playerLevel, int playerNumber, std::string teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale, int animationFrameCounter):
+                _playerLevel(playerLevel), _playerNumber(playerNumber), _teamName(teamName), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(animationFrameCounter) {
+            };
             PlayerArguments(const PlayerArguments &playerArgs) {
-                this->_playerLevel = playerArgs._playerLevel;
-                this->_playerNumber = playerArgs._playerNumber;
-                this->_teamName = playerArgs._teamName;
-                this->_orientationAxis = playerArgs._orientationAxis;
-                this->_scale = playerArgs._scale;
-                this->_position = playerArgs._position;
-                this->_animationFrameCounter = playerArgs._animationFrameCounter;
+            this->_playerLevel = playerArgs.getPlayerLevel();
+            this->_playerNumber = playerArgs.getPlayerNumber();
+            this->_teamName = playerArgs.getTeamName();
+            this->_position = playerArgs.getPosition();
+            this->_orientationAxis = playerArgs.getOrientationAxis();
+            this->_rotationAngle = playerArgs.getRotationAngle();
+            this->_scale = playerArgs.getScale();
+            this->_animationFrameCounter = playerArgs.getAnimationFrameCounter();
             };
             ~PlayerArguments() {};
             int getPlayerLevel() const {
@@ -53,6 +56,7 @@ namespace ZappyGui {
                 return _orientationAxis;
             }
             float getRotationAngle() const {
+
                 return _rotationAngle;
             }
             Vector3 getScale() const {

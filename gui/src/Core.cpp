@@ -100,10 +100,9 @@ int main(int ac, char **av)
 
     _raylibwindow.MySetTargetFPS(60);
     _raylibwindow.MyDisableCursor();
-    // Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
-    float volumeMusic = 0.3;
+    float volumeMusic = 0.0;
     MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
@@ -150,8 +149,6 @@ int main(int ac, char **av)
         // DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
         map.draw();
         moveSkin.z += 0.01;
-        // player.draw();
-        // player.move(moveSkin);
         // skyboxMesh.MyrlEnableBackfaceCulling();
         // skyboxMesh.MyrlEnableDepthMask();
         _raylibdrawing.MyEnd3DMode();

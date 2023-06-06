@@ -14,16 +14,14 @@
 namespace ZappyGui {
     class Map {
         private:
-            int _sizeX;
-            int _sizeY;
+            Vector2 _size;
             std::vector<std::shared_ptr<Tile>> _map;
             ResourceManager _manager;
         public:
             Map(int x, int y);
             ~Map();
-            std::vector<std::shared_ptr<Tile>> getMap();
-            std::shared_ptr<Tile> &getTile(int key);
-            void addResourceForTile(int posX, int posY, IResource::resourceType type);
+            void addResourceForTile(const Vector2 &pos, IResource::resourceType type);
+            void addPlayerForTile(const Vector2 &pos, const PlayerArguments &playerArgs);
             void draw();
     };
 }

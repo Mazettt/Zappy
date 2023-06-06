@@ -12,13 +12,11 @@ Tile::Tile(const Cube &cube): _cube(cube) {
     }
 }
 
-const Cube Tile::getCube() const {
-    return this->_cube;
-}
-
 void Tile::addResource(const ResourceManager &manager, IResource::resourceType type) {
+    int decalage = -0.42; // TODO
+
     if (_availablePositions.empty()) {
-        this->_resources.push_back(FactoryResource::createResource(type, {0.0, 0.0, 0.0}, manager));
+        this->_resources.push_back(FactoryResource::createResource(type, {decalage + this->_cube.getPos().x, 0.08, decalage + this->_cube.getPos().z}, manager));
         return;
     }
     std::random_device rd;
@@ -27,27 +25,24 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
 
     auto [x_index, z_index] = _availablePositions.back();
     _availablePositions.pop_back();
-    float x_pos = -0.42 + x_index * 0.12;
-    float z_pos = -0.42 + z_index * 0.12;
+    float x_pos = decalage + x_index * 0.12;
+    float z_pos = decalage + z_index * 0.12;
     this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.08, z_pos + this->_cube.getPos().z}, manager));
 }
 
-void Tile::addPlayer(const ResourceManager &manager, IResource::resourceType type) {
-    const MyRayLib::Model &model = manager.getModel(type);
-    const MyRayLib::Texture2D &texture = manager.getTexture(type);
-    PlayerArguments playerArgs(5, 2, "Team1", {0.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, {1.0f, 0.0f, 0.0f}, 0);
+void Tile::addPlayer(const ResourceManager &manager, IResource::resourceType type, const PlayerArguments &playerArgs) {
+    auto &model = manager.getModel(type);
+    auto &texture = manager.getTexture(type);
     this->_players.push_back(std::make_unique<Player>(playerArgs, model, texture));
 }
 
 void Tile::draw() {
     this->_cube.draw();
 
-    // resource
     int nbrResource = this->_resources.size();
     for (int i = 0; i < nbrResource; ++i) {
         this->_resources.at(i)->draw();
     }
-    //player if exist
     int nbrPlayer = this->_players.size();
     for (int i = 0; i < nbrPlayer; ++i) {
         this->_players.at(i)->draw();

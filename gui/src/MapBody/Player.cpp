@@ -14,6 +14,5 @@ Player::Player(const PlayerArguments &playerArgs, const MyRayLib::Model &model, 
 }
 
 void Player::draw() {
-    // this->_animation.MyUpdateModelAnimation(this->_skinModel.getModel(), 2);
     MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), this->getOrientationAxis(), this->getRotationAngle(), this->getScale(), MyRayLib::MyRayLibColor::White());
 }
