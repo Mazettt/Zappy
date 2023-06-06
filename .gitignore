@@ -27,7 +27,5 @@ tmp/
 client_test.c
 client_test
 zappy_server_sub
-<<<<<<< HEAD
-=======
 client
->>>>>>> de5548c923b40b6f82e3b3d400051ee5c882efa5
+logs/

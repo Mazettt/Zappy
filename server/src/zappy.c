@@ -100,6 +100,7 @@ void zappy(args_t args)
         else {
             accept_new_connections(zappy);
             read_connections(zappy);
+            refill_resources(zappy);
         }
     }
     debug_print("\n%s\n", "Quitting...");

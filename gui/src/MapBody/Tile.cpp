@@ -13,7 +13,7 @@ Tile::Tile(const Cube &cube): _cube(cube) {
 }
 
 void Tile::addResource(const ResourceManager &manager, IResource::resourceType type) {
-    int decalage = -0.42; // TODO
+    float decalage = -0.42; // TODO
 
     if (_availablePositions.empty()) {
         this->_resources.push_back(FactoryResource::createResource(type, {decalage + this->_cube.getPos().x, 0.08, decalage + this->_cube.getPos().z}, manager));

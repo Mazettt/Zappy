@@ -16,9 +16,9 @@ def con_to_server(machine, port):
     return sock
 
 def send_to_server(sock: socket.socket, message: str):
+    zp.print_log("Sending: {}".format(message))
     if message[-1] != '\n':
         message += '\n'
-    zp.print_log("Sending: {}".format(message))
     sock.sendall(message.encode())
 
 def recv_from_server(sock):
