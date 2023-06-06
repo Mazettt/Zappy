@@ -7,6 +7,20 @@
 
 #include "../../../include/server.h"
 
+static void destroy_eggs(zappy_t *zappy, player_t *player)
+{
+    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
+        egg_t *egg = zappy->game.teams[i].eggs;
+        egg_t *eggBuff = NULL;
+        while (egg) {
+            eggBuff = egg->next;
+            if (egg->x == player->x && egg->y == player->y)
+                kill_egg(zappy, egg);
+            egg = eggBuff;
+        }
+    }
+}
+
 static void eject(zappy_t *zappy, char *command, int ci)
 {
     (void)command;
@@ -42,11 +56,11 @@ static void eject(zappy_t *zappy, char *command, int ci)
             check = true;
         }
     }
+    destroy_eggs(zappy, player);
     sdprintf(zappy, client_socket(ci), (check ? "ok\n" : "ko\n"));
 }
 
 void cmd_eject(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
     add_action(&zappy->client[ci], time_limit(7), command, eject);
 }
