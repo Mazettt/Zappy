@@ -11,6 +11,7 @@
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Skybox.hpp"
 #include "../includes/MyRayLibHeader/Button.hpp"
+#include "../includes/MyRayLibHeader/Parallax.hpp"
 
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Music.hpp"
@@ -97,52 +98,40 @@ int main(int ac, char **av)
     // _raylibwindow.MyDisableCursor();
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
-    float volumeMusic = 0.5;
+    float volumeMusic = 0.2;
     MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
+
     MyRayLib::Draw _raylibdrawing;
-    // std::map<Button
+
     bool menu = true;
-    Button button("./assets/Buttons/button.png","./assets/Buttons/buttonfx.wav", [&menu](){menu = false;});
-    button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 1080/2.0f - button.button.height/3/2.0f, (float)button.button.width, button.frameHeight);
-    // Button button2("./assets/Buttons/button2.png","./assets/Buttons/buttonfx.wav", [&](){CloseWindow();});
-    // button2.ButtonSetPosition(1200/2.0f - button2.button.width/2.0f, 1200/2.0f - button2.button.height/3/2.0f, (float)button2.button.width, button2.frameHeight);
-    // MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
-    // skyboxMesh.MyLoadFromMesh(skyboxMesh._cube);
+    Button button("./assets/Buttons/buttonStart.png","./assets/Buttons/buttonfx.wav", [&menu](){menu = false;});
+    button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
+    Button button2("./assets/Buttons/buttonHelp.png","./assets/Buttons/buttonfx.wav", [&](){CloseWindow();});
+    button2.ButtonSetPosition(1920/2.0f - button2.button.width/2.0f, 800, (float)button2.button.width, button2.frameHeight);
+    Button button3("./assets/Buttons/buttonQuit.png","./assets/Buttons/buttonfx.wav", [&](){CloseWindow();});
+    button3.ButtonSetPosition(1920/2.0f - button3.button.width/2.0f, 900, (float)button3.button.width, button3.frameHeight);
 
-    // int a[1] = { MATERIAL_MAP_CUBEMAP };
-    // int b[1] = { skyboxMesh._useHDR ? 1 : 0 };
-    // int c[1] = { skyboxMesh._useHDR ? 1 : 0 };
-    // int d[1] = { 0 };
+    MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
+    skyboxMesh.InitSkybox();
+    skyboxMesh.chooseSkyboxFile("./assets/Skybox/oeoe.png");
 
-    // skyboxMesh._skybox.materials[0].shader = skyboxMesh.MyLoadShader("./assets/Skybox/skybox.vs", "./assets/Skybox/skybox.fs");
+    Parallax parallax("./assets/Parallax/bkgParallax.png", "./assets/Parallax/garfTerre.png");
 
-    // skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "environmentMap"), a, SHADER_UNIFORM_INT);
-    // skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "doGamma"), b, SHADER_UNIFORM_INT);
-    // skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "vflipped"), c, SHADER_UNIFORM_INT);
-
-    // skyboxMesh._shdrCubemap = skyboxMesh.MyLoadShader("./assets/Skybox/cubemap.vs", "./assets/Skybox/cubemap.fs");
-    // skyboxMesh.MySetShaderValue(skyboxMesh._shdrCubemap, skyboxMesh.MyGetShaderLocation(skyboxMesh._shdrCubemap, "environmentMap"), a, SHADER_UNIFORM_INT);
-
-    // if (skyboxMesh._useHDR) {
-    //     skyboxMesh.MyTextCopy(skyboxMesh._skyboxFileName, "./assets/Skybox/skybox.png");
-    //     skyboxMesh._panorama = skyboxMesh.MyLoadTexture(skyboxMesh._skyboxFileName);
-    //     skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = skyboxMesh.MyGenTextureCubemap(skyboxMesh._shdrCubemap, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
-    // } else {
-    //     skyboxMesh._img = skyboxMesh.MyLoadImage("./assets/Skybox/skybox.png");
-    //     skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(skyboxMesh._img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
-    //     skyboxMesh.MyUnloadImage(skyboxMesh._img);
-    // }
     while (!_raylibwindow.MyWindowShouldClose()) {
         if (menu) {
             button.HandleButton();
-            // button2.HandleButton();
+            button2.HandleButton();
+            button3.HandleButton();
 
             _raylibwindow.MyBeginDrawing();
+            parallax.updateInLoop();
+
             _raylibwindow.MyClearBackground(RAYWHITE);
             button.MyDrawTextureRec(button.button, button.sourceRec, (Vector2){ button.btnBounds.x, button.btnBounds.y }, WHITE);
-            // button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
+            button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
+            button3.MyDrawTextureRec(button3.button, button3.sourceRec, (Vector2){ button3.btnBounds.x, button3.btnBounds.y }, WHITE);
             _raylibwindow.MyEndDrawing();
         } else {
             _raylibdrawing.MyDrawFPS(10, 35);
@@ -155,19 +144,19 @@ int main(int ac, char **av)
             _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
             _raylibwindow.MyClearBackground(RAYWHITE);
             _raylibdrawing.MyBegin3DMode(camera);
-            // skyboxMesh.MyrlDisableBackfaceCulling();
-            // skyboxMesh.MyrlDisableDepthMask();
-            // DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+            skyboxMesh.MyrlDisableBackfaceCulling();
+            skyboxMesh.MyrlDisableDepthMask();
+            DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+            skyboxMesh.MyrlEnableBackfaceCulling();
+            skyboxMesh.MyrlEnableDepthMask();
             map.draw();
             moveSkin.z += 0.01;
-            // skyboxMesh.MyrlEnableBackfaceCulling();
-            // skyboxMesh.MyrlEnableDepthMask();
             _raylibdrawing.MyEnd3DMode();
         }
         _raylibdrawing.~Draw();
     }
-    // skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
-    // skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
-    // skyboxMesh.MyUnloadModel(skyboxMesh._skybox);
+    skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
+    skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
+    skyboxMesh.MyUnloadModel(skyboxMesh._skybox);
     return 0;
 }
