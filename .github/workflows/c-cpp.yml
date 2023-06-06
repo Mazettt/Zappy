@@ -14,6 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     # installs raylib on ubuntu
+    - name: install dependencies
+      run: sudo apt-get install -y libx11-dev libxi-dev
     - name: compiles raylib
       run: git clone https://github.com/raysan5/raylib.git raylib
     - name: compiles raylib
