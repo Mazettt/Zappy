@@ -2,20 +2,21 @@ import numpy
 
 class Player:
     def __init__(self, port, team="", machine="localhost"):
-        self.stats = Stats
+        self.stats = Stats(team)
         self.inventory = Inventory
-        self.client = Client(port, team, machine)
+        self.client = Client(port, machine)
         self.POV = POV
 
 class Stats:
-        elevating = False
-        level = 1
-        lifeUnit = 50
-        X = 0
-        Y = 0
-        orient = 0 # 0 = N, 1 = E, 2 = S, 3 = W
-        team = ""
-        playerNB = 0
+    def __init__(self, team):
+        self.elevating = False
+        self.level = 1
+        self.lifeUnit = 50
+        self.X = 0
+        self.Y = 0
+        self.orient = 0 # 0 = N, 1 = E, 2 = S, 3 = W
+        self.team = team
+        self.playerNB = 0
 
 class Inventory:
         nearbyPlayers = 0
@@ -27,9 +28,8 @@ class Inventory:
         thystames = 0
 
 class Client:
-    def __init__(self, port, team, machine):
+    def __init__(self, port, machine):
         self.port = port
-        self.team = team
         self.machine = machine
         self.sock = 0
 
