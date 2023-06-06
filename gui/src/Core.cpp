@@ -113,8 +113,8 @@ int main(int ac, char **av)
     button3.ButtonSetPosition(1920/2.0f - button3.button.width/2.0f, 900, (float)button3.button.width, button3.frameHeight);
 
     MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
-    // skyboxMesh.InitSkybox();
-    // skyboxMesh.chooseSkyboxFile("./assets/Skybox/skybox.png");
+    skyboxMesh.InitSkybox();
+    skyboxMesh.chooseSkyboxFile("./assets/Skybox/oeoe.png");
 
     while (!_raylibwindow.MyWindowShouldClose()) {
         if (menu) {
@@ -139,19 +139,19 @@ int main(int ac, char **av)
             _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
             _raylibwindow.MyClearBackground(RAYWHITE);
             _raylibdrawing.MyBegin3DMode(camera);
-            // skyboxMesh.MyrlDisableBackfaceCulling();
-            // skyboxMesh.MyrlDisableDepthMask();
-            // DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+            skyboxMesh.MyrlDisableBackfaceCulling();
+            skyboxMesh.MyrlDisableDepthMask();
+            DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+            skyboxMesh.MyrlEnableBackfaceCulling();
+            skyboxMesh.MyrlEnableDepthMask();
             map.draw();
             moveSkin.z += 0.01;
-            // skyboxMesh.MyrlEnableBackfaceCulling();
-            // skyboxMesh.MyrlEnableDepthMask();
             _raylibdrawing.MyEnd3DMode();
         }
         _raylibdrawing.~Draw();
     }
-    // skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
-    // skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
-    // skyboxMesh.MyUnloadModel(skyboxMesh._skybox);
+    skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
+    skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
+    skyboxMesh.MyUnloadModel(skyboxMesh._skybox);
     return 0;
 }
