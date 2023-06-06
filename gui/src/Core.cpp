@@ -100,7 +100,7 @@ int main(int ac, char **av)
 
     _raylibwindow.MySetTargetFPS(60);
     _raylibwindow.MyDisableCursor();
-    // Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
+    Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
     float volumeMusic = 0.3;
@@ -148,12 +148,12 @@ int main(int ac, char **av)
         skyboxMesh.MyrlDisableBackfaceCulling();
         skyboxMesh.MyrlDisableDepthMask();
         DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
-        map.draw();
-        moveSkin.z += 0.01;
-        // player.draw();
-        // player.move(moveSkin);
         skyboxMesh.MyrlEnableBackfaceCulling();
         skyboxMesh.MyrlEnableDepthMask();
+        map.draw();
+        moveSkin.z += 0.01;
+        player.draw();
+        player.move(moveSkin);
         _raylibdrawing.MyEnd3DMode();
         _raylibdrawing.~Draw();
     }
