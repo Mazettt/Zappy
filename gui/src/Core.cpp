@@ -102,9 +102,12 @@ int main(int ac, char **av)
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
     MyRayLib::Draw _raylibdrawing;
-
-    Button button("./assets/Buttons/button.png","./assets/Buttons/buttonfx.wav");
+    // std::map<Button
+    bool menu = true;
+    Button button("./assets/Buttons/button.png","./assets/Buttons/buttonfx.wav", [&menu](){menu = false;});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 1080/2.0f - button.button.height/3/2.0f, (float)button.button.width, button.frameHeight);
+    // Button button2("./assets/Buttons/button2.png","./assets/Buttons/buttonfx.wav", [&](){CloseWindow();});
+    // button2.ButtonSetPosition(1200/2.0f - button2.button.width/2.0f, 1200/2.0f - button2.button.height/3/2.0f, (float)button2.button.width, button2.frameHeight);
     // MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
     // skyboxMesh.MyLoadFromMesh(skyboxMesh._cube);
 
@@ -131,33 +134,15 @@ int main(int ac, char **av)
     //     skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(skyboxMesh._img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
     //     skyboxMesh.MyUnloadImage(skyboxMesh._img);
     // }
-    bool menu = true;
     while (!_raylibwindow.MyWindowShouldClose()) {
         if (menu) {
-            button.mousePoint = GetMousePosition();
-            button.btnAction = false;
+            button.HandleButton();
+            button2.HandleButton();
 
-            if (button.MyCheckCollisionPointRec(button.mousePoint, button.btnBounds)) {
-                if (button.MyIsMouseButtonDown(MOUSE_BUTTON_LEFT))
-                    button.btnState = 2;
-                else
-                    button.btnState = 1;
-
-                if (button.MyIsMouseButtonReleased(MOUSE_BUTTON_LEFT))
-                    button.btnAction = true;
-            }
-            else
-                button.btnState = 0;
-
-            if (button.btnAction) {
-                button.MyPlaySound(button.SoundButton);
-                menu = false;
-            }
-
-            button.sourceRec.y = button.btnState*button.frameHeight;
             _raylibwindow.MyBeginDrawing();
             _raylibwindow.MyClearBackground(RAYWHITE);
             button.MyDrawTextureRec(button.button, button.sourceRec, (Vector2){ button.btnBounds.x, button.btnBounds.y }, WHITE);
+            button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
             _raylibwindow.MyEndDrawing();
         } else {
             _raylibdrawing.MyDrawFPS(10, 35);
