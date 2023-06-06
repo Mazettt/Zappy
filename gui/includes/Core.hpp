@@ -18,6 +18,7 @@
 
 // NETWORKING HEADERS
 #include "../includes/MySocketHeader/Network.hpp"
+#include "Server/ServerLink.hpp"
 
 namespace ZappyGui {
    class Core {
@@ -25,10 +26,11 @@ namespace ZappyGui {
             Core();
             ~Core(){};
             int checkArgs(int ac, char **av);
-            int handleConnectionServer(int ac, char **av);
+            int handleConnectionServer();
         protected:
             int _port;
             std::string _ip;
+            ServerLink _server;
         private:
     };
 }

@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+
+import sys
+import socket
+import select
+import time
+import random
+import numpy as np
+import math
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import tensorflow as tf
+import zappy_parsing as zp
+import zappy_network_utils as znu
+import zappy_commands as zc
+import zappy_dataStruct as zds
+
+# class Player:
+#     X = 0
+#     Y = 0
+#     LVL = 1
+#     ORIENT = 0 # 0 = N, 1 = E, 2 = S, 3 = W
+#     INV = [0, 0, 0, 0, 0, 0, 0]
+#     TEAM = ""
+#     VISION = []
+#     VISION_SIZE = 0
+#     VISION_CENTER = 0
+#     PLAYER_NB = 0
+#     LIFE_UNIT = 10
+
+
+
+def main():
+    args = zp.get_args()
+    p = zds.Player(args["port"], args["name"], args["machine"])
+    p.client.sock = znu.con_to_server(p.client.machine, p.client.port)
+    znu.recv_from_server(p.client.sock)
+    p_infos = znu.get_player_infos(p.client.sock, p.stats.team)
+    zp.print_log("Player: {}".format(p_infos))
+    client_num, map_x, map_y = zp.parse_player_infos(p_infos)
+    # p = Player()
+    p.stats.playerNB = client_num
+    # p.TEAM = args["name"]
+    p.POV = 1 + (p.LVL - 1) * 2
+    map_str = zc.look(p.client.sock, map_x, map_y)
+    zc.view_map(map_str, map_x, map_y)
+
+
+main()

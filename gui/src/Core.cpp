@@ -20,7 +20,7 @@ using namespace MyRayLib;
 
 Core::Core()
 {
-    this->_port = 0;
+    this->_port = 4242;
     this->_ip = "127.0.0.1";
 }
 
@@ -63,17 +63,11 @@ int Core::checkArgs(int ac, char **av)
     return 0;
 }
 
-int Core::handleConnectionServer(int ac, char **av)
+int Core::handleConnectionServer()
 {
-    (void)ac;
-    (void)av;
-    Networking _networking;
-    int sock;
-    std::string message = "Hello World";
+    _server.connect(this->_ip, this->_port);
     while (true) {
-        sock = _networking.connectToServer(this->_port, this->_ip);
-        _networking.sendToServer(sock, message);
-        std::cout << _networking.receiveFromServer() << std::endl;
+        _server.update();
     }
     return 0;
 }
@@ -85,8 +79,8 @@ int main(int ac, char **av)
     Core _core;
     // try {
     //     _core.checkArgs(ac, av);
-    //     _core.handleConnectionServer(ac, av);
-    // } catch (std::exception &e) {
+    //     _core.handleConnectionServer();
+    // } catch (const std::exception &e) {
     //     std::cerr << e.what() << std::endl;
     //     return 84;
     // }
