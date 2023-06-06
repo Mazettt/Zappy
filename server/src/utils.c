@@ -7,29 +7,21 @@
 
 #include "../include/server.h"
 
-void close_command_socket(zappy_t *zappy, int ci)
+void close_command_socket(zappy_t *zappy, client_t *client)
 {
-    get_socket_infos(&zappy->client[ci].command);
-    if (client_socket(ci) != 0) {
-        close(client_socket(ci));
+    get_socket_infos(&client->command);
+    if (client->command.s != 0) {
+        close(client->command.s);
         debug_print("Host disconnected, ip %s, port %d\n",
-            inet_ntoa(zappy->client[ci].command.sa.sin_addr),
-            ntohs(zappy->client[ci].command.sa.sin_port));
+            inet_ntoa(client->command.sa.sin_addr),
+            ntohs(client->command.sa.sin_port));
     }
-    client_socket(ci) = 0;
-    zappy->client[ci].command.addrlen = 0;
-    memset(&zappy->client[ci].command.sa, 0,
-        sizeof(zappy->client[ci].command.sa));
-    if (zappy->client[ci].last_command) {
-        free(zappy->client[ci].last_command);
-        zappy->client[ci].last_command = NULL;
-    }
-    zappy->client[ci].type = UNKNOWN;
-    zappy->client[ci].team = NULL;
-    if (zappy->client[ci].player)
-        zappy->client[ci].player->client = NULL;
-    zappy->client[ci].player = NULL;
-    zappy->client[ci].passiveMode = false;
+    if (client->last_command)
+        free(client->last_command);
+    if (client->player)
+        kill_player(zappy, client->player);
+    memset(client, 0, sizeof(client_t));
+    client->type = UNKNOWN;
 }
 
 void free_word_array(char **arr)
@@ -42,16 +34,11 @@ void free_word_array(char **arr)
 size_t word_array_len(char **arr)
 {
     size_t len = 0;
-    for (; arr[len]; ++len);
+    for (; arr && arr[len]; ++len);
     return len;
 }
 
 int get_remaining_slots(team_t *team)
 {
-    int slots = 0;
-    for (int j = 0; j < team->nbrClients; ++j) {
-        if (team->players[j].client == NULL)
-            ++slots;
-    }
-    return slots;
+    return nbr_eggs_in_team(team);
 }

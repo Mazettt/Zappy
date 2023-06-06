@@ -7,7 +7,7 @@
 
 #include "../../../include/server.h"
 
-static void right(zappy_t *zappy, int ci)
+static void right(zappy_t *zappy, unused char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
     switch (player->direction) {
@@ -30,6 +30,5 @@ static void right(zappy_t *zappy, int ci)
 
 void cmd_right(zappy_t *zappy, char *command, int ci)
 {
-    (void)command;
-    zappy->game.actions = add_action(zappy->game.actions, time_limit(7), ci, right);
+    add_action(&zappy->client[ci], time_limit(7), command, right);
 }
