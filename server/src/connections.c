@@ -81,6 +81,8 @@ void read_connections(zappy_t *zappy)
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
         if (!client_socket(i))
             continue;
+        if (check_win(zappy) && zappy->client[i].type == AI)
+            continue;
         if (zappy->client[i].type == AI && !check_food(zappy, zappy->client[i].player)) {
             sdprintf(zappy, client_socket(i), "dead\n");
             close_command_socket(zappy, &zappy->client[i]);

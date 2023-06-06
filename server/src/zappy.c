@@ -70,6 +70,7 @@ static void init_game(zappy_t *zappy, args_t args)
     zappy->game.freq = args.freq;
     zappy->game.teams = malloc(sizeof(team_t) * nbrTeams);
     zappy->game.nbrTeams = nbrTeams;
+    zappy->game.winningTeam = NULL;
     zappy->game.playerIdIt = 0;
     zappy->game.eggIdIt = 0;
     for (int i = 0; i < nbrTeams; ++i) {

@@ -125,6 +125,7 @@ typedef struct {
     int eggIdIt;
     team_t *teams;
     int nbrTeams;
+    team_t *winningTeam;
     int ***map;
 } game_t;
 
@@ -294,6 +295,8 @@ void send_ebo(zappy_t *zappy, int ci, egg_t *egg);
 void send_edi(zappy_t *zappy, int ci, egg_t *egg);
 // message from the server
 void send_smg(zappy_t *zappy, int ci, char *msg);
+// end of the game
+void send_seg(zappy_t *zappy, int ci, team_t *winningTeam);
 
 // parsing
 char *read_file(char *filepath);
@@ -341,6 +344,7 @@ Item get_item(char *item);
  * @return char* and NULL if the item is not found
  */
 char *get_item_str(Item item);
+bool check_win(zappy_t *zappy);
 
 void add_action(client_t *client, time_t duration, char *command, void (*func)(zappy_t *, char *, int));
 void remove_action(action_t *action);

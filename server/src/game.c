@@ -92,3 +92,24 @@ char *get_item_str(Item item)
         return "thystame";
     return NULL;
 }
+
+bool check_win(zappy_t *zappy)
+{
+    if (zappy->game.winningTeam)
+        return true;
+    for (int i = 0; i < zappy->game.nbrTeams; ++i) {
+        player_t *player = zappy->game.teams[i].players;
+        int count = 0;
+        while (player) {
+            if (player->level == 8)
+                count++;
+            player = player->next;
+        }
+        if (count >= 6) {
+            zappy->game.winningTeam = &zappy->game.teams[i];
+            notif_guis(send_seg(zappy, notif_it, zappy->game.winningTeam));
+            return true;
+        }
+    }
+    return false;
+}
