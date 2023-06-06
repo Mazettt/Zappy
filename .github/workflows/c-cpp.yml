@@ -20,6 +20,6 @@ jobs:
     - name: compiles raylib
       run: git clone https://github.com/raysan5/raylib.git raylib
     - name: compiles raylib
-      run: cd raylib/src && make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=SHARED
+      run: cd raylib/src && sudo make install
     - name: make
       run: make
