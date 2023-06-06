@@ -3,7 +3,8 @@ import numpy
 class Player:
     def __init__(self, port, team="", machine="localhost"):
         self.stats = Stats(team)
-        self.inventory = Inventory
+        self.inventory = Inventory(0, 0, 0, 0, 0, 0, 0)
+        self.requirement = Inventory(1, 1, 0, 0, 0, 0, 0)
         self.client = Client(port, machine)
         self.POV = POV
 
@@ -19,13 +20,14 @@ class Stats:
         self.playerNB = 0
 
 class Inventory:
-        nearbyPlayers = 0
-        linemates = 0
-        deraumeres = 0
-        siburs = 0
-        mendianes = 0
-        phiras = 0
-        thystames = 0
+    def __init__(self, nearbyPlayers, linemates, deraumeres, siburs, mendianes, phiras, thystames):
+        self.nearbyPlayers = nearbyPlayers
+        self.linemates = linemates
+        self.deraumeres = deraumeres
+        self.siburs = siburs
+        self.mendianes = mendianes
+        self.phiras = phiras
+        self.thystames = thystames
 
 class Client:
     def __init__(self, port, machine):
