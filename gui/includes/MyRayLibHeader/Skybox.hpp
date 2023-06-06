@@ -94,7 +94,7 @@ namespace MyRayLib {
             void MyUnloadModel(::Model model) {
                 UnloadModel(model);
             }
-            ::TextureCubemap MyGenTextureCubemap(Shader shader, Texture2D panorama, int size, int format)
+            ::TextureCubemap MyGenTextureCubemap(Shader shader, int size, int format)
             {
                 TextureCubemap cubemap = { 0 };
                 MyrlDisableBackfaceCulling();
