@@ -137,12 +137,12 @@ int main(int ac, char **av)
     while (!_raylibwindow.MyWindowShouldClose()) {
         if (menu) {
             button.HandleButton();
-            button2.HandleButton();
+            // button2.HandleButton();
 
             _raylibwindow.MyBeginDrawing();
             _raylibwindow.MyClearBackground(RAYWHITE);
             button.MyDrawTextureRec(button.button, button.sourceRec, (Vector2){ button.btnBounds.x, button.btnBounds.y }, WHITE);
-            button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
+            // button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
             _raylibwindow.MyEndDrawing();
         } else {
             _raylibdrawing.MyDrawFPS(10, 35);
