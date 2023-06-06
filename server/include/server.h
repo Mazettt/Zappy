@@ -127,6 +127,7 @@ typedef struct {
     int nbrTeams;
     team_t *winningTeam;
     int ***map;
+    struct timeval lastRefill;
 } game_t;
 
 typedef struct {
@@ -355,6 +356,7 @@ void exec_action(zappy_t *zappy, action_t *action, int ci);
 
 // resources
 void init_resources(args_t args, game_t *game);
+void refill_resources(zappy_t *zappy);
 
 // cmd buff
 void add_cmd_buff(client_t *client, char *command);
