@@ -67,14 +67,17 @@ namespace MyRayLib {
             ::Image MyLoadImage(const char *fileName) {
                 return LoadImage(fileName);
             }
-            ::TextureCubemap MyLoadTextureCubemap(Image image, int layout) {
-                return ::LoadTextureCubemap(image, layout);
-            }
             void MyrlDisableBackfaceCulling() {
                 rlDisableBackfaceCulling();
             }
             void MyrlDisableDepthMask() {
                 rlDisableDepthMask();
+            }
+            void MyUnloadImage(::Image image) {
+                UnloadImage(image);
+            }
+            TextureCubemap MyLoadTextureCubemap(Image image, int layout) {
+                return LoadTextureCubemap(image, layout);
             }
             void MyrlEnableBackfaceCulling() {
                 rlEnableBackfaceCulling();
