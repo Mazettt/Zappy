@@ -13,7 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    # installs raylib on ubuntu
+    - name: update apt-get
+      run: sudo apt-get update
     - name: install dependencies
       run: sudo apt-get install -y libx11-dev libxi-dev
     - name: compiles raylib
