@@ -25,10 +25,6 @@
                 Cube cube(cubePosition, widthCube, heightCube, lengthCube, color);
                 std::shared_ptr<Tile> tile = std::make_shared<Tile>(cube);
                 this->_map[key] = std::move(tile);
-                this->_map[key]->addResource(this->_manager, IResource::resourceType::DERAUMERE);
-                this->_map[key]->addResource(this->_manager, IResource::resourceType::SIBUR);
-                this->_map[key]->addResource(this->_manager, IResource::resourceType::SIBUR);
-                this->_map[key]->addResource(this->_manager, IResource::resourceType::SIBUR);
                 this->_map[key]->addResource(this->_manager, IResource::resourceType::SIBUR);
                 this->_map[key]->addResource(this->_manager, IResource::resourceType::LINEMATE);
                 this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
@@ -37,6 +33,7 @@
                 this->_map[key]->addResource(this->_manager, IResource::resourceType::THYSTAME);
             }
         }
+        this->_map[0]->addPlayer(this->_manager, IResource::resourceType::PLAYER);
     }
 
     std::vector<std::shared_ptr<Tile>> Map::getMap() {

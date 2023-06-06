@@ -18,7 +18,6 @@ const Cube Tile::getCube() const {
 
 void Tile::addResource(const ResourceManager &manager, IResource::resourceType type) {
     if (_availablePositions.empty()) {
-        // this->_resources.push_back({ type, 0.0, 0.0 });
         this->_resources.push_back(FactoryResource::createResource(type, {0.0, 0.0, 0.0}, manager));
         return;
     }
@@ -30,12 +29,15 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
     _availablePositions.pop_back();
     float x_pos = -0.42 + x_index * 0.12;
     float z_pos = -0.42 + z_index * 0.12;
-    // FactoryResource::createResource(type, {x_pos, 0.0, z_pos}, manager);
-    // auto test = FactoryResource::createResource(type, {x_pos, 0.0, z_pos}, manager);
     this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.08, z_pos + this->_cube.getPos().z}, manager));
 }
 
-// void addPlayer() player -> vector
+void Tile::addPlayer(const ResourceManager &manager, IResource::resourceType type) {
+    const MyRayLib::Model &model = manager.getModel(type);
+    const MyRayLib::Texture2D &texture = manager.getTexture(type);
+    PlayerArguments playerArgs(5, 2, "Team1", {0.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, {1.0f, 0.0f, 0.0f}, 0);
+    this->_players.push_back(std::make_unique<Player>(playerArgs, model, texture));
+}
 
 void Tile::draw() {
     this->_cube.draw();
@@ -46,6 +48,10 @@ void Tile::draw() {
         this->_resources.at(i)->draw();
     }
     //player if exist
+    int nbrPlayer = this->_players.size();
+    for (int i = 0; i < nbrPlayer; ++i) {
+        this->_players.at(i)->draw();
+    }
 }
 
 Tile::~Tile() {}

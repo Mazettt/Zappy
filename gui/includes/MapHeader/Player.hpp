@@ -7,36 +7,24 @@
 
 #pragma once
 #include <string>
-#include "../MyRayLibHeader/AnimationsModel.hpp"
-#include "../MyRayLibHeader/Color.hpp"
-#include "../MyRayLibHeader/Draw.hpp"
-#include "../MyRayLibHeader/Model.hpp"
-#include "../MyRayLibHeader/Texture.hpp"
-#include "../MyRayLibHeader/Vector3D.hpp"
-#include "../MyRayLibHeader/Window.hpp"
-
+// #include "../MyRayLibHeader/AnimationsModel.hpp"
+// #include "../MyRayLibHeader/Color.hpp"
+// #include "../MyRayLibHeader/Draw.hpp"
+// #include "../MyRayLibHeader/Model.hpp"
+// #include "../MyRayLibHeader/Texture.hpp"
+// #include "../MyRayLibHeader/Vector3D.hpp"
+// #include "../MyRayLibHeader/Window.hpp"
+#include "PlayerArguments.hpp"
 
 namespace ZappyGui {
-    class Player {
+    class Player: public PlayerArguments {
         private:
-            bool _frozen;
-            int _playerLevel;
-            int _playerNumber;
-            std::string _teamName;
-            Vector3 _orientationAxis;
-            float _rotationAngle;
-            Vector3 _scale;
-            Vector3 _position;
-            MyRayLib::Model _skinModel;
-            MyRayLib::Texture2D _skinTexture;
+            const MyRayLib::Model &_model;
+            const MyRayLib::Texture2D &_texture;
+            // MyRayLib::AnimationsModel _animation;
 
-            int _animationFrameCounter;
-            MyRayLib::AnimationsModel _animation;
         public:
-            Player(int playerNumber, int playerLevel, const std::string &teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale);
-            void move(Vector3 position);
-            void upgrade(int level);
-            void inventory();
+            Player(const PlayerArguments &playerArgs, const MyRayLib::Model &model, const MyRayLib::Texture2D &texture);
             void draw();
             ~Player() {};
     };

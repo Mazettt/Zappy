@@ -6,11 +6,11 @@
 */
 
 #pragma once
-// #include "../MyRayLibHeader/AnimationsModel.hpp"
+#include "../MyRayLibHeader/AnimationsModel.hpp"
 #include "../MyRayLibHeader/Color.hpp"
 #include "../MyRayLibHeader/Draw.hpp"
-// #include "../MyRayLibHeader/Model.hpp"
-// #include "../MyRayLibHeader/Texture.hpp"
+#include "../MyRayLibHeader/Model.hpp"
+#include "../MyRayLibHeader/Texture.hpp"
 #include "../MyRayLibHeader/Vector3D.hpp"
 #include "../MyRayLibHeader/Window.hpp"
 
@@ -27,8 +27,19 @@ namespace ZappyGui {
             int _animationFrameCounter;
 
         public:
-            PlayerArguments(int _playerLevel, int _playerNumber, std::string _teamName, Vector3 _orientationAxis, float _rotationAngle, Vector3 _scale, Vector3 _position, int _animationFrameCounter);
-            ~PlayerArguments();
+            PlayerArguments(): _playerLevel(0), _playerNumber(0), _teamName(""), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _position({0.0, 0.0, 0.0}), _animationFrameCounter(0) {};
+            PlayerArguments(int playerLevel, int playerNumber, std::string teamName, Vector3 orientationAxis, float rotationAngle, Vector3 scale, Vector3 position, int animationFrameCounter):
+            _playerLevel(playerLevel), _playerNumber(playerNumber), _teamName(teamName), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _position(position), _animationFrameCounter(animationFrameCounter) {};
+            PlayerArguments(const PlayerArguments &playerArgs) {
+                this->_playerLevel = playerArgs._playerLevel;
+                this->_playerNumber = playerArgs._playerNumber;
+                this->_teamName = playerArgs._teamName;
+                this->_orientationAxis = playerArgs._orientationAxis;
+                this->_scale = playerArgs._scale;
+                this->_position = playerArgs._position;
+                this->_animationFrameCounter = playerArgs._animationFrameCounter;
+            };
+            ~PlayerArguments() {};
             int getPlayerLevel() const {
                 return _playerLevel;
             }

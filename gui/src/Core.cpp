@@ -100,7 +100,7 @@ int main(int ac, char **av)
 
     _raylibwindow.MySetTargetFPS(60);
     _raylibwindow.MyDisableCursor();
-    Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
+    // Player player(5, 0, "Team1", {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f});
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
 
     float volumeMusic = 0.3;
@@ -108,32 +108,32 @@ int main(int ac, char **av)
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
     MyRayLib::Draw _raylibdrawing;
-    MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
-    skyboxMesh.MyLoadFromMesh(skyboxMesh._cube);
+    // MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
+    // skyboxMesh.MyLoadFromMesh(skyboxMesh._cube);
 
-    int a[1] = { MATERIAL_MAP_CUBEMAP };
-    int b[1] = { skyboxMesh._useHDR ? 1 : 0 };
-    int c[1] = { skyboxMesh._useHDR ? 1 : 0 };
-    int d[1] = { 0 };
+    // int a[1] = { MATERIAL_MAP_CUBEMAP };
+    // int b[1] = { skyboxMesh._useHDR ? 1 : 0 };
+    // int c[1] = { skyboxMesh._useHDR ? 1 : 0 };
+    // int d[1] = { 0 };
 
-    skyboxMesh._skybox.materials[0].shader = skyboxMesh.MyLoadShader("./assets/Skybox/skybox.vs", "./assets/Skybox/skybox.fs");
+    // skyboxMesh._skybox.materials[0].shader = skyboxMesh.MyLoadShader("./assets/Skybox/skybox.vs", "./assets/Skybox/skybox.fs");
 
-    skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "environmentMap"), a, SHADER_UNIFORM_INT);
-    skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "doGamma"), b, SHADER_UNIFORM_INT);
-    skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "vflipped"), c, SHADER_UNIFORM_INT);
+    // skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "environmentMap"), a, SHADER_UNIFORM_INT);
+    // skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "doGamma"), b, SHADER_UNIFORM_INT);
+    // skyboxMesh.MySetShaderValue(skyboxMesh._skybox.materials[0].shader, skyboxMesh.MyGetShaderLocation(skyboxMesh._skybox.materials[0].shader, "vflipped"), c, SHADER_UNIFORM_INT);
 
-    skyboxMesh._shdrCubemap = skyboxMesh.MyLoadShader("./assets/Skybox/cubemap.vs", "./assets/Skybox/cubemap.fs");
-    skyboxMesh.MySetShaderValue(skyboxMesh._shdrCubemap, skyboxMesh.MyGetShaderLocation(skyboxMesh._shdrCubemap, "environmentMap"), a, SHADER_UNIFORM_INT);
+    // skyboxMesh._shdrCubemap = skyboxMesh.MyLoadShader("./assets/Skybox/cubemap.vs", "./assets/Skybox/cubemap.fs");
+    // skyboxMesh.MySetShaderValue(skyboxMesh._shdrCubemap, skyboxMesh.MyGetShaderLocation(skyboxMesh._shdrCubemap, "environmentMap"), a, SHADER_UNIFORM_INT);
 
-    if (skyboxMesh._useHDR) {
-        skyboxMesh.MyTextCopy(skyboxMesh._skyboxFileName, "./assets/Skybox/skybox.png");
-        skyboxMesh._panorama = skyboxMesh.MyLoadTexture(skyboxMesh._skyboxFileName);
-        skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = skyboxMesh.MyGenTextureCubemap(skyboxMesh._shdrCubemap, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
-    } else {
-        skyboxMesh._img = skyboxMesh.MyLoadImage("./assets/Skybox/skybox.png");
-        skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(skyboxMesh._img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
-        skyboxMesh.MyUnloadImage(skyboxMesh._img);
-    }
+    // if (skyboxMesh._useHDR) {
+    //     skyboxMesh.MyTextCopy(skyboxMesh._skyboxFileName, "./assets/Skybox/skybox.png");
+    //     skyboxMesh._panorama = skyboxMesh.MyLoadTexture(skyboxMesh._skyboxFileName);
+    //     skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = skyboxMesh.MyGenTextureCubemap(skyboxMesh._shdrCubemap, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    // } else {
+    //     skyboxMesh._img = skyboxMesh.MyLoadImage("./assets/Skybox/skybox.png");
+    //     skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(skyboxMesh._img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
+    //     skyboxMesh.MyUnloadImage(skyboxMesh._img);
+    // }
     while (!_raylibwindow.MyWindowShouldClose()) {
         _raylibdrawing.MyDrawFPS(10, 35);
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
@@ -145,20 +145,20 @@ int main(int ac, char **av)
         _raylibwindow.MyUpdateCamera(&camera, CAMERA_THIRD_PERSON);
         _raylibwindow.MyClearBackground(RAYWHITE);
         _raylibdrawing.MyBegin3DMode(camera);
-        skyboxMesh.MyrlDisableBackfaceCulling();
-        skyboxMesh.MyrlDisableDepthMask();
-        DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
-        skyboxMesh.MyrlEnableBackfaceCulling();
-        skyboxMesh.MyrlEnableDepthMask();
+        // skyboxMesh.MyrlDisableBackfaceCulling();
+        // skyboxMesh.MyrlDisableDepthMask();
+        // DrawModel(skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
         map.draw();
         moveSkin.z += 0.01;
-        player.draw();
-        player.move(moveSkin);
+        // player.draw();
+        // player.move(moveSkin);
+        // skyboxMesh.MyrlEnableBackfaceCulling();
+        // skyboxMesh.MyrlEnableDepthMask();
         _raylibdrawing.MyEnd3DMode();
         _raylibdrawing.~Draw();
     }
-    skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
-    skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
-    skyboxMesh.MyUnloadModel(skyboxMesh._skybox);
+    // skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
+    // skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
+    // skyboxMesh.MyUnloadModel(skyboxMesh._skybox);
     return 0;
 }
