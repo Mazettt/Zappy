@@ -11,6 +11,7 @@
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Skybox.hpp"
 #include "../includes/MyRayLibHeader/Button.hpp"
+#include "../includes/MyRayLibHeader/Parallax.hpp"
 
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Music.hpp"
@@ -116,6 +117,8 @@ int main(int ac, char **av)
     skyboxMesh.InitSkybox();
     skyboxMesh.chooseSkyboxFile("./assets/Skybox/oeoe.png");
 
+    Parallax parallax("./assets/Parallax/bkgParallax.png", "./assets/Parallax/garfTerre.png");
+
     while (!_raylibwindow.MyWindowShouldClose()) {
         if (menu) {
             button.HandleButton();
@@ -123,6 +126,8 @@ int main(int ac, char **av)
             button3.HandleButton();
 
             _raylibwindow.MyBeginDrawing();
+            parallax.updateInLoop();
+
             _raylibwindow.MyClearBackground(RAYWHITE);
             button.MyDrawTextureRec(button.button, button.sourceRec, (Vector2){ button.btnBounds.x, button.btnBounds.y }, WHITE);
             button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
