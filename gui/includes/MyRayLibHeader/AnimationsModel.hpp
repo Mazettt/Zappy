@@ -15,26 +15,18 @@ namespace MyRayLib {
         private:
             ::ModelAnimation *_animation;
             unsigned int _frameCount;
-            int _frameCounter;
         public:
             AnimationsModel(const std::string &path) {
                 _frameCount = 0;
-                _frameCounter = 0;
                 _animation = LoadModelAnimations(path.c_str(), &_frameCount);
             }
             ~AnimationsModel() {
                 UnloadModelAnimations(_animation, _frameCount);
             }
-            void MyUpdateModelAnimation(::Model model, int typeAnimation) {
-                _frameCounter++;
-                UpdateModelAnimation(model, _animation[typeAnimation], _frameCounter);
-                if (_frameCounter >= _animation[0].frameCount) _frameCounter = 0;
+            void MyUpdateModelAnimation(::Model model, int type, int &frameCounter) {
+                frameCounter++;
+                UpdateModelAnimation(model, _animation[type], frameCounter);
+                if (frameCounter >= _animation[0].frameCount) frameCounter = 0;
             }
-            unsigned int getFrameCount() const {
-                return _frameCount;
-            }
-            void setFrameCount(unsigned int frameCount) {
-                _frameCount = frameCount;
-            }
-        };
+    };
 }

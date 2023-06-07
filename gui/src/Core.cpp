@@ -102,20 +102,22 @@ int main(int ac, char **av)
     MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     if (music.MyIsMusicReady())
         music.MyPlayMusic();
-
+    // MyRayLib::Music musicGen("./assets/GénériqueGarf.mp3");
+    // if (musicGen.MyIsMusicReady())
+    //     musicGen.MyPlayMusic();
     MyRayLib::Draw _raylibdrawing;
 
     bool menu = true;
     Button button("./assets/Buttons/buttonStart.png","./assets/Buttons/buttonfx.wav", [&menu](){menu = false;});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
-    Button button2("./assets/Buttons/buttonHelp.png","./assets/Buttons/buttonfx.wav", [&](){CloseWindow();});
+    Button button2("./assets/Buttons/buttonHelp.png","./assets/Buttons/buttonfx.wav", [&menu](){menu = false;});
     button2.ButtonSetPosition(1920/2.0f - button2.button.width/2.0f, 800, (float)button2.button.width, button2.frameHeight);
-    Button button3("./assets/Buttons/buttonQuit.png","./assets/Buttons/buttonfx.wav", [&](){CloseWindow();});
+    Button button3("./assets/Buttons/buttonQuit.png","./assets/Buttons/buttonfx.wav", [&menu](){menu = false;});
     button3.ButtonSetPosition(1920/2.0f - button3.button.width/2.0f, 900, (float)button3.button.width, button3.frameHeight);
 
     MyRayLib::Skybox skyboxMesh(1.0, 1.0, 1.0);
     skyboxMesh.InitSkybox();
-    skyboxMesh.chooseSkyboxFile("./assets/Skybox/oeoe.png");
+    skyboxMesh.chooseSkyboxFile("./assets/Skybox/tt.png");
 
     Parallax parallax("./assets/Parallax/bkgParallax.png", "./assets/Parallax/garfTerre.png");
     while (!_raylibwindow.MyWindowShouldClose()) {
@@ -123,6 +125,13 @@ int main(int ac, char **av)
             button.HandleButton();
             button2.HandleButton();
             button3.HandleButton();
+
+            // if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
+            //     volumeMusic += 0.1f;
+            // if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
+            //     volumeMusic -= 0.1f;
+            // musicGen.MySetMusicVolume(volumeMusic);
+            // musicGen.MyUpdateMusic();
 
             _raylibwindow.MyBeginDrawing();
             parallax.updateInLoop();
@@ -135,6 +144,8 @@ int main(int ac, char **av)
             _raylibwindow.MyEndDrawing();
         } else {
             _raylibdrawing.MyDrawFPS(10, 35);
+            if (music.MyIsMusicReady())
+                music.MyPlayMusic();
             if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
                 volumeMusic += 0.1f;
             if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
@@ -155,6 +166,7 @@ int main(int ac, char **av)
         }
         _raylibdrawing.~Draw();
     }
+    parallax.UnLoadFont();
     parallax.UnLoadAllParallax();
     skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
     skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
