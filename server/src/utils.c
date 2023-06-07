@@ -22,6 +22,8 @@ void close_command_socket(zappy_t *zappy, client_t *client)
         kill_player(zappy, client->player);
     while (client->cmdBuff)
         remove_first_cmd_buff(client);
+    if (client->action.command)
+        free(client->action.command);
     memset(client, 0, sizeof(client_t));
     client->type = UNKNOWN;
 }

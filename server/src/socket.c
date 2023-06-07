@@ -62,5 +62,5 @@ void init_main_socket(zappy_t *zappy, int port)
     zappy->main.addrlen) || listen(zappy->main.s, MAX_CONNECTIONS) < 0) {
         perror("bind | listen");exit(84);
     }
-    debug_print("Listening on port %d\n", zappy->port);
+    printf("Listening on port %d\n", zappy->port);
 }
