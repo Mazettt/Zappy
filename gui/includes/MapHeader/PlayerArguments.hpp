@@ -46,7 +46,7 @@ namespace ZappyGui {
             };
             ~PlayerArguments() {};
             int getAnimationType() const {
-                return -1;
+                return _animationType;
             }
             int getPlayerLevel() const {
                 return _playerLevel;

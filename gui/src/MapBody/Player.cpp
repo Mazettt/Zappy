@@ -10,7 +10,7 @@
 using namespace ZappyGui;
 
 Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation):
-    PlayerArguments(playerArgs), _model(model), _texture(texture), _animation(animation), _frameCounterAnimation(0) {
+    PlayerArguments(playerArgs), _model(model), _texture(texture), _animation(animation), _frameCounterAnimation(-1), _animationType(Player::animationPlayerType::PLAYER_GET) {
 }
 
 void Player::animationWin() {
@@ -45,10 +45,10 @@ void Player::animationWalk() {
 
 void Player::noAnimation() {
     this->_animationType = Player::animationPlayerType::PLAYER_NOTHING;
-    this->_frameCounterAnimation = 0;
+    this->_frameCounterAnimation = -1;
 }
 
 void Player::draw() {
-    // this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
+    this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->_animationType, this->_frameCounterAnimation);
     MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), this->getOrientationAxis(), this->getRotationAngle(), this->getScale(), MyRayLib::MyRayLibColor::White());
 }

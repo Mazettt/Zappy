@@ -27,13 +27,13 @@ namespace ZappyGui {
 
         public:
             enum animationPlayerType {
-                PLAYER_NOTHING = -1,
                 PLAYER_WIN,
                 PLAYER_LVLUP,
                 PLAYER_DIE,
                 PLAYER_GET,
                 PLAYER_WAIT,
-                PLAYER_WALK
+                PLAYER_WALK,
+                PLAYER_NOTHING = 9
             };
             Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
             void animationWin();
