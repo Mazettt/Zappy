@@ -9,24 +9,10 @@ import numpy as np
 import math
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import tensorflow as tf
-import zappy_parsing as zp
-import zappy_network_utils as znu
-import zappy_commands as zc
-import zappy_dataStruct as zds
-
-# class Player:
-#     X = 0
-#     Y = 0
-#     LVL = 1
-#     ORIENT = 0 # 0 = N, 1 = E, 2 = S, 3 = W
-#     INV = [0, 0, 0, 0, 0, 0, 0]
-#     TEAM = ""
-#     VISION = []
-#     VISION_SIZE = 0
-#     VISION_CENTER = 0
-#     PLAYER_NB = 0
-#     LIFE_UNIT = 10
+import ai.zappy_parsing as zp
+import ai.zappy_network_utils as znu
+import ai.zappy_commands as zc
+import ai.zappy_dataStruct as zds
 
 def find_food(p: zds.Player, map_str: str):
     for line in map_str:
