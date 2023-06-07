@@ -3,11 +3,10 @@ import socket
 import select
 import time
 import random
-import tensorflow as tf
 import numpy as np
 import math
 import os
-import zappy_parsing as zp
+import ai.zappy_parsing as zp
 
 def con_to_server(machine, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

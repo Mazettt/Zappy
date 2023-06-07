@@ -1,6 +1,5 @@
-import zappy_dataStruct as zds
-import zappy_network_utils as znu
-import zappy_commands as zc
+import ai.zappy_dataStruct as zds
+import ai.zappy_commands as zc
 
 def canElevate(p: zds.Player):
     p.stats.elevating = False
@@ -22,8 +21,7 @@ def canElevate(p: zds.Player):
 
 def elevationTry(p: zds.Player):
     p.stats.elevating = True
-    zc.incantation(p.client.sock)
-    if (znu.recv_from_server(p.client.sock) == "Elevation underway\n"):
+    if (zc.incantation(p.client.sock) == "Elevation underway\n"):
         p.stats.elevating = False
         p.stats.level += 1
         updatRequirement(p)

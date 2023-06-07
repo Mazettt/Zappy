@@ -103,7 +103,7 @@ void zappy(args_t args)
             refill_resources(zappy);
         }
     }
-    debug_print("\n%s\n", "Quitting...");
+    printf("\n%s\n", "Quitting...");
     close_all(zappy);
     free_all(zappy);
 }

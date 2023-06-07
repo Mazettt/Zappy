@@ -50,6 +50,8 @@ player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
 
     new->prev = NULL;
     new->next = egg->team->players;
+    if (egg->team->players)
+        egg->team->players->prev = new;
     egg->team->players = new;
     return new;
 }
