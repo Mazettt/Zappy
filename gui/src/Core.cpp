@@ -155,6 +155,7 @@ int main(int ac, char **av)
         }
         _raylibdrawing.~Draw();
     }
+    parallax.UnLoadFont();
     parallax.UnLoadAllParallax();
     skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
     skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);

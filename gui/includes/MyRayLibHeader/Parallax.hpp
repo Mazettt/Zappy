@@ -48,5 +48,8 @@ namespace MyRayLib {
             void WriteTitle() {
                 DrawTextEx(_fontTtf, "Garfield's dream", (Vector2){ 740.0f, 100.0f }, 130.0, 2, BLUE);
             }
+            void UnLoadFont() {
+                UnloadFont(_fontTtf);
+            }
         };
 }
