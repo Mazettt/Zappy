@@ -30,10 +30,10 @@ Map::Map(int x, int y): _manager(ResourceManager()) {
             this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
         }
     }
-    PlayerArguments playerArgs(5, 2, "Team1", {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, 10.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
+    PlayerArguments playerArgs(5, 2, "Team1", {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
     this->addPlayerForTile({1.0f, 0.0f}, playerArgs);
 
-    PlayerArguments playerArgs1(5, 2, "Team1", {5.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, 10.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
+    PlayerArguments playerArgs1(5, 2, "Team1", {5.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
     this->addPlayerForTile({1.0f, 0.0f}, playerArgs1);
 }
 

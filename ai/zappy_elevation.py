@@ -4,35 +4,19 @@ import zappy_commands as zc
 
 def canElevate(p: zds.Player):
     p.stats.elevating = False
-    if (p.stats.level == 1):
-        elevationAssess(p.inventory, p.requirement)
-    if (p.stats.level == 2):
-        elevationAssess(p.inventory, p.requirement)
-    if (p.stats.level == 3):
-        elevationAssess(p.inventory, p.requirement)
-    if (p.stats.level == 4):
-        elevationAssess(p.inventory, p.requirement)
-    if (p.stats.level == 5):
-        elevationAssess(p.inventory, p.requirement)
-    if (p.stats.level == 6):
-        elevationAssess(p.inventory, p.requirement)
-    if (p.stats.level == 7):
-        elevationAssess(p.inventory, p.requirement)
-
-def elevationAssess(p: zds.Player, playersNbr, linemates, deraumeres, siburs, mendianes, phiras, thystames):
-    if (p.inventory.nearbyPlayers < playersNbr):
+    if (p.inventory.nearbyPlayers < p.requirement.nearbyPlayers):
         return
-    if (p.inventory.linemates < linemates):
+    if (p.inventory.linemates < p.requirement.linemates):
         return
-    if (p.inventory.deraumeres < deraumeres):
+    if (p.inventory.deraumeres < p.requirement.deraumeres):
         return
-    if (p.inventory.siburs < siburs):
+    if (p.inventory.siburs < p.requirement.siburs):
         return
-    if (p.inventory.mendianes < mendianes):
+    if (p.inventory.mendianes < p.requirement.mendianes):
         return
-    if (p.inventory.phiras < phiras):
+    if (p.inventory.phiras < p.requirement.phiras):
         return
-    if (p.inventory.thystames < thystames):
+    if (p.inventory.thystames < p.requirement.thystames):
         return
     elevationTry(p)
 

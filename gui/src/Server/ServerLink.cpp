@@ -89,7 +89,6 @@ void ServerLink::update()
 void ServerLink::_init()
 {
     _responseFunctions["msz"] = &ServerLink::_msz;
-    _responseFunctions["msz"] = &ServerLink::_msz;
     _responseFunctions["bct"] = &ServerLink::_bct;
     _responseFunctions["tna"] = &ServerLink::_tna;
     _responseFunctions["pnw"] = &ServerLink::_pnw;
