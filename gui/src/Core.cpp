@@ -118,7 +118,6 @@ int main(int ac, char **av)
     skyboxMesh.chooseSkyboxFile("./assets/Skybox/oeoe.png");
 
     Parallax parallax("./assets/Parallax/bkgParallax.png", "./assets/Parallax/garfTerre.png");
-
     while (!_raylibwindow.MyWindowShouldClose()) {
         if (menu) {
             button.HandleButton();
@@ -127,6 +126,7 @@ int main(int ac, char **av)
 
             _raylibwindow.MyBeginDrawing();
             parallax.updateInLoop();
+            parallax.WriteTitle();
 
             _raylibwindow.MyClearBackground(RAYWHITE);
             button.MyDrawTextureRec(button.button, button.sourceRec, (Vector2){ button.btnBounds.x, button.btnBounds.y }, WHITE);
@@ -155,6 +155,7 @@ int main(int ac, char **av)
         }
         _raylibdrawing.~Draw();
     }
+    parallax.UnLoadAllParallax();
     skyboxMesh.MyUnloadShader(skyboxMesh._skybox.materials[0].shader);
     skyboxMesh.MyUnloadTexture(skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
     skyboxMesh.MyUnloadModel(skyboxMesh._skybox);

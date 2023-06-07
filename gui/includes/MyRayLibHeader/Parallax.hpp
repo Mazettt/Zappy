@@ -19,8 +19,10 @@ namespace MyRayLib {
             ::Texture2D _midground;
             float _scrollingBack = 0.0f;
             float _scrollingMid = 0.0f;
+            Font _fontTtf;
         public:
             Parallax(const std::string background, const std::string middle) {
+                _fontTtf = LoadFontEx("./assets/Parallax/Dongle-Bold.ttf", 512, 0, 250);
                 _background = LoadTexture(background.c_str());
                 _midground = LoadTexture(middle.c_str());
                 _scrollingBack = 0.0f;
@@ -38,6 +40,13 @@ namespace MyRayLib {
 
                 DrawTextureEx(_midground, (Vector2){ _scrollingMid, 20 }, 0.0f, 1.0f, WHITE);
                 DrawTextureEx(_midground, (Vector2){ _midground.width*2 + _scrollingMid, 20 }, 0.0f, 1.0f, WHITE);
+            }
+            void UnLoadAllParallax() {
+                UnloadTexture(_background);
+                UnloadTexture(_midground);
+            }
+            void WriteTitle() {
+                DrawTextEx(_fontTtf, "Garfield's dream", (Vector2){ 740.0f, 100.0f }, 130.0, 2, BLUE);
             }
         };
 }
