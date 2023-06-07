@@ -19,13 +19,17 @@ def get_args():
         "machine": "localhost"
     }
     for i in range(1, len(sys.argv)):
-        if sys.argv[i] == "-p":
-            args["port"] = int(sys.argv[i + 1])
-        elif sys.argv[i] == "-n":
-            args["name"] = sys.argv[i + 1]
-        elif sys.argv[i] == "-h":
-            args["machine"] = sys.argv[i + 1]
+        if sys.argv[i] == "-help" and i == 1:
+            print_usage()
+            exit(0)
+        elif sys.argv[i - 1] == "-p":
+            args["port"] = int(sys.argv[i])
+        elif sys.argv[i - 1] == "-n":
+            args["name"] = sys.argv[i]
+        elif sys.argv[i - 1] == "-h":
+            args["machine"] = sys.argv[i]
     if args["port"] == 0 or args["name"] == "":
+        print("Invalid argument, refer to usage :\n")
         print_usage()
         exit(84)
     print_log("Arguments: {}".format(args))
