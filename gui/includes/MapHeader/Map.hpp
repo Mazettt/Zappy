@@ -22,7 +22,7 @@ namespace ZappyGui {
             Map(int x, int y);
             ~Map();
             void addResourceForTile(const Vector2 &pos, IResource::resourceType type);
-            void addPlayerForTile(const Vector2 &pos, const PlayerArguments &playerArgs);
+            void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
     };
 }

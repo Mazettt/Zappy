@@ -22,9 +22,27 @@ namespace ZappyGui {
             MyRayLib::Model &_model;
             const MyRayLib::Texture2D &_texture;
             MyRayLib::AnimationsModel &_animation;
+            int _frameCounterAnimation;
+            int _animationType;
 
         public:
+            enum animationPlayerType {
+                PLAYER_NOTHING = -1,
+                PLAYER_WIN,
+                PLAYER_LVLUP,
+                PLAYER_DIE,
+                PLAYER_GET,
+                PLAYER_WAIT,
+                PLAYER_WALK
+            };
             Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
+            void animationWin();
+            void animationLVLUP();
+            void animationDie();
+            void animationGet();
+            void animationWait();
+            void animationWalk();
+            void noAnimation();
             void draw();
             ~Player() {};
     };

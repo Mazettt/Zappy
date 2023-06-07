@@ -30,24 +30,22 @@ Map::Map(int x, int y): _manager(ResourceManager()) {
             this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
         }
     }
-    PlayerArguments playerArgs(5, 2, "Team1", {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
-    this->addPlayerForTile({1.0f, 0.0f}, playerArgs);
-
-    PlayerArguments playerArgs1(5, 2, "Team1", {5.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
-    this->addPlayerForTile({1.0f, 0.0f}, playerArgs1);
+    PlayerArguments playerArgs(2, "Team1", {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
+    this->addPlayerForTile(playerArgs);
+    PlayerArguments playerArgs1(2, "Team1", {5.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
+    this->addPlayerForTile(playerArgs1);
 }
 
 void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type) {
     this->_map[pos.y * this->_size.x + pos.x]->addResource(this->_manager, type);
 }
 
-void Map::addPlayerForTile(const Vector2 &pos, const PlayerArguments &playerArgs) {
+void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
     auto &modelPlayer = this->_manager.getPlayerModel();
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
     this->_players.push_back(std::make_unique<Player>(playerArgs, modelPlayer, texture, animation));
 }
-
 
 void Map::draw() {
     for (int y = 0; y < this->_size.y; ++y) {
