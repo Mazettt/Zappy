@@ -71,9 +71,10 @@ static void read_connection(zappy_t *zappy, int ci)
 {
     if (!FD_ISSET(client_socket(ci), &zappy->readfds))
         return;
-    char buff[1024] = {0};
-
-    if (read(client_socket(ci), buff, 1024) == 0)
+    char buff[1024 * 4] = {0};
+    ssize_t r = read(client_socket(ci), buff, 1024 * 4);
+    buff[r] = 0;
+    if (r == 0)
         close_command_socket(zappy, &zappy->client[ci]);
     else
         parse_command(zappy, ci, buff);
@@ -96,7 +97,7 @@ void read_connections(zappy_t *zappy)
         else if (zappy->client[i].cmdBuff) {
             switch_commands(zappy, zappy->client[i].cmdBuff->c, i);
             remove_first_cmd_buff(&zappy->client[i]);
-        } else
-            read_connection(zappy, i);
+        }
+        read_connection(zappy, i);
     }
 }
