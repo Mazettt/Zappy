@@ -12,6 +12,7 @@
 #include "../includes/MyRayLibHeader/Skybox.hpp"
 #include "../includes/MyRayLibHeader/Button.hpp"
 #include "../includes/MyRayLibHeader/Parallax.hpp"
+#include "../includes/MyRayLibHeader/Shader.hpp"
 
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Music.hpp"
@@ -93,7 +94,16 @@ int main(int ac, char **av)
     Camera3D camera = _raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
 
     Map map(x_pos, y_pos);
-
+    Shader shaders[7] = {0};
+    shaders[0] = LoadShader(0, "./assets/Shaders/chromaberration.fs");
+    shaders[1] = LoadShader(0, "./assets/Shaders/clown.fs");
+    shaders[2] = LoadShader(0, "./assets/Shaders/degueuvert.fs");
+    shaders[3] = LoadShader(0, "./assets/Shaders/fragment.fs");
+    shaders[4] = LoadShader(0, "./assets/Shaders/gaussian.fs");
+    shaders[5] = LoadShader(0, "./assets/Shaders/nightvis.fs");
+    shaders[6] = LoadShader(0, "./assets/Shaders/predator.fs");
+    int shader = 0;
+    int shaderMax = 7;
     _raylibwindow.MySetTargetFPS(60);
     // _raylibwindow.MyDisableCursor();
     Vector3 moveSkin = {0.0f, 0.0f, 0.0f};
@@ -121,6 +131,16 @@ int main(int ac, char **av)
 
     Parallax parallax("./assets/Parallax/bkgParallax.png", "./assets/Parallax/garfTerre.png");
     while (!_raylibwindow.MyWindowShouldClose()) {
+        if (IsKeyPressed(KEY_J)) {
+            shader--;
+            if (shader < 0)
+                shader = shaderMax - 1;
+        }
+        if (IsKeyPressed(KEY_K)) {
+            shader++;
+            if (shader > shaderMax - 1)
+                shader = 0;
+        }
         if (menu) {
             button.HandleButton();
             button2.HandleButton();
@@ -131,7 +151,7 @@ int main(int ac, char **av)
             // if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
             //     volumeMusic -= 0.1f;
             // musicGen.MySetMusicVolume(volumeMusic);
-            // musicGen.MyUpdateMusic();
+            // musicGen.MyUpdateMusic();    
 
             _raylibwindow.MyBeginDrawing();
             parallax.updateInLoop();
@@ -143,6 +163,7 @@ int main(int ac, char **av)
             button3.MyDrawTextureRec(button3.button, button3.sourceRec, (Vector2){ button3.btnBounds.x, button3.btnBounds.y }, WHITE);
             _raylibwindow.MyEndDrawing();
         } else {
+            BeginShaderMode(shaders[shader]);
             _raylibdrawing.MyDrawFPS(10, 35);
             if (music.MyIsMusicReady())
                 music.MyPlayMusic();
