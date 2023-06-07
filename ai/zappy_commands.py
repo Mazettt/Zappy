@@ -43,17 +43,22 @@ def left(sock: socket.socket):
 def look(sock: socket.socket, map_x: int, map_y: int):
     znu.send_to_server(sock, "Look\n")
     resp = znu.multiple_recv_from_server(sock, 20)
-    map_game = []
-    resp = resp[1:-2]
+    res_resp = [[]]
+    resp = resp[1:]
     resp = resp.split(',')
-    for line in resp:
-        line = line.split(' ')
-        map_game.append(line)
-    for line in map_game:
-        for cell in line:
-            if cell == "":
-                line.remove(cell)
-    return map_game
+    for i in range(0, len(resp)):
+        if resp[i] == "]":
+            break
+        if i % 2 == 0:
+            res_resp.append([])
+        res_resp[-1].append(resp[i])
+    for i in range(0, len(res_resp)):
+        for j in range(0, len(res_resp[i])):
+            res_resp[i][j] = res_resp[i][j].replace("\n", "")
+            res_resp[i][j] = res_resp[i][j].replace("]", "")
+    for i in range(0, len(res_resp)):
+        print(res_resp[i])
+
 
 def inventory(sock: socket.socket):
     znu.send_to_server(sock, "Inventory\n")
@@ -86,7 +91,7 @@ def eject(sock: socket.socket):
     return resp
 
 def take(sock: socket.socket, resource: str):
-    znu.send_to_server(sock, "{} {}".format(Commands.TAKE[0], resource))
+    znu.send_to_server(sock, "{} {}".format("Take\n", resource))
     resp = znu.multiple_recv_from_server(sock, Commands.TAKE[1])
     return resp
 
@@ -96,8 +101,8 @@ def set(sock: socket.socket, resource: str):
     return resp
 
 def incantation(sock: socket.socket):
-    znu.send_to_server(sock, Commands.INCANTATION[0])
-    resp = znu.multiple_recv_from_server(sock, Commands.INCANTATION[1])
+    znu.send_to_server(sock, "Incantation\n")
+    resp = znu.multiple_recv_from_server(sock, 300)
     return resp
 
 def view_map(map: list, map_x: int, map_y: int):

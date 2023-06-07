@@ -28,7 +28,18 @@ import zappy_dataStruct as zds
 #     PLAYER_NB = 0
 #     LIFE_UNIT = 10
 
+def find_food(p: zds.Player, map_str: str):
+    for line in map_str:
+        for cell in line:
+            if cell == "food":
+                zp.print_log("Found food")
+                return
 
+def go_ai(p: zds.Player, map_str: str, map_x: int, map_y: int):
+    while True:
+        map_str = zc.look(p.client.sock, map_x, map_y)
+        find_food(p, map_str)
+        time.sleep(1)
 
 def main():
     args = zp.get_args()
@@ -38,12 +49,15 @@ def main():
     p_infos = znu.get_player_infos(p.client.sock, p.stats.team)
     zp.print_log("Player: {}".format(p_infos))
     client_num, map_x, map_y = zp.parse_player_infos(p_infos)
-    # p = Player()
     p.stats.playerNB = client_num
-    # p.TEAM = args["name"]
-    p.POV = 1 + (p.LVL - 1) * 2
     map_str = zc.look(p.client.sock, map_x, map_y)
-    zc.view_map(map_str, map_x, map_y)
-
 
 main()
+
+# IA :
+# ia verif si y'en a une
+# verif buffer sellect
+# algo simple ? random ou analyse map ? algo attentif ? algo très complexe ou lib externe ?
+
+# Les IA peuvent s'attaquer entre elles ?
+# Jusqu'à quel LVL on peut monter ?
