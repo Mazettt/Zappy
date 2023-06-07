@@ -50,7 +50,9 @@ def main():
     zp.print_log("Player: {}".format(p_infos))
     client_num, map_x, map_y = zp.parse_player_infos(p_infos)
     p.stats.playerNB = client_num
+    zc.right(p.client.sock)
     map_str = zc.look(p.client.sock, map_x, map_y)
+
 
 main()
 

@@ -27,22 +27,22 @@ class Commands:
 
 def forward(sock: socket.socket):
     znu.send_to_server(sock, "Forward\n")
-    resp = znu.multiple_recv_from_server(sock, Commands.FORWARD[1])
+    resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def right(sock: socket.socket):
     znu.send_to_server(sock, "Right\n")
-    resp = znu.multiple_recv_from_server(sock, Commands.RIGHT[1])
+    resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def left(sock: socket.socket):
     znu.send_to_server(sock, "Left\n")
-    resp = znu.multiple_recv_from_server(sock, Commands.LEFT[1])
+    resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def look(sock: socket.socket, map_x: int, map_y: int):
     znu.send_to_server(sock, "Look\n")
-    resp = znu.multiple_recv_from_server(sock, 20)
+    resp = znu.multiple_recv_from_server(sock, 200)
     res_resp = [[]]
     resp = resp[1:]
     resp = resp.split(',')
@@ -56,8 +56,11 @@ def look(sock: socket.socket, map_x: int, map_y: int):
         for j in range(0, len(res_resp[i])):
             res_resp[i][j] = res_resp[i][j].replace("\n", "")
             res_resp[i][j] = res_resp[i][j].replace("]", "")
+    full_resp = []
     for i in range(0, len(res_resp)):
-        print(res_resp[i])
+        for j in range(0, len(res_resp[i])):
+            full_resp.append(res_resp[i][j])
+    return full_resp
 
 
 def inventory(sock: socket.socket):
