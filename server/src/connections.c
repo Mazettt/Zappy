@@ -59,8 +59,11 @@ static void parse_command(zappy_t *zappy, int ci, char *input) {
         zappy->client[ci].last_command = NULL;
         start = end + 1;
     }
-    if (start && *start)
-        zappy->client[ci].last_command = my_strcat(zappy->client[ci].last_command, start);
+    if (start && *start) {
+        char *new = my_strcat(zappy->client[ci].last_command, start);
+        free(zappy->client[ci].last_command);
+        zappy->client[ci].last_command = new;
+    }
     free(backup_start);
 }
 
