@@ -9,12 +9,22 @@
 using namespace ZappyGui;
 
 ResourceManager::ResourceManager() {
-    // load player
+
+}
+
+ResourceManager::~ResourceManager() {
+    _models.clear();
+    _textures.clear();
+    _animations.clear();
+}
+
+void ResourceManager::initialize() {
+    // // load player
     this->loadModel(IResource::resourceType::PLAYER, "./assets/thegarf.iqm");
     this->loadTexture(IResource::resourceType::PLAYER, "./assets/T_Garfield_BC.png");
     this->loadAnimation(IResource::resourceType::PLAYER, "./assets/thegarf.iqm");
 
-    // load stone
+    // // load stone
     this->loadModel(IResource::resourceType::DERAUMERE, "./assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::LINEMATE, "./assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::MENDIANE, "./assets/Stones/stone_model.obj");
@@ -42,12 +52,6 @@ ResourceManager::ResourceManager() {
     this->setMaterialTexture(IResource::resourceType::THYSTAME);
     this->setMaterialTexture(IResource::resourceType::PIZZA);
     this->setMaterialTexture(IResource::resourceType::PLAYER);
-}
-
-ResourceManager::~ResourceManager() {
-    _models.clear();
-    _textures.clear();
-    _animations.clear();
 }
 
 void ResourceManager::loadModel(IResource::resourceType type, const std::string &filename) {

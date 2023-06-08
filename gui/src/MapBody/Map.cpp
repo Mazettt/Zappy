@@ -9,7 +9,7 @@
 
 using namespace ZappyGui;
 
-Map::Map(int x, int y): _manager(ResourceManager()) {
+Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
     float widthCube = 1.0;
     float lengthCube = 1.0;
     float heightCube = 0.1;
