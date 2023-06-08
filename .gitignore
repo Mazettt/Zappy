@@ -9,6 +9,7 @@ launch.json
 .#*
 *#
 .#*#
+__pycache__
 
 # c
 *.a
