@@ -32,6 +32,7 @@ namespace ZappyGui {
             MyRayLibWindow _raylibwindow;
             bool _stateMenu;
             std::vector<Button> _buttonMenu;
+            MyRayLib::Skybox _skyboxMesh;
         public:
             Game(int mapWidth, int mapHeight);
             ~Game();

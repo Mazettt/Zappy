@@ -17,7 +17,7 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
     this->_size.y = y;
     this->_map.resize(x * y);
 
-    Color color = RED;
+    Color color = {120, 80, 160, 140};
     for (int y = 0; y < this->_size.y; ++y) {
         for (int x = 0; x < this->_size.x; ++x) {
             int key = y * this->_size.x + x;

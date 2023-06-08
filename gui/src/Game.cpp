@@ -10,7 +10,7 @@
 
 using namespace ZappyGui;
 
-Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")) {
+Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)) {
 }
 
 Game::~Game() {}
@@ -30,12 +30,15 @@ void Game::initialize() {
     Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
     button3.ButtonSetPosition(1920/2.0f - button3.button.width/2.0f, 900, (float)button3.button.width, button3.frameHeight);
     this->_buttonMenu.push_back(button3);
+
 }
 
 void Game::run() {
     Map map(10, 10, this->_manager);
     MyRayLib::Draw raylibdrawing;
 
+    this->_skyboxMesh.InitSkybox();
+    this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/tt.png");
 
     Parallax parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
 
@@ -93,6 +96,11 @@ void Game::drawGame(MyRayLib::Draw &raylibdrawing, Map &map) {
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     raylibdrawing.MyDrawFPS(10, 35);
     raylibdrawing.MyBegin3DMode(this->_camera);
+    this->_skyboxMesh.MyrlDisableBackfaceCulling();
+    this->_skyboxMesh.MyrlDisableDepthMask();
+    DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+    this->_skyboxMesh.MyrlEnableBackfaceCulling();
+    this->_skyboxMesh.MyrlEnableDepthMask();
     this->_raylibwindow.MyUpdateCamera(&this->_camera, CAMERA_THIRD_PERSON);
     map.draw();
     raylibdrawing.MyEnd3DMode();
