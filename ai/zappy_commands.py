@@ -39,7 +39,7 @@ def left(sock: socket.socket):
     resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
-def look(sock: socket.socket, map_x: int, map_y: int):
+def look(sock: socket.socket):
     znu.send_to_server(sock, "Look\n")
     resp = znu.multiple_recv_from_server(sock, 200)
     res_resp = [[]]
