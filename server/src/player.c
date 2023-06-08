@@ -13,12 +13,13 @@ player_t *parse_players(zappy_t *zappy, int *i, player_t *current)
         ++(*i);
     if (*i >= zappy->game.nbrTeams)
         return NULL;
-    return current ?: zappy->game.teams[*i].players;
+    return current ? : zappy->game.teams[*i].players;
 }
 
 void kill_player(zappy_t *zappy, player_t *player)
 {
-    notif_guis(send_pdi(zappy, notif_it, player));
+    int it = 0;
+    notif_guis(it, send_pdi(zappy, it, player));
     player->client->team = NULL;
     player->client->player = NULL;
 
@@ -34,8 +35,7 @@ void kill_player(zappy_t *zappy, player_t *player)
 player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
 {
     player_t *new = malloc(sizeof(player_t));
-    if (!new)
-        return NULL;
+    if (!new) return NULL;
     new->id = ++zappy->game.playerIdIt;
     new->x = egg->x;
     new->y = egg->y;
@@ -49,11 +49,9 @@ player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
     client->player = new;
     gettimeofday(&new->startTime, NULL);
     new->timeUntilDie = time_limit(1260);
-
     new->prev = NULL;
     new->next = egg->team->players;
-    if (egg->team->players)
-        egg->team->players->prev = new;
+    if (egg->team->players) egg->team->players->prev = new;
     egg->team->players = new;
     return new;
 }
@@ -61,9 +59,9 @@ player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
 int nbr_players(zappy_t *zappy, int x, int y)
 {
     int res = 0;
-    player_t *playerBuff = NULL;
-    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next) {
-        if (playerBuff->x == x && playerBuff->y == y && playerBuff->client)
+    player_t *p = NULL;
+    for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
+        if (p->x == x && p->y == y && p->client)
             ++res;
     }
     return res;

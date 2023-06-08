@@ -7,7 +7,8 @@
 
 #include "../include/server.h"
 
-void add_action(client_t *client, time_t duration, char *command, void (*func)(zappy_t *, char *, int))
+void add_action(client_t *client, time_t duration, char *command,
+void (*func)(zappy_t *, char *, int))
 {
     gettimeofday(&client->action.startTime, NULL);
     client->action.duration = duration;
@@ -25,7 +26,8 @@ void exec_action(zappy_t *zappy, action_t *action, int ci)
 {
     struct timeval now;
     gettimeofday(&now, NULL);
-    time_t micro = (now.tv_sec - action->startTime.tv_sec) * 1000000 + now.tv_usec - action->startTime.tv_usec;
+    time_t micro = (now.tv_sec - action->startTime.tv_sec) * 1000000 +
+        now.tv_usec - action->startTime.tv_usec;
     if (micro >= action->duration) {
         action->func(zappy, action->command, ci);
         remove_action(action);

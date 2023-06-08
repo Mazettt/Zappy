@@ -14,44 +14,51 @@ static void destroy_eggs(zappy_t *zappy, player_t *player)
         egg_t *eggBuff = NULL;
         while (egg) {
             eggBuff = egg->next;
-            if (egg->x == player->x && egg->y == player->y)
-                kill_egg(zappy, egg);
+            (egg->x == player->x && egg->y == player->y) ?
+                kill_egg(zappy, egg) : 0;
             egg = eggBuff;
         }
     }
 }
 
-static void eject(zappy_t *zappy, unused char *command, int ci)
+static pos_t get_move(zappy_t *zappy, player_t *player)
 {
-    player_t *player = zappy->client[ci].player;
-    int movex = player->x;
-    int movey = player->y;
-
+    pos_t move = {player->x, player->y};
     switch (player->direction) {
         case NORTH:
-            movey = cast_pos(movey - 1, HEIGHT);
+            move.y = cast_pos(move.y - 1, HEIGHT);
             break;
         case EAST:
-            movex = cast_pos(movex + 1, WIDTH);
+            move.x = cast_pos(move.x + 1, WIDTH);
             break;
         case SOUTH:
-            movey = cast_pos(movey + 1, HEIGHT);
+            move.y = cast_pos(move.y + 1, HEIGHT);
             break;
         case WEST:
-            movex = cast_pos(movex - 1, WIDTH);
+            move.x = cast_pos(move.x - 1, WIDTH);
             break;
         default:
             break;
     }
+    return move;
+}
+
+static void eject(zappy_t *zappy, unused char *command, int ci)
+{
+    player_t *player = zappy->client[ci].player;
+    pos_t move = get_move(zappy, player);
+
     bool check = false;
-    player_t *playerBuff = NULL;
-    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next) {
-        if (playerBuff->client && playerBuff != player &&
-        playerBuff->x == player->x && playerBuff->y == player->y) {
-            playerBuff->x = movex;
-            playerBuff->y = movey;
-            sdprintf(zappy, playerBuff->client->command.s, "eject: %d\n", get_direction(playerBuff->x, playerBuff->y, player->x, player->y, playerBuff->direction));
-            notif_guis(send_pex(zappy, notif_it, playerBuff));
+    player_t *p = NULL;
+    for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
+        if (p->client && p != player &&
+        p->x == player->x && p->y == player->y) {
+            p->x = move.x;
+            p->y = move.y;
+            sdprintf(zappy, p->client->command.s, "eject: %d\n", get_direction(
+            (pos_t){p->x, p->y}, (pos_t){player->x, player->y}, p->direction));
+            int it = 0;
+            notif_guis(it, send_pex(zappy, it, p));
             check = true;
         }
     }

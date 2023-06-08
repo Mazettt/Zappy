@@ -9,7 +9,8 @@
 
 static void args_help(void)
 {
-    printf("USAGE: ./zappy_server -p port -x width -y height -n name1 name2 ... -c clientsNb -f freq\n");
+    printf("USAGE: ./zappy_server -p port -x width -y height \
+-n name1 name2 ... -c clientsNb -f freq\n");
     printf("\tport\tis the port number\n");
     printf("\twidth\tis the width of the world\n");
     printf("\theight\tis the height of the world\n");
@@ -18,12 +19,16 @@ static void args_help(void)
     printf("\tfreq\tis the reciprocal of time unit for execution of actions\n");
 }
 
-void signal_handler(int signum)
+static void get_teams(args_t *args, int ac, char **av, int *i)
 {
-    if (signum == SIGSEGV) {
-        printf("Segmentation fault\n");
-        exit(84);
+    ++(*i);
+    for (int count = 0; *i < ac && av[*i][0] != '-'; ++*i) {
+        args->teamNames =
+            realloc(args->teamNames, sizeof(char *) * (count + 2));
+        args->teamNames[count] = av[*i];
+        args->teamNames[++count] = NULL;
     }
+    --(*i);
 }
 
 args_t get_args(int ac, char **av)
@@ -38,15 +43,8 @@ args_t get_args(int ac, char **av)
             args.width = atoi(av[i + 1]);
         if (!strcmp(av[i], "-y") && i + 1 < ac)
             args.height = atoi(av[i + 1]);
-        if (!strcmp(av[i], "-n")) {
-            ++i;
-            for (int count = 0; i < ac && av[i][0] != '-'; ++i) {
-                args.teamNames = realloc(args.teamNames, sizeof(char *) * (count + 2));
-                args.teamNames[count] = av[i];
-                args.teamNames[++count] = NULL;
-            }
-            --i;
-        }
+        if (!strcmp(av[i], "-n"))
+            get_teams(&args, ac, av, &i);
         if (!strcmp(av[i], "-c") && i + 1 < ac)
             args.clientsNb = atoi(av[i + 1]);
         if (!strcmp(av[i], "-f") && i + 1 < ac)
@@ -57,20 +55,20 @@ args_t get_args(int ac, char **av)
 
 void print_args(args_t args)
 {
-    printf("port: %d\n", args.port);
-    printf("width: %d\n", args.width);
-    printf("height: %d\n", args.height);
-    printf("names: ");
+    debug_print("port: %d\n", args.port);
+    debug_print("width: %d\n", args.width);
+    debug_print("height: %d\n", args.height);
+    if (DEBUG)
+        printf("names: ");
     for (int i = 0; args.teamNames && args.teamNames[i]; ++i)
-        printf("%s ", args.teamNames[i]);
-    printf("\nclientsNb: %d\n", args.clientsNb);
-    printf("freq: %d\n", args.freq);
+        debug_print("%s ", args.teamNames[i]);
+    debug_print("\nclientsNb: %d\n", args.clientsNb);
+    debug_print("freq: %d\n", args.freq);
 }
 
 int main(int ac, char **av)
 {
     signal(SIGPIPE, SIG_IGN);
-    signal(SIGSEGV, signal_handler);
     if (ac == 2 && (!strcmp(av[1], "-help") || !strcmp(av[1], "-h") ||
     !strcmp(av[1], "--help"))) {
         args_help();

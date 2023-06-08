@@ -42,13 +42,15 @@ static void remove_egg(egg_t *egg)
 
 void kill_egg(zappy_t *zappy, egg_t *egg)
 {
-    notif_guis(send_edi(zappy, notif_it, egg));
+    int it = 0;
+    notif_guis(it, send_edi(zappy, it, egg));
     remove_egg(egg);
 }
 
 player_t *hatch_egg(zappy_t *zappy, egg_t *egg, client_t *client)
 {
-    notif_guis(send_ebo(zappy, notif_it, egg));
+    int it = 0;
+    notif_guis(it, send_ebo(zappy, it, egg));
     player_t *new = add_player(zappy, egg, client);
     remove_egg(egg);
     return new;

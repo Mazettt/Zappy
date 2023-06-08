@@ -11,9 +11,7 @@ char *get_tile_content(zappy_t *zappy, int x, int y)
 {
     char *res = malloc(sizeof(char) * (1024 * 4));
     int len = 0;
-    if (!res)
-        return NULL;
-
+    if (!res) return NULL;
     for (int i = 0; i < nbr_players(zappy, x, y); ++i)
         len += sprintf(res + len, " player");
     for (int i = 0; i < zappy->game.map[x][y][FOOD]; ++i)
@@ -30,34 +28,33 @@ char *get_tile_content(zappy_t *zappy, int x, int y)
         len += sprintf(res + len, " phiras");
     for (int i = 0; i < zappy->game.map[x][y][THYSTAME]; ++i)
         len += sprintf(res + len, " thystame");
-    res[len] = '\0';
-    return res;
+    res[len] = '\0';return res;
 }
 
-int get_direction(int x, int y, int dx, int dy, Direction direction)
+int get_direction(pos_t p, pos_t dp, Direction d)
 {
-    if (dx == x && dy == y)
+    if (dp.x == p.x && dp.y == p.y)
         return 0;
-    if (dx == x && dy < y)
-        return direction == NORTH ? 1 : direction == SOUTH ? 5 : direction == EAST ? 7 : 3;
-    if (dx < x && dy < y)
-        return direction == NORTH ? 2 : direction == SOUTH ? 6 : direction == EAST ? 8 : 4;
-    if (dx < x && dy == y)
-        return direction == NORTH ? 3 : direction == SOUTH ? 7 : direction == EAST ? 1 : 5;
-    if (dx < x && dy > y)
-        return direction == NORTH ? 4 : direction == SOUTH ? 8 : direction == EAST ? 2 : 6;
-    if (dx == x && dy > y)
-        return direction == NORTH ? 5 : direction == SOUTH ? 1 : direction == EAST ? 3 : 7;
-    if (dx > x && dy > y)
-        return direction == NORTH ? 6 : direction == SOUTH ? 2 : direction == EAST ? 4 : 8;
-    if (dx > x && dy == y)
-        return direction == NORTH ? 7 : direction == SOUTH ? 3 : direction == EAST ? 5 : 1;
-    if (dx > x && dy < y)
-        return direction == NORTH ? 8 : direction == SOUTH ? 4 : direction == EAST ? 6 : 2;
+    if (dp.x == p.x && dp.y < p.y)
+        return d == NORTH ? 1 : d == SOUTH ? 5 : d == EAST ? 7 : 3;
+    if (dp.x < p.x && dp.y < p.y)
+        return d == NORTH ? 2 : d == SOUTH ? 6 : d == EAST ? 8 : 4;
+    if (dp.x < p.x && dp.y == p.y)
+        return d == NORTH ? 3 : d == SOUTH ? 7 : d == EAST ? 1 : 5;
+    if (dp.x < p.x && dp.y > p.y)
+        return d == NORTH ? 4 : d == SOUTH ? 8 : d == EAST ? 2 : 6;
+    if (dp.x == p.x && dp.y > p.y)
+        return d == NORTH ? 5 : d == SOUTH ? 1 : d == EAST ? 3 : 7;
+    if (dp.x > p.x && dp.y > p.y)
+        return d == NORTH ? 6 : d == SOUTH ? 2 : d == EAST ? 4 : 8;
+    if (dp.x > p.x && dp.y == p.y)
+        return d == NORTH ? 7 : d == SOUTH ? 3 : d == EAST ? 5 : 1;
+    if (dp.x > p.x && dp.y < p.y)
+        return d == NORTH ? 8 : d == SOUTH ? 4 : d == EAST ? 6 : 2;
     return 0;
 }
 
-Item get_item(char *item)
+item_t get_item(char *item)
 {
     if (!strncmp(item, "food", 4))
         return FOOD;
@@ -76,7 +73,7 @@ Item get_item(char *item)
     return NBR_ITEMS;
 }
 
-char *get_item_str(Item item)
+char *get_item_str(item_t item)
 {
     if (item == FOOD)
         return "food";
@@ -103,13 +100,13 @@ bool check_win(zappy_t *zappy)
         player_t *player = zappy->game.teams[i].players;
         int count = 0;
         while (player) {
-            if (player->level == 8)
-                count++;
+            (player->level == 8 ? count++ : 0);
             player = player->next;
         }
         if (count >= 6) {
             zappy->game.winningTeam = &zappy->game.teams[i];
-            notif_guis(send_seg(zappy, notif_it, zappy->game.winningTeam));
+            int it = 0;
+            notif_guis(it, send_seg(zappy, it, zappy->game.winningTeam));
             return true;
         }
     }

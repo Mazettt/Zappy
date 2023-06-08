@@ -18,11 +18,13 @@ static void my_fork(zappy_t *zappy, unused char *command, int ci)
     newegg->x = zappy->client[ci].player->x;
     newegg->y = zappy->client[ci].player->y;
     sdprintf(zappy, client_socket(ci), "ok\n");
-    notif_guis(send_enw(zappy, notif_it, zappy->client[ci].player, newegg));
+    int it = 0;
+    notif_guis(it, send_enw(zappy, it, zappy->client[ci].player, newegg));
 }
 
 void cmd_fork(zappy_t *zappy, char *command, int ci)
 {
     add_action(&zappy->client[ci], time_limit(42), command, my_fork);
-    notif_guis(send_pfk(zappy, notif_it, zappy->client[ci].player));
+    int it = 0;
+    notif_guis(it, send_pfk(zappy, it, zappy->client[ci].player));
 }

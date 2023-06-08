@@ -9,5 +9,6 @@
 
 void cmd_connect_nbr(zappy_t *zappy, unused char *command, int ci)
 {
-    sdprintf(zappy, client_socket(ci), "%d\n", get_remaining_slots(zappy->client[ci].team));
+    sdprintf(zappy, client_socket(ci), "%d\n",
+        get_remaining_slots(zappy->client[ci].team));
 }

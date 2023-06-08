@@ -24,9 +24,9 @@ static void forward(zappy_t *zappy, unused char *command, int ci)
             player->x = cast_pos(player->x - 1, WIDTH);
             break;
     }
-    notif_guis(send_ppo(zappy, notif_it, player));
+    int it = 0;
+    notif_guis(it, send_ppo(zappy, it, player));
     sdprintf(zappy, client_socket(ci), "ok\n");
-    // sdprintf(zappy, client_socket(ci), "Player is now in %d %d\n", player->x, player->y); //! DEBUG
 }
 
 void cmd_forward(zappy_t *zappy, char *command, int ci)
