@@ -36,12 +36,13 @@ namespace ZappyGui {
             Map _map;
             MyRayLib::Draw _raylibdrawing;
         public:
+            Parallax _parallax;
             Game(int mapWidth, int mapHeight);
             ~Game();
             void initialize();
             void run();
             void drawGame();
-            void drawMenu(Parallax &parallax);
+            void drawMenu();
             void switchToGame();
     };
 }

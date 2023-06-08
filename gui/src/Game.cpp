@@ -10,7 +10,7 @@
 
 using namespace ZappyGui;
 
-Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)), _map(10, 10, this->_manager), _raylibdrawing() {
+Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)), _map(10, 10, this->_manager), _raylibdrawing(), _parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE)) {
 }
 
 Game::~Game() {
@@ -46,8 +46,6 @@ void Game::run() {
     this->_skyboxMesh.InitSkybox();
     this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/roh.png");
 
-    Parallax parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
-
     float volumeMusic = 0.2;
     // MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
     // if (music.MyIsMusicReady())
@@ -64,7 +62,7 @@ void Game::run() {
         if (this->_stateMenu == true) {
             musicGen.MySetMusicVolume(volumeMusic);
             musicGen.MyUpdateMusic();
-            drawMenu(parallax);
+            drawMenu();
         } else {
             // music.MySetMusicVolume(volumeMusic);
             // music.MyUpdateMusic();
@@ -85,11 +83,11 @@ void Game::run() {
     this->_skyboxMesh.MyUnloadShader(this->_skyboxMesh._skybox.materials[0].shader);
     this->_skyboxMesh.MyUnloadTexture(this->_skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
     this->_skyboxMesh.MyUnloadModel(this->_skyboxMesh._skybox);
-    parallax.UnLoadFont();
-    parallax.UnLoadAllParallax();
+    this->_parallax.UnLoadFont();
+    this->_parallax.UnLoadAllParallax();
 }
 
-void Game::drawMenu(Parallax &parallax) {
+void Game::drawMenu() {
         Button button0 = this->_buttonMenu.at(0);
         Button button1 = this->_buttonMenu.at(1);
         Button button2 = this->_buttonMenu.at(2);
@@ -101,8 +99,8 @@ void Game::drawMenu(Parallax &parallax) {
         button1.HandleButton();
         button2.HandleButton();
 
-        parallax.updateInLoop();
-        parallax.WriteTitle();
+        this->_parallax.updateInLoop();
+        this->_parallax.WriteTitle();
 
         button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
         button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
