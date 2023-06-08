@@ -214,7 +214,7 @@ void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
 
 // zappy.c
-void zappy(args_t args);
+int zappy(args_t args);
 
 // socket.c
 void get_socket_infos(socket_t *so);
@@ -355,7 +355,7 @@ void remove_action(action_t *action);
 void exec_action(zappy_t *zappy, action_t *action, int ci);
 
 // resources
-void init_resources(args_t args, game_t *game);
+bool init_resources(args_t args, game_t *game);
 void refill_resources(zappy_t *zappy);
 
 // cmd buff

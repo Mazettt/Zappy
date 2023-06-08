@@ -13,6 +13,8 @@ char *my_strcat(char *dest , char const *src)
     char *new = malloc(sizeof(char) * len_tot);
     int i = 0;
 
+    if (!new)
+        return dest;
     for (; dest && dest[i] != '\0'; ++i)
         new[i] = dest[i];
     for (int j = 0; src && src[j] != '\0'; ++i, ++j)

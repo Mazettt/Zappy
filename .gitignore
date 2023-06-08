@@ -30,3 +30,5 @@ client_test
 zappy_server_sub
 client
 logs/
+out.txt
+perf.data*

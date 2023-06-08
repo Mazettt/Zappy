@@ -10,6 +10,8 @@
 egg_t *add_egg(zappy_t *zappy, team_t *team)
 {
     egg_t *new = malloc(sizeof(egg_t));
+    if (!new)
+        return NULL;
     new->id = ++zappy->game.eggIdIt;
     new->x = rand() % zappy->game.width;
     new->y = rand() % zappy->game.height;

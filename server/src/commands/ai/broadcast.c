@@ -22,6 +22,7 @@ static void broadcast(zappy_t *zappy, char *command, int ci)
             );
         }
     }
+    sdprintf(zappy, client_socket(ci), "ok\n");
 }
 
 void cmd_broadcast(zappy_t *zappy, char *command, int ci)

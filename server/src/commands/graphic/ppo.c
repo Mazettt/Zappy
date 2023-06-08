@@ -31,6 +31,6 @@ void cmd_ppo(zappy_t *zappy, char *command, int ci)
             return;
         }
     }
-    sdprintf(zappy, client_socket(ci), "ko\n");
+    send_sbp(zappy, ci);
     free_word_array(arr);
 }

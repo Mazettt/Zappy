@@ -11,6 +11,10 @@ static void take(zappy_t *zappy, char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
     char **args = my_str_to_word_array(command, SEPARATOR);
+    if (!args || !args[0] || !args[1]) {
+        sdprintf(zappy, client_socket(ci), "ko\n");
+        return;
+    }
     Item item = get_item(args[1]);
     if (item == NBR_ITEMS) {
         sdprintf(zappy, client_socket(ci), "ko\n");

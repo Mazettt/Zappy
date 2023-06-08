@@ -62,13 +62,15 @@ static void free_all(zappy_t *zappy)
     free(zappy);
 }
 
-static void init_game(zappy_t *zappy, args_t args)
+static bool init_game(zappy_t *zappy, args_t args)
 {
     int nbrTeams = word_array_len(args.teamNames);
     zappy->game.width = args.width;
     zappy->game.height = args.height;
     zappy->game.freq = args.freq;
     zappy->game.teams = malloc(sizeof(team_t) * nbrTeams);
+    if (!zappy->game.teams)
+        return false;
     zappy->game.nbrTeams = nbrTeams;
     zappy->game.winningTeam = NULL;
     zappy->game.playerIdIt = 0;
@@ -80,14 +82,15 @@ static void init_game(zappy_t *zappy, args_t args)
         for (int j = 0; j < args.clientsNb; ++j)
             add_egg(zappy, &zappy->game.teams[i]);
     }
-    init_resources(args, &zappy->game);
+    return init_resources(args, &zappy->game);
 }
 
-void zappy(args_t args)
+int zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
     struct timeval tv = {0, 0};
-    init_game(zappy, args);
+    if (!zappy || !init_game(zappy, args))
+        return 84;
     first_select(zappy);
     init_main_socket(zappy, args.port);
     while (zappy->main.s) {
@@ -106,4 +109,5 @@ void zappy(args_t args)
     printf("\n%s\n", "Quitting...");
     close_all(zappy);
     free_all(zappy);
+    return 0;
 }
