@@ -3,8 +3,8 @@ import numpy
 class Player:
     def __init__(self, port, team="", machine="localhost"):
         self.stats = Stats(team)
-        self.inventory = Inventory(0, 0, 0, 0, 0, 0, 0)
-        self.requirement = Inventory(1, 1, 0, 0, 0, 0, 0)
+        self.inventory = Tile(0, 0, 0, 0, 0, 0, 0)
+        self.requirement = Tile(1, 1, 0, 0, 0, 0, 0)
         self.client = Client(port, machine)
         self.POV = POV
 
@@ -19,8 +19,9 @@ class Stats:
         self.team = team
         self.playerNB = 0
 
-class Inventory:
+class Tile:
     def __init__(self, nearbyPlayers, linemates, deraumeres, siburs, mendianes, phiras, thystames):
+        self.food = 500
         self.nearbyPlayers = nearbyPlayers
         self.linemates = linemates
         self.deraumeres = deraumeres
@@ -36,7 +37,7 @@ class Client:
         self.sock = 0
 
 class POV:
-        vision = []
+        vision = [Tile]
         visionSize = 0
         visionCenter = 0
 
