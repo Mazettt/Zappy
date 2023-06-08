@@ -75,6 +75,10 @@ void Game::run() {
                 this->_map.movePlayer(3, float(rand() % 9), float(rand() % 9));
             }
             drawGame();
+            if (_raylibwindow.MyIsKeyPressed(KEY_V)) {
+                this->_map.deadPlayer(0);
+            }
+            drawGame();
         }
         this->_raylibdrawing.~Draw();
     }

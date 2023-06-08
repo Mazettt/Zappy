@@ -10,7 +10,7 @@
 using namespace ZappyGui;
 
 Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation):
-    PlayerArguments(playerArgs), _model(model), _texture(texture), _animation(animation), _frameCounterAnimation(-1) {
+    PlayerArguments(playerArgs), _model(model), _texture(texture), _animation(animation), _frameCounterAnimation(-1), _dieCounter(0) {
     this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
 }
 
@@ -27,6 +27,7 @@ void Player::animationLVLUP() {
 void Player::animationDie() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_DIE);
     this->_frameCounterAnimation = 0;
+    this->_dieCounter = 30;
 }
 
 void Player::animationGet() {

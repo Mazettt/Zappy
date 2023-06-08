@@ -53,7 +53,6 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
 }
 
 void Map::movePlayer(int playerNumber, float x, float z) {
-
     int nbrPlayer = this->_players.size();
     for (int i = 0; i < nbrPlayer; ++i) {
         if (this->_players.at(i)->getPlayerNumber() == playerNumber) {
@@ -61,6 +60,15 @@ void Map::movePlayer(int playerNumber, float x, float z) {
             this->_players.at(i)->_movePos = {x - pos.x, 0.0, z - pos.z};
             // orientation
             this->_players.at(i)->animationWalk();
+        }
+    }
+}
+
+void Map::deadPlayer(int playerNumber) {
+    int nbrPlayer = this->_players.size();
+    for (int i = 0; i < nbrPlayer; ++i) {
+        if (this->_players.at(i)->getPlayerNumber() == playerNumber) {
+            this->_players.at(i)->animationDie();
         }
     }
 }
@@ -74,7 +82,7 @@ void Map::draw() {
         }
     }
 
-    float moveSpeed = 0.03;
+    float moveSpeed = 0.06;
     int nbrPlayer = this->_players.size();
     for (int i = 0; i < nbrPlayer; ++i) {
         Vector3 pos = this->_players.at(i)->getPosition();
@@ -95,9 +103,18 @@ void Map::draw() {
             this->_players.at(i)->_movePos.z += moveSpeed;
         }
         float epsilon = 0.0001f;
-        if (abs(this->_players.at(i)->_movePos.x) < epsilon && abs(this->_players.at(i)->_movePos.z) < epsilon &&
-            this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
-            this->_players.at(i)->animationWait();
+        if (abs(this->_players.at(i)->_movePos.x) < epsilon && abs(this->_players.at(i)->_movePos.z) < epsilon) {
+            if (this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
+                this->_players.at(i)->animationWait();
+            }
+            if (this->_players.at(i)->_dieCounter > 0) {
+                this->_players.at(i)->_dieCounter -= 1;
+            } else if (this->_players.at(i)->_dieCounter <= 0
+                && this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
+                this->_players.erase(this->_players.begin() + i);
+                nbrPlayer--;
+                continue;
+            }
         }
         this->_players.at(i)->draw();
     }
