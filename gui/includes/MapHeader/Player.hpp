@@ -23,9 +23,9 @@ namespace ZappyGui {
             const MyRayLib::Texture2D &_texture;
             MyRayLib::AnimationsModel &_animation;
             int _frameCounterAnimation;
-            int _animationType;
 
         public:
+            Vector3 _movePos;
             enum animationPlayerType {
                 PLAYER_WIN,
                 PLAYER_LVLUP,

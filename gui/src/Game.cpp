@@ -67,6 +67,9 @@ void Game::run() {
         } else {
             // music.MySetMusicVolume(volumeMusic);
             // music.MyUpdateMusic();
+            if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
+                map.movePlayer();
+            }
             drawGame(raylibdrawing, map);
         }
         raylibdrawing.~Draw();

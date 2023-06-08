@@ -30,7 +30,7 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
             this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
         }
     }
-    PlayerArguments playerArgs(2, "Team1", {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
+    PlayerArguments playerArgs(1, "Team1", {8.0f, 0.0f, 8.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
     this->addPlayerForTile(playerArgs);
     PlayerArguments playerArgs1(2, "Team1", {5.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
     this->addPlayerForTile(playerArgs1);
@@ -47,6 +47,20 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
     this->_players.push_back(std::make_unique<Player>(playerArgs, modelPlayer, texture, animation));
 }
 
+void Map::movePlayer() {
+    float x = 2.0;
+    float z = 4.0;
+    int nbrPlayer = this->_players.size();
+    for (int i = 0; i < nbrPlayer; ++i) {
+        if (this->_players.at(i)->getPlayerNumber() == 1) {
+            Vector3 pos = this->_players.at(i)->getPosition();
+            this->_players.at(i)->_movePos = {x - pos.x, 0.0, z - pos.z};
+            // orientation
+            this->_players.at(i)->animationWalk();
+        }
+    }
+}
+
 void Map::draw() {
     for (int y = 0; y < this->_size.y; ++y) {
         for (int x = 0; x < this->_size.x; ++x) {
@@ -55,8 +69,32 @@ void Map::draw() {
             tile->draw();
         }
     }
+
+    float moveSpeed = 0.03;
     int nbrPlayer = this->_players.size();
     for (int i = 0; i < nbrPlayer; ++i) {
+        Vector3 pos = this->_players.at(i)->getPosition();
+        if (this->_players.at(i)->_movePos.x > 0.0) {
+            this->_players.at(i)->setPosition({ pos.x += moveSpeed, 0.0, pos.z });
+            this->_players.at(i)->_movePos.x -= moveSpeed;
+        }
+        if (this->_players.at(i)->_movePos.z > 0.0) {
+            this->_players.at(i)->setPosition({ pos.x, 0.0, pos.z += moveSpeed });
+            this->_players.at(i)->_movePos.z -= moveSpeed;
+        }
+        if (this->_players.at(i)->_movePos.x < 0.0) {
+            this->_players.at(i)->setPosition({ pos.x -= moveSpeed, 0.0, pos.z });
+            this->_players.at(i)->_movePos.x += moveSpeed;
+        }
+        if (this->_players.at(i)->_movePos.z < 0.0) {
+            this->_players.at(i)->setPosition({ pos.x, 0.0, pos.z -= moveSpeed });
+            this->_players.at(i)->_movePos.z += moveSpeed;
+        }
+        float epsilon = 0.0001f;
+        if (abs(this->_players.at(i)->_movePos.x) < epsilon && abs(this->_players.at(i)->_movePos.z) < epsilon &&
+            this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
+            this->_players.at(i)->animationWait();
+        }
         this->_players.at(i)->draw();
     }
 }

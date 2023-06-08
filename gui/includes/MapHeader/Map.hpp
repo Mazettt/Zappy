@@ -24,5 +24,6 @@ namespace ZappyGui {
             void addResourceForTile(const Vector2 &pos, IResource::resourceType type);
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
+            void movePlayer();
     };
 }

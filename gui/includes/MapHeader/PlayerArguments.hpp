@@ -13,6 +13,7 @@
 #include "../MyRayLibHeader/Texture.hpp"
 #include "../MyRayLibHeader/Vector3D.hpp"
 #include "../MyRayLibHeader/Window.hpp"
+#include "Player.hpp"
 
 namespace ZappyGui {
     class PlayerArguments {
@@ -96,6 +97,9 @@ namespace ZappyGui {
             }
             void setAnimationFrameCounter(int animationFrameCounter) {
                 _animationFrameCounter = animationFrameCounter;
+            }
+            void setAnimationType(int type) {
+                _animationType = type;
             }
     };
 }
