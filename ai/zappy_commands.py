@@ -1,13 +1,13 @@
-import sys
+##
+## EPITECH PROJECT, 2023
+## B-YEP-400-MLH-4-1-zappy-martin.d-herouville
+## File description:
+## zappy_commands
+##
+
 import socket
-import select
-import time
-import random
-import numpy as np
-import math
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import ai.zappy_parsing as zp
 import ai.zappy_network_utils as znu
 
 class Commands:

@@ -1,4 +1,9 @@
-import numpy
+##
+## EPITECH PROJECT, 2023
+## B-YEP-400-MLH-4-1-zappy-martin.d-herouville
+## File description:
+## zappy_dataStruct
+##
 
 class Player:
     def __init__(self, port, team="", machine="localhost"):

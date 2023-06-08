@@ -1,11 +1,12 @@
-import sys
+##
+## EPITECH PROJECT, 2023
+## B-YEP-400-MLH-4-1-zappy-martin.d-herouville
+## File description:
+## zappy_network_utils
+##
+
 import socket
-import select
 import time
-import random
-import numpy as np
-import math
-import os
 import ai.zappy_parsing as zp
 
 def con_to_server(machine, port):

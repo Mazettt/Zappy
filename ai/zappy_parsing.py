@@ -1,13 +1,12 @@
-#!/usr/bin/python3
+##
+## EPITECH PROJECT, 2023
+## B-YEP-400-MLH-4-1-zappy-martin.d-herouville
+## File description:
+## zappy_parsing
+##
 
 import sys
-import socket
-import select
 import time
-import random
-import numpy as np
-import math
-import os
 
 def print_usage():
     print("USAGE: ./zappy_ai -p port -n name -h machine\n\tport\tis the port number\n\tname\tis the name of the team\n\tmachine\tis the name of the machine; localhost by default")
