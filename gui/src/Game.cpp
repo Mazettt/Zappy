@@ -10,7 +10,7 @@
 
 using namespace ZappyGui;
 
-Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)) {
+Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)), _map(10, 10, this->_manager), _raylibdrawing() {
 }
 
 Game::~Game() {
@@ -20,13 +20,17 @@ Game::~Game() {
     // this->_buttonMenu.clear();
 }
 
+void Game::switchToGame()
+{
+    this->_stateMenu = false;
+}
+
 void Game::initialize() {
-    _manager.initialize();
     this->_camera = this->_raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
     this->_raylibwindow.MySetTargetFPS(60);
 
-    this->_stateMenu = false;
-    Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
+    this->_stateMenu = true;
+    Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./assets/Buttons/buttonfx.wav", [&](){switchToGame();});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
     this->_buttonMenu.push_back(button);
     Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
@@ -39,11 +43,8 @@ void Game::initialize() {
 }
 
 void Game::run() {
-    Map map(10, 10, this->_manager);
-    MyRayLib::Draw raylibdrawing;
-
     this->_skyboxMesh.InitSkybox();
-    this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/tt.png");
+    this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/roh.png");
 
     Parallax parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
 
@@ -68,14 +69,14 @@ void Game::run() {
             // music.MySetMusicVolume(volumeMusic);
             // music.MyUpdateMusic();
             if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
-                map.movePlayer(0, float(rand() % 9), float(rand() % 9));
-                map.movePlayer(1, float(rand() % 9), float(rand() % 9));
-                map.movePlayer(2, float(rand() % 9), float(rand() % 9));
-                map.movePlayer(3, float(rand() % 9), float(rand() % 9));
+                this->_map.movePlayer(0, float(rand() % 9), float(rand() % 9));
+                this->_map.movePlayer(1, float(rand() % 9), float(rand() % 9));
+                this->_map.movePlayer(2, float(rand() % 9), float(rand() % 9));
+                this->_map.movePlayer(3, float(rand() % 9), float(rand() % 9));
             }
-            drawGame(raylibdrawing, map);
+            drawGame();
         }
-        raylibdrawing.~Draw();
+        this->_raylibdrawing.~Draw();
     }
     this->_skyboxMesh.MyUnloadShader(this->_skyboxMesh._skybox.materials[0].shader);
     this->_skyboxMesh.MyUnloadTexture(this->_skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
@@ -89,12 +90,12 @@ void Game::drawMenu(Parallax &parallax) {
         Button button1 = this->_buttonMenu.at(1);
         Button button2 = this->_buttonMenu.at(2);
 
-        button0.HandleButton();
-        button1.HandleButton();
-        button2.HandleButton();
 
         this->_raylibwindow.MyBeginDrawing();
         this->_raylibwindow.MyClearBackground(RAYWHITE);
+        button0.HandleButton();
+        button1.HandleButton();
+        button2.HandleButton();
 
         parallax.updateInLoop();
         parallax.WriteTitle();
@@ -106,16 +107,16 @@ void Game::drawMenu(Parallax &parallax) {
 
 }
 
-void Game::drawGame(MyRayLib::Draw &raylibdrawing, Map &map) {
+void Game::drawGame() {
     this->_raylibwindow.MyClearBackground(RAYWHITE);
-    raylibdrawing.MyDrawFPS(10, 35);
-    raylibdrawing.MyBegin3DMode(this->_camera);
+    this->_raylibdrawing.MyDrawFPS(10, 35);
+    this->_raylibdrawing.MyBegin3DMode(this->_camera);
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
     this->_skyboxMesh.MyrlDisableDepthMask();
     DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_raylibwindow.MyUpdateCamera(&this->_camera, CAMERA_THIRD_PERSON);
-    map.draw();
-    raylibdrawing.MyEnd3DMode();
+    this->_map.draw();
+    this->_raylibdrawing.MyEnd3DMode();
 }
