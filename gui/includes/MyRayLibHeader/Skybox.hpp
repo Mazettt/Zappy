@@ -35,9 +35,7 @@ namespace MyRayLib {
                 _skyboxFileName[256] = { 0 };
             }
             ~Skybox() {
-                this->MyUnloadShader(this->_skybox.materials[0].shader);
-                this->MyUnloadTexture(this->_skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
-                this->MyUnloadModel(this->_skybox);
+                
             };
             void MyLoadFromMesh(Mesh mesh) {
                 _skybox = LoadModelFromMesh(mesh);

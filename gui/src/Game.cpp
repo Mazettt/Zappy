@@ -13,7 +13,12 @@ using namespace ZappyGui;
 Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)) {
 }
 
-Game::~Game() {}
+Game::~Game() {
+    // this->_manager.~ResourceManager();
+    // this->_raylibwindow.~MyRayLibWindow();
+    // this->_skyboxMesh.~Skybox();
+    // this->_buttonMenu.clear();
+}
 
 void Game::initialize() {
     _manager.initialize();
@@ -66,6 +71,9 @@ void Game::run() {
         }
         raylibdrawing.~Draw();
     }
+    this->_skyboxMesh.MyUnloadShader(this->_skyboxMesh._skybox.materials[0].shader);
+    this->_skyboxMesh.MyUnloadTexture(this->_skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
+    this->_skyboxMesh.MyUnloadModel(this->_skyboxMesh._skybox);
     parallax.UnLoadFont();
     parallax.UnLoadAllParallax();
 }
