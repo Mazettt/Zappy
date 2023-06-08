@@ -12,6 +12,7 @@ class Player:
         self.requirement = Tile(1, 1, 0, 0, 0, 0, 0)
         self.client = Client(port, machine)
         self.POV = POV
+        self.remindToTurn = "No"
 
 class Stats:
     def __init__(self, team):
@@ -26,7 +27,7 @@ class Stats:
 
 class Tile:
     def __init__(self, nearbyPlayers, linemates, deraumeres, siburs, mendianes, phiras, thystames):
-        self.food = 500
+        self.food = 50
         self.nearbyPlayers = nearbyPlayers
         self.linemates = linemates
         self.deraumeres = deraumeres

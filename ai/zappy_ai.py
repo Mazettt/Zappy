@@ -13,6 +13,7 @@ import ai.zappy_parsing as zp
 import ai.zappy_network_utils as znu
 import ai.zappy_commands as zc
 import ai.zappy_dataStruct as zds
+import ai.zappy_manualAI as zma
 
 def find_food(p: zds.Player, map_str: str):
     for line in map_str:
@@ -36,8 +37,9 @@ def main():
     zp.print_log("Player: {}".format(p_infos))
     client_num, map_x, map_y = zp.parse_player_infos(p_infos)
     p.stats.playerNB = client_num
-    zc.right(p.client.sock)
-    map_str = zc.look(p.client.sock, map_x, map_y)
+    zma.gameLoop(p)
+    # zc.right(p.client.sock)
+    # map_str = zc.look(p.client.sock, map_x, map_y)
 
 
 main()

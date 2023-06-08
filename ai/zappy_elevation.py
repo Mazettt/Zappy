@@ -11,8 +11,6 @@ import ai.zappy_inventory as zi
 
 def canElevate(p: zds.Player):
     p.stats.elevating = False
-    if (p.inventory.nearbyPlayers < p.requirement.nearbyPlayers):
-        return
     if (p.inventory.linemates < p.requirement.linemates):
         return
     if (p.inventory.deraumeres < p.requirement.deraumeres):

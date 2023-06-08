@@ -39,3 +39,8 @@ def itemParser(p: zds.Player, itemString):
         if (itemList[x] == "thystame"):
             tmpInv.thystames += 1
     return tmpInv
+
+def hasFood(p: zds.Player, tileNBR):
+    if (p.POV.vision[tileNBR].food > 0):
+        return True
+    return False
