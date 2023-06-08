@@ -48,8 +48,10 @@ static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
             sdprintf(zappy, client_socket(ci), "ko\n");
             return;
         }
-        sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
-        notif_guis(send_pnw(zappy, notif_it, new));
+        sdprintf(zappy, client_socket(ci), "%d\n%d %d\n",
+            get_remaining_slots(team), zappy->game.width, zappy->game.height);
+        int it = 0;
+        notif_guis(it, send_pnw(zappy, it, new));
         zappy->client[ci].type = AI;
     } else
         sdprintf(zappy, client_socket(ci), "ko\n");
@@ -75,23 +77,17 @@ static void gui_commands(zappy_t *zappy, char *command, int ci)
     sdprintf(zappy, client_socket(ci), "suc\n");
 }
 
-static void gui_begin(zappy_t *zappy, int ci)
-{
-    send_msz(zappy, ci);
-    send_sgt(zappy, ci);
-    send_mct(zappy, ci);
-    send_tna(zappy, ci);
-    player_t *playerBuff = NULL;
-    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next)
-        if (playerBuff->client)
-            send_pnw(zappy, ci, playerBuff);
-}
-
 static void unknown_commands(zappy_t *zappy, char *command, int ci)
 {
     if (!strcmp(command, "GRAPHIC")) {
         zappy->client[ci].type = GUI;
-        gui_begin(zappy, ci);
+        send_msz(zappy, ci);
+        send_sgt(zappy, ci);
+        send_mct(zappy, ci);
+        send_tna(zappy, ci);
+        player_t *p = NULL;
+        for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next)
+            p->client ? send_pnw(zappy, ci, p) : 0;
         return;
     }
     for (int a = 0; a < zappy->game.nbrTeams; ++a) {
@@ -106,10 +102,17 @@ static void unknown_commands(zappy_t *zappy, char *command, int ci)
 void switch_commands(zappy_t *zappy, char *command, int ci)
 {
     debug_print("com: %s\n", command);
-    if (zappy->client[ci].type == AI)
-        ai_commands(zappy, command, ci);
-    else if (zappy->client[ci].type == GUI)
-        gui_commands(zappy, command, ci);
-    else if (zappy->client[ci].type == UNKNOWN)
-        unknown_commands(zappy, command, ci);
+    switch (zappy->client[ci].type) {
+        case AI:
+            ai_commands(zappy, command, ci);
+            break;
+        case GUI:
+            gui_commands(zappy, command, ci);
+            break;
+        case UNKNOWN:
+            unknown_commands(zappy, command, ci);
+            break;
+        default:
+            break;
+    }
 }

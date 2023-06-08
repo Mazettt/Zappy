@@ -18,6 +18,7 @@ void cmd_sst(zappy_t *zappy, char *command, int ci)
     if (word_array_len(args) != 2 || !is_num(args[1]))
         return free_word_array(args), send_sbp(zappy, ci);
     zappy->game.freq = atoi(args[1]);
-    notif_guis(send_sst(zappy, ci));
+    int it = 0;
+    notif_guis(it, send_sst(zappy, it));
     free_word_array(args);
 }

@@ -15,11 +15,11 @@
     #define debug_print(format, ...)    \
         if (DEBUG) printf(format, __VA_ARGS__);
     #define client_socket(i) zappy->client[i].command.s
-    #define time_limit(x) ((time_t)((float)(x) / (float)(zappy->game.freq) * 1000000))
+    #define time_limit(x)   \
+        ((time_t)((float)(x) / (float)(zappy->game.freq) * 1000000))
     #define cast_pos(x, max) ((x) < 0 ? (max) + (x) : (x) % (max))
-    #define notif_it it
-    #define notif_guis(func) \
-        for (int it = 0; it < MAX_CONNECTIONS; ++it) { \
+    #define notif_guis(it, func) \
+        for (it = 0; it < MAX_CONNECTIONS; ++it) { \
             if (zappy->client[it].command.s && zappy->client[it].type == GUI) \
                 func; \
         }
@@ -54,7 +54,7 @@ typedef enum Direction {
     WEST
 } Direction;
 
-typedef enum Item {
+typedef enum item_e {
     FOOD,
     LINEMATE,
     DERAUMERE,
@@ -63,7 +63,7 @@ typedef enum Item {
     PHIRAS,
     THYSTAME,
     NBR_ITEMS
-} Item;
+} item_t;
 
 struct team_s;
 typedef struct team_s team_t;
@@ -183,6 +183,11 @@ typedef struct {
     int freq;
 } args_t;
 
+typedef struct {
+    int x;
+    int y;
+} pos_t;
+
 char *my_strcat(char *dest , char const *src);
 bool is_num(char *str);
 char *my_itoa(int nb);
@@ -235,6 +240,10 @@ void cmd_forward(zappy_t *zappy, char *command, int ci);
 void cmd_right(zappy_t *zappy, char *command, int ci);
 void cmd_left(zappy_t *zappy, char *command, int ci);
 void cmd_look(zappy_t *zappy, char *command, int ci);
+void look_north(zappy_t *zappy, int ci);
+void look_east(zappy_t *zappy, int ci);
+void look_south(zappy_t *zappy, int ci);
+void look_west(zappy_t *zappy, int ci);
 void cmd_inventory(zappy_t *zappy, char *command, int ci);
 void cmd_connect_nbr(zappy_t *zappy, char *command, int ci);
 void cmd_fork(zappy_t *zappy, char *command, int ci);
@@ -243,6 +252,10 @@ void cmd_take(zappy_t *zappy, char *command, int ci);
 void cmd_set(zappy_t *zappy, char *command, int ci);
 void cmd_broadcast(zappy_t *zappy, char *command, int ci);
 void cmd_incantation(zappy_t *zappy, char *command, int ci);
+
+void rankup_players(zappy_t *zappy, player_t *basePlayer);
+int nbr_players_incantation(zappy_t *zappy, player_t *basePlayer);
+player_t **get_incantation_players(zappy_t *zappy, player_t *basePlayer);
 
 // map size
 void send_msz(zappy_t *zappy, int ci);
@@ -282,9 +295,9 @@ void send_pic(zappy_t *zappy, int ci, player_t **players);
 // end of incantation
 void send_pie(zappy_t *zappy, int ci, player_t *player, bool result);
 // resource dropping
-void send_pdr(zappy_t *zappy, int ci, player_t *player, Item type);
+void send_pdr(zappy_t *zappy, int ci, player_t *player, item_t type);
 // resource collecting
-void send_pgt(zappy_t *zappy, int ci, player_t *player, Item type);
+void send_pgt(zappy_t *zappy, int ci, player_t *player, item_t type);
 // player death
 void send_pdi(zappy_t *zappy, int ci, player_t *player);
 // egg laying by the player
@@ -333,24 +346,25 @@ char *get_tile_content(zappy_t *zappy, int x, int y);
  * @param direction direction of the object
  * @return int = the cell around the point
  */
-int get_direction(int x, int y, int dx, int dy, Direction direction);
+int get_direction(pos_t p, pos_t dp, Direction direction);
 /**
  * @brief get the item from a string
  *
  * @param item string to get the item from
  * @return Item and NBR_ITEMS if the item is not found
  */
-Item get_item(char *item);
+item_t get_item(char *item);
 /**
  * @brief get the string associated to an item
  *
  * @param item item to get the string from
  * @return char* and NULL if the item is not found
  */
-char *get_item_str(Item item);
+char *get_item_str(item_t item);
 bool check_win(zappy_t *zappy);
 
-void add_action(client_t *client, time_t duration, char *command, void (*func)(zappy_t *, char *, int));
+void add_action(client_t *client, time_t duration, char *command,
+    void (*func)(zappy_t *, char *, int));
 void remove_action(action_t *action);
 void exec_action(zappy_t *zappy, action_t *action, int ci);
 

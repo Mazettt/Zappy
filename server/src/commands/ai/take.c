@@ -15,7 +15,7 @@ static void take(zappy_t *zappy, char *command, int ci)
         sdprintf(zappy, client_socket(ci), "ko\n");
         return;
     }
-    Item item = get_item(args[1]);
+    item_t item = get_item(args[1]);
     if (item == NBR_ITEMS) {
         sdprintf(zappy, client_socket(ci), "ko\n");
         return;
@@ -25,7 +25,8 @@ static void take(zappy_t *zappy, char *command, int ci)
         player->inventory[item] += 1;
         *resource -= 1;
         sdprintf(zappy, client_socket(ci), "ok\n");
-        notif_guis(send_pgt(zappy, notif_it, player, item));
+        int it = 0;
+        notif_guis(it, send_pgt(zappy, it, player, item));
     } else
         sdprintf(zappy, client_socket(ci), "ko\n");
     free_word_array(args);

@@ -11,7 +11,8 @@ static void inventory(zappy_t *zappy, unused char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
 
-    sdprintf(zappy, client_socket(ci), "[%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d]\n",
+    sdprintf(zappy, client_socket(ci),
+        "[%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d]\n",
         get_item_str(FOOD), player->inventory[FOOD],
         get_item_str(LINEMATE), player->inventory[LINEMATE],
         get_item_str(DERAUMERE), player->inventory[DERAUMERE],

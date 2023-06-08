@@ -7,7 +7,7 @@
 
 #include "../../../include/server.h"
 
-void send_pgt(zappy_t *zappy, int ci, player_t *player, Item type)
+void send_pgt(zappy_t *zappy, int ci, player_t *player, item_t type)
 {
     sdprintf(zappy, client_socket(ci), "pgt %d %d\n",
         player->id,

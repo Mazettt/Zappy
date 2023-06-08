@@ -25,7 +25,6 @@ static void left(zappy_t *zappy, unused char *command, int ci)
             break;
     }
     sdprintf(zappy, client_socket(ci), "ok\n");
-    // sdprintf(zappy, client_socket(ci), "Player is now facing %s\n", player->direction == NORTH ? "North" : player->direction == EAST ? "East" : player->direction == SOUTH ? "South" : "West"); //! DEBUG
 }
 
 void cmd_left(zappy_t *zappy, char *command, int ci)

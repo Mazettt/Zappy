@@ -89,8 +89,7 @@ int zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
     struct timeval tv = {0, 0};
-    if (!zappy || !init_game(zappy, args))
-        return 84;
+    if (!zappy || !init_game(zappy, args)) return 84;
     first_select(zappy);
     init_main_socket(zappy, args.port);
     while (zappy->main.s) {
@@ -100,11 +99,9 @@ int zappy(args_t args)
             &zappy->writefds, NULL, &tv);
         if (FD_ISSET(zappy->fd_sigint, &zappy->readfds))
             break;
-        else {
-            accept_new_connections(zappy);
-            read_connections(zappy);
-            refill_resources(zappy);
-        }
+        accept_new_connections(zappy);
+        read_connections(zappy);
+        refill_resources(zappy);
     }
     printf("\n%s\n", "Quitting...");
     close_all(zappy);

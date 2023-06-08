@@ -11,13 +11,15 @@ static void broadcast(zappy_t *zappy, char *command, int ci)
 {
     char *text = command + 10;
     player_t *player = zappy->client[ci].player;
-    notif_guis(send_pbc(zappy, notif_it, player, text));
-    player_t *playerBuff = NULL;
-    for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next) {
-        if (playerBuff->client && playerBuff != player) {
-            sdprintf(zappy, playerBuff->client->command.s,
+    int it = 0;
+    notif_guis(it, send_pbc(zappy, it, player, text));
+    player_t *p = NULL;
+    for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
+        if (p->client && p != player) {
+            sdprintf(zappy, p->client->command.s,
                 "message %d, %s\n",
-                get_direction(playerBuff->x, playerBuff->y, player->x, player->y, playerBuff->direction),
+                get_direction((pos_t){p->x, p->y},
+                    (pos_t){player->x, player->y}, p->direction),
                 text
             );
         }
