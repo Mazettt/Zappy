@@ -25,5 +25,6 @@ namespace ZappyGui {
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
             void movePlayer(int playerNumber, float x, float z);
+            void deadPlayer(int playerNumber);
     };
 }

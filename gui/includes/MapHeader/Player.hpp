@@ -21,10 +21,11 @@ namespace ZappyGui {
         private:
             MyRayLib::Model &_model;
             const MyRayLib::Texture2D &_texture;
-            MyRayLib::AnimationsModel &_animation;
             int _frameCounterAnimation;
+            MyRayLib::AnimationsModel &_animation;
 
         public:
+            int _dieCounter;
             Vector3 _movePos;
             enum animationPlayerType {
                 PLAYER_WIN,
