@@ -25,7 +25,7 @@ void Game::initialize() {
     this->_camera = this->_raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
     this->_raylibwindow.MySetTargetFPS(60);
 
-    this->_stateMenu = true;
+    this->_stateMenu = false;
     Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
     this->_buttonMenu.push_back(button);
@@ -68,7 +68,10 @@ void Game::run() {
             // music.MySetMusicVolume(volumeMusic);
             // music.MyUpdateMusic();
             if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
-                map.movePlayer();
+                map.movePlayer(0, float(rand() % 9), float(rand() % 9));
+                map.movePlayer(1, float(rand() % 9), float(rand() % 9));
+                map.movePlayer(2, float(rand() % 9), float(rand() % 9));
+                map.movePlayer(3, float(rand() % 9), float(rand() % 9));
             }
             drawGame(raylibdrawing, map);
         }
