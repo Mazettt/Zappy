@@ -11,6 +11,8 @@ char *get_tile_content(zappy_t *zappy, int x, int y)
 {
     char *res = malloc(sizeof(char) * (1024 * 4));
     int len = 0;
+    if (!res)
+        return NULL;
 
     for (int i = 0; i < nbr_players(zappy, x, y); ++i)
         len += sprintf(res + len, " player");

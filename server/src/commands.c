@@ -44,6 +44,10 @@ static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
 {
     if (team->eggs) {
         player_t *new = hatch_egg(zappy, team->eggs, &zappy->client[ci]);
+        if (!new) {
+            sdprintf(zappy, client_socket(ci), "ko\n");
+            return;
+        }
         sdprintf(zappy, client_socket(ci), "%d\n%d %d\n", get_remaining_slots(team), zappy->game.width, zappy->game.height);
         notif_guis(send_pnw(zappy, notif_it, new));
         zappy->client[ci].type = AI;

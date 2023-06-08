@@ -78,7 +78,7 @@ int main(int ac, char **av)
     }
     args_t args = get_args(ac, av);
     print_args(args);
-    zappy(args);
+    int ret = zappy(args);
     free(args.teamNames);
-    return 0;
+    return ret;
 }

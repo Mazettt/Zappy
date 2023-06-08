@@ -46,6 +46,8 @@ static int nbr_players_incantation(zappy_t *zappy, player_t *basePlayer)
 static player_t **get_incantation_players(zappy_t *zappy, player_t *basePlayer)
 {
     player_t **players = malloc(sizeof(player_t *) * (nbr_players_incantation(zappy, basePlayer) + 1));
+    if (!players)
+        return NULL;
     int index = 0;
     player_t *playerBuff = NULL;
     for (int i = -1; (playerBuff = parse_players(zappy, &i, playerBuff)); playerBuff = playerBuff->next)

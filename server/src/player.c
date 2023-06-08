@@ -34,6 +34,8 @@ void kill_player(zappy_t *zappy, player_t *player)
 player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
 {
     player_t *new = malloc(sizeof(player_t));
+    if (!new)
+        return NULL;
     new->id = ++zappy->game.playerIdIt;
     new->x = egg->x;
     new->y = egg->y;

@@ -9,6 +9,8 @@
 
 void send_pic(zappy_t *zappy, int ci, player_t **players)
 {
+    if (!players)
+        return;
     sdprintf(zappy, client_socket(ci), "pic %d %d %d",
         players[0]->x,
         players[0]->y,

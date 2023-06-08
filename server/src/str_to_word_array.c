@@ -53,14 +53,14 @@ static char **set_arr(char **new_arr, int i_a, int j_a)
 
 char **my_str_to_word_array(char const *str, char *sep)
 {
-    int nbr_letters = 0;int i_a = 0;int j_a = 0;int i = 0;
-    bool q = false;
+    int nbr_letters = 0;int i_a = 0;int j_a = 0;int i = 0;bool q = false;
     int nbr_words = count_words(str, sep, &q);
     char **new_arr = malloc(sizeof(char *) * (nbr_words + 1));
-    for (; is_sep(str[i], sep, &q); ++i)
-        q = (str[i] == '"' ? !q : q);
+    if (!new_arr) return NULL;
+    for (; is_sep(str[i], sep, &q); ++i) q = (str[i] == '"' ? !q : q);
     nbr_letters = count_letters(&str[i], sep, &q);
     new_arr[i_a] = malloc(sizeof(char) * (nbr_letters + 1));
+    if (!new_arr[i_a]) return NULL;
     for (; str[i] != '\0'; ++i) {
         q = (str[i] == '"' ? !q : q);
         if (i > 0 && is_sep(str[i], sep, &q) && !is_sep(str[i - 1], sep, &q))
@@ -68,9 +68,9 @@ char **my_str_to_word_array(char const *str, char *sep)
         is_sep(str[i], sep, &q) && !is_sep(str[i + 1], sep, &q) && str[i + 1]
         != '\0' ? j_a = 0, nbr_letters = count_letters(str + i + 1, sep, &q),
         new_arr[++i_a] = malloc(sizeof(char) * (nbr_letters + 1)) : 0;
+        if (!new_arr[i_a]) return NULL;
         !is_sep(str[i], sep, &q) && str[i] != '\0' ? new_arr[i_a][j_a++]
         = str[i] : 0;
     }
-    new_arr = set_arr(new_arr, i_a, j_a);
-    return (new_arr);
+    new_arr = set_arr(new_arr, i_a, j_a);return (new_arr);
 }
