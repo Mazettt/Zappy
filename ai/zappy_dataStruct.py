@@ -10,9 +10,9 @@ class Player:
 
 class Stats:
     def __init__(self, team):
+        self.isAlive = True
         self.elevating = False
         self.level = 1
-        self.lifeUnit = 50
         self.X = 0
         self.Y = 0
         self.orient = 0 # 0 = N, 1 = E, 2 = S, 3 = W

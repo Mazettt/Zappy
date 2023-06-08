@@ -16,8 +16,7 @@ def itemParser(p: zds.Player, itemString):
     itemList = itemString.split(' ')
     for x in range(0, len(itemList)):
         if (itemList[x] == "food"):
-            zc.take("food")
-            p.inventory.food += 126
+            tmpInv.food += 1
         if (itemList[x] == "player"):
             tmpInv.nearbyPlayers += 1
         if (itemList[x] == "linemate"):
