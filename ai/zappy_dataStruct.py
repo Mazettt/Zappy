@@ -1,26 +1,32 @@
-import numpy
+##
+## EPITECH PROJECT, 2023
+## B-YEP-400-MLH-4-1-zappy-martin.d-herouville
+## File description:
+## zappy_dataStruct
+##
 
 class Player:
     def __init__(self, port, team="", machine="localhost"):
         self.stats = Stats(team)
-        self.inventory = Inventory(0, 0, 0, 0, 0, 0, 0)
-        self.requirement = Inventory(1, 1, 0, 0, 0, 0, 0)
+        self.inventory = Tile(0, 0, 0, 0, 0, 0, 0)
+        self.requirement = Tile(1, 1, 0, 0, 0, 0, 0)
         self.client = Client(port, machine)
         self.POV = POV
 
 class Stats:
     def __init__(self, team):
+        self.isAlive = True
         self.elevating = False
         self.level = 1
-        self.lifeUnit = 50
         self.X = 0
         self.Y = 0
         self.orient = 0 # 0 = N, 1 = E, 2 = S, 3 = W
         self.team = team
         self.playerNB = 0
 
-class Inventory:
+class Tile:
     def __init__(self, nearbyPlayers, linemates, deraumeres, siburs, mendianes, phiras, thystames):
+        self.food = 500
         self.nearbyPlayers = nearbyPlayers
         self.linemates = linemates
         self.deraumeres = deraumeres
@@ -36,7 +42,7 @@ class Client:
         self.sock = 0
 
 class POV:
-        vision = []
+        vision = [Tile]
         visionSize = 0
         visionCenter = 0
 
