@@ -21,7 +21,12 @@ namespace ZappyGui {
                 PHIRAS,
                 SIBUR,
                 THYSTAME,
-                PLAYER
+                PLAYER,
+                BUTTON_START,
+                BUTTON_HELP,
+                BUTTON_QUIT,
+                PARALLAX_MENU_BACKGROUND,
+                PARALLAX_MENU_MIDDLE
             };
             virtual void draw() = 0;
             virtual IResource::resourceType getType() = 0;

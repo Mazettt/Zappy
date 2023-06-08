@@ -24,7 +24,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::PLAYER, "./assets/T_Garfield_BC.png");
     this->loadAnimation(IResource::resourceType::PLAYER, "./assets/thegarf.iqm");
 
-    // // load stone
+    // // load texture
     this->loadModel(IResource::resourceType::DERAUMERE, "./assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::LINEMATE, "./assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::MENDIANE, "./assets/Stones/stone_model.obj");
@@ -38,6 +38,13 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::PHIRAS, "./assets/Stones/phiras.png");
     this->loadTexture(IResource::resourceType::SIBUR, "./assets/Stones/sibur.png");
     this->loadTexture(IResource::resourceType::THYSTAME, "./assets/Stones/thystame.png");
+
+    this->loadTexture(IResource::resourceType::BUTTON_START, "./assets/Buttons/buttonStart.png");
+    this->loadTexture(IResource::resourceType::BUTTON_HELP, "./assets/Buttons/buttonHelp.png");
+    this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./assets/Buttons/buttonQuit.png");
+
+    this->loadTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND, "./assets/Parallax/bkgParallax.png");
+    this->loadTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE, "./assets/Parallax/garfTerre.png");
 
     // load food
     this->loadModel(IResource::resourceType::PIZZA, "./assets/pizza.obj");

@@ -21,13 +21,13 @@ void Game::initialize() {
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_stateMenu = true;
-    Button button("./assets/Buttons/buttonStart.png","./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
+    Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
     this->_buttonMenu.push_back(button);
-    Button button2("./assets/Buttons/buttonHelp.png","./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
+    Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
     button2.ButtonSetPosition(1920/2.0f - button2.button.width/2.0f, 800, (float)button2.button.width, button2.frameHeight);
     this->_buttonMenu.push_back(button2);
-    Button button3("./assets/Buttons/buttonQuit.png","./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
+    Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
     button3.ButtonSetPosition(1920/2.0f - button3.button.width/2.0f, 900, (float)button3.button.width, button3.frameHeight);
     this->_buttonMenu.push_back(button3);
 }
@@ -37,7 +37,7 @@ void Game::run() {
     MyRayLib::Draw raylibdrawing;
 
 
-    Parallax parallax("./assets/Parallax/bkgParallax.png", "./assets/Parallax/garfTerre.png");
+    Parallax parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
 
     float volumeMusic = 0.2;
     // MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");

@@ -25,8 +25,8 @@ namespace MyRayLib {
             int btnState;
             bool btnAction;
             Vector2 mousePoint;
-            Button(const std::string &path, const std::string &pathSound, std::function<void()> callback) {
-                this->button = LoadTexture(path.c_str());
+            Button(const MyRayLib::Texture2D &texture, const std::string &pathSound, std::function<void()> callback) {
+                this->button = texture.getTexture();
                 this->SoundButton = LoadSound(pathSound.c_str());
                 this->frameHeight = (float)this->button.height/3;
                 this->sourceRec = { 0, 0, (float)button.width, frameHeight };

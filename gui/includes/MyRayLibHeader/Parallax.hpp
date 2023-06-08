@@ -21,10 +21,10 @@ namespace MyRayLib {
             float _scrollingMid = 0.0f;
             Font _fontTtf;
         public:
-            Parallax(const std::string background, const std::string middle) {
+            Parallax(const MyRayLib::Texture2D &background, const MyRayLib::Texture2D &middle) {
                 _fontTtf = LoadFontEx("./assets/Parallax/Dongle-Bold.ttf", 512, 0, 250);
-                _background = LoadTexture(background.c_str());
-                _midground = LoadTexture(middle.c_str());
+                _background = background.getTexture();
+                _midground = middle.getTexture();
                 _scrollingBack = 0.0f;
                 _scrollingMid = 0.0f;
             }
