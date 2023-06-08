@@ -9,10 +9,10 @@ all:
 	cp zappy_ai ..
 
 clean:
-	echo "miaou"
+	rm -r -f __pycache__
 
 fclean:	clean
-	echo "miaoumiaou"
+	rm ../zappy_ai
 
 re:	clean all
 
