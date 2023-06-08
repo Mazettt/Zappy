@@ -6,7 +6,7 @@
 ##
 
 all:
-	cp zappy_ai ..
+	cp zappy_ai.py ../zappy_ai
 
 clean:
 	rm -r -f __pycache__
