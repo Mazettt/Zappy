@@ -12,7 +12,6 @@
 #include "../includes/MyRayLibHeader/Skybox.hpp"
 #include "../includes/MyRayLibHeader/Button.hpp"
 #include "../includes/MyRayLibHeader/Parallax.hpp"
-#include "../includes/MyRayLibHeader/Shader.hpp"
 
 #include "../includes/MapHeader/Map.hpp"
 #include "../includes/MyRayLibHeader/Music.hpp"

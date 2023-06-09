@@ -41,6 +41,21 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
     this->addPlayerForTile(playerArgs3);
 }
 
+std::shared_ptr<Player> Map::findPlayerByID(int id) {
+    for (std::shared_ptr<Player> p : this->_players) {
+        if (p->getPlayerNumber() == id) {
+            return p;
+        }
+    }
+    return nullptr;
+}
+
+bool Map::setPlayerLevel(int playerID, int level) {
+    std::shared_ptr<Player> p = this->findPlayerByID(playerID);
+
+    p->setPlayerLevel(level);
+}
+
 void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type) {
     this->_map[pos.y * this->_size.x + pos.x]->addResource(this->_manager, type);
 }
@@ -49,28 +64,30 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
     auto &modelPlayer = this->_manager.getPlayerModel();
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
-    this->_players.push_back(std::make_unique<Player>(playerArgs, modelPlayer, texture, animation));
+    this->_players.push_back(std::make_shared<Player>(playerArgs, modelPlayer, texture, animation));
 }
 
-void Map::movePlayer(int playerNumber, float x, float z) {
-    int nbrPlayer = this->_players.size();
-    for (int i = 0; i < nbrPlayer; ++i) {
-        if (this->_players.at(i)->getPlayerNumber() == playerNumber) {
-            Vector3 pos = this->_players.at(i)->getPosition();
-            this->_players.at(i)->_movePos = {x - pos.x, 0.0, z - pos.z};
-            // orientation
-            this->_players.at(i)->animationWalk();
-        }
+bool Map::movePlayer(int playerID, float x, float z) {
+    std::shared_ptr<Player> p = this->findPlayerByID(playerID);
+
+    if (p != nullptr) {
+        Vector3 pos = p->getPosition();
+        p->_movePos = {x - pos.x, 0.0, z - pos.z};
+        // TODO orientation
+        p->animationWalk();
+        return true;
     }
+    return false;
 }
 
-void Map::deadPlayer(int playerNumber) {
-    int nbrPlayer = this->_players.size();
-    for (int i = 0; i < nbrPlayer; ++i) {
-        if (this->_players.at(i)->getPlayerNumber() == playerNumber) {
-            this->_players.at(i)->animationDie();
-        }
+bool Map::deadPlayer(int playerID) {
+    std::shared_ptr<Player> p = this->findPlayerByID(playerID);
+
+    if (p != nullptr) {
+        p->animationDie();
+        return true;
     }
+    return false;
 }
 
 void Map::draw() {
@@ -83,43 +100,44 @@ void Map::draw() {
     }
 
     float moveSpeed = 0.06;
-    int nbrPlayer = this->_players.size();
-    for (int i = 0; i < nbrPlayer; ++i) {
-        Vector3 pos = this->_players.at(i)->getPosition();
-        if (this->_players.at(i)->_movePos.x > 0.0) {
-            this->_players.at(i)->setPosition({ pos.x += moveSpeed, 0.0, pos.z });
-            this->_players.at(i)->_movePos.x -= moveSpeed;
+
+    for (auto it = this->_players.begin(); it != this->_players.end();) {
+        std::shared_ptr<Player> p = *it;
+        Vector3 pos = p->getPosition();
+        if (p->_movePos.x > 0.0) {
+            p->setPosition({ pos.x += moveSpeed, 0.0, pos.z });
+            p->_movePos.x -= moveSpeed;
         }
-        if (this->_players.at(i)->_movePos.z > 0.0) {
-            this->_players.at(i)->setPosition({ pos.x, 0.0, pos.z += moveSpeed });
-            this->_players.at(i)->_movePos.z -= moveSpeed;
+        if (p->_movePos.z > 0.0) {
+            p->setPosition({ pos.x, 0.0, pos.z += moveSpeed });
+            p->_movePos.z -= moveSpeed;
         }
-        if (this->_players.at(i)->_movePos.x < 0.0) {
-            this->_players.at(i)->setPosition({ pos.x -= moveSpeed, 0.0, pos.z });
-            this->_players.at(i)->_movePos.x += moveSpeed;
+        if (p->_movePos.x < 0.0) {
+            p->setPosition({ pos.x -= moveSpeed, 0.0, pos.z });
+            p->_movePos.x += moveSpeed;
         }
-        if (this->_players.at(i)->_movePos.z < 0.0) {
-            this->_players.at(i)->setPosition({ pos.x, 0.0, pos.z -= moveSpeed });
-            this->_players.at(i)->_movePos.z += moveSpeed;
+        if (p->_movePos.z < 0.0) {
+            p->setPosition({ pos.x, 0.0, pos.z -= moveSpeed });
+            p->_movePos.z += moveSpeed;
         }
         float epsilon = 0.0001f;
-        if (abs(this->_players.at(i)->_movePos.x) < epsilon && abs(this->_players.at(i)->_movePos.z) < epsilon) {
-            if (this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
-                this->_players.at(i)->animationWait();
+        if (abs(p->_movePos.x) < epsilon && abs(p->_movePos.z) < epsilon) {
+            if (p->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
+                p->animationWait();
             }
-            if (this->_players.at(i)->_animationCounter > 0) {
-                this->_players.at(i)->_animationCounter -= 1;
-            } else if (this->_players.at(i)->_animationCounter <= 0) {
-                if (this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
-                    this->_players.erase(this->_players.begin() + i);
-                    nbrPlayer -= 1;
+            if (p->_animationCounter > 0) {
+                p->_animationCounter -= 1;
+            } else if (p->_animationCounter <= 0) {
+                if (p->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
+                    this->_players.erase(it);
                     continue;
                 } else {
-                    this->_players.at(i)->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
+                    p->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
                 }
             }
         }
-        this->_players.at(i)->draw();
+        p->draw();
+        ++it;
     }
 }
 

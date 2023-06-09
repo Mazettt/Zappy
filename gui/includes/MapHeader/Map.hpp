@@ -16,15 +16,17 @@ namespace ZappyGui {
         private:
             Vector2 _size;
             std::vector<std::shared_ptr<Tile>> _map;
-            std::vector<std::unique_ptr<Player>> _players;
+            std::vector<std::shared_ptr<Player>> _players;
             ResourceManager &_manager;
+            std::shared_ptr<Player> findPlayerByID(int id);
         public:
             Map(int x, int y, ResourceManager &manager);
             ~Map();
             void addResourceForTile(const Vector2 &pos, IResource::resourceType type);
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
-            void movePlayer(int playerNumber, float x, float z);
-            void deadPlayer(int playerNumber);
+            bool movePlayer(int playerID, float x, float z);
+            bool deadPlayer(int playerID);
+            bool setPlayerLevel(int playerID, int level);
     };
 }
