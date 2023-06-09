@@ -14,7 +14,7 @@ def POVmanager(p: zds.Player):
     for x in range(0, len(tmp_vision)):
         itemString = ""
         for y in range(0, len(tmp_vision[x])):
-            itemString.append(tmp_vision[x][y])
+            itemString = itemString + tmp_vision[x][y]
         tmpInv = itemParser(p, itemString)
         p.POV.vision.append(tmpInv)
 
