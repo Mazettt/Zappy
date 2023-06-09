@@ -170,10 +170,11 @@ void ServerLink::_ppo(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
-    int id, x, y, orientation;
+    int id, orientation;
+    float x, z;
 
-    iss >> tmp >> id >> x >> y >> orientation;
-    std::cout << "Player position: " << id << " " << x << " " << y << " " << orientation << std::endl;
+    iss >> tmp >> id >> x >> z >> orientation;
+    this->_game._map.movePlayer(id, x, z, (ZappyGui::Player::orientationAxis) orientation); // TO CHECK orientation
 }
 
 void ServerLink::_plv(const std::string &str)
@@ -183,7 +184,7 @@ void ServerLink::_plv(const std::string &str)
     int id, level;
 
     iss >> tmp >> id >> level;
-    std::cout << "Player level: " << id << " " << level << std::endl;
+    this->_game._map.setPlayerLevel(id, level);
 }
 
 void ServerLink::_pin(const std::string &str)
@@ -221,15 +222,14 @@ void ServerLink::_pic(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
-    int x, y, level;
+    int level;
+    float x, z;
     std::vector<int> ids;
 
-    iss >> tmp >> x >> y >> level;
+    iss >> tmp >> x >> z >> level;
     for (int id; iss >> id;)
         ids.push_back(id);
-    std::cout << "Player incantation: " << x << " " << y << " " << level << " -> ";
-    for (auto id : ids)
-        std::cout << id << " ";
+    this->_game._map.StartPlayersLeveling(ids, level, x, z);
     std::cout << std::endl;
 }
 
@@ -237,10 +237,11 @@ void ServerLink::_pie(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
-    int x, y, result;
+    int result;
+    float x, z;
 
-    iss >> tmp >> x >> y >> result;
-    std::cout << "Player incantation end: " << x << " " << y << " " << result << std::endl;
+    iss >> tmp >> x >> z >> result;
+    this->_game._map.EndPlayersLeveling(x, z, result);
 }
 
 void ServerLink::_pfk(const std::string &str)
@@ -260,7 +261,7 @@ void ServerLink::_pdr(const std::string &str)
     int id, resource;
 
     iss >> tmp >> id >> resource;
-    std::cout << "Player drop: " << id << " " << resource << std::endl;
+    this->_game._map.dropResource(id, (ZappyGui::IResource::resourceType) resource); // TO CHECK if resourceType work correctly
 }
 
 void ServerLink::_pgt(const std::string &str)
@@ -270,7 +271,7 @@ void ServerLink::_pgt(const std::string &str)
     int id, resource;
 
     iss >> tmp >> id >> resource;
-    std::cout << "Player take: " << id << " " << resource << std::endl;
+    this->_game._map.collectResource(id, (ZappyGui::IResource::resourceType) resource); // TO CHECK if resourceType work correctly
 }
 
 void ServerLink::_pdi(const std::string &str)
@@ -280,7 +281,7 @@ void ServerLink::_pdi(const std::string &str)
     int id;
 
     iss >> tmp >> id;
-    std::cout << "Player death: " << id << std::endl;
+    this->_game._map.deadPlayer(id);
 }
 
 void ServerLink::_enw(const std::string &str)
