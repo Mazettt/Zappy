@@ -18,8 +18,8 @@ FactoryResource::~FactoryResource() {}
 
 std::unique_ptr<IResource> FactoryResource::createResource(IResource::resourceType type, const Vector3 &position, const ResourceManager &manager) {
     static const std::unordered_map<IResource::resourceType, std::function<std::unique_ptr<IResource>()>> componentMap {
-        {IResource::resourceType::PIZZA, [&]()
-            {return std::make_unique<Pizza>(manager.getModel(type), manager.getTexture(type), position);}},
+        {IResource::resourceType::BURGER, [&]()
+            {return std::make_unique<Burger>(manager.getModel(type), manager.getTexture(type), position);}},
         {IResource::resourceType::LINEMATE, [&]()
             {return std::make_unique<Linemate>(manager.getModel(type), manager.getTexture(type), position);}},
         {IResource::resourceType::DERAUMERE, [&]()
@@ -31,7 +31,9 @@ std::unique_ptr<IResource> FactoryResource::createResource(IResource::resourceTy
         {IResource::resourceType::PHIRAS, [&]()
             {return std::make_unique<Phiras>(manager.getModel(type), manager.getTexture(type), position);}},
         {IResource::resourceType::THYSTAME, [&]()
-            {return std::make_unique<Thystame>(manager.getModel(type), manager.getTexture(type), position);}}
+            {return std::make_unique<Thystame>(manager.getModel(type), manager.getTexture(type), position);}},
+        {IResource::resourceType::EGG, [&]()
+            {return std::make_unique<Egg>(manager.getModel(type), manager.getTexture(type), position);}}
     };
     std::unordered_map<IResource::resourceType, std::function<std::unique_ptr<IResource>()>>::const_iterator it = componentMap.find(type);
     if (it == componentMap.end())

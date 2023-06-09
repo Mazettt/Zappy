@@ -26,8 +26,8 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
             Cube cube(cubePosition, widthCube, heightCube, lengthCube, color);
             std::shared_ptr<Tile> tile = std::make_shared<Tile>(cube);
             this->_map[key] = std::move(tile);
-            this->_map[key]->addResource(this->_manager, IResource::resourceType::SIBUR);
-            this->_map[key]->addResource(this->_manager, IResource::resourceType::LINEMATE);
+            this->_map[key]->addResource(this->_manager, IResource::resourceType::EGG);
+            this->_map[key]->addResource(this->_manager, IResource::resourceType::BURGER);
             this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
         }
     }
@@ -107,13 +107,16 @@ void Map::draw() {
             if (this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
                 this->_players.at(i)->animationWait();
             }
-            if (this->_players.at(i)->_dieCounter > 0) {
-                this->_players.at(i)->_dieCounter -= 1;
-            } else if (this->_players.at(i)->_dieCounter <= 0
-                && this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
-                this->_players.erase(this->_players.begin() + i);
-                nbrPlayer--;
-                continue;
+            if (this->_players.at(i)->_animationCounter > 0) {
+                this->_players.at(i)->_animationCounter -= 1;
+            } else if (this->_players.at(i)->_animationCounter <= 0) {
+                if (this->_players.at(i)->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
+                    this->_players.erase(this->_players.begin() + i);
+                    nbrPlayer -= 1;
+                    continue;
+                } else {
+                    this->_players.at(i)->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
+                }
             }
         }
         this->_players.at(i)->draw();

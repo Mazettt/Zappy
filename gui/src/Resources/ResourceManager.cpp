@@ -47,8 +47,12 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE, "./assets/Parallax/garfTerre.png");
 
     // load food
-    this->loadModel(IResource::resourceType::PIZZA, "./assets/pizza.obj");
-    this->loadTexture(IResource::resourceType::PIZZA, "./assets/Food/pizza.png");
+    this->loadModel(IResource::resourceType::BURGER, "./assets/Food/Hamburger.obj");
+    this->loadTexture(IResource::resourceType::BURGER, "./assets/Food/Hamburger.png");
+
+    //load egg
+    this->loadModel(IResource::resourceType::EGG, "./assets/Egg/egg01.obj");
+    this->loadTexture(IResource::resourceType::EGG, "./assets/Egg/egg01.png");
 
     // load texture on model
     this->setMaterialTexture(IResource::resourceType::DERAUMERE);
@@ -57,8 +61,9 @@ void ResourceManager::initialize() {
     this->setMaterialTexture(IResource::resourceType::PHIRAS);
     this->setMaterialTexture(IResource::resourceType::SIBUR);
     this->setMaterialTexture(IResource::resourceType::THYSTAME);
-    this->setMaterialTexture(IResource::resourceType::PIZZA);
+    this->setMaterialTexture(IResource::resourceType::BURGER);
     this->setMaterialTexture(IResource::resourceType::PLAYER);
+    this->setMaterialTexture(IResource::resourceType::EGG);
 }
 
 void ResourceManager::loadModel(IResource::resourceType type, const std::string &filename) {

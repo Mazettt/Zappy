@@ -7,10 +7,11 @@
 
 #pragma once
 
-#include "Pizza.hpp"
+#include "Burger.hpp"
 #include "Linemate.hpp"
 #include "Deraumere.hpp"
 #include "Sibur.hpp"
 #include "Mendiane.hpp"
 #include "Phiras.hpp"
 #include "Thystame.hpp"
+#include "Egg.hpp"

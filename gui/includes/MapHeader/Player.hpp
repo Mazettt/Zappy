@@ -25,7 +25,7 @@ namespace ZappyGui {
             MyRayLib::AnimationsModel &_animation;
 
         public:
-            int _dieCounter;
+            int _animationCounter;
             Vector3 _movePos;
             enum animationPlayerType {
                 PLAYER_WIN,
