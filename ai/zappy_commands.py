@@ -94,7 +94,7 @@ def eject(sock: socket.socket):
 
 def take(sock: socket.socket, resource: str):
     znu.send_to_server(sock, "{} {}".format("Take\n", resource))
-    resp = znu.multiple_recv_from_server(sock, Commands.TAKE[1])
+    resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def set(sock: socket.socket, resource: str):

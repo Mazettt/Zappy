@@ -39,7 +39,7 @@ def gameLoop(p: zds.Player):
         #select
         # if ("dead") = close socket -> exit(0)
         zp.POVmanager(p)
-        zi.pickUpManager(p)
+        zi.pickUpManager(p, p.client.sock)
         #Put here an "if" later, to know if we have enough food or not
         lookForFood(p)
         move(p)
