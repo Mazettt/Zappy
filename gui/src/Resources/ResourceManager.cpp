@@ -20,9 +20,9 @@ ResourceManager::~ResourceManager() {
 
 void ResourceManager::initialize() {
     // // load player
-    this->loadModel(IResource::resourceType::PLAYER, "./assets/thegarf.iqm");
+    this->loadModel(IResource::resourceType::PLAYER, "./assets/thegarfrotated.iqm");
     this->loadTexture(IResource::resourceType::PLAYER, "./assets/T_Garfield_BC.png");
-    this->loadAnimation(IResource::resourceType::PLAYER, "./assets/thegarf.iqm");
+    this->loadAnimation(IResource::resourceType::PLAYER, "./assets/thegarfrotated.iqm");
 
     // // load texture
     this->loadModel(IResource::resourceType::DERAUMERE, "./assets/Stones/stone_model.obj");

@@ -31,13 +31,13 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
             this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
         }
     }
-    PlayerArguments playerArgs(0, "Team1", {3.0f, 0.0f, 8.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
+    PlayerArguments playerArgs(0, "Team1", {3.0f, 0.0f, 8.0f}, {0.0f, 1.0f, 0.0f}, 0.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
     this->addPlayerForTile(playerArgs);
-    PlayerArguments playerArgs1(1, "Team1", {5.0f, 0.0f, 7.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
+    PlayerArguments playerArgs1(1, "Team1", {5.0f, 0.0f, 7.0f}, {0.0f, 1.0f, 0.0f}, 90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
     this->addPlayerForTile(playerArgs1);
-    PlayerArguments playerArgs2(2, "Team1", {8.0f, 0.0f, 3.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
+    PlayerArguments playerArgs2(2, "Team1", {8.0f, 0.0f, 3.0f}, {0.0f, 1.0f, 0.0f}, 180.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
     this->addPlayerForTile(playerArgs2);
-    PlayerArguments playerArgs3(3, "Team1", {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, -90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
+    PlayerArguments playerArgs3(3, "Team1", {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 270.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
     this->addPlayerForTile(playerArgs3);
 }
 
