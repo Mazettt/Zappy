@@ -35,18 +35,17 @@ static bool check_incantation(zappy_t *zappy, int ci)
 static void incantation(zappy_t *zappy, unused char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
+    int it = 0;
     if (!player)
         return;
     if (check_incantation(zappy, ci)) {
-        elev_cond_t cond = elev_cond[player->level - 1];
         for (int i = 0; i < NBR_ITEMS; ++i)
-            zappy->game.map[player->x][player->y][i] -= cond.items[i];
+            zappy->game.map[player->x][player->y][i] -=
+            elev_cond[player->level - 1].items[i];
         rankup_players(zappy, player);
-        int it = 0;
         notif_guis(it, send_pie(zappy, it, player, true));
     } else {
         sdprintf(zappy, client_socket(ci), "ko\n");
-        int it = 0;
         notif_guis(it, send_pie(zappy, it, player, false));
     }
 }
@@ -54,14 +53,15 @@ static void incantation(zappy_t *zappy, unused char *command, int ci)
 void cmd_incantation(zappy_t *zappy, char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
+    player_t **players = NULL;
+    int it = 0;
 
     add_action(&zappy->client[ci], time_limit(300), command, incantation);
     if (check_incantation(zappy, ci))
         sdprintf(zappy, client_socket(ci), "Elevation underway\n");
     else
         sdprintf(zappy, client_socket(ci), "ko\n");
-    player_t **players = get_incantation_players(zappy, player);
-    int it = 0;
+    players = get_incantation_players(zappy, player);
     notif_guis(it, send_pic(zappy, it, players));
     free(players);
 }

@@ -12,8 +12,8 @@ static void broadcast(zappy_t *zappy, char *command, int ci)
     char *text = command + 10;
     player_t *player = zappy->client[ci].player;
     int it = 0;
-    notif_guis(it, send_pbc(zappy, it, player, text));
     player_t *p = NULL;
+    notif_guis(it, send_pbc(zappy, it, player, text));
     for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
         if (p->client && p != player) {
             sdprintf(zappy, p->client->command.s,

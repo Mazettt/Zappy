@@ -26,9 +26,8 @@ void exec_action(zappy_t *zappy, action_t *action, int ci)
 {
     struct timeval now;
     gettimeofday(&now, NULL);
-    time_t micro = (now.tv_sec - action->startTime.tv_sec) * 1000000 +
-        now.tv_usec - action->startTime.tv_usec;
-    if (micro >= action->duration) {
+    if ((now.tv_sec - action->startTime.tv_sec) * 1000000 +
+        (now.tv_usec - action->startTime.tv_usec) >= action->duration) {
         action->func(zappy, action->command, ci);
         remove_action(action);
     }
