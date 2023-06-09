@@ -10,7 +10,15 @@
 
 using namespace ZappyGui;
 
-Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)), _map(10, 10, this->_manager), _raylibdrawing(), _parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE)), _link(*this) {
+Game::Game():
+    _manager(ResourceManager()),
+    _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")),
+    _skyboxMesh(Skybox(1.0, 1.0, 1.0)),
+    _map(this->_manager),
+    _raylibdrawing(),
+    _parallax(),
+    _link(*this) {
+    _manager.initialize();
 }
 
 Game::~Game() {
@@ -31,6 +39,8 @@ void Game::switchToGame()
 }
 
 void Game::initialize() {
+    this->_parallax.setTexture(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND),
+    this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
     this->_camera = this->_raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
     this->_raylibwindow.MySetTargetFPS(60);
 

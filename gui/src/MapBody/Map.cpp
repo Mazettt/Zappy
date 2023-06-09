@@ -10,14 +10,24 @@
 
 using namespace ZappyGui;
 
-Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
+Map::Map(ResourceManager &manager): _manager(manager) {}
+
+std::shared_ptr<Player> Map::findPlayerByID(int id) {
+    for (std::shared_ptr<Player> p : this->_players) {
+        if (p->getPlayerNumber() == id) {
+            return p;
+        }
+    }
+    return nullptr;
+}
+
+void Map::createMap(int x, int y) {
     float widthCube = 1.0;
     float lengthCube = 1.0;
     float heightCube = 0.1;
     this->_size.x = x;
     this->_size.y = y;
     this->_map.resize(x * y);
-    _manager.initialize();
 
     Color color = {120, 80, 160, 140};
     for (int y = 0; y < this->_size.y; ++y) {
@@ -27,29 +37,8 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
             Cube cube(cubePosition, widthCube, heightCube, lengthCube, color);
             std::shared_ptr<Tile> tile = std::make_shared<Tile>(cube);
             this->_map[key] = std::move(tile);
-            this->_map[key]->addResource(this->_manager, IResource::resourceType::EGG);
-            this->_map[key]->addResource(this->_manager, IResource::resourceType::BURGER);
-            this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
-            this->_map[key]->removeResource(IResource::resourceType::EGG); // TO CHECK
         }
     }
-    PlayerArguments playerArgs(0, "Team1", {3.0f, 0.0f, 8.0f}, {0.0f, 1.0f, 0.0f}, (float)Player::orientationAxis::SOUTH, {0.6f, 0.6f, 0.6f}, 0 , 3);
-    this->addPlayerForTile(playerArgs);
-    PlayerArguments playerArgs1(1, "Team1", {5.0f, 0.0f, 7.0f}, {0.0f, 1.0f, 0.0f}, Player::orientationAxis::EAST, {0.6f, 0.6f, 0.6f}, 0 , 1);
-    this->addPlayerForTile(playerArgs1);
-    PlayerArguments playerArgs2(2, "Team1", {8.0f, 0.0f, 3.0f}, {0.0f, 1.0f, 0.0f}, (float)Player::orientationAxis::NORTH, {0.6f, 0.6f, 0.6f}, 0 , 3);
-    this->addPlayerForTile(playerArgs2);
-    PlayerArguments playerArgs3(3, "Team1", {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, (float)Player::orientationAxis::WEST, {0.6f, 0.6f, 0.6f}, 0 , 1);
-    this->addPlayerForTile(playerArgs3);
-}
-
-std::shared_ptr<Player> Map::findPlayerByID(int id) {
-    for (std::shared_ptr<Player> p : this->_players) {
-        if (p->getPlayerNumber() == id) {
-            return p;
-        }
-    }
-    return nullptr;
 }
 
 void Map::StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z) {

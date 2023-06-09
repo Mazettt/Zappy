@@ -21,7 +21,7 @@ int main(int ac, char **av) {
     //     return 84;
     // }
 
-    Game game(10, 10);
+    Game game;
     game.initialize();
     game.run();
     return 0;

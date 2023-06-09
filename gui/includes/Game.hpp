@@ -24,19 +24,18 @@ using namespace MyRayLib;
 namespace ZappyGui {
     class Game {
         private:
-            // Map _map;
             ResourceManager _manager;
             Camera3D _camera;
             MyRayLibWindow _raylibwindow;
             bool _stateMenu;
             std::vector<Button> _buttonMenu;
             MyRayLib::Skybox _skyboxMesh;
-            Map _map;
             MyRayLib::Draw _raylibdrawing;
             bool _BoolCloseWin;
-        public:
             Parallax _parallax;
-            Game(int mapWidth, int mapHeight);
+        public:
+            Map _map;
+            Game();
             ~Game();
             void initialize();
             void run();

@@ -122,7 +122,7 @@ void ServerLink::_msz(const std::string &str)
     int x, y;
 
     iss >> tmp >> x >> y;
-    std::cout << "Map size: " << x << " " << y << std::endl;
+    this->_game._map.createMap(x, y);
 }
 
 void ServerLink::_bct(const std::string &str)

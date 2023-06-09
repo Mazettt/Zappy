@@ -21,8 +21,9 @@ namespace ZappyGui {
             ResourceManager &_manager;
             std::shared_ptr<Player> findPlayerByID(int id);
         public:
-            Map(int x, int y, ResourceManager &manager);
+            Map(ResourceManager &manager);
             ~Map();
+            void createMap(int x, int y);
             void addResourceForTile(const Vector2 &pos, IResource::resourceType type);
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();

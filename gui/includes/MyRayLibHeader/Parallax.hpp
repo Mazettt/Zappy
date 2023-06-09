@@ -21,14 +21,16 @@ namespace MyRayLib {
             float _scrollingMid = 0.0f;
             Font _fontTtf;
         public:
-            Parallax(const MyRayLib::Texture2D &background, const MyRayLib::Texture2D &middle) {
+            Parallax() {
                 _fontTtf = LoadFontEx("./assets/Parallax/Dongle-Bold.ttf", 512, 0, 250);
-                _background = background.getTexture();
-                _midground = middle.getTexture();
                 _scrollingBack = 0.0f;
                 _scrollingMid = 0.0f;
             }
             ~Parallax(){};
+            void setTexture(const MyRayLib::Texture2D &background, const MyRayLib::Texture2D &middle) {
+                this->_background = background.getTexture();
+                this->_midground = middle.getTexture();
+            }
             void updateInLoop() {
                 _scrollingBack -= 0.5f;
                 _scrollingMid -= 1.0f;
