@@ -14,12 +14,17 @@ namespace MyRayLib {
             ::Music _music;
         public:
             Music(const std::string &path) {
-                InitAudioDevice();
+                // InitAudioDevice();
                 _music = LoadMusicStream(path.c_str());
             }
             ~Music() {
                 UnloadMusicStream(_music);
-                // CloseAudioDevice();
+            }
+            void MyInitAudioDevice() {
+                InitAudioDevice();
+            }
+            void MyCloseAudioDevice() {
+                CloseAudioDevice();
             }
             bool MyIsMusicReady() {
                 return IsMusicReady(_music);

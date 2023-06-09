@@ -10,7 +10,7 @@
 
 using namespace ZappyGui;
 
-Map::Map(int x, int y, ResourceManager &manager): _manager(manager), _music("./assets/GarfieldCoolCat.mp3") {
+Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
     float widthCube = 1.0;
     float lengthCube = 1.0;
     float heightCube = 0.1;
@@ -18,9 +18,6 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager), _music("./a
     this->_size.y = y;
     this->_map.resize(x * y);
     _manager.initialize();
-
-    if (this->_music.MyIsMusicReady())
-        this->_music.MyPlayMusic();
 
     Color color = {120, 80, 160, 140};
     for (int y = 0; y < this->_size.y; ++y) {
@@ -156,8 +153,3 @@ void Map::draw() {
 }
 
 Map::~Map() {}
-
-void Map::updateMusic() {
-    this->_music.MySetMusicVolume(this->_volumeMusicGame);
-    this->_music.MyUpdateMusic();
-}

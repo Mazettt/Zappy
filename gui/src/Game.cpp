@@ -47,21 +47,29 @@ void Game::run() {
     this->_skyboxMesh.InitSkybox();
     this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/roh.png");
 
-    float volumeMusic = 0.2;
-    MyRayLib::Music musicGen("./assets/GénériqueGarf.mp3");
-    if (musicGen.MyIsMusicReady())
-        musicGen.MyPlayMusic();
+    float volumeMusic = 0.9;
+    InitAudioDevice();
+    MyRayLib::Music musicMenu("./assets/GénériqueGarf.mp3");
+    if (musicMenu.MyIsMusicReady())
+        musicMenu.MyPlayMusic();
+
+    MyRayLib::Music musicGame("./assets/GarfieldCoolCat.mp3");
 
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
                 volumeMusic += 0.1f;
-            if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
-                volumeMusic -= 0.1f;
+        if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
+            volumeMusic -= 0.1f;
         if (this->_stateMenu == true) {
-            musicGen.MySetMusicVolume(volumeMusic);
-            musicGen.MyUpdateMusic();
+            musicMenu.MySetMusicVolume(volumeMusic);
+            musicMenu.MyUpdateMusic();
             drawMenu();
         } else {
+            if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {
+                musicGame.MyPlayMusic();
+            }
+            musicGame.MySetMusicVolume(volumeMusic);
+            musicGame.MyUpdateMusic();
             if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
                 int testRand;
                 testRand = rand() % 3;
@@ -110,7 +118,6 @@ void Game::drawMenu() {
 }
 
 void Game::drawGame() {
-    this->_map.updateMusic();
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     this->_raylibdrawing.MyDrawFPS(10, 35);
     this->_raylibdrawing.MyBegin3DMode(this->_camera);

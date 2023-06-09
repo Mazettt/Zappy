@@ -20,8 +20,6 @@ namespace ZappyGui {
             std::vector<std::shared_ptr<Player>> _players;
             ResourceManager &_manager;
             std::shared_ptr<Player> findPlayerByID(int id);
-            MyRayLib::Music _music;
-            float _volumeMusicGame = 0.2;
         public:
             Map(int x, int y, ResourceManager &manager);
             ~Map();
@@ -32,6 +30,5 @@ namespace ZappyGui {
             bool deadPlayer(int playerID);
             bool setPlayerLevel(int playerID, int level);
             bool lvlupPlayer(std::vector<int> playersID, int level);
-            void updateMusic();
     };
 }
