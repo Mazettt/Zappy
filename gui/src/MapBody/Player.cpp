@@ -14,6 +14,35 @@ Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const 
     this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
 }
 
+void Player::addOnInventory(IResource::resourceType type, int quantity) {
+    for (std::pair<const IResource::resourceType, int> item : this->_inventory) {
+        if (item.first == type) {
+            item.second += quantity;
+            return;
+        }
+    }
+    this->_inventory.insert({ type, quantity });
+}
+
+bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
+    for (std::pair<const IResource::resourceType, int> item : this->_inventory) {
+        if (item.first == type) {
+            if (item.second < 1) {
+                this->_inventory.erase(type);
+            } else {
+                item.second -= quantity;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+void Player::draw() {
+    this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
+    MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), this->getOrientationAxis(), this->getRotationAngle(), this->getScale(), MyRayLib::MyRayLibColor::White());
+}
+
 void Player::animationWin() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_WIN);
     this->_frameCounterAnimation = 0;
@@ -48,9 +77,4 @@ void Player::animationWalk() {
 void Player::noAnimation() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_NOTHING);
     this->_frameCounterAnimation = 0;
-}
-
-void Player::draw() {
-    this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
-    MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), this->getOrientationAxis(), this->getRotationAngle(), this->getScale(), MyRayLib::MyRayLibColor::White());
 }

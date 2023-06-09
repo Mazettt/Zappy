@@ -7,14 +7,9 @@
 
 #pragma once
 #include <string>
-// #include "../MyRayLibHeader/AnimationsModel.hpp"
-// #include "../MyRayLibHeader/Color.hpp"
-// #include "../MyRayLibHeader/Draw.hpp"
-// #include "../MyRayLibHeader/Model.hpp"
-// #include "../MyRayLibHeader/Texture.hpp"
-// #include "../MyRayLibHeader/Vector3D.hpp"
-// #include "../MyRayLibHeader/Window.hpp"
+#include <unordered_map>
 #include "PlayerArguments.hpp"
+#include "../resources/IResource.hpp"
 
 namespace ZappyGui {
     class Player: public PlayerArguments {
@@ -23,6 +18,7 @@ namespace ZappyGui {
             const MyRayLib::Texture2D &_texture;
             int _frameCounterAnimation;
             MyRayLib::AnimationsModel &_animation;
+            std::unordered_map<IResource::resourceType, int> _inventory;
 
         public:
             int _animationCounter;
@@ -37,6 +33,8 @@ namespace ZappyGui {
                 PLAYER_NOTHING = 9
             };
             Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
+            void addOnInventory(IResource::resourceType type, int quantity);
+            bool removeOnInventory(IResource::resourceType type, int quantity);
             void animationWin();
             void animationLVLUP();
             void animationDie();

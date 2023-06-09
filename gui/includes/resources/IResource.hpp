@@ -12,8 +12,6 @@ namespace ZappyGui {
     class IResource {
         public:
             enum resourceType {
-                STONE,
-                FOOD,
                 BURGER,
                 DERAUMERE,
                 LINEMATE,
