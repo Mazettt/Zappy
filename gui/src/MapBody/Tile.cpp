@@ -16,7 +16,7 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
     float decalage = -0.42; // TODO
 
     if (_availablePositions.empty()) { // TODO a voir quand on remove une ressource remettre ici !!!
-        this->_resources.push_back(FactoryResource::createResource(type, {decalage + this->_cube.getPos().x, 0.08, decalage + this->_cube.getPos().z}, manager));
+        this->_resources.push_back(FactoryResource::createResource(type, {decalage + this->_cube.getPos().x, 0.0, decalage + this->_cube.getPos().z}, manager));
         return;
     }
     std::random_device rd;
@@ -27,7 +27,7 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
     _availablePositions.pop_back();
     float x_pos = decalage + x_index * 0.12;
     float z_pos = decalage + z_index * 0.12;
-    this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.08, z_pos + this->_cube.getPos().z}, manager));
+    this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.0, z_pos + this->_cube.getPos().z}, manager));
 }
 
 void Tile::removeResource(const IResource::resourceType type) {

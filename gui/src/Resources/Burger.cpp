@@ -15,7 +15,8 @@ Burger::Burger(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture,
     _texture(texture) {
     this->_rotationAngle = 1.0f;
     this->_position = position;
-    this->_scale  = { 0.6f, 0.6f, 0.6f };
+    this->_position.y = 0.05;
+    this->_scale  = { 0.54f, 0.54f, 0.54f };
 }
 
 Burger::~Burger() {}

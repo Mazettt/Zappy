@@ -15,7 +15,8 @@ Sibur::Sibur(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, c
     _texture(texture) {
     this->_rotationAngle = 1.0f;
     this->_position = position;
-    this->_scale = { 0.04f, 0.04f, 0.04f };
+    this->_position.y = 0.08;
+    this->_scale  = { 0.2f, 0.2f, 0.2f };
 }
 
 Sibur::~Sibur() {}

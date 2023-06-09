@@ -15,6 +15,7 @@ Egg::Egg(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const
     _texture(texture) {
     this->_rotationAngle = 1.0f;
     this->_position = position;
+    this->_position.y = 0.076;
     this->_scale  = { 0.2f, 0.2f, 0.2f };
 }
 
