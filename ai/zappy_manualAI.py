@@ -41,5 +41,8 @@ def gameLoop(p: zds.Player):
         zp.POVmanager(p)
         zi.pickUpManager(p, p.client.sock)
         #Put here an "if" later, to know if we have enough food or not
-        lookForFood(p)
+        try:
+            lookForFood(p)
+        except:
+            continue
         move(p)
