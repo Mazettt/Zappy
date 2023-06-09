@@ -85,8 +85,10 @@ bool Map::setPlayerLevel(int playerID, int level) {
     p->setPlayerLevel(level);
 }
 
-void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type) {
-    this->_map[pos.y * this->_size.x + pos.x]->addResource(this->_manager, type);
+void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
+    while (number--) {
+        this->_map[pos.y * this->_size.x + pos.x]->addResource(this->_manager, type);
+    }
 }
 
 void Map::addPlayerForTile(const PlayerArguments &playerArgs) {

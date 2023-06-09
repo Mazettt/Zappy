@@ -24,7 +24,7 @@ namespace ZappyGui {
             Map(ResourceManager &manager);
             ~Map();
             void createMap(int x, int y);
-            void addResourceForTile(const Vector2 &pos, IResource::resourceType type);
+            void addResourceForTile(const Vector2 &pos, IResource::resourceType type, int number);
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
             bool movePlayer(int playerID, float x, float z, Player::orientationAxis orientation);

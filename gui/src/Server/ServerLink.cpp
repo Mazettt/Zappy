@@ -132,7 +132,15 @@ void ServerLink::_bct(const std::string &str)
     int x, y, food, linemate, deraumere, sibur, mendiane, phiras, thystame;
 
     iss >> tmp >> x >> y >> food >> linemate >> deraumere >> sibur >> mendiane >> phiras >> thystame;
-    std::cout << "Tile content: " << x << " " << y << " -> " << food << " " << linemate << " " << deraumere << " " << sibur << " " << mendiane << " " << phiras << " " << thystame << std::endl;
+    
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::BURGER, food);
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::LINEMATE, linemate);
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::DERAUMERE, deraumere);
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::SIBUR, sibur);
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::MENDIANE, mendiane);
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::PHIRAS, phiras);
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::THYSTAME, thystame);
+
 }
 
 void ServerLink::_tna(const std::string &str)
