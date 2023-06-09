@@ -25,7 +25,7 @@ namespace ZappyGui {
             void addResourceForTile(const Vector2 &pos, IResource::resourceType type);
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
-            bool movePlayer(int playerID, float x, float z);
+            bool movePlayer(int playerID, float x, float z, Player::orientationAxis orientation);
             bool deadPlayer(int playerID);
             bool setPlayerLevel(int playerID, int level);
     };

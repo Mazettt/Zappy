@@ -31,13 +31,13 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
             this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
         }
     }
-    PlayerArguments playerArgs(0, "Team1", {3.0f, 0.0f, 8.0f}, {0.0f, 1.0f, 0.0f}, 0.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
+    PlayerArguments playerArgs(0, "Team1", {3.0f, 0.0f, 8.0f}, {0.0f, 1.0f, 0.0f}, (float)Player::orientationAxis::SOUTH, {0.6f, 0.6f, 0.6f}, 0 , 3);
     this->addPlayerForTile(playerArgs);
-    PlayerArguments playerArgs1(1, "Team1", {5.0f, 0.0f, 7.0f}, {0.0f, 1.0f, 0.0f}, 90.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
+    PlayerArguments playerArgs1(1, "Team1", {5.0f, 0.0f, 7.0f}, {0.0f, 1.0f, 0.0f}, Player::orientationAxis::EAST, {0.6f, 0.6f, 0.6f}, 0 , 1);
     this->addPlayerForTile(playerArgs1);
-    PlayerArguments playerArgs2(2, "Team1", {8.0f, 0.0f, 3.0f}, {0.0f, 1.0f, 0.0f}, 180.0f, {0.6f, 0.6f, 0.6f}, 0 , 3);
+    PlayerArguments playerArgs2(2, "Team1", {8.0f, 0.0f, 3.0f}, {0.0f, 1.0f, 0.0f}, (float)Player::orientationAxis::NORTH, {0.6f, 0.6f, 0.6f}, 0 , 3);
     this->addPlayerForTile(playerArgs2);
-    PlayerArguments playerArgs3(3, "Team1", {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 270.0f, {0.6f, 0.6f, 0.6f}, 0 , 1);
+    PlayerArguments playerArgs3(3, "Team1", {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, (float)Player::orientationAxis::WEST, {0.6f, 0.6f, 0.6f}, 0 , 1);
     this->addPlayerForTile(playerArgs3);
 }
 
@@ -67,13 +67,13 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
     this->_players.push_back(std::make_shared<Player>(playerArgs, modelPlayer, texture, animation));
 }
 
-bool Map::movePlayer(int playerID, float x, float z) {
+bool Map::movePlayer(int playerID, float x, float z, Player::orientationAxis orientation) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
     if (p != nullptr) {
         Vector3 pos = p->getPosition();
         p->_movePos = {x - pos.x, 0.0, z - pos.z};
-        // TODO orientation
+        p->setRotationAngle((float)orientation);
         p->animationWalk();
         return true;
     }

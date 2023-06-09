@@ -67,10 +67,15 @@ void Game::run() {
             // music.MySetMusicVolume(volumeMusic);
             // music.MyUpdateMusic();
             if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
-                this->_map.movePlayer(0, float(rand() % 9), float(rand() % 9));
-                this->_map.movePlayer(1, float(rand() % 9), float(rand() % 9));
-                this->_map.movePlayer(2, float(rand() % 9), float(rand() % 9));
-                this->_map.movePlayer(3, float(rand() % 9), float(rand() % 9));
+                int testRand;
+                testRand = rand() % 3;
+                this->_map.movePlayer(0, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
+                testRand = rand() % 3;
+                this->_map.movePlayer(1, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
+                testRand = rand() % 3;
+                this->_map.movePlayer(2, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
+                testRand = rand() % 3;
+                this->_map.movePlayer(3, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
             }
             drawGame();
             if (_raylibwindow.MyIsKeyPressed(KEY_V)) {

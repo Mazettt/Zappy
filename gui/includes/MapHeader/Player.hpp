@@ -21,8 +21,6 @@ namespace ZappyGui {
             std::unordered_map<IResource::resourceType, int> _inventory;
 
         public:
-            int _animationCounter;
-            Vector3 _movePos;
             enum animationPlayerType {
                 PLAYER_WIN,
                 PLAYER_LVLUP,
@@ -32,6 +30,15 @@ namespace ZappyGui {
                 PLAYER_WALK,
                 PLAYER_NOTHING = 9
             };
+            enum orientationAxis {
+                NORTH = 180,
+                EAST = 90,
+                SOUTH = 0,
+                WEST = 270
+            };
+
+            Vector3 _movePos;
+            int _animationCounter;
             Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
             void addOnInventory(IResource::resourceType type, int quantity);
             bool removeOnInventory(IResource::resourceType type, int quantity);
