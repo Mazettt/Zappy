@@ -5,6 +5,7 @@
 ** map.cpp
 */
 
+#include <algorithm>
 #include "../../includes/MapHeader/Map.hpp"
 
 using namespace ZappyGui;
@@ -52,6 +53,16 @@ std::shared_ptr<Player> Map::findPlayerByID(int id) {
     }
     return nullptr;
 }
+
+// bool Map::lvlupPlayer(std::vector<int> playersID, int level, int x, int z) {
+//     for (std::shared_ptr<Player> p : this->_players) {
+//         if (std::find(playersID.begin(), playersID.end(), p->getPlayerNumber()) != playersID.end()) {
+//             p->setPlayerLevel(level);
+//             p->setPosition( { x,  });
+//             p->animationLVLUP();
+//         }
+//     }
+// }
 
 bool Map::setPlayerLevel(int playerID, int level) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);

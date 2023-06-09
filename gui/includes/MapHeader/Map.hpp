@@ -31,6 +31,7 @@ namespace ZappyGui {
             bool movePlayer(int playerID, float x, float z, Player::orientationAxis orientation);
             bool deadPlayer(int playerID);
             bool setPlayerLevel(int playerID, int level);
+            bool lvlupPlayer(std::vector<int> playersID, int level);
             void updateMusic();
     };
 }

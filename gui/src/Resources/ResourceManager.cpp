@@ -19,6 +19,8 @@ ResourceManager::~ResourceManager() {
 }
 
 void ResourceManager::initialize() {
+    this->loadTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND, "./assets/Parallax/bkgParallax.png");
+    this->loadTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE, "./assets/Parallax/garfTerre.png");
     // // load player
     this->loadModel(IResource::resourceType::PLAYER, "./assets/thegarfrotated.iqm");
     this->loadTexture(IResource::resourceType::PLAYER, "./assets/T_Garfield_BC.png");
@@ -43,8 +45,6 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::BUTTON_HELP, "./assets/Buttons/buttonHelp.png");
     this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./assets/Buttons/buttonQuit.png");
 
-    this->loadTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND, "./assets/Parallax/bkgParallax.png");
-    this->loadTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE, "./assets/Parallax/garfTerre.png");
 
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./assets/Food/Hamburger.obj");
