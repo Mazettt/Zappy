@@ -7,12 +7,14 @@
 
 #include "../include/server.h"
 
-static void eat_food(zappy_t *zappy, player_t *player)
+static bool eat_food(zappy_t *zappy, player_t *player)
 {
-    while (player->inventory[FOOD] > 0) {
+    if (player->inventory[FOOD] > 0) {
         --player->inventory[FOOD];
         player->timeUntilDie += TIME(126);
+        return true;
     }
+    return false;
 }
 
 bool check_food(zappy_t *zappy, player_t *player)
@@ -21,8 +23,8 @@ bool check_food(zappy_t *zappy, player_t *player)
 
     gettimeofday(&now, NULL);
     if ((now.tv_sec - player->startTime.tv_sec) * 1000000 +
-        (now.tv_usec - player->startTime.tv_usec) >= player->timeUntilDie)
-        return false;
-    eat_food(zappy, player);
+        (now.tv_usec - player->startTime.tv_usec) >= player->timeUntilDie) {
+        return eat_food(zappy, player);
+    }
     return true;
 }
