@@ -30,6 +30,7 @@ Map::Map(int x, int y, ResourceManager &manager): _manager(manager) {
             this->_map[key]->addResource(this->_manager, IResource::resourceType::EGG);
             this->_map[key]->addResource(this->_manager, IResource::resourceType::BURGER);
             this->_map[key]->addResource(this->_manager, IResource::resourceType::MENDIANE);
+            this->_map[key]->removeResource(IResource::resourceType::EGG); // TO CHECK
         }
     }
     PlayerArguments playerArgs(0, "Team1", {3.0f, 0.0f, 8.0f}, {0.0f, 1.0f, 0.0f}, (float)Player::orientationAxis::SOUTH, {0.6f, 0.6f, 0.6f}, 0 , 3);
@@ -51,15 +52,43 @@ std::shared_ptr<Player> Map::findPlayerByID(int id) {
     return nullptr;
 }
 
-// bool Map::lvlupPlayer(std::vector<int> playersID, int level, int x, int z) {
-//     for (std::shared_ptr<Player> p : this->_players) {
-//         if (std::find(playersID.begin(), playersID.end(), p->getPlayerNumber()) != playersID.end()) {
-//             p->setPlayerLevel(level);
-//             p->setPosition( { x,  });
-//             p->animationLVLUP();
-//         }
-//     }
-// }
+void Map::StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z) {
+    for (std::shared_ptr<Player> p : this->_players) {
+        if (std::find(playersID.begin(), playersID.end(), p->getPlayerNumber()) != playersID.end()) {
+            p->setPlayerLevel(level);
+            p->setPosition({ x, 0.0, z });
+            p->animationLVLUP();
+        }
+    }
+}
+
+void Map::EndPlayersLeveling(float x, float z, bool result) {
+    (void) result;
+    for (std::shared_ptr<Player> p : this->_players) {
+        Vector3 pos = p->getPosition();
+        if (pos.x == x && pos.z == z) {
+            p->animationWait(); // TODO animation if success or not
+        }
+    }
+}
+
+void Map::dropResource(int playerID, IResource::resourceType type) {
+    for (std::shared_ptr<Player> p : this->_players) {
+        p->removeOnInventory(type, 1);
+        Vector3 pos = p->getPosition();
+        int key = pos.y * this->_size.x + pos.x;
+        this->_map.at(key)->addResource(this->_manager, type);
+    }
+}
+
+void Map::collectResource(int playerID, IResource::resourceType type) {
+    for (std::shared_ptr<Player> p : this->_players) {
+        p->addOnInventory(type, 1);
+        Vector3 pos = p->getPosition();
+        int key = pos.y * this->_size.x + pos.x;
+        this->_map.at(key)->removeResource(type);
+    }
+}
 
 bool Map::setPlayerLevel(int playerID, int level) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);

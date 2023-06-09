@@ -30,5 +30,10 @@ namespace ZappyGui {
             bool deadPlayer(int playerID);
             bool setPlayerLevel(int playerID, int level);
             bool lvlupPlayer(std::vector<int> playersID, int level);
+            void StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z);
+            void EndPlayersLeveling(float x, float z, bool result);
+            void dropResource(int playerID, IResource::resourceType type);
+            void collectResource(int playerID, IResource::resourceType type);
+            void updateMusic();
     };
 }

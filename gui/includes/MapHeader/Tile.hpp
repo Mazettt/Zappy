@@ -25,6 +25,7 @@ namespace ZappyGui {
             Tile(const Cube &cube);
             ~Tile();
             void addResource(const ResourceManager &manager, IResource::resourceType type);
+            void removeResource(const IResource::resourceType type);
             void addPlayer(const ResourceManager &manager, IResource::resourceType type, const PlayerArguments &playerArgs);
             void draw();
     };

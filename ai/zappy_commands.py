@@ -73,33 +73,33 @@ def inventory(sock: socket.socket):
     return inventory
 
 def broadcast_text(sock: socket.socket, text: str):
-    znu.send_to_server(sock, "{} {}".format(Commands.BROADCAST[0], text))
-    resp = znu.multiple_recv_from_server(sock, Commands.BROADCAST[1])
+    znu.send_to_server(sock, "{} {}".format(7, text))
+    resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def unused_connect_nbr(sock: socket.socket):
     znu.send_to_server(sock, "Connect_nbr\n")
-    resp = znu.multiple_recv_from_server(sock, Commands.CONNECT_NBR[1])
+    resp = znu.multiple_recv_from_server(sock,0)
     return resp
 
 def fork(sock: socket.socket):
     znu.send_to_server(sock, "Fork\n")
-    resp = znu.multiple_recv_from_server(sock, Commands.FORK[1])
+    resp = znu.multiple_recv_from_server(sock, 42)
     return resp
 
 def eject(sock: socket.socket):
     znu.send_to_server(sock, "Eject\n")
-    resp = znu.multiple_recv_from_server(sock, Commands.EJECT[1])
+    resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def take(sock: socket.socket, resource: str):
-    znu.send_to_server(sock, "{} {}".format("Take\n", resource))
+    znu.send_to_server(sock, "{} {}".format("Take", resource))
     resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def set(sock: socket.socket, resource: str):
-    znu.send_to_server(sock, "{} {}".format(Commands.SET[0], resource))
-    resp = znu.multiple_recv_from_server(sock, Commands.SET[1])
+    znu.send_to_server(sock, "{} {}".format("set\n", resource))
+    resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
 def incantation(sock: socket.socket):
