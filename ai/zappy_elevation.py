@@ -8,6 +8,7 @@
 import ai.zappy_dataStruct as zds
 import ai.zappy_commands as zc
 import ai.zappy_inventory as zi
+import ai.zappy_network_utils as znu
 
 def canElevate(p: zds.Player):
     p.stats.elevating = False
@@ -32,3 +33,4 @@ def elevationTry(p: zds.Player):
         p.stats.level += 1
         zi.consumeStones(p)
         zi.updatRequirement(p)
+    znu.multiple_recv_from_server(p.client.sock, 300)
