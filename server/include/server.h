@@ -12,20 +12,18 @@
     #define OTHER_PORT_RANGE 62000
     #define SEPARATOR " \"\t\r\n"
     #define DEBUG 1
-    #define debug_print(format, ...)    \
-        if (DEBUG) printf(format, __VA_ARGS__);
-    #define client_socket(i) zappy->client[i].command.s
-    #define time_limit(x)   \
-        ((time_t)((float)(x) / (float)(zappy->game.freq) * 1000000))
-    #define cast_pos(x, max) ((x) < 0 ? (max) + (x) : (x) % (max))
-    #define notif_guis(it, func) \
+    #define DEBUG_PRINT(format, ...) if (DEBUG) printf(format, __VA_ARGS__);
+    #define CLIENT_S(i) zappy->client[i].command.s
+    #define TIME(x) ((time_t)((float)(x) / (float)(zappy->game.freq) * 1000000))
+    #define CAST_POS(x, max) ((x) < 0 ? (max) + (x) : (x) % (max))
+    #define NOTIF_GUIS(it, func) \
         for (; it < MAX_CONNECTIONS; ++it) { \
             if (zappy->client[it].command.s && zappy->client[it].type == GUI) \
                 func; \
         }
     #define HEIGHT zappy->game.height
     #define WIDTH zappy->game.width
-    #define unused __attribute__((unused))
+    #define UNUSED __attribute__((unused))
 
     #include "utils.h"
     #include <sys/socket.h>

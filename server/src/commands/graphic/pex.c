@@ -9,7 +9,7 @@
 
 void send_pex(zappy_t *zappy, int ci, player_t *player)
 {
-    sdprintf(zappy, client_socket(ci), "pex %d\n",
+    sdprintf(zappy, CLIENT_S(ci), "pex %d\n",
         player->id
     );
 }

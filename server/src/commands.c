@@ -44,16 +44,17 @@ static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
 {
     player_t *new = NULL;
     int it = 0;
+
     if (team->eggs) {
         new = hatch_egg(zappy, team->eggs, &zappy->client[ci]);
         if (!new)
-            return sdprintf(zappy, client_socket(ci), "ko\n");
-        sdprintf(zappy, client_socket(ci), "%d\n%d %d\n",
+            return sdprintf(zappy, CLIENT_S(ci), "ko\n");
+        sdprintf(zappy, CLIENT_S(ci), "%d\n%d %d\n",
             get_remaining_slots(team), zappy->game.width, zappy->game.height);
-        notif_guis(it, send_pnw(zappy, it, new));
+        NOTIF_GUIS(it, send_pnw(zappy, it, new));
         zappy->client[ci].type = AI;
     } else
-        sdprintf(zappy, client_socket(ci), "ko\n");
+        sdprintf(zappy, CLIENT_S(ci), "ko\n");
 }
 
 static void ai_commands(zappy_t *zappy, char *command, int ci)
@@ -63,7 +64,7 @@ static void ai_commands(zappy_t *zappy, char *command, int ci)
             (*ai_cmds[a].func)(zappy, command, ci);
             return;
         }
-    sdprintf(zappy, client_socket(ci), "ko\n");
+    sdprintf(zappy, CLIENT_S(ci), "ko\n");
 }
 
 static void gui_commands(zappy_t *zappy, char *command, int ci)
@@ -73,12 +74,13 @@ static void gui_commands(zappy_t *zappy, char *command, int ci)
             (*gui_cmds[a].func)(zappy, command, ci);
             return;
         }
-    sdprintf(zappy, client_socket(ci), "suc\n");
+    sdprintf(zappy, CLIENT_S(ci), "suc\n");
 }
 
 static void unknown_commands(zappy_t *zappy, char *command, int ci)
 {
     player_t *p = NULL;
+
     if (!strcmp(command, "GRAPHIC")) {
         zappy->client[ci].type = GUI;
         send_msz(zappy, ci);
@@ -95,12 +97,12 @@ static void unknown_commands(zappy_t *zappy, char *command, int ci)
             return;
         }
     }
-    sdprintf(zappy, client_socket(ci), "ko\n");
+    sdprintf(zappy, CLIENT_S(ci), "ko\n");
 }
 
 void switch_commands(zappy_t *zappy, char *command, int ci)
 {
-    debug_print("com: %s\n", command);
+    DEBUG_PRINT("com: %s\n", command);
     switch (zappy->client[ci].type) {
         case AI:
             ai_commands(zappy, command, ci);

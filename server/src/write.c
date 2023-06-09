@@ -9,9 +9,9 @@
 
 void sdprintf(zappy_t *zappy, int fd, char *format, ...)
 {
+    va_list args;
     if (!FD_ISSET(fd, &zappy->writefds))
         return;
-    va_list args;
 
     va_start(args, format);
     vdprintf(fd, format, args);

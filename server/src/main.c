@@ -55,21 +55,22 @@ args_t get_args(int ac, char **av)
 
 void print_args(args_t args)
 {
-    debug_print("port: %d\n", args.port);
-    debug_print("width: %d\n", args.width);
-    debug_print("height: %d\n", args.height);
+    DEBUG_PRINT("port: %d\n", args.port);
+    DEBUG_PRINT("width: %d\n", args.width);
+    DEBUG_PRINT("height: %d\n", args.height);
     if (DEBUG)
         printf("names: ");
     for (int i = 0; args.teamNames && args.teamNames[i]; ++i)
-        debug_print("%s ", args.teamNames[i]);
-    debug_print("\nclientsNb: %d\n", args.clientsNb);
-    debug_print("freq: %d\n", args.freq);
+        DEBUG_PRINT("%s ", args.teamNames[i]);
+    DEBUG_PRINT("\nclientsNb: %d\n", args.clientsNb);
+    DEBUG_PRINT("freq: %d\n", args.freq);
 }
 
 int main(int ac, char **av)
 {
     args_t args;
     int ret = 0;
+
     signal(SIGPIPE, SIG_IGN);
     if (ac == 2 && (!strcmp(av[1], "-help") || !strcmp(av[1], "-h") ||
     !strcmp(av[1], "--help"))) {

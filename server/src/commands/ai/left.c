@@ -7,9 +7,10 @@
 
 #include "../../../include/server.h"
 
-static void left(zappy_t *zappy, unused char *command, int ci)
+static void left(zappy_t *zappy, UNUSED char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
+
     switch (player->direction) {
         case NORTH:
             player->direction = WEST;
@@ -24,10 +25,10 @@ static void left(zappy_t *zappy, unused char *command, int ci)
             player->direction = SOUTH;
             break;
     }
-    sdprintf(zappy, client_socket(ci), "ok\n");
+    sdprintf(zappy, CLIENT_S(ci), "ok\n");
 }
 
 void cmd_left(zappy_t *zappy, char *command, int ci)
 {
-    add_action(&zappy->client[ci], time_limit(7), command, left);
+    add_action(&zappy->client[ci], TIME(7), command, left);
 }

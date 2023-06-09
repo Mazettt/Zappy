@@ -7,11 +7,11 @@
 
 #include "../../../include/server.h"
 
-static void inventory(zappy_t *zappy, unused char *command, int ci)
+static void inventory(zappy_t *zappy, UNUSED char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
 
-    sdprintf(zappy, client_socket(ci),
+    sdprintf(zappy, CLIENT_S(ci),
         "[%s %d, %s %d, %s %d, %s %d, %s %d, %s %d, %s %d]\n",
         get_item_str(FOOD), player->inventory[FOOD],
         get_item_str(LINEMATE), player->inventory[LINEMATE],
@@ -25,5 +25,5 @@ static void inventory(zappy_t *zappy, unused char *command, int ci)
 
 void cmd_inventory(zappy_t *zappy, char *command, int ci)
 {
-    add_action(&zappy->client[ci], time_limit(1), command, inventory);
+    add_action(&zappy->client[ci], TIME(1), command, inventory);
 }

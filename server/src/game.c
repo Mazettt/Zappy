@@ -7,11 +7,10 @@
 
 #include "../include/server.h"
 
-char *get_tile_content(zappy_t *zappy, int x, int y)
+static char *fill_tile_content(zappy_t *zappy, int x, int y, char *res)
 {
-    char *res = malloc(sizeof(char) * (1024 * 4));
     int len = 0;
-    if (!res) return NULL;
+
     for (int i = 0; i < nbr_players(zappy, x, y); ++i)
         len += sprintf(res + len, " player");
     for (int i = 0; i < zappy->game.map[x][y][FOOD]; ++i)
@@ -28,7 +27,17 @@ char *get_tile_content(zappy_t *zappy, int x, int y)
         len += sprintf(res + len, " phiras");
     for (int i = 0; i < zappy->game.map[x][y][THYSTAME]; ++i)
         len += sprintf(res + len, " thystame");
-    res[len] = '\0';return res;
+    res[len] = '\0';
+    return res;
+}
+
+char *get_tile_content(zappy_t *zappy, int x, int y)
+{
+    char *res = malloc(sizeof(char) * (1024 * 4));
+
+    if (!res)
+        return NULL;
+    return fill_tile_content(zappy, x, y, res);
 }
 
 int get_direction(pos_t p, pos_t dp, Direction d)
@@ -59,6 +68,7 @@ bool check_win(zappy_t *zappy)
     player_t *player = NULL;
     int count = 0;
     int it = 0;
+
     if (zappy->game.winningTeam)
         return true;
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
@@ -70,7 +80,7 @@ bool check_win(zappy_t *zappy)
         }
         if (count >= 6) {
             zappy->game.winningTeam = &zappy->game.teams[i];
-            notif_guis(it, send_seg(zappy, it, zappy->game.winningTeam));
+            NOTIF_GUIS(it, send_seg(zappy, it, zappy->game.winningTeam));
             return true;
         }
     }

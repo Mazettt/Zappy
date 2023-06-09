@@ -57,6 +57,7 @@ bool init_resources(args_t args, game_t *game)
 static int nbresource(zappy_t *zappy, item_t type)
 {
     int nbr = 0;
+
     for (int i = 0; i < zappy->game.width; ++i)
         for (int j = 0; j < zappy->game.height; ++j)
             nbr += zappy->game.map[i][j][type];
@@ -68,7 +69,7 @@ void refill_resources(zappy_t *zappy)
     struct timeval now;
     gettimeofday(&now, NULL);
     if ((now.tv_sec - zappy->game.lastRefill.tv_sec) * 1000000 +
-        (now.tv_usec - zappy->game.lastRefill.tv_usec) < time_limit(20))
+        (now.tv_usec - zappy->game.lastRefill.tv_usec) < TIME(20))
         return;
     for (int i = nbresource(zappy, FOOD); i < (WIDTH * HEIGHT * 0.5); ++i)
         zappy->game.map[rand() % WIDTH][rand() % HEIGHT][FOOD] += 1;

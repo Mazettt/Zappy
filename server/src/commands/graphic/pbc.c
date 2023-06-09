@@ -9,7 +9,7 @@
 
 void send_pbc(zappy_t *zappy, int ci, player_t *player, char *message)
 {
-    sdprintf(zappy, client_socket(ci), "pbc %d %s\n",
+    sdprintf(zappy, CLIENT_S(ci), "pbc %d %s\n",
         player->id,
         message
     );

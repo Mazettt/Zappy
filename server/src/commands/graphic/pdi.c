@@ -9,7 +9,7 @@
 
 void send_pdi(zappy_t *zappy, int ci, player_t *player)
 {
-    sdprintf(zappy, client_socket(ci), "pdi %d\n",
+    sdprintf(zappy, CLIENT_S(ci), "pdi %d\n",
         player->id
     );
 }

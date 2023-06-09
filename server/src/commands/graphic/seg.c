@@ -9,7 +9,7 @@
 
 void send_seg(zappy_t *zappy, int ci, team_t *winningTeam)
 {
-    sdprintf(zappy, client_socket(ci), "seg %s\n",
+    sdprintf(zappy, CLIENT_S(ci), "seg %s\n",
         winningTeam->name
     );
 }

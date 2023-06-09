@@ -9,5 +9,5 @@
 
 void send_sbp(zappy_t *zappy, int ci)
 {
-    sdprintf(zappy, client_socket(ci), "sbp\n");
+    sdprintf(zappy, CLIENT_S(ci), "sbp\n");
 }
