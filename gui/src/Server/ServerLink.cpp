@@ -129,17 +129,18 @@ void ServerLink::_bct(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
-    int x, y, food, linemate, deraumere, sibur, mendiane, phiras, thystame;
+    float x, z;
+    int food, linemate, deraumere, sibur, mendiane, phiras, thystame;
 
-    iss >> tmp >> x >> y >> food >> linemate >> deraumere >> sibur >> mendiane >> phiras >> thystame;
-    
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::BURGER, food);
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::LINEMATE, linemate);
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::DERAUMERE, deraumere);
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::SIBUR, sibur);
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::MENDIANE, mendiane);
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::PHIRAS, phiras);
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::THYSTAME, thystame);
+    iss >> tmp >> x >> z >> food >> linemate >> deraumere >> sibur >> mendiane >> phiras >> thystame;
+
+    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::BURGER, food);
+    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::LINEMATE, linemate);
+    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::DERAUMERE, deraumere);
+    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::SIBUR, sibur);
+    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::MENDIANE, mendiane);
+    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::PHIRAS, phiras);
+    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::THYSTAME, thystame);
 
 }
 
@@ -156,11 +157,13 @@ void ServerLink::_pnw(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
-    int id, x, y, orientation, level;
+    int id, level;
+    float x, z, rotationAngle;
     std::string teamName;
 
-    iss >> tmp >> id >> x >> y >> orientation >> level >> teamName;
-    std::cout << "Player new: " << id << " " << x << " " << y << " " << orientation << " " << level << " " << teamName << std::endl;
+    iss >> tmp >> id >> x >> z >> rotationAngle >> level >> teamName; // TO CHECK orientation
+    PlayerArguments playerArgs = PlayerArguments(id, teamName, { x, 0.0, z }, {0.0f, 1.0f, 0.0f}, rotationAngle, {0.6f, 0.6f, 0.6f}, 0, Player::animationPlayerType::PLAYER_NOTHING);
+    this->_game._map.addPlayerForTile(playerArgs);
 }
 
 void ServerLink::_ppo(const std::string &str)
