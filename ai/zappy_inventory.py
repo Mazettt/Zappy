@@ -10,26 +10,33 @@ import ai.zappy_dataStruct as zds
 
 def pickUpManager(p: zds.Player, z_c: zds.Client):
     if (p.POV.vision[0].food > 0):
-        zc.take(z_c, "food")
-        p.inventory.food += 126
+        zc.take(z_c, "food\n")
+        p.inventory.food += 1
+        pickUpManager(p, z_c)
     if (p.POV.vision[0].linemates > 0 and p.inventory.linemates < p.requirement.linemates):
-        zc.take(z_c, "linemate")
+        zc.take(z_c, "linemate\n")
         p.inventory.linemates += 1
+        pickUpManager(p, z_c)
     if (p.POV.vision[0].deraumeres > 0 and p.inventory.deraumeres < p.requirement.deraumeres):
-        zc.take(z_c, "deraumere")
+        zc.take(z_c, "deraumere\n")
         p.inventory.deraumeres += 1
+        pickUpManager(p, z_c)
     if (p.POV.vision[0].siburs > 0 and p.inventory.siburs < p.requirement.siburs):
-        zc.take(z_c, "sibur")
+        zc.take(z_c, "sibur\n")
         p.inventory.siburs += 1
+        pickUpManager(p, z_c)
     if (p.POV.vision[0].mendianes > 0 and p.inventory.mendianes < p.requirement.mendianes):
-        zc.take(z_c, "mendiane")
+        zc.take(z_c, "mendiane\n")
         p.inventory.mendianes += 1
+        pickUpManager(p, z_c)
     if (p.POV.vision[0].phiras > 0 and p.inventory.phiras < p.requirement.phiras):
-        zc.take(z_c, "phiras")
+        zc.take(z_c, "phiras\n")
         p.inventory.phiras += 1
+        pickUpManager(p, z_c)
     if (p.POV.vision[0].thystames > 0 and p.inventory.thystames < p.requirement.thystames):
-        zc.take(z_c, "thystame")
+        zc.take(z_c, "thystame\n")
         p.inventory.thystames += 1
+        pickUpManager(p, z_c)
 
 def trashStones(p: zds.Player): #Not used yet, might be deleted in the future
     p.inventory.linemates = 0
