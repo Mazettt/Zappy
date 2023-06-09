@@ -38,6 +38,10 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
     return false;
 }
 
+    const std::unordered_map<IResource::resourceType, int> Player::getInventory() const {
+    return this->_inventory;
+}
+
 void Player::draw() {
     this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
     MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), this->getOrientationAxis(), this->getRotationAngle(), this->getScale(), MyRayLib::MyRayLibColor::White());

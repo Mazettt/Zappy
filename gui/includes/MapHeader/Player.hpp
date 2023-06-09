@@ -35,6 +35,7 @@ namespace ZappyGui {
             Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
             void addOnInventory(IResource::resourceType type, int quantity);
             bool removeOnInventory(IResource::resourceType type, int quantity);
+            const std::unordered_map<IResource::resourceType, int> getInventory() const;
             void animationWin();
             void animationLVLUP();
             void animationDie();
