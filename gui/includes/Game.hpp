@@ -17,7 +17,6 @@
 #include "MyRayLibHeader/Parallax.hpp"
 
 #include "MapHeader/Map.hpp"
-#include "MyRayLibHeader/Music.hpp"
 
 using namespace MyRayLib;
 
@@ -33,6 +32,7 @@ namespace ZappyGui {
             MyRayLib::Skybox _skyboxMesh;
             Map _map;
             MyRayLib::Draw _raylibdrawing;
+            bool _BoolCloseWin;
         public:
             Parallax _parallax;
             Game(int mapWidth, int mapHeight);

@@ -29,6 +29,7 @@ void Game::initialize() {
     this->_camera = this->_raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
     this->_raylibwindow.MySetTargetFPS(60);
 
+    this->_BoolCloseWin = false;
     this->_stateMenu = true;
     Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./assets/Buttons/buttonfx.wav", [&](){switchToGame();});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
@@ -36,7 +37,7 @@ void Game::initialize() {
     Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
     button2.ButtonSetPosition(1920/2.0f - button2.button.width/2.0f, 800, (float)button2.button.width, button2.frameHeight);
     this->_buttonMenu.push_back(button2);
-    Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
+    Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./assets/Buttons/buttonfx.wav", [&](){this->_BoolCloseWin = true;});
     button3.ButtonSetPosition(1920/2.0f - button3.button.width/2.0f, 900, (float)button3.button.width, button3.frameHeight);
     this->_buttonMenu.push_back(button3);
 
@@ -47,14 +48,11 @@ void Game::run() {
     this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/roh.png");
 
     float volumeMusic = 0.2;
-    // MyRayLib::Music music("./assets/GarfieldCoolCat.mp3");
-    // if (music.MyIsMusicReady())
-    //     music.MyPlayMusic();
     MyRayLib::Music musicGen("./assets/GénériqueGarf.mp3");
     if (musicGen.MyIsMusicReady())
         musicGen.MyPlayMusic();
 
-    while (!this->_raylibwindow.MyWindowShouldClose()) {
+    while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
                 volumeMusic += 0.1f;
             if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
@@ -64,8 +62,6 @@ void Game::run() {
             musicGen.MyUpdateMusic();
             drawMenu();
         } else {
-            // music.MySetMusicVolume(volumeMusic);
-            // music.MyUpdateMusic();
             if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
                 int testRand;
                 testRand = rand() % 3;
@@ -77,7 +73,6 @@ void Game::run() {
                 testRand = rand() % 3;
                 this->_map.movePlayer(3, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
             }
-            drawGame();
             if (_raylibwindow.MyIsKeyPressed(KEY_V)) {
                 this->_map.deadPlayer(0);
             }
@@ -115,6 +110,7 @@ void Game::drawMenu() {
 }
 
 void Game::drawGame() {
+    this->_map.updateMusic();
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     this->_raylibdrawing.MyDrawFPS(10, 35);
     this->_raylibdrawing.MyBegin3DMode(this->_camera);
