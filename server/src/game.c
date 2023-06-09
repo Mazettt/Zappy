@@ -54,44 +54,6 @@ int get_direction(pos_t p, pos_t dp, Direction d)
     return 0;
 }
 
-item_t get_item(char *item)
-{
-    if (!strncmp(item, "food", 4))
-        return FOOD;
-    if (!strncmp(item, "linemate", 8))
-        return LINEMATE;
-    if (!strncmp(item, "deraumere", 9))
-        return DERAUMERE;
-    if (!strncmp(item, "sibur", 5))
-        return SIBUR;
-    if (!strncmp(item, "mendiane", 8))
-        return MENDIANE;
-    if (!strncmp(item, "phiras", 6))
-        return PHIRAS;
-    if (!strncmp(item, "thystame", 8))
-        return THYSTAME;
-    return NBR_ITEMS;
-}
-
-char *get_item_str(item_t item)
-{
-    if (item == FOOD)
-        return "food";
-    if (item == LINEMATE)
-        return "linemate";
-    if (item == DERAUMERE)
-        return "deraumere";
-    if (item == SIBUR)
-        return "sibur";
-    if (item == MENDIANE)
-        return "mendiane";
-    if (item == PHIRAS)
-        return "phiras";
-    if (item == THYSTAME)
-        return "thystame";
-    return NULL;
-}
-
 bool check_win(zappy_t *zappy)
 {
     player_t *player = NULL;
@@ -113,4 +75,27 @@ bool check_win(zappy_t *zappy)
         }
     }
     return false;
+}
+
+bool init_game(zappy_t *zappy, args_t args)
+{
+    int nbrTeams = word_array_len(args.teamNames);
+    zappy->game.width = args.width;
+    zappy->game.height = args.height;
+    zappy->game.freq = args.freq;
+    zappy->game.teams = malloc(sizeof(team_t) * nbrTeams);
+    if (!zappy->game.teams)
+        return false;
+    zappy->game.nbrTeams = nbrTeams;
+    zappy->game.winningTeam = NULL;
+    zappy->game.playerIdIt = 0;
+    zappy->game.eggIdIt = 0;
+    for (int i = 0; i < nbrTeams; ++i) {
+        zappy->game.teams[i].name = strdup(args.teamNames[i]);
+        zappy->game.teams[i].players = NULL;
+        zappy->game.teams[i].eggs = NULL;
+        for (int j = 0; j < args.clientsNb; ++j)
+            add_egg(zappy, &zappy->game.teams[i]);
+    }
+    return init_resources(args, &zappy->game);
 }

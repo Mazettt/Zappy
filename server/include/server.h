@@ -347,21 +347,12 @@ char *get_tile_content(zappy_t *zappy, int x, int y);
  * @return int = the cell around the point
  */
 int get_direction(pos_t p, pos_t dp, Direction direction);
-/**
- * @brief get the item from a string
- *
- * @param item string to get the item from
- * @return Item and NBR_ITEMS if the item is not found
- */
-item_t get_item(char *item);
-/**
- * @brief get the string associated to an item
- *
- * @param item item to get the string from
- * @return char* and NULL if the item is not found
- */
-char *get_item_str(item_t item);
 bool check_win(zappy_t *zappy);
+bool init_game(zappy_t *zappy, args_t args);
+
+// item
+item_t get_item(char *item);
+char *get_item_str(item_t item);
 
 void add_action(client_t *client, time_t duration, char *command,
     void (*func)(zappy_t *, char *, int));
