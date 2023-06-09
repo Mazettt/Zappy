@@ -30,6 +30,16 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
     this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.08, z_pos + this->_cube.getPos().z}, manager));
 }
 
+void Tile::removeResource(const IResource::resourceType type) {
+    for (auto it = this->_resources.begin(); it != this->_resources.end(); ++it) {
+        if ((*it)->getType() == type) {
+            this->_resources.erase(it);
+            break;
+        }
+    }
+}
+
+
 void Tile::draw() {
     this->_cube.draw();
 

@@ -110,7 +110,7 @@ void Game::drawMenu() {
 }
 
 void Game::drawGame() {
-    this->_map.updateMusic();
+    // this->_map.updateMusic();
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     this->_raylibdrawing.MyDrawFPS(10, 35);
     this->_raylibdrawing.MyBegin3DMode(this->_camera);
