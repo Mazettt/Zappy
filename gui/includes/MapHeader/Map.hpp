@@ -10,6 +10,7 @@
 #include <memory>
 #include "Tile.hpp"
 #include "../resources/FactoryResource.hpp"
+#include "../MyRayLibHeader/Music.hpp"
 
 namespace ZappyGui {
     class Map {
@@ -19,6 +20,8 @@ namespace ZappyGui {
             std::vector<std::shared_ptr<Player>> _players;
             ResourceManager &_manager;
             std::shared_ptr<Player> findPlayerByID(int id);
+            MyRayLib::Music _music;
+            float _volumeMusicGame = 0.2;
         public:
             Map(int x, int y, ResourceManager &manager);
             ~Map();
@@ -28,5 +31,6 @@ namespace ZappyGui {
             bool movePlayer(int playerID, float x, float z);
             bool deadPlayer(int playerID);
             bool setPlayerLevel(int playerID, int level);
+            void updateMusic();
     };
 }
