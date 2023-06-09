@@ -9,7 +9,7 @@
 
 void send_pfk(zappy_t *zappy, int ci, player_t *player)
 {
-    sdprintf(zappy, client_socket(ci), "pfk %d\n",
+    sdprintf(zappy, CLIENT_S(ci), "pfk %d\n",
         player->id
     );
 }

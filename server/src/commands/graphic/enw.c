@@ -9,7 +9,7 @@
 
 void send_enw(zappy_t *zappy, int ci, player_t *player, egg_t *egg)
 {
-    sdprintf(zappy, client_socket(ci), "enw %d %d %d %d\n",
+    sdprintf(zappy, CLIENT_S(ci), "enw %d %d %d %d\n",
         egg->id,
         player->id,
         player->x,

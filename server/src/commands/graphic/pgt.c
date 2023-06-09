@@ -9,7 +9,7 @@
 
 void send_pgt(zappy_t *zappy, int ci, player_t *player, item_t type)
 {
-    sdprintf(zappy, client_socket(ci), "pgt %d %d\n",
+    sdprintf(zappy, CLIENT_S(ci), "pgt %d %d\n",
         player->id,
         type
     );

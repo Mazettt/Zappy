@@ -10,18 +10,18 @@
 static void add_socket_to_array(zappy_t *zappy, int new_s)
 {
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (client_socket(i) == 0) {
+        if (CLIENT_S(i) == 0) {
             FD_SET(new_s, &zappy->readfds);
             FD_SET(new_s, &zappy->writefds);
             zappy->max_fd = (new_s > zappy->max_fd) ? new_s : zappy->max_fd;
             select(zappy->max_fd + 1, &zappy->readfds, &zappy->writefds,
                 NULL, NULL);
-            client_socket(i) = new_s;
+            CLIENT_S(i) = new_s;
             zappy->client[i].command.sa = zappy->main.sa;
             zappy->client[i].command.addrlen = zappy->main.addrlen;
 
             get_socket_infos(&zappy->client[i].command);
-            debug_print("Host connected, ip %s, port %d\n",
+            DEBUG_PRINT("Host connected, ip %s, port %d\n",
                 inet_ntoa(zappy->client[i].command.sa.sin_addr),
                 ntohs(zappy->client[i].command.sa.sin_port));
             sdprintf(zappy, new_s, "WELCOME\n");
@@ -70,15 +70,16 @@ static void read_connection(zappy_t *zappy, int ci)
 {
     char buff[1024 * 4] = {0};
     ssize_t r = 0;
+
     if (zappy->client[ci].action.func)
         exec_action(zappy, &zappy->client[ci].action, ci);
     else if (zappy->client[ci].cmdBuff) {
         switch_commands(zappy, zappy->client[ci].cmdBuff->c, ci);
         remove_first_cmd_buff(&zappy->client[ci]);
     }
-    if (!FD_ISSET(client_socket(ci), &zappy->readfds))
+    if (!FD_ISSET(CLIENT_S(ci), &zappy->readfds))
         return;
-    r = read(client_socket(ci), buff, 1024 * 4);
+    r = read(CLIENT_S(ci), buff, 1024 * 4);
     buff[r] = 0;
     if (r == 0)
         close_command_socket(zappy, &zappy->client[ci]);
@@ -89,13 +90,13 @@ static void read_connection(zappy_t *zappy, int ci)
 void read_connections(zappy_t *zappy)
 {
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (!client_socket(i))
+        if (!CLIENT_S(i))
             continue;
         if (check_win(zappy) && zappy->client[i].type == AI)
             continue;
         if (zappy->client[i].type == AI &&
         !check_food(zappy, zappy->client[i].player)) {
-            sdprintf(zappy, client_socket(i), "dead\n");
+            sdprintf(zappy, CLIENT_S(i), "dead\n");
             close_command_socket(zappy, &zappy->client[i]);
             continue;
         }

@@ -25,6 +25,7 @@ void remove_action(action_t *action)
 void exec_action(zappy_t *zappy, action_t *action, int ci)
 {
     struct timeval now;
+
     gettimeofday(&now, NULL);
     if ((now.tv_sec - action->startTime.tv_sec) * 1000000 +
         (now.tv_usec - action->startTime.tv_usec) >= action->duration) {

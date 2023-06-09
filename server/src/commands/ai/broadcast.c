@@ -13,7 +13,8 @@ static void broadcast(zappy_t *zappy, char *command, int ci)
     player_t *player = zappy->client[ci].player;
     int it = 0;
     player_t *p = NULL;
-    notif_guis(it, send_pbc(zappy, it, player, text));
+
+    NOTIF_GUIS(it, send_pbc(zappy, it, player, text));
     for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
         if (p->client && p != player) {
             sdprintf(zappy, p->client->command.s,
@@ -24,10 +25,10 @@ static void broadcast(zappy_t *zappy, char *command, int ci)
             );
         }
     }
-    sdprintf(zappy, client_socket(ci), "ok\n");
+    sdprintf(zappy, CLIENT_S(ci), "ok\n");
 }
 
 void cmd_broadcast(zappy_t *zappy, char *command, int ci)
 {
-    add_action(&zappy->client[ci], time_limit(7), command, broadcast);
+    add_action(&zappy->client[ci], TIME(7), command, broadcast);
 }

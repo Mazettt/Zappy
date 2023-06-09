@@ -7,29 +7,30 @@
 
 #include "../../../include/server.h"
 
-static void forward(zappy_t *zappy, unused char *command, int ci)
+static void forward(zappy_t *zappy, UNUSED char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
     int it = 0;
+
     switch (player->direction) {
         case NORTH:
-            player->y = cast_pos(player->y - 1, HEIGHT);
+            player->y = CAST_POS(player->y - 1, HEIGHT);
             break;
         case EAST:
-            player->x = cast_pos(player->x + 1, WIDTH);
+            player->x = CAST_POS(player->x + 1, WIDTH);
             break;
         case SOUTH:
-            player->y = cast_pos(player->y + 1, HEIGHT);
+            player->y = CAST_POS(player->y + 1, HEIGHT);
             break;
         case WEST:
-            player->x = cast_pos(player->x - 1, WIDTH);
+            player->x = CAST_POS(player->x - 1, WIDTH);
             break;
     }
-    notif_guis(it, send_ppo(zappy, it, player));
-    sdprintf(zappy, client_socket(ci), "ok\n");
+    NOTIF_GUIS(it, send_ppo(zappy, it, player));
+    sdprintf(zappy, CLIENT_S(ci), "ok\n");
 }
 
 void cmd_forward(zappy_t *zappy, char *command, int ci)
 {
-    add_action(&zappy->client[ci], time_limit(7), command, forward);
+    add_action(&zappy->client[ci], TIME(7), command, forward);
 }

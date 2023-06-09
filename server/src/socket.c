@@ -15,14 +15,16 @@ void get_socket_infos(socket_t *so)
 socket_t init_socket(int s, struct sockaddr_in sa)
 {
     socket_t so = {s, sa, sizeof(sa)};
+
     return so;
 }
 
 static void init_zappy(zappy_t *zappy, int port)
 {
     struct sockaddr_in sa_buff;
-    memset(&sa_buff, 0, sizeof(sa_buff));
+    sigset_t s;
 
+    memset(&sa_buff, 0, sizeof(sa_buff));
     zappy->port = port;
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
         zappy->client[i].command = init_socket(0, sa_buff);
@@ -34,8 +36,6 @@ static void init_zappy(zappy_t *zappy, int port)
         zappy->client[i].passiveMode = false;
         memset(&zappy->client[i].action, 0, sizeof(action_t));
     }
-
-    sigset_t s;
     sigemptyset(&s);
     sigaddset(&s, SIGINT);
     sigprocmask(SIG_BLOCK, &s, NULL);
@@ -45,6 +45,7 @@ static void init_zappy(zappy_t *zappy, int port)
 void init_main_socket(zappy_t *zappy, int port)
 {
     int oui = 1;
+
     init_zappy(zappy, port);
     zappy->main.s = socket(AF_INET, SOCK_STREAM, 0);
     if (zappy->main.s == -1) {

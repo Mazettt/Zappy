@@ -7,7 +7,7 @@
 
 #include "../../../include/server.h"
 
-static void look(zappy_t *zappy, unused char *command, int ci)
+static void look(zappy_t *zappy, UNUSED char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
 
@@ -29,5 +29,5 @@ static void look(zappy_t *zappy, unused char *command, int ci)
 
 void cmd_look(zappy_t *zappy, char *command, int ci)
 {
-    add_action(&zappy->client[ci], time_limit(7), command, look);
+    add_action(&zappy->client[ci], TIME(7), command, look);
 }

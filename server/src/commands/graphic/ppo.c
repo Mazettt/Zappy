@@ -9,7 +9,7 @@
 
 void send_ppo(zappy_t *zappy, int ci, player_t *player)
 {
-    sdprintf(zappy, client_socket(ci), "ppo %d %d %d %d\n",
+    sdprintf(zappy, CLIENT_S(ci), "ppo %d %d %d %d\n",
         player->id,
         player->x,
         player->y,
@@ -21,6 +21,7 @@ void cmd_ppo(zappy_t *zappy, char *command, int ci)
 {
     char **arr = my_str_to_word_array(command, SEPARATOR);
     player_t *p = NULL;
+
     if (word_array_len(arr) != 2 || !is_num(arr[1]))
         return free_word_array(arr), send_sbp(zappy, ci);
     for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {

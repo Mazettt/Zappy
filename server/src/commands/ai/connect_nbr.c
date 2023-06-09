@@ -7,8 +7,8 @@
 
 #include "../../../include/server.h"
 
-void cmd_connect_nbr(zappy_t *zappy, unused char *command, int ci)
+void cmd_connect_nbr(zappy_t *zappy, UNUSED char *command, int ci)
 {
-    sdprintf(zappy, client_socket(ci), "%d\n",
+    sdprintf(zappy, CLIENT_S(ci), "%d\n",
         get_remaining_slots(zappy->client[ci].team));
 }

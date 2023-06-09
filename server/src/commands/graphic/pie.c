@@ -9,7 +9,7 @@
 
 void send_pie(zappy_t *zappy, int ci, player_t *player, bool result)
 {
-    sdprintf(zappy, client_socket(ci), "pie %d %d %s\n",
+    sdprintf(zappy, CLIENT_S(ci), "pie %d %d %s\n",
         player->x,
         player->y,
         (result) ? "ok" : "ko"

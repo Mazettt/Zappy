@@ -9,5 +9,5 @@
 
 void send_smg(zappy_t *zappy, int ci, char *msg)
 {
-    sdprintf(zappy, client_socket(ci), "smg %s\n", msg);
+    sdprintf(zappy, CLIENT_S(ci), "smg %s\n", msg);
 }

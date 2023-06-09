@@ -9,11 +9,11 @@
 
 void send_msz(zappy_t *zappy, int ci)
 {
-    sdprintf(zappy, client_socket(ci), "msz %d %d\n",
+    sdprintf(zappy, CLIENT_S(ci), "msz %d %d\n",
         zappy->game.width, zappy->game.height);
 }
 
-void cmd_msz(zappy_t *zappy, unused char *command, int ci)
+void cmd_msz(zappy_t *zappy, UNUSED char *command, int ci)
 {
     send_msz(zappy, ci);
 }

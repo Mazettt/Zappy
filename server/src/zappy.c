@@ -19,12 +19,12 @@ static void reset_fd(zappy_t *zappy)
     if (zappy->main.s > zappy->max_fd) zappy->max_fd = zappy->main.s;
 
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (client_socket(i) > 0) {
-            FD_SET(client_socket(i), &zappy->readfds);
-            FD_SET(client_socket(i), &zappy->writefds);
+        if (CLIENT_S(i) > 0) {
+            FD_SET(CLIENT_S(i), &zappy->readfds);
+            FD_SET(CLIENT_S(i), &zappy->writefds);
         }
-        if (client_socket(i) > zappy->max_fd)
-            zappy->max_fd = client_socket(i);
+        if (CLIENT_S(i) > zappy->max_fd)
+            zappy->max_fd = CLIENT_S(i);
     }
     FD_SET(zappy->fd_sigint, &zappy->readfds);
     if (zappy->fd_sigint > zappy->max_fd) zappy->max_fd = zappy->fd_sigint;
@@ -33,6 +33,7 @@ static void reset_fd(zappy_t *zappy)
 static void first_select(zappy_t *zappy)
 {
     int maxSd = 0;
+
     FD_ZERO(&zappy->writefds);
     FD_SET(STDOUT_FILENO, &zappy->writefds);
     if (STDOUT_FILENO > maxSd)
