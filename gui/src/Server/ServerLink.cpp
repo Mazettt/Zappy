@@ -1,17 +1,18 @@
 #include "../../includes/Server/ServerLink.hpp"
+#include "../../includes/Game.hpp"
 
 using namespace ZappyGui;
 
-ServerLink::ServerLink() {
+ServerLink::ServerLink(Game &game): _game(game) {
     _init();
 }
 
-ServerLink::ServerLink(const std::string &ip, uint16_t port): _socket(ip, port) {
+ServerLink::ServerLink(Game &game, const std::string &ip, uint16_t port): _game(game), _socket(ip, port) {
     _init();
     connect(ip, port);
 }
 
-ServerLink::ServerLink(ServerLink &&other): _socket(std::move(other._socket)) {}
+ServerLink::ServerLink(ServerLink &&other): _game(other._game), _socket(std::move(other._socket)) {}
 
 ServerLink::~ServerLink() {}
 

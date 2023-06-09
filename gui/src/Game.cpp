@@ -10,7 +10,7 @@
 
 using namespace ZappyGui;
 
-Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)), _map(10, 10, this->_manager), _raylibdrawing(), _parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE)) {
+Game::Game(int mapWidth, int mapHeight): _manager(ResourceManager()), _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")), _skyboxMesh(Skybox(1.0, 1.0, 1.0)), _map(10, 10, this->_manager), _raylibdrawing(), _parallax(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND), this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE)), _link(*this, "127.0.0.1", 4242) {
 }
 
 Game::~Game() {
@@ -56,6 +56,7 @@ void Game::run() {
     MyRayLib::Music musicGame("./assets/GarfieldCoolCat.mp3");
 
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
+        this->_link.update();
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
                 volumeMusic += 0.1f;
         if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)

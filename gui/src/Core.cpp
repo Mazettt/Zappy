@@ -63,12 +63,3 @@ int Core::checkArgs(int ac, char **av)
     }
     return 0;
 }
-
-int Core::handleConnectionServer()
-{
-    _server.connect(this->_ip, this->_port);
-    while (true) {
-        _server.update();
-    }
-    return 0;
-}

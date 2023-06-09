@@ -6,10 +6,12 @@
 #include "../../Utils/String.hpp"
 
 namespace ZappyGui {
+    class Game;
+
     class ServerLink {
         public:
-            ServerLink();
-            ServerLink(const std::string &ip, uint16_t port);
+            ServerLink(Game &game);
+            ServerLink(Game &game, const std::string &ip, uint16_t port);
             ServerLink(const ServerLink &other) = delete;
             ServerLink(ServerLink &&other);
             ~ServerLink();
@@ -59,6 +61,7 @@ namespace ZappyGui {
             void _suc(const std::string &str);
             void _sbp(const std::string &str);
 
+            Game &_game;
             Socket _socket;
             std::map<std::string, void (ServerLink::*)(const std::string &str)> _responseFunctions;
     };

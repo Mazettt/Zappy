@@ -15,6 +15,7 @@
 #include "MyRayLibHeader/Skybox.hpp"
 #include "MyRayLibHeader/Button.hpp"
 #include "MyRayLibHeader/Parallax.hpp"
+#include "Server/ServerLink.hpp"
 
 #include "MapHeader/Map.hpp"
 
@@ -42,5 +43,6 @@ namespace ZappyGui {
             void drawGame();
             void drawMenu();
             void switchToGame();
+            ServerLink _link;
     };
 }
