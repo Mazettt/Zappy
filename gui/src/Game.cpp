@@ -48,7 +48,7 @@ void Game::run() {
     this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/roh.png");
 
     float volumeMusic = 0.9;
-    InitAudioDevice();
+    this->_raylibwindow.MyInitAudioDevice();
     MyRayLib::Music musicMenu("./assets/GénériqueGarf.mp3");
     if (musicMenu.MyIsMusicReady())
         musicMenu.MyPlayMusic();
@@ -88,6 +88,7 @@ void Game::run() {
         }
         this->_raylibdrawing.~Draw();
     }
+    this->_raylibwindow.MyCloseAudioDevice();
     this->_skyboxMesh.MyUnloadShader(this->_skyboxMesh._skybox.materials[0].shader);
     this->_skyboxMesh.MyUnloadTexture(this->_skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
     this->_skyboxMesh.MyUnloadModel(this->_skyboxMesh._skybox);

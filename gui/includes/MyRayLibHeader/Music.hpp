@@ -20,12 +20,6 @@ namespace MyRayLib {
             ~Music() {
                 UnloadMusicStream(_music);
             }
-            void MyInitAudioDevice() {
-                InitAudioDevice();
-            }
-            void MyCloseAudioDevice() {
-                CloseAudioDevice();
-            }
             bool MyIsMusicReady() {
                 return IsMusicReady(_music);
             }

@@ -52,6 +52,12 @@ namespace MyRayLib {
             bool MyIsKeyPressed(int key) {
                 return IsKeyPressed(key);
             }
+            void MyInitAudioDevice() {
+                InitAudioDevice();
+            }
+            void MyCloseAudioDevice() {
+                CloseAudioDevice();
+            }
         protected:
         private:
     };
