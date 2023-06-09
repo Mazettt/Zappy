@@ -27,7 +27,7 @@ class Stats:
 
 class Tile:
     def __init__(self, nearbyPlayers, linemates, deraumeres, siburs, mendianes, phiras, thystames):
-        self.food = 50
+        self.food = 0
         self.nearbyPlayers = nearbyPlayers
         self.linemates = linemates
         self.deraumeres = deraumeres
