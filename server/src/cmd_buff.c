@@ -20,16 +20,17 @@ static int cmd_buff_len(client_t *client)
 
 void add_cmd_buff(client_t *client, char *command)
 {
+    cmd_buff_t *new = NULL;
+    cmd_buff_t *tmp = NULL;
     if (client->type != GUI &&
     cmd_buff_len(client) + (client->action.func != NULL) >= 10)
         return;
-    cmd_buff_t *new = malloc(sizeof(cmd_buff_t));
+    new = malloc(sizeof(cmd_buff_t));
     if (!new)
         return;
     new->c = strdup(command);
     new->next = NULL;
-
-    cmd_buff_t *tmp = client->cmdBuff;
+    tmp = client->cmdBuff;
     while (tmp && tmp->next)
         tmp = tmp->next;
     new->prev = tmp;

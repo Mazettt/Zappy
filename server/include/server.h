@@ -19,7 +19,7 @@
         ((time_t)((float)(x) / (float)(zappy->game.freq) * 1000000))
     #define cast_pos(x, max) ((x) < 0 ? (max) + (x) : (x) % (max))
     #define notif_guis(it, func) \
-        for (it = 0; it < MAX_CONNECTIONS; ++it) { \
+        for (; it < MAX_CONNECTIONS; ++it) { \
             if (zappy->client[it].command.s && zappy->client[it].type == GUI) \
                 func; \
         }

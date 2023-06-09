@@ -68,15 +68,17 @@ void print_args(args_t args)
 
 int main(int ac, char **av)
 {
+    args_t args;
+    int ret = 0;
     signal(SIGPIPE, SIG_IGN);
     if (ac == 2 && (!strcmp(av[1], "-help") || !strcmp(av[1], "-h") ||
     !strcmp(av[1], "--help"))) {
         args_help();
         return 0;
     }
-    args_t args = get_args(ac, av);
+    args = get_args(ac, av);
     print_args(args);
-    int ret = zappy(args);
+    ret = zappy(args);
     free(args.teamNames);
     return ret;
 }

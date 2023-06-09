@@ -42,15 +42,14 @@ static const command_t gui_cmds[] = {
 
 static void assign_to_player(zappy_t *zappy, int ci, team_t *team)
 {
+    player_t *new = NULL;
+    int it = 0;
     if (team->eggs) {
-        player_t *new = hatch_egg(zappy, team->eggs, &zappy->client[ci]);
-        if (!new) {
-            sdprintf(zappy, client_socket(ci), "ko\n");
-            return;
-        }
+        new = hatch_egg(zappy, team->eggs, &zappy->client[ci]);
+        if (!new)
+            return sdprintf(zappy, client_socket(ci), "ko\n");
         sdprintf(zappy, client_socket(ci), "%d\n%d %d\n",
             get_remaining_slots(team), zappy->game.width, zappy->game.height);
-        int it = 0;
         notif_guis(it, send_pnw(zappy, it, new));
         zappy->client[ci].type = AI;
     } else
@@ -79,13 +78,13 @@ static void gui_commands(zappy_t *zappy, char *command, int ci)
 
 static void unknown_commands(zappy_t *zappy, char *command, int ci)
 {
+    player_t *p = NULL;
     if (!strcmp(command, "GRAPHIC")) {
         zappy->client[ci].type = GUI;
         send_msz(zappy, ci);
         send_sgt(zappy, ci);
         send_mct(zappy, ci);
         send_tna(zappy, ci);
-        player_t *p = NULL;
         for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next)
             p->client ? send_pnw(zappy, ci, p) : 0;
         return;

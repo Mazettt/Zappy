@@ -10,6 +10,7 @@
 egg_t *add_egg(zappy_t *zappy, team_t *team)
 {
     egg_t *new = malloc(sizeof(egg_t));
+    egg_t *tmp = NULL;
     if (!new)
         return NULL;
     new->id = ++zappy->game.eggIdIt;
@@ -18,7 +19,7 @@ egg_t *add_egg(zappy_t *zappy, team_t *team)
     new->team = team;
     new->next = NULL;
 
-    egg_t *tmp = team->eggs;
+    tmp = team->eggs;
     while (tmp && tmp->next)
         tmp = tmp->next;
     new->prev = tmp;
@@ -50,8 +51,8 @@ void kill_egg(zappy_t *zappy, egg_t *egg)
 player_t *hatch_egg(zappy_t *zappy, egg_t *egg, client_t *client)
 {
     int it = 0;
-    notif_guis(it, send_ebo(zappy, it, egg));
     player_t *new = add_player(zappy, egg, client);
+    notif_guis(it, send_ebo(zappy, it, egg));
     remove_egg(egg);
     return new;
 }

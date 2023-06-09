@@ -94,18 +94,20 @@ char *get_item_str(item_t item)
 
 bool check_win(zappy_t *zappy)
 {
+    player_t *player = NULL;
+    int count = 0;
+    int it = 0;
     if (zappy->game.winningTeam)
         return true;
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
-        player_t *player = zappy->game.teams[i].players;
-        int count = 0;
+        player = zappy->game.teams[i].players;
+        count = 0;
         while (player) {
             (player->level == 8 ? count++ : 0);
             player = player->next;
         }
         if (count >= 6) {
             zappy->game.winningTeam = &zappy->game.teams[i];
-            int it = 0;
             notif_guis(it, send_seg(zappy, it, zappy->game.winningTeam));
             return true;
         }

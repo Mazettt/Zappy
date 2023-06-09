@@ -10,6 +10,7 @@
 static void forward(zappy_t *zappy, unused char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
+    int it = 0;
     switch (player->direction) {
         case NORTH:
             player->y = cast_pos(player->y - 1, HEIGHT);
@@ -24,7 +25,6 @@ static void forward(zappy_t *zappy, unused char *command, int ci)
             player->x = cast_pos(player->x - 1, WIDTH);
             break;
     }
-    int it = 0;
     notif_guis(it, send_ppo(zappy, it, player));
     sdprintf(zappy, client_socket(ci), "ok\n");
 }

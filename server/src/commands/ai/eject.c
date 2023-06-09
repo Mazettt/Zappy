@@ -9,9 +9,11 @@
 
 static void destroy_eggs(zappy_t *zappy, player_t *player)
 {
+    egg_t *egg = NULL;
+    egg_t *eggBuff = NULL;
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
-        egg_t *egg = zappy->game.teams[i].eggs;
-        egg_t *eggBuff = NULL;
+        egg = zappy->game.teams[i].eggs;
+        eggBuff = NULL;
         while (egg) {
             eggBuff = egg->next;
             (egg->x == player->x && egg->y == player->y) ?
@@ -47,9 +49,9 @@ static void eject(zappy_t *zappy, unused char *command, int ci)
 {
     player_t *player = zappy->client[ci].player;
     pos_t move = get_move(zappy, player);
-
     bool check = false;
     player_t *p = NULL;
+
     for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
         if (p->client && p != player &&
         p->x == player->x && p->y == player->y) {
