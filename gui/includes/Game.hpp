@@ -16,6 +16,7 @@
 #include "MyRayLibHeader/Button.hpp"
 #include "MyRayLibHeader/Parallax.hpp"
 #include "Server/ServerLink.hpp"
+#include "Popup.hpp"
 
 #include "MapHeader/Map.hpp"
 

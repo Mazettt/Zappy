@@ -59,6 +59,7 @@ void Game::initialize() {
 }
 
 void Game::run() {
+
     this->_skyboxMesh.InitSkybox();
     this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/roh.png");
 

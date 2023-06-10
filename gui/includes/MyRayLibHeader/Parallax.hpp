@@ -26,7 +26,7 @@ namespace MyRayLib {
                 _scrollingBack = 0.0f;
                 _scrollingMid = 0.0f;
             }
-            ~Parallax(){};
+            ~Parallax() {};
             void setTexture(const MyRayLib::Texture2D &background, const MyRayLib::Texture2D &middle) {
                 this->_background = background.getTexture();
                 this->_midground = middle.getTexture();
