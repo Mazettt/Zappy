@@ -38,6 +38,10 @@ void Popup::setDescription(const std::string &description) {
 }
 
 void Popup::setStatus(bool status) {
+    if (status == true)
+        MyRayLib::MyRayLibWindow::setExitKey(KEY_NULL);
+    else
+        MyRayLib::MyRayLibWindow::setExitKey(KEY_ESCAPE);
     this->_show = status;
 }
 

@@ -37,6 +37,9 @@ namespace MyRayLib {
             void MyDisableCursor(void) {
                 DisableCursor();
             }
+            static void setExitKey(int key) {
+                ::SetExitKey(key);
+            }
             Camera3D MySetCameraMode(Vector3 position, Vector3 target, Vector3 up, float fovy, int mode) {
                 Camera3D camera = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 camera.position = position;

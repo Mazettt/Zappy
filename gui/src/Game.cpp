@@ -83,8 +83,9 @@ void Game::run() {
                 volumeMusic += 0.1f;
         if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
             volumeMusic -= 0.1f;
-        if (_raylibwindow.MyIsKeyPressed(KEY_ENTER) && this->_popup.getStatus() == true)
+        if (_raylibwindow.MyIsKeyPressed(KEY_ESCAPE) && this->_popup.getStatus() == true) {
             this->_popup.setStatus(false);
+        }
         if (this->_stateMenu == true) {
             musicMenu.MySetMusicVolume(volumeMusic);
             musicMenu.MyUpdateMusic();

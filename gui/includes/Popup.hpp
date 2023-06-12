@@ -8,6 +8,7 @@
 #pragma once
 #include "./MyRayLibHeader/Texture.hpp"
 #include "./MyRayLibHeader/Color.hpp"
+#include "./MyRayLibHeader/Window.hpp"
 
 using namespace MyRayLib;
 
