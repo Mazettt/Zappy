@@ -95,7 +95,6 @@ MyRayLib::Model &ResourceManager::getPlayerModel() {
 }
 
 const MyRayLib::Texture2D &ResourceManager::getTexture(IResource::resourceType type) const {
-    std::cout << "type " << type << std::endl;
     if (_textures.find(type) == _textures.end())
         throw std::runtime_error("Texture not loaded: " + type);
     return *_textures.at(type);

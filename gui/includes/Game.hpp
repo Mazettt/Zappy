@@ -36,6 +36,7 @@ namespace ZappyGui {
             Parallax _parallax;
             std::string _ip;
             int _port;
+            Popup _popup;
         public:
             Map _map;
             Game(const std::string &ip, int port);

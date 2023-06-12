@@ -16,17 +16,20 @@ namespace ZappyGui {
         private:
             int _x;
             int _y;
+            bool _show;
             Color _titleColor;
             Color _textColor;
-            const MyRayLib::Texture2D &_background;
+            ::Texture2D _background;
 
             std::string _title;
             std::string _description;
 
         public:
-            Popup(const MyRayLib::Texture2D &background);
-            Popup(const MyRayLib::Texture2D &background, const std::string &title, const std::string &description);
+            Popup();
+            void setTexture(const MyRayLib::Texture2D &background);
             void setTitle(const std::string &title);
+            void setStatus(bool status);
+            bool getStatus();
             void setDescription(const std::string &description);
             void show();
             ~Popup();

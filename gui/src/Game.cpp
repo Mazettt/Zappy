@@ -19,7 +19,8 @@ Game::Game(const std::string &ip, int port):
     _ip(ip),
     _port(port),
     _map(this->_manager),
-    _link(*this)
+    _link(*this),
+    _popup()
 {
     _manager.initialize();
 }
@@ -38,10 +39,14 @@ void Game::switchToGame()
         this->_stateMenu = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << '\n';
+        this->_popup.setTitle("ERROR");
+        this->_popup.setDescription(e.what());
+        this->_popup.setStatus(true);
     }
 }
 
 void Game::initialize() {
+    this->_popup.setTexture(this->_manager.getTexture(IResource::resourceType::POPUP));
     this->_parallax.setTexture(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND),
     this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
     this->_camera = this->_raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
@@ -62,7 +67,6 @@ void Game::initialize() {
 }
 
 void Game::run() {
-
     this->_skyboxMesh.InitSkybox();
     this->_skyboxMesh.chooseSkyboxFile("./gui/assets/Skybox/roh.png");
 
@@ -79,6 +83,8 @@ void Game::run() {
                 volumeMusic += 0.1f;
         if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
             volumeMusic -= 0.1f;
+        if (_raylibwindow.MyIsKeyPressed(KEY_ENTER) && this->_popup.getStatus() == true)
+            this->_popup.setStatus(false);
         if (this->_stateMenu == true) {
             musicMenu.MySetMusicVolume(volumeMusic);
             musicMenu.MyUpdateMusic();
@@ -90,6 +96,7 @@ void Game::run() {
             }
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
+            // begin keys for test
             if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
                 int testRand;
                 testRand = rand() % 3;
@@ -104,8 +111,11 @@ void Game::run() {
             if (_raylibwindow.MyIsKeyPressed(KEY_V)) {
                 this->_map.deadPlayer(0);
             }
+            // end keys for test
             drawGame();
         }
+        this->_popup.show();
+        this->_raylibwindow.MyEndDrawing();
         this->_raylibdrawing.~Draw();
     }
     this->_raylibwindow.MyCloseAudioDevice();
@@ -121,12 +131,13 @@ void Game::drawMenu() {
         Button button1 = this->_buttonMenu.at(1);
         Button button2 = this->_buttonMenu.at(2);
 
-
         this->_raylibwindow.MyBeginDrawing();
         this->_raylibwindow.MyClearBackground(RAYWHITE);
-        button0.HandleButton();
-        button1.HandleButton();
-        button2.HandleButton();
+        if (this->_popup.getStatus() == false) {
+            button0.HandleButton();
+            button1.HandleButton();
+            button2.HandleButton();
+        }
 
         this->_parallax.updateInLoop();
         this->_parallax.WriteTitle();
@@ -134,8 +145,6 @@ void Game::drawMenu() {
         button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
         button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
         button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
-        this->_raylibwindow.MyEndDrawing();
-
 }
 
 void Game::drawGame() {
@@ -149,5 +158,4 @@ void Game::drawGame() {
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_raylibwindow.MyUpdateCamera(&this->_camera, CAMERA_THIRD_PERSON);
     this->_map.draw();
-    this->_raylibdrawing.MyEnd3DMode();
 }
