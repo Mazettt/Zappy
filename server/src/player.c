@@ -10,7 +10,9 @@
 player_t *parse_players(zappy_t *zappy, int *i, player_t *current)
 {
     if (!current)
-        ++(*i);
+        do {
+            ++(*i);
+        } while (*i < zappy->game.nbrTeams && !zappy->game.teams[*i].players);
     if (*i >= zappy->game.nbrTeams)
         return NULL;
     return current ? : zappy->game.teams[*i].players;
