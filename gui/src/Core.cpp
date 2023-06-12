@@ -47,10 +47,8 @@ void Core::checkArgs(int ac, char **av)
             }
         }
         if (std::string(av[i]).find("-h") != std::string::npos) {
-            if (av[i + 1] == NULL) {
-                std::cout << "[WARNING] You put the -h but no IP adress after." << std::endl;
-                return;
-            }
+            if (av[i + 1] == NULL)
+                throw MyError("Core", "You put the -h but no IP adress after.");
             for (int j = 0; av[i + 1][j] != '\0'; j++) {
                 if (av[i + 1][j] == '.')
                     continue;
