@@ -10,14 +10,17 @@
 
 using namespace ZappyGui;
 
-Game::Game():
+Game::Game(const std::string &ip, int port):
     _manager(ResourceManager()),
     _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")),
     _skyboxMesh(Skybox(1.0, 1.0, 1.0)),
-    _map(this->_manager),
     _raylibdrawing(),
     _parallax(),
-    _link(*this) {
+    _ip(ip),
+    _port(port),
+    _map(this->_manager),
+    _link(*this)
+{
     _manager.initialize();
 }
 
@@ -31,7 +34,7 @@ Game::~Game() {
 void Game::switchToGame()
 {
     try {
-        this->_link.connect("127.0.0.1", 4242);
+        this->_link.connect(_ip, _port);
         this->_stateMenu = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << '\n';

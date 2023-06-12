@@ -25,7 +25,7 @@ Core::Core()
     this->_ip = "127.0.0.1";
 }
 
-int Core::checkArgs(int ac, char **av)
+void Core::checkArgs(int ac, char **av)
 {
     if (ac == 1)
         throw MyError("Core", "Not enough arguments.");
@@ -33,7 +33,7 @@ int Core::checkArgs(int ac, char **av)
         throw MyError("Core", "Too many arguments.");
     if ((ac == 2) && (std::string(av[1]).find("-help") != std::string::npos)) {
         std::cout << "USAGE: ./zappy_ai -p port -h machine\n\tport\tis the port number\n\tmachine\tis the name of the machine; localhost by default" << std::endl;
-        return 0;
+        return;
     }
 
     for (int i = 0; i < ac; i++) {
@@ -49,7 +49,7 @@ int Core::checkArgs(int ac, char **av)
         if (std::string(av[i]).find("-h") != std::string::npos) {
             if (av[i + 1] == NULL) {
                 std::cout << "[WARNING] You put the -h but no IP adress after." << std::endl;
-                return 0;
+                return;
             }
             for (int j = 0; av[i + 1][j] != '\0'; j++) {
                 if (av[i + 1][j] == '.')
@@ -61,5 +61,11 @@ int Core::checkArgs(int ac, char **av)
             }
         }
     }
-    return 0;
+}
+
+void Core::run()
+{
+    Game game(this->_ip, this->_port);
+    game.initialize();
+    game.run();
 }

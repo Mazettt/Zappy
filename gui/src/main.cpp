@@ -10,19 +10,13 @@
 using namespace ZappyGui;
 
 int main(int ac, char **av) {
-    (void)ac;
-    (void)av;
-    Core _core;
-    // try {
-    //     _core.checkArgs(ac, av);
-    //     _core.handleConnectionServer();
-    // } catch (const std::exception &e) {
-    //     std::cerr << e.what() << std::endl;
-    //     return 84;
-    // }
-
-    Game game;
-    game.initialize();
-    game.run();
+    Core core;
+    try {
+        core.checkArgs(ac, av);
+        core.run();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << '\n';
+        return 84;
+    }
     return 0;
 }

@@ -34,9 +34,11 @@ namespace ZappyGui {
             MyRayLib::Draw _raylibdrawing;
             bool _BoolCloseWin;
             Parallax _parallax;
+            std::string _ip;
+            int _port;
         public:
             Map _map;
-            Game();
+            Game(const std::string &ip, int port);
             ~Game();
             void initialize();
             void run();

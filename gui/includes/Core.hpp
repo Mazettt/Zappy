@@ -12,6 +12,7 @@
 #include "MapHeader/Tile.hpp"
 #include <string>
 #include "../Utils/MyError.hpp"
+#include "Game.hpp"
 // RAYLIB HEADERS
 #include "../includes/MyRayLibHeader/Window.hpp"
 #include "../includes/MyRayLibHeader/Draw.hpp"
@@ -24,8 +25,8 @@ namespace ZappyGui {
         public:
             Core();
             ~Core(){};
-            int checkArgs(int ac, char **av);
-            int handleConnectionServer();
+            void checkArgs(int ac, char **av);
+            void run();
         protected:
             int _port;
             std::string _ip;
