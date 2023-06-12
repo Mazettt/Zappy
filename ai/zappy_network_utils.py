@@ -26,6 +26,9 @@ def recv_from_server(sock):
     zp.print_log("Received: {}".format(response))
     if response == "dead\n":
         exit(0)
+    if (response == ""):
+        print("timed out\n")
+        exit(84)
     return response
 
 def multiple_recv_from_server(sock, timeout):
@@ -33,11 +36,14 @@ def multiple_recv_from_server(sock, timeout):
     start_time = time.time()
     while time.time() - start_time < timeout:
         response += sock.recv(4096).decode()
-        if response[-1] == '\n':
+        if response and response [-1] == '\n':
             break
     zp.print_log("Received: {}".format(response))
     if response == "dead\n":
         exit(0)
+    if (response == ""):
+        print("timed out\n")
+        exit(84)
     return response
 
 def get_player_infos(sock, team):

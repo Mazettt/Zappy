@@ -8,42 +8,66 @@
 import ai.zappy_commands as zc
 import ai.zappy_dataStruct as zds
 
-def pickUpManager(p: zds.Player, z_c: zds.Client):
+def pickupFood(p: zds.Player):
     if (p.POV.vision[0].food > 0):
-        zc.take(z_c, "food\n")
+        zc.take(p.client.sock, "food\n")
         p.inventory.food += 1
         p.POV.vision[0].food -=1
-        pickUpManager(p, z_c)
+        pickupFood(p)
+
+def pickupItems(p: zds.Player):
     if (p.POV.vision[0].linemates > 0 and p.inventory.linemates < p.requirement.linemates):
-        zc.take(z_c, "linemate\n")
+        zc.take(p.client.sock, "linemate\n")
         p.inventory.linemates += 1
         p.POV.vision[0].linemates -=1
-        pickUpManager(p, z_c)
+        pickupItems(p)
     if (p.POV.vision[0].deraumeres > 0 and p.inventory.deraumeres < p.requirement.deraumeres):
-        zc.take(z_c, "deraumere\n")
+        zc.take(p.client.sock, "deraumere\n")
         p.inventory.deraumeres += 1
         p.POV.vision[0].deraumeres -=1
-        pickUpManager(p, z_c)
+        pickupItems(p)
     if (p.POV.vision[0].siburs > 0 and p.inventory.siburs < p.requirement.siburs):
-        zc.take(z_c, "sibur\n")
+        zc.take(p.client.sock, "sibur\n")
         p.inventory.siburs += 1
         p.POV.vision[0].siburs -=1
-        pickUpManager(p, z_c)
+        pickupItems(p)
     if (p.POV.vision[0].mendianes > 0 and p.inventory.mendianes < p.requirement.mendianes):
-        zc.take(z_c, "mendiane\n")
+        zc.take(p.client.sock, "mendiane\n")
         p.inventory.mendianes += 1
         p.POV.vision[0].mendianes -=1
-        pickUpManager(p, z_c)
+        pickupItems(p)
     if (p.POV.vision[0].phiras > 0 and p.inventory.phiras < p.requirement.phiras):
-        zc.take(z_c, "phiras\n")
+        zc.take(p.client.sock, "phiras\n")
         p.inventory.phiras += 1
         p.POV.vision[0].phiras -=1
-        pickUpManager(p, z_c)
+        pickupItems(p)
     if (p.POV.vision[0].thystames > 0 and p.inventory.thystames < p.requirement.thystames):
-        zc.take(z_c, "thystame\n")
+        zc.take(p.client.sock, "thystame\n")
         p.inventory.thystames += 1
         p.POV.vision[0].thystames -=1
-        pickUpManager(p, z_c)
+        pickupItems(p)
+
+def findValue(strWithNBR):
+    number = ""
+    for char in strWithNBR:
+        if char.isdigit():
+            number += char
+    if number:
+        return int(number)
+    else:
+        return 0
+
+def inventoryParser(strInventory):
+    tmpInv = zds.Tile(0, 0, 0, 0, 0, 0, 0)
+    itemList = strInventory.split(',')
+    tmpInv.food = findValue(itemList[0])
+    tmpInv.linemates = findValue(itemList[1])
+    tmpInv.deraumeres = findValue(itemList[2])
+    tmpInv.siburs = findValue(itemList[3])
+    tmpInv.mendianes = findValue(itemList[4])
+    tmpInv.phiras = findValue(itemList[5])
+    tmpInv.thystames = findValue(itemList[6])
+    return tmpInv
 
 def trashStones(p: zds.Player): #Not used yet, might be deleted in the future
     p.inventory.linemates = 0
@@ -54,12 +78,12 @@ def trashStones(p: zds.Player): #Not used yet, might be deleted in the future
     p.inventory.thystames = 0
 
 def consumeStones(p: zds.Player):
-    p.inventory.linemates -= p.requirement.linemates
-    p.inventory.deraumeres -= p.requirement.deraumeres
-    p.inventory.siburs -= p.requirement.siburs
-    p.inventory.mendianes -= p.requirement.mendianes
-    p.inventory.phiras -= p.requirement.phiras
-    p.inventory.thystames -= p.requirement.thystames
+    p.POV.vision[0].linemates -= p.requirement.linemates
+    p.POV.vision[0].deraumeres -= p.requirement.deraumeres
+    p.POV.vision[0].siburs -= p.requirement.siburs
+    p.POV.vision[0].mendianes -= p.requirement.mendianes
+    p.POV.vision[0].phiras -= p.requirement.phiras
+    p.POV.vision[0].thystames -= p.requirement.thystames
 
 def updatRequirement(p: zds.Player):
     if (p.stats.level == 2):

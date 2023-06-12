@@ -43,24 +43,6 @@ class Client:
         self.sock = 0
 
 class POV:
-        vision = [Tile]
+        vision = [Tile(0, 0, 0, 0, 0, 0, 0)]
         visionSize = 0
         visionCenter = 0
-
-
-
-
-
-#class Row: vector<class tile>
-#
-#class Tile: vector<entities> (entities = Player / food / stone)
-#
-#
-
-# Create an instance of the struct
-# my_struct = Data(10, 'Hello', True)
-
-# Access the fields
-# print(my_struct.port)  # Output: 10
-# print(my_struct.team)  # Output: Hello
-# print(my_struct.machine)  # Output: True

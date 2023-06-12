@@ -9,6 +9,7 @@ import socket
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import ai.zappy_network_utils as znu
+import ai.zappy_inventory as zi
 
 class Commands:
     FORWARD = {"Forward\n", 7}
@@ -65,15 +66,11 @@ def look(sock: socket.socket):
 def inventory(sock: socket.socket):
     znu.send_to_server(sock, "Inventory\n")
     resp = znu.multiple_recv_from_server(sock, 20)
-    inventory = {}
-    resp = resp.split(',')
-    for item in resp:
-        item = item.split(' ')
-        inventory[item[1]] = int(item[2])
-    return inventory
+    resp = resp.translate(str.maketrans('', '', '[]'))
+    return (zi.inventoryParser(resp))
 
 def broadcast_text(sock: socket.socket, text: str):
-    znu.send_to_server(sock, "{} {}".format(7, text))
+    znu.send_to_server(sock, "{} {}".format("Broadcast", text))
     resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
@@ -98,7 +95,7 @@ def take(sock: socket.socket, resource: str):
     return resp
 
 def set(sock: socket.socket, resource: str):
-    znu.send_to_server(sock, "{} {}".format("set", resource))
+    znu.send_to_server(sock, "{} {}".format("Set", resource))
     resp = znu.multiple_recv_from_server(sock, 7)
     return resp
 
