@@ -14,6 +14,7 @@
 #include "MapHeader/Map.hpp"
 #include "MyRayLibHeader/Skybox.hpp"
 #include "MyRayLibHeader/Button.hpp"
+#include "MyRayLibHeader/FreeCamera.hpp"
 #include "MyRayLibHeader/Parallax.hpp"
 #include "Server/ServerLink.hpp"
 #include "Popup.hpp"
@@ -26,7 +27,7 @@ namespace ZappyGui {
     class Game {
         private:
             ResourceManager _manager;
-            Camera3D _camera;
+            FreeCamera _camera;
             MyRayLibWindow _raylibwindow;
             bool _stateMenu;
             std::vector<Button> _buttonMenu;
