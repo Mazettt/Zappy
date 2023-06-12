@@ -12,6 +12,7 @@ using namespace ZappyGui;
 
 Game::Game(const std::string &ip, int port):
     _manager(ResourceManager()),
+    _camera({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0),
     _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")),
     _skyboxMesh(Skybox(1.0, 1.0, 1.0)),
     _raylibdrawing(),
@@ -44,7 +45,6 @@ void Game::switchToGame()
 void Game::initialize() {
     this->_parallax.setTexture(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND),
     this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
-    this->_camera = this->_raylibwindow.MySetCameraMode({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0, CAMERA_PERSPECTIVE);
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_BoolCloseWin = false;
@@ -141,13 +141,13 @@ void Game::drawMenu() {
 void Game::drawGame() {
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     this->_raylibdrawing.MyDrawFPS(10, 35);
-    this->_raylibdrawing.MyBegin3DMode(this->_camera);
+    this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
     this->_skyboxMesh.MyrlDisableDepthMask();
     DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
-    this->_raylibwindow.MyUpdateCamera(&this->_camera, CAMERA_THIRD_PERSON);
+    this->_camera.update();
     this->_map.draw();
-    this->_raylibdrawing.MyEnd3DMode();
+    this->_camera.endMode3D();
 }
