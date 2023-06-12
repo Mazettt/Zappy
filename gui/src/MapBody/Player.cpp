@@ -5,6 +5,7 @@
 ** Player.cpp
 */
 
+#include <algorithm>
 #include "../../includes/MapHeader/Player.hpp"
 
 using namespace ZappyGui;
@@ -25,20 +26,24 @@ void Player::addOnInventory(IResource::resourceType type, int quantity) {
 }
 
 bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
-    for (std::pair<const IResource::resourceType, int> item : this->_inventory) {
-        if (item.first == type) {
-            if (item.second < 1) {
-                this->_inventory.erase(type);
-            } else {
-                item.second -= quantity;
-            }
-            return true;
+    auto it = std::find_if(this->_inventory.begin(), this->_inventory.end(),
+        [type](const auto& item) {
+            return item.first == type;
         }
+    );
+    if (it != this->_inventory.end()) {
+        if (it->second < 1) {
+            this->_inventory.erase(it);
+        } else {
+            it->second -= quantity;
+        }
+        return true;
     }
     return false;
 }
 
-    const std::unordered_map<IResource::resourceType, int> Player::getInventory() const {
+
+const std::unordered_map<IResource::resourceType, int> Player::getInventory() const {
     return this->_inventory;
 }
 

@@ -18,7 +18,6 @@ namespace ZappyGui {
     class Tile {
         private:
             Cube _cube;
-            std::vector<std::unique_ptr<Player>> _players;
             std::vector<std::unique_ptr<IResource>> _resources;
             std::vector<std::pair<int, int>> _availablePositions;
         public:

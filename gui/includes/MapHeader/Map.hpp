@@ -36,5 +36,6 @@ namespace ZappyGui {
             void dropResource(int playerID, IResource::resourceType type);
             void collectResource(int playerID, IResource::resourceType type);
             void updateMusic();
+            void resetGame();
     };
 }
