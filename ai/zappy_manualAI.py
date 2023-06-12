@@ -10,7 +10,6 @@ import ai.zappy_dataStruct as zds
 import ai.zappy_inventory as zi
 import ai.zappy_elevation as ze
 import ai.zappy_POV as zp
-import ai.zappy_network_utils as znu
 import select
 
 def move(p: zds.Player):
@@ -22,29 +21,18 @@ def move(p: zds.Player):
         zc.left(p.client.sock)
         p.remindToTurn = "No"
 
-    # maxRange = (p.stats.level**2 + 2 * p.stats.level)
-    # for x in range (0, maxRange):
-    #     if (zp.hasFood(p, x)):
-    #         print("i")
-
-def lookForFood(p: zds.Player):
-    if (zp.hasFood(p, 1)):
-        p.remindToTurn = "L"
-    if (zp.hasFood(p, 3)):
-        p.remindToTurn = "R"
-
 def gameLoop(p: zds.Player):
     while True:
-        # zc.inventory(p.client.sock) #will be used later to know mount of food left
-        #select
-        # if ("dead") = close socket -> exit(0)
+        #select ?
         zp.POVmanager(p)
-        zi.pickUpManager(p, p.client.sock)
-        #Put here an "if" later, to know if we have enough food or not
-        ze.canElevate(p)
+        zi.pickupFood(p)
+        p.inventory = zc.inventory(p.client.sock)
+        if (ze.canElevate(p)):
+            while (p.stats.elevating == True):
+                ze.elevationTry(p)
+        zi.pickupItems(p)
         try:
-            if (p.stats.elevating == False):
-                lookForFood(p)
+            zp.lookForFood(p)
         except:
             # print("Pfiew ! I was about to crash!\n")
             continue
