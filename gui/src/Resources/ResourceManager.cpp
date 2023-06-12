@@ -19,41 +19,41 @@ ResourceManager::~ResourceManager() {
 }
 
 void ResourceManager::initialize() {
-    this->loadTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND, "./assets/Parallax/bkgParallax.png");
-    this->loadTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE, "./assets/Parallax/garfTerre.png");
+    this->loadTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND, "./gui/assets/Parallax/bkgParallax.png");
+    this->loadTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE, "./gui/assets/Parallax/garfTerre.png");
     // // load player
-    this->loadModel(IResource::resourceType::PLAYER, "./assets/thegarfrotated.iqm");
-    this->loadTexture(IResource::resourceType::PLAYER, "./assets/T_Garfield_BC.png");
-    this->loadAnimation(IResource::resourceType::PLAYER, "./assets/thegarfrotated.iqm");
+    this->loadModel(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
+    this->loadTexture(IResource::resourceType::PLAYER, "./gui/assets/T_Garfield_BC.png");
+    this->loadAnimation(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
 
     // // load texture
-    this->loadModel(IResource::resourceType::DERAUMERE, "./assets/Stones/stone_model.obj");
-    this->loadModel(IResource::resourceType::LINEMATE, "./assets/Stones/stone_model.obj");
-    this->loadModel(IResource::resourceType::MENDIANE, "./assets/Stones/stone_model.obj");
-    this->loadModel(IResource::resourceType::PHIRAS, "./assets/Stones/stone_model.obj");
-    this->loadModel(IResource::resourceType::SIBUR, "./assets/Stones/stone_model.obj");
-    this->loadModel(IResource::resourceType::THYSTAME, "./assets/Stones/stone_model.obj");
+    this->loadModel(IResource::resourceType::DERAUMERE, "./gui/assets/Stones/stone_model.obj");
+    this->loadModel(IResource::resourceType::LINEMATE, "./gui/assets/Stones/stone_model.obj");
+    this->loadModel(IResource::resourceType::MENDIANE, "./gui/assets/Stones/stone_model.obj");
+    this->loadModel(IResource::resourceType::PHIRAS, "./gui/assets/Stones/stone_model.obj");
+    this->loadModel(IResource::resourceType::SIBUR, "./gui/assets/Stones/stone_model.obj");
+    this->loadModel(IResource::resourceType::THYSTAME, "./gui/assets/Stones/stone_model.obj");
 
-    this->loadTexture(IResource::resourceType::DERAUMERE, "./assets/Stones/deraumere.png");
-    this->loadTexture(IResource::resourceType::LINEMATE, "./assets/Stones/linemate.png");
-    this->loadTexture(IResource::resourceType::MENDIANE, "./assets/Stones/mendiane.png");
-    this->loadTexture(IResource::resourceType::PHIRAS, "./assets/Stones/phiras.png");
-    this->loadTexture(IResource::resourceType::SIBUR, "./assets/Stones/sibur.png");
-    this->loadTexture(IResource::resourceType::THYSTAME, "./assets/Stones/thystame.png");
+    this->loadTexture(IResource::resourceType::DERAUMERE, "./gui/assets/Stones/deraumere.png");
+    this->loadTexture(IResource::resourceType::LINEMATE, "./gui/assets/Stones/linemate.png");
+    this->loadTexture(IResource::resourceType::MENDIANE, "./gui/assets/Stones/mendiane.png");
+    this->loadTexture(IResource::resourceType::PHIRAS, "./gui/assets/Stones/phiras.png");
+    this->loadTexture(IResource::resourceType::SIBUR, "./gui/assets/Stones/sibur.png");
+    this->loadTexture(IResource::resourceType::THYSTAME, "./gui/assets/Stones/thystame.png");
 
-    this->loadTexture(IResource::resourceType::BUTTON_START, "./assets/Buttons/buttonStart.png");
-    this->loadTexture(IResource::resourceType::BUTTON_HELP, "./assets/Buttons/buttonHelp.png");
-    this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./assets/Buttons/buttonQuit.png");
+    this->loadTexture(IResource::resourceType::BUTTON_START, "./gui/assets/Buttons/buttonStart.png");
+    this->loadTexture(IResource::resourceType::BUTTON_HELP, "./gui/assets/Buttons/buttonHelp.png");
+    this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./gui/assets/Buttons/buttonQuit.png");
 
-    this->loadTexture(IResource::resourceType::POPUP, "./assets/popup.png");
+    this->loadTexture(IResource::resourceType::POPUP, "./gui/assets/popup.png");
 
     // load food
-    this->loadModel(IResource::resourceType::BURGER, "./assets/Food/Hamburger.obj");
-    this->loadTexture(IResource::resourceType::BURGER, "./assets/Food/Hamburger.png");
+    this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
+    this->loadTexture(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.png");
 
     //load egg
-    this->loadModel(IResource::resourceType::EGG, "./assets/Egg/egg01.obj");
-    this->loadTexture(IResource::resourceType::EGG, "./assets/Egg/egg01.png");
+    this->loadModel(IResource::resourceType::EGG, "./gui/assets/Egg/egg01.obj");
+    this->loadTexture(IResource::resourceType::EGG, "./gui/assets/Egg/egg01.png");
 
     // load texture on model
     this->setMaterialTexture(IResource::resourceType::DERAUMERE);

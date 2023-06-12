@@ -49,13 +49,13 @@ void Game::initialize() {
 
     this->_BoolCloseWin = false;
     this->_stateMenu = true;
-    Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./assets/Buttons/buttonfx.wav", [&](){switchToGame();});
+    Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./gui/assets/Buttons/buttonfx.wav", [&](){switchToGame();});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
     this->_buttonMenu.push_back(button);
-    Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
+    Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
     button2.ButtonSetPosition(1920/2.0f - button2.button.width/2.0f, 800, (float)button2.button.width, button2.frameHeight);
     this->_buttonMenu.push_back(button2);
-    Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./assets/Buttons/buttonfx.wav", [&](){this->_BoolCloseWin = true;});
+    Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_BoolCloseWin = true;});
     button3.ButtonSetPosition(1920/2.0f - button3.button.width/2.0f, 900, (float)button3.button.width, button3.frameHeight);
     this->_buttonMenu.push_back(button3);
 
@@ -64,15 +64,15 @@ void Game::initialize() {
 void Game::run() {
 
     this->_skyboxMesh.InitSkybox();
-    this->_skyboxMesh.chooseSkyboxFile("./assets/Skybox/roh.png");
+    this->_skyboxMesh.chooseSkyboxFile("./gui/assets/Skybox/roh.png");
 
-    float volumeMusic = 0.9;
+    float volumeMusic = 0.0;
     this->_raylibwindow.MyInitAudioDevice();
-    MyRayLib::Music musicMenu("./assets/GénériqueGarf.mp3");
+    MyRayLib::Music musicMenu("./gui/assets/GénériqueGarf.mp3");
     if (musicMenu.MyIsMusicReady())
         musicMenu.MyPlayMusic();
 
-    MyRayLib::Music musicGame("./assets/GarfieldCoolCat.mp3");
+    MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
 
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)

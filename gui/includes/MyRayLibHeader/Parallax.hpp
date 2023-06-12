@@ -22,7 +22,7 @@ namespace MyRayLib {
             Font _fontTtf;
         public:
             Parallax() {
-                _fontTtf = LoadFontEx("./assets/Parallax/Dongle-Bold.ttf", 512, 0, 250);
+                _fontTtf = LoadFontEx("./gui/assets/Parallax/Dongle-Bold.ttf", 512, 0, 250);
                 _scrollingBack = 0.0f;
                 _scrollingMid = 0.0f;
             }

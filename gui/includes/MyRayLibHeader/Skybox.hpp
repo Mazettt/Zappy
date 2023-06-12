@@ -35,7 +35,7 @@ namespace MyRayLib {
                 _skyboxFileName[256] = { 0 };
             }
             ~Skybox() {
-                
+
             };
             void MyLoadFromMesh(Mesh mesh) {
                 _skybox = LoadModelFromMesh(mesh);
@@ -144,13 +144,13 @@ namespace MyRayLib {
                 int c[1] = { _useHDR ? 1 : 0 };
                 int d[1] = { 0 };
 
-                _skybox.materials[0].shader = MyLoadShader("./assets/Skybox/skybox.vs", "./assets/Skybox/skybox.fs");
+                _skybox.materials[0].shader = MyLoadShader("./gui/assets/Skybox/skybox.vs", "./gui/assets/Skybox/skybox.fs");
 
                 MySetShaderValue(_skybox.materials[0].shader, MyGetShaderLocation(_skybox.materials[0].shader, "environmentMap"), a, SHADER_UNIFORM_INT);
                 MySetShaderValue(_skybox.materials[0].shader, MyGetShaderLocation(_skybox.materials[0].shader, "doGamma"), b, SHADER_UNIFORM_INT);
                 MySetShaderValue(_skybox.materials[0].shader, MyGetShaderLocation(_skybox.materials[0].shader, "vflipped"), c, SHADER_UNIFORM_INT);
 
-                _shdrCubemap = MyLoadShader("./assets/Skybox/cubemap.vs", "./assets/Skybox/cubemap.fs");
+                _shdrCubemap = MyLoadShader("./gui/assets/Skybox/cubemap.vs", "./gui/assets/Skybox/cubemap.fs");
                 MySetShaderValue(_shdrCubemap, MyGetShaderLocation(_shdrCubemap, "environmentMap"), d, SHADER_UNIFORM_INT);
             }
             void chooseSkyboxFile(const std::string filename) {
