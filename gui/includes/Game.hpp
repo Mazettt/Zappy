@@ -18,6 +18,7 @@
 #include "MyRayLibHeader/Parallax.hpp"
 #include "Server/ServerLink.hpp"
 #include "Popup.hpp"
+#include "./MapHeader/ShowPlayerData.hpp"
 
 #include "MapHeader/Map.hpp"
 
@@ -38,6 +39,7 @@ namespace ZappyGui {
             std::string _ip;
             int _port;
             Popup _popup;
+            ShowPlayerData _showPlayerData;
         public:
             Map _map;
             Game(const std::string &ip, int port);

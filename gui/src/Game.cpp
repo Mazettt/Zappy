@@ -21,7 +21,8 @@ Game::Game(const std::string &ip, int port):
     _port(port),
     _map(this->_manager),
     _link(*this),
-    _popup()
+    _popup(),
+    _showPlayerData()
 {
     _manager.initialize();
 }
@@ -160,4 +161,5 @@ void Game::drawGame() {
     this->_camera.update();
     this->_map.draw();
     this->_camera.endMode3D();
+    this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
 }
