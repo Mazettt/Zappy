@@ -25,6 +25,10 @@ MyRayLib::ShowPlayerData::~ShowPlayerData()
 {
 }
 
+void MyRayLib::ShowPlayerData::setModel(const MyRayLib::Model &model) {
+    this->_model = model.getModel();
+}
+
 std::string MyRayLib::ShowPlayerData::getRessourceName(ZappyGui::IResource::resourceType type)
 {
     if (type == ZappyGui::IResource::resourceType::BURGER)
@@ -42,6 +46,10 @@ std::string MyRayLib::ShowPlayerData::getRessourceName(ZappyGui::IResource::reso
     if (type == ZappyGui::IResource::resourceType::THYSTAME)
         return "Thystame";
     return "";
+}
+
+const int MyRayLib::ShowPlayerData::getPlayerIndexSelected() {
+    return this->_index;
 }
 
 void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players)

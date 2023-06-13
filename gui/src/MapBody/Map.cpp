@@ -207,7 +207,6 @@ void Map::draw() {
                 }
             }
         }
-
         player->draw();
         ++it;
     }

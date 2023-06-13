@@ -38,6 +38,7 @@ namespace ZappyGui {
             int _port;
             Popup _popup;
             ShowPlayerData _showPlayerData;
+            std::shared_ptr<Player> _playerTmp;
             int _konamiIndex;
 
         public:

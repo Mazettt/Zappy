@@ -20,9 +20,9 @@ namespace ZappyGui {
             std::vector<std::shared_ptr<Tile>> _map;
             ResourceManager &_manager;
             const MyRayLib::FreeCamera &_camera;
-            std::shared_ptr<Player> findPlayerByID(int id);
             int _selectedTileKey;
         public:
+            std::shared_ptr<Player> findPlayerByID(int id);
             std::vector<std::shared_ptr<Player>> _players;
             Map(ResourceManager &manager, const MyRayLib::FreeCamera &camera);
             ~Map();

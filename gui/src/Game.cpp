@@ -49,6 +49,7 @@ void Game::switchToGame()
 
 void Game::initialize() {
     this->_popup.setTexture(this->_manager.getTexture(IResource::resourceType::POPUP));
+    this->_showPlayerData.setModel(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR));
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_BoolCloseWin = false;
@@ -77,6 +78,13 @@ void Game::run() {
 
     MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
 
+    auto &modelPlayer = this->_manager.getPlayerModel();
+    auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
+    auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
+    PlayerArguments playerArgs = PlayerArguments(0, "team2", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {1.6f, 1.6f, 1.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
+
+    this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
+
     ToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
@@ -104,22 +112,6 @@ void Game::run() {
             }
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
-            // begin keys for test
-            if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
-                int testRand;
-                testRand = rand() % 3;
-                this->_map.movePlayer(0, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-                testRand = rand() % 3;
-                this->_map.movePlayer(1, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-                testRand = rand() % 3;
-                this->_map.movePlayer(2, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-                testRand = rand() % 3;
-                this->_map.movePlayer(3, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-            }
-            if (_raylibwindow.MyIsKeyPressed(KEY_V)) {
-                this->_map.deadPlayer(0);
-            }
-            // end keys for test
             drawGame();
         }
         this->_popup.show();
@@ -151,8 +143,10 @@ void Game::drawMenu() {
         this->_skyboxMesh.MyrlEnableDepthMask();
         this->_camera.updateAuto();
         this->_raylibdrawing.MyDrawGrid(10, 1.0f);
+        this->_playerTmp->draw();
         this->_camera.endMode3D();
 
+        // this->_raylibwindow.MyEndDrawing();
         button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
         button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
         button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
@@ -169,6 +163,14 @@ void Game::drawGame() {
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_camera.update();
     this->_map.draw();
+    std::cout << this->_showPlayerData.getPlayerIndexSelected() << std::endl;
+    if (this->_map._players.size() != 0) {
+        std::shared_ptr<ZappyGui::Player> &selectedPlayer = this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected());
+        Vector3 selectedPos = selectedPlayer->getPosition();
+        selectedPos.y += 0.85;
+        MyRayLib::Draw::MyDrawModelEx(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR).getModel(), selectedPos, {1.0,0.0,0.0}, -90, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
+    }
+
     this->_camera.endMode3D();
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
 }
