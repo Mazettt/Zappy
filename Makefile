@@ -5,15 +5,18 @@
 ## Makefile
 ##
 
-all: zappy_gui zappy_server zappy_ai
+all:
+	make -C gui
+	make -C server
+	make -C ai
 
-zappy_gui:
+gui:
 	make -C gui
 
-zappy_server:
+server:
 	make -C server
 
-zappy_ai:
+ai:
 	make -C ai
 
 clean:

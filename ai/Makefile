@@ -12,7 +12,7 @@ clean:
 	rm -r -f __pycache__
 
 fclean:	clean
-	rm ../zappy_ai
+	rm -f ../zappy_ai
 
 re:	clean all
 
