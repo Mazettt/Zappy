@@ -31,11 +31,13 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
 }
 
 void Tile::removeResource(const IResource::resourceType type) {
-    for (auto it = this->_resources.begin(); it != this->_resources.end(); ++it) {
-        if ((*it)->getType() == type) {
-            this->_resources.erase(it);
-            break;
+    auto it = std::find_if(this->_resources.begin(), this->_resources.end(),
+        [type](const auto& resource) {
+            return resource->getType() == type;
         }
+    );
+    if (it != this->_resources.end()) {
+        this->_resources.erase(it);
     }
 }
 

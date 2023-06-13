@@ -12,7 +12,7 @@ using namespace ZappyGui;
 
 Game::Game(const std::string &ip, int port):
     _manager(ResourceManager()),
-    _camera({ 0.0f, 10.0f, 50.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0),
+    _camera({ 0.0f, 10.0f, 10.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0),
     _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")),
     _skyboxMesh(Skybox(1.0, 1.0, 1.0)),
     _raylibdrawing(),
@@ -92,7 +92,14 @@ void Game::run() {
             musicMenu.MyUpdateMusic();
             drawMenu();
         } else {
-            this->_link.update();
+            try {
+                this->_link.update();
+            } catch(const std::exception &e) {
+                std::cerr << e.what() << '\n';
+                this->_map.resetGame();
+                this->_stateMenu = true;
+            }
+
             if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {
                 musicGame.MyPlayMusic();
             }

@@ -16,10 +16,13 @@ def POVmanager(p: zds.Player):
         for y in range(0, len(tmp_vision[x])):
             itemString = itemString + tmp_vision[x][y]
         itemString = itemString.translate(str.maketrans('', '', '[]'))
-        tmpInv = itemParser(p, itemString)
+        tmpInv = itemParser(itemString)
         p.POV.vision.append(tmpInv)
+    if (len(p.POV.vision) == 0):
+        p.POV.vision.append(zds.Tile(0,0,0,0,0,0,0))
+        print("POV was empty !\n")
 
-def itemParser(p: zds.Player, itemString):
+def itemParser(itemString):
     tmpInv = zds.Tile(0, 0, 0, 0, 0, 0, 0)
     itemList = itemString.split(' ')
     for x in range(0, len(itemList)):
@@ -45,3 +48,14 @@ def hasFood(p: zds.Player, tileNBR):
     if (p.POV.vision[tileNBR].food > 0):
         return True
     return False
+
+def lookForFood(p: zds.Player):
+    if (hasFood(p, 1)):
+        p.remindToTurn = "L"
+    if (hasFood(p, 3)):
+        p.remindToTurn = "R"
+
+    # maxRange = (p.stats.level**2 + 2 * p.stats.level)
+    # for x in range (0, maxRange):
+    #     if (zp.hasFood(p, x)):
+    #         print("i")
