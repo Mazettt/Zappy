@@ -86,7 +86,7 @@ void Game::run() {
 
     this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
 
-    ToggleFullscreen();
+    ToggleFullscreen(); // TO ENCAPSULATE
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
                 volumeMusic += 0.1f;
@@ -113,6 +113,7 @@ void Game::run() {
             }
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
+            this->checkKonamiCode(musicGame);
             drawGame(selectorPlayer);
         }
         this->_popup.show();
@@ -179,13 +180,17 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
 }
 
-void Game::checkKonamiCode() {
+void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
     const std::vector<int> konamiCode = {KEY_UP, KEY_UP, KEY_DOWN, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_LEFT, KEY_RIGHT, KEY_B, KEY_Q};
     if (IsKeyPressed(konamiCode[this->_konamiIndex]) == true) {
         this->_konamiIndex += 1;
         if (this->_konamiIndex == konamiCode.size()) {
             this->_konamiIndex = 0;
-            std::cout << "Code Konami done" << std::endl;
+            if (musicGame.MyIsMusicPlaying()) {
+                musicGame.MyStopMusic();
+                musicGame.MyLoadMusic("./gui/assets/tkt.mp3");
+                musicGame.MyPlayMusic();
+            }
         }
     } else {
         for (const auto &key : konamiCode) {

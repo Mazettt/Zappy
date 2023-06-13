@@ -44,5 +44,15 @@ namespace MyRayLib {
             void MySetMusicVolume(float volume) {
                 SetMusicVolume(_music, volume);
             }
-        };
+            void MyLoadMusic(const std::string &filename) {
+                UnloadMusicStream(this->_music);
+                this->_music = LoadMusicStream(filename.c_str());
+            }
+            float MyGetMusicTimeLength() {
+                return GetMusicTimeLength(_music);
+            }
+            float MyGetMusicTimePlayed() {
+                return GetMusicTimePlayed(_music);
+            }
+    };
 }

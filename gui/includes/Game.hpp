@@ -51,7 +51,7 @@ namespace ZappyGui {
             void drawGame(SelectorPlayer &selectorPlayer);
             void drawMenu();
             void switchToGame();
-            void checkKonamiCode();
+            void checkKonamiCode(MyRayLib::Music &musicGame);
             ServerLink _link;
     };
 }
