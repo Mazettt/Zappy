@@ -52,11 +52,17 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
     float ressourceY = 910.0;
     if (_players.size() == 0)
         return;
-    if (IsKeyPressed(KEY_ENTER)) {
+    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_PAGE_DOWN)) {
         if (this->_index >= (_players.size() - 1))
             this->_index = 0;
         else
             this->_index++;
+    }
+    if (IsKeyPressed(KEY_PAGE_UP)) {
+        if (this->_index <= 0)
+            this->_index = _players.size() - 1;
+        else
+            this->_index--;
     }
 
     for (int i = 0; i < _players.size(); ++i) {
