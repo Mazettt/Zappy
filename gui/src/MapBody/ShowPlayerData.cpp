@@ -61,12 +61,12 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
 
     for (int i = 0; i < _players.size(); ++i) {
         if (i == this->_index) {
-            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, ORANGE);
+            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, BLACK);
             DrawTexture(this->_texture, 20, 830, WHITE);
             std::string _printLevel = "Level: " + std::to_string(_players.at(i)->getPlayerLevel());
-            DrawText(_printLevel.c_str(), 30, 850, 20, ORANGE);
+            DrawText(_printLevel.c_str(), 30, 850, 20, BLACK);
             std::string _printTeam = "Team: " + _players.at(i)->getTeamName();
-            DrawText(_printTeam.c_str(), 30, 880, 20, ORANGE);
+            DrawText(_printTeam.c_str(), 30, 880, 20, BLACK);
             const auto &tmpInventory = _players.at(i)->getInventory();
             int tmp = 0;
             for (auto itEnum = ZappyGui::IResource::BURGER; itEnum != ZappyGui::IResource::EGG; itEnum = static_cast<ZappyGui::IResource::resourceType>(itEnum + 1)) {
@@ -76,7 +76,7 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
                     tmp = 0;
                 }
                 std::string _printRessource = this->getRessourceName(itEnum) + ": " + std::to_string(tmp);
-                DrawText(_printRessource.c_str(), ressourceX, ressourceY, 20, ORANGE);
+                DrawText(_printRessource.c_str(), ressourceX, ressourceY, 20, BLACK);
                 if (ressourceY >= 990.0) {
                     ressourceY = 910.0;
                     ressourceX += 200.0;
