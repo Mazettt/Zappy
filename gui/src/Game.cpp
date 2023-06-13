@@ -23,6 +23,7 @@ Game::Game(const std::string &ip, int port):
     _popup(),
     _showPlayerData()
 {
+    this->_konamiIndex = 0;
     _manager.initialize();
 }
 
@@ -48,6 +49,7 @@ void Game::switchToGame()
 
 void Game::initialize() {
     this->_popup.setTexture(this->_manager.getTexture(IResource::resourceType::POPUP));
+    this->_showPlayerData.setModel(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR));
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_BoolCloseWin = false;
@@ -83,6 +85,7 @@ void Game::run() {
 
     this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
 
+    ToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
                 volumeMusic += 0.1f;
@@ -176,6 +179,32 @@ void Game::drawGame() {
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_camera.update();
     this->_map.draw();
+    std::cout << this->_showPlayerData.getPlayerIndexSelected() << std::endl;
+    if (this->_map._players.size() != 0) {
+        std::shared_ptr<ZappyGui::Player> &selectedPlayer = this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected());
+        Vector3 selectedPos = selectedPlayer->getPosition();
+        selectedPos.y += 0.85;
+        MyRayLib::Draw::MyDrawModelEx(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR).getModel(), selectedPos, {1.0,0.0,0.0}, -90, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
+    }
+
     this->_camera.endMode3D();
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
+}
+
+void Game::checkKonamiCode() {
+    const std::vector<int> konamiCode = {KEY_UP, KEY_UP, KEY_DOWN, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_LEFT, KEY_RIGHT, KEY_B, KEY_Q};
+    if (IsKeyPressed(konamiCode[this->_konamiIndex]) == true) {
+        this->_konamiIndex += 1;
+        if (this->_konamiIndex == konamiCode.size()) {
+            this->_konamiIndex = 0;
+            std::cout << "Code Konami done" << std::endl;
+        }
+    } else {
+        for (const auto &key : konamiCode) {
+            if (IsKeyPressed(key) == true) {
+                this->_konamiIndex = 0;
+                break;
+            }
+        }
+    }
 }

@@ -21,6 +21,7 @@ namespace ZappyGui {
                 THYSTAME,
                 EGG,
                 PLAYER,
+                PLAYER_SELECTOR,
                 BUTTON_START,
                 BUTTON_HELP,
                 BUTTON_QUIT,

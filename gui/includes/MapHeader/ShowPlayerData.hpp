@@ -21,9 +21,12 @@ namespace MyRayLib {
             float _posX;
             float _posY;
             size_t _index;
+            ::Model _model;
         public:
             ShowPlayerData();
             ~ShowPlayerData();
+            void setModel(const MyRayLib::Model &model);
+            const int getPlayerIndexSelected();
             void ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players);
             std::string getRessourceName(ZappyGui::IResource::resourceType type);
         };

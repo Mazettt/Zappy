@@ -23,6 +23,8 @@ void ResourceManager::initialize() {
     this->loadModel(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
     this->loadTexture(IResource::resourceType::PLAYER, "./gui/assets/T_Garfield_BC.png");
     this->loadAnimation(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
+    this->loadModel(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.obj");
+    this->loadTexture(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.png");
 
     // // load texture
     this->loadModel(IResource::resourceType::DERAUMERE, "./gui/assets/Stones/stone_model.obj");
@@ -63,6 +65,7 @@ void ResourceManager::initialize() {
     this->setMaterialTexture(IResource::resourceType::BURGER);
     this->setMaterialTexture(IResource::resourceType::PLAYER);
     this->setMaterialTexture(IResource::resourceType::EGG);
+    this->setMaterialTexture(IResource::resourceType::PLAYER_SELECTOR);
 }
 
 void ResourceManager::loadModel(IResource::resourceType type, const std::string &filename) {

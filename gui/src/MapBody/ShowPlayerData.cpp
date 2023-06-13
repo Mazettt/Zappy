@@ -25,6 +25,10 @@ MyRayLib::ShowPlayerData::~ShowPlayerData()
 {
 }
 
+void MyRayLib::ShowPlayerData::setModel(const MyRayLib::Model &model) {
+    this->_model = model.getModel();
+}
+
 std::string MyRayLib::ShowPlayerData::getRessourceName(ZappyGui::IResource::resourceType type)
 {
     if (type == ZappyGui::IResource::resourceType::BURGER)
@@ -44,6 +48,10 @@ std::string MyRayLib::ShowPlayerData::getRessourceName(ZappyGui::IResource::reso
     return "";
 }
 
+const int MyRayLib::ShowPlayerData::getPlayerIndexSelected() {
+    return this->_index;
+}
+
 void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players)
 {
     this->_posX = 30.0;
@@ -52,16 +60,22 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
     float ressourceY = 910.0;
     if (_players.size() == 0)
         return;
-    if (IsKeyPressed(KEY_ENTER)) {
+    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_PAGE_DOWN)) {
         if (this->_index >= (_players.size() - 1))
             this->_index = 0;
         else
             this->_index++;
     }
+    if (IsKeyPressed(KEY_PAGE_UP)) {
+        if (this->_index <= 0)
+            this->_index = _players.size() - 1;
+        else
+            this->_index--;
+    }
 
     for (int i = 0; i < _players.size(); ++i) {
         if (i == this->_index) {
-            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, BLACK);
+            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, ORANGE);
             DrawTexture(this->_texture, 20, 830, WHITE);
             std::string _printLevel = "Level: " + std::to_string(_players.at(i)->getPlayerLevel());
             DrawText(_printLevel.c_str(), 30, 850, 20, BLACK);

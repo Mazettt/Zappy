@@ -33,9 +33,9 @@ namespace MyRayLib {
                     UpdateCameraPro(&this->_camera, { 0.0f, -0.1f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_D))
                     UpdateCameraPro(&this->_camera, { 0.0f, 0.1f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
-                if (IsKeyDown(KEY_Q))
+                if (IsKeyDown(KEY_Q) || IsKeyDown(KEY_LEFT_CONTROL))
                     UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, -0.1f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
-                if (IsKeyDown(KEY_E))
+                if (IsKeyDown(KEY_E) || IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_SPACE))
                     UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.1f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
 
                 if (IsKeyDown(KEY_UP))
