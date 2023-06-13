@@ -38,6 +38,8 @@ namespace ZappyGui {
             int _port;
             Popup _popup;
             ShowPlayerData _showPlayerData;
+            int _konamiIndex;
+
         public:
             Map _map;
             Game(const std::string &ip, int port);
@@ -47,6 +49,7 @@ namespace ZappyGui {
             void drawGame();
             void drawMenu();
             void switchToGame();
+            void checkKonamiCode();
             ServerLink _link;
     };
 }

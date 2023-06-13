@@ -23,6 +23,7 @@ Game::Game(const std::string &ip, int port):
     _popup(),
     _showPlayerData()
 {
+    this->_konamiIndex = 0;
     _manager.initialize();
 }
 
@@ -169,4 +170,22 @@ void Game::drawGame() {
     this->_map.draw();
     this->_camera.endMode3D();
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
+}
+
+void Game::checkKonamiCode() {
+    const std::vector<int> konamiCode = {KEY_UP, KEY_UP, KEY_DOWN, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_LEFT, KEY_RIGHT, KEY_B, KEY_Q};
+    if (IsKeyPressed(konamiCode[this->_konamiIndex]) == true) {
+        this->_konamiIndex += 1;
+        if (this->_konamiIndex == konamiCode.size()) {
+            this->_konamiIndex = 0;
+            std::cout << "Code Konami done" << std::endl;
+        }
+    } else {
+        for (const auto &key : konamiCode) {
+            if (IsKeyPressed(key) == true) {
+                this->_konamiIndex = 0;
+                break;
+            }
+        }
+    }
 }
