@@ -17,10 +17,10 @@
 namespace ZappyGui {
     class Tile {
         private:
-            Cube _cube;
             std::vector<std::unique_ptr<IResource>> _resources;
             std::vector<std::pair<int, int>> _availablePositions;
         public:
+            Cube _cube;
             Tile(const Cube &cube);
             ~Tile();
             void addResource(const ResourceManager &manager, IResource::resourceType type);

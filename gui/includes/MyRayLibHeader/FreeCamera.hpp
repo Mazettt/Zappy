@@ -62,17 +62,11 @@ namespace MyRayLib {
             void endMode3D() {
                 ::EndMode3D();
             }
-            bool setOrbital() {
-                if (this->_camera.projection == CAMERA_PERSPECTIVE) {
-                    this->_camera.projection = CAMERA_ORBITAL;
-                    return true;
-                } else {
-                    this->_camera.projection = CAMERA_PERSPECTIVE;
-                    return false;
-                }
-                return true;
+            const ::Camera3D &getCamera() const {
+                return this->_camera;
             }
-            ::Camera3D _camera;
+
         private:
+            ::Camera3D _camera;
     };
 }

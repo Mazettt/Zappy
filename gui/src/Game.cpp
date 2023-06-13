@@ -18,7 +18,7 @@ Game::Game(const std::string &ip, int port):
     _raylibdrawing(),
     _ip(ip),
     _port(port),
-    _map(this->_manager),
+    _map(this->_manager, this->_camera),
     _link(*this),
     _popup(),
     _showPlayerData()
