@@ -58,15 +58,18 @@ def findValue(strWithNBR):
         return 0
 
 def inventoryParser(strInventory):
-    tmpInv = zds.Tile(0, 0, 0, 0, 0, 0, 0)
-    itemList = strInventory.split(',')
-    tmpInv.food = findValue(itemList[0])
-    tmpInv.linemates = findValue(itemList[1])
-    tmpInv.deraumeres = findValue(itemList[2])
-    tmpInv.siburs = findValue(itemList[3])
-    tmpInv.mendianes = findValue(itemList[4])
-    tmpInv.phiras = findValue(itemList[5])
-    tmpInv.thystames = findValue(itemList[6])
+    try:
+        tmpInv = zds.Tile(0, 0, 0, 0, 0, 0, 0)
+        itemList = strInventory.split(',')
+        tmpInv.food = findValue(itemList[0])
+        tmpInv.linemates = findValue(itemList[1])
+        tmpInv.deraumeres = findValue(itemList[2])
+        tmpInv.siburs = findValue(itemList[3])
+        tmpInv.mendianes = findValue(itemList[4])
+        tmpInv.phiras = findValue(itemList[5])
+        tmpInv.thystames = findValue(itemList[6])
+    except:
+        print("Error in inventoryParser")
     return tmpInv
 
 def trashStones(p: zds.Player): #Not used yet, might be deleted in the future

@@ -41,9 +41,10 @@ def main():
     # zc.right(p.client.sock)
     # map_str = zc.look(p.client.sock, map_x, map_y)
 
-
-main()
-
+try:
+    main()
+except Exception as e:
+    zp.print_log("Error: {}".format(e))
 # IA :
 # ia verif si y'en a une
 # verif buffer sellect

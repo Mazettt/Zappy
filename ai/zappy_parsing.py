@@ -39,6 +39,9 @@ def print_log(message):
     print("[{}] {}".format(time_now, message))
 
 def parse_player_infos(infos):
+    if (infos == "ko\n"):
+        print_log("Error: KO from server")
+        exit(84)
     client_num = int(infos.split("\n")[0])
     map_x = int(infos.split("\n")[1].split(" ")[0])
     map_y = int(infos.split("\n")[1].split(" ")[1])
