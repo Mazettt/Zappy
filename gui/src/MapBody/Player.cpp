@@ -43,7 +43,7 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
 }
 
 
-const std::unordered_map<IResource::resourceType, int> Player::getInventory() const {
+const std::unordered_map<IResource::resourceType, int> &Player::getInventory() const {
     return this->_inventory;
 }
 

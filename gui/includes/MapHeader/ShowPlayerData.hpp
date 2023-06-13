@@ -25,5 +25,6 @@ namespace MyRayLib {
             ShowPlayerData();
             ~ShowPlayerData();
             void ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players);
+            std::string getRessourceName(ZappyGui::IResource::resourceType type);
         };
 }
