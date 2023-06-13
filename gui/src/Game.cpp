@@ -76,6 +76,13 @@ void Game::run() {
 
     MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
 
+    auto &modelPlayer = this->_manager.getPlayerModel();
+    auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
+    auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
+    PlayerArguments playerArgs = PlayerArguments(0, "team2", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {1.6f, 1.6f, 1.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
+
+    this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
+
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
                 volumeMusic += 0.1f;
@@ -149,8 +156,10 @@ void Game::drawMenu() {
         this->_skyboxMesh.MyrlEnableDepthMask();
         this->_camera.updateAuto();
         this->_raylibdrawing.MyDrawGrid(10, 1.0f);
+        this->_playerTmp->draw();
         this->_camera.endMode3D();
 
+        // this->_raylibwindow.MyEndDrawing();
         button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
         button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
         button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);

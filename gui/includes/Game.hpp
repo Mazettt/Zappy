@@ -38,6 +38,7 @@ namespace ZappyGui {
             int _port;
             Popup _popup;
             ShowPlayerData _showPlayerData;
+            std::shared_ptr<Player> _playerTmp;
         public:
             Map _map;
             Game(const std::string &ip, int port);
