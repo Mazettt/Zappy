@@ -9,7 +9,6 @@
 using namespace ZappyGui;
 
 ResourceManager::ResourceManager() {
-
 }
 
 ResourceManager::~ResourceManager() {
@@ -25,7 +24,7 @@ void ResourceManager::initialize() {
     this->loadAnimation(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
     this->loadModel(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
     this->loadTexture(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.png");
-    this->loadAnimation(IResource::resourceType::PLAYER, "./gui/assets/player_selector.iqm");
+    this->loadAnimation(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
 
     // // load texture
     this->loadModel(IResource::resourceType::DERAUMERE, "./gui/assets/Stones/stone_model.obj");
@@ -90,10 +89,10 @@ const MyRayLib::Model &ResourceManager::getModel(IResource::resourceType type) c
     return *_models.at(type);
 }
 
-MyRayLib::Model &ResourceManager::getPlayerModel() {
-    if (_models.find(IResource::resourceType::PLAYER) == _models.end())
-        throw std::runtime_error("Model not loaded: " + IResource::resourceType::PLAYER);
-    return *_models.at(IResource::resourceType::PLAYER);
+MyRayLib::Model &ResourceManager::getNoneConstModel(IResource::resourceType type) {
+    if (_models.find(type) == _models.end())
+        throw std::runtime_error("Model not loaded: " + type);
+    return *_models.at(type);
 }
 
 const MyRayLib::Texture2D &ResourceManager::getTexture(IResource::resourceType type) const {

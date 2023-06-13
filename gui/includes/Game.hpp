@@ -18,6 +18,7 @@
 #include "Server/ServerLink.hpp"
 #include "Popup.hpp"
 #include "./MapHeader/ShowPlayerData.hpp"
+#include "../includes/MapHeader/SelectorPlayer.hpp"
 
 #include "MapHeader/Map.hpp"
 
@@ -47,7 +48,7 @@ namespace ZappyGui {
             ~Game();
             void initialize();
             void run();
-            void drawGame();
+            void drawGame(SelectorPlayer &selectorPlayer);
             void drawMenu();
             void switchToGame();
             void checkKonamiCode();

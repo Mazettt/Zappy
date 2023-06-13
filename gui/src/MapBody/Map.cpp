@@ -93,7 +93,7 @@ void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type, i
 }
 
 void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
-    auto &modelPlayer = this->_manager.getPlayerModel();
+    auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
     this->_players.push_back(std::make_shared<Player>(playerArgs, modelPlayer, texture, animation));

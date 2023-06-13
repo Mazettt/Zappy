@@ -20,9 +20,9 @@ namespace MyRayLib {
             ::Texture2D _texture;
             float _posX;
             float _posY;
-            size_t _index;
             ::Model _model;
         public:
+            int _index;
             ShowPlayerData();
             ~ShowPlayerData();
             void setModel(const MyRayLib::Model &model);

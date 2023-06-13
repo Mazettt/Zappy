@@ -67,6 +67,7 @@ void Game::initialize() {
 }
 
 void Game::run() {
+    SelectorPlayer selectorPlayer = SelectorPlayer(this->_manager.getNoneConstModel(IResource::resourceType::PLAYER_SELECTOR), this->_manager.getAnimation(IResource::resourceType::PLAYER_SELECTOR));
     this->_skyboxMesh.InitSkybox();
     this->_skyboxMesh.chooseSkyboxFile("./gui/assets/Skybox/roh.png");
 
@@ -78,7 +79,7 @@ void Game::run() {
 
     MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
 
-    auto &modelPlayer = this->_manager.getPlayerModel();
+    auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
     PlayerArguments playerArgs = PlayerArguments(0, "team2", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {1.6f, 1.6f, 1.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
@@ -112,7 +113,7 @@ void Game::run() {
             }
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
-            drawGame();
+            drawGame(selectorPlayer);
         }
         this->_popup.show();
         this->_raylibwindow.MyEndDrawing();
@@ -152,7 +153,7 @@ void Game::drawMenu() {
         button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
 }
 
-void Game::drawGame() {
+void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     this->_raylibdrawing.MyDrawFPS(10, 35);
     this->_camera.beginMode3D();
@@ -170,7 +171,10 @@ void Game::drawGame() {
         selectedPos.y += 0.85;
         MyRayLib::Draw::MyDrawModelEx(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR).getModel(), selectedPos, {1.0,0.0,0.0}, -90, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
     }
-
+    if (this->_map._players.size() != 0) {
+        selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
+        selectorPlayer.draw();
+    }
     this->_camera.endMode3D();
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
 }
