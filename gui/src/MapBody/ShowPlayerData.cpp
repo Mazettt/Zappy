@@ -61,7 +61,7 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
 
     for (int i = 0; i < _players.size(); ++i) {
         if (i == this->_index) {
-            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, BLACK);
+            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, ORANGE);
             DrawTexture(this->_texture, 20, 830, WHITE);
             std::string _printLevel = "Level: " + std::to_string(_players.at(i)->getPlayerLevel());
             DrawText(_printLevel.c_str(), 30, 850, 20, BLACK);
