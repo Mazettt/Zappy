@@ -29,7 +29,8 @@ def gameLoop(p: zds.Player):
         p.inventory = zc.inventory(p.client.sock)
         if (ze.canElevate(p)):
             while (p.stats.elevating == True):
-                ze.elevationTry(p)
+                status = ze.elevationTry(p)
+                
         zi.pickupItems(p)
         try:
             zp.lookForFood(p)

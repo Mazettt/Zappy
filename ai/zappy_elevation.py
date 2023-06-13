@@ -10,6 +10,7 @@ import ai.zappy_commands as zc
 import ai.zappy_inventory as zi
 import ai.zappy_network_utils as znu
 import ai.zappy_set as zs
+import time
 
 def canElevate(p: zds.Player):
     if (p.inventory.food < p.stats.level * 3):
@@ -38,4 +39,8 @@ def elevationTry(p: zds.Player):
         p.stats.level += 1
         zi.consumeStones(p)
         zi.updatRequirement(p)
-    znu.multiple_recv_from_server(p.client.sock, 300)
+    resps = znu.multiple_recv_from_server(p.client.sock, 300)
+    time.sleep(1)
+    if (resps == "ko\n"):
+        p.stats.elevating = False
+        return False
