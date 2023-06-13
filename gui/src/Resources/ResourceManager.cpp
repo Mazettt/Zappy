@@ -19,8 +19,6 @@ ResourceManager::~ResourceManager() {
 }
 
 void ResourceManager::initialize() {
-    this->loadTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND, "./gui/assets/Parallax/bkgParallax.png");
-    this->loadTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE, "./gui/assets/Parallax/garfTerre.png");
     // // load player
     this->loadModel(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
     this->loadTexture(IResource::resourceType::PLAYER, "./gui/assets/T_Garfield_BC.png");

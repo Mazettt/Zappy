@@ -15,7 +15,6 @@
 #include "MyRayLibHeader/Skybox.hpp"
 #include "MyRayLibHeader/Button.hpp"
 #include "MyRayLibHeader/FreeCamera.hpp"
-#include "MyRayLibHeader/Parallax.hpp"
 #include "Server/ServerLink.hpp"
 #include "Popup.hpp"
 #include "./MapHeader/ShowPlayerData.hpp"
@@ -35,7 +34,6 @@ namespace ZappyGui {
             MyRayLib::Skybox _skyboxMesh;
             MyRayLib::Draw _raylibdrawing;
             bool _BoolCloseWin;
-            Parallax _parallax;
             std::string _ip;
             int _port;
             Popup _popup;

@@ -53,14 +53,26 @@ namespace MyRayLib {
 
                 UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, GetMouseWheelMove());
             }
+            void updateAuto() {
+                UpdateCamera(&this->_camera, CAMERA_ORBITAL);
+            }
             void beginMode3D() {
                 ::BeginMode3D(this->_camera);
             }
             void endMode3D() {
                 ::EndMode3D();
             }
-
-        private:
+            bool setOrbital() {
+                if (this->_camera.projection == CAMERA_PERSPECTIVE) {
+                    this->_camera.projection = CAMERA_ORBITAL;
+                    return true;
+                } else {
+                    this->_camera.projection = CAMERA_PERSPECTIVE;
+                    return false;
+                }
+                return true;
+            }
             ::Camera3D _camera;
+        private:
     };
 }

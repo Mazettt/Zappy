@@ -24,8 +24,6 @@ namespace ZappyGui {
                 BUTTON_START,
                 BUTTON_HELP,
                 BUTTON_QUIT,
-                PARALLAX_MENU_BACKGROUND,
-                PARALLAX_MENU_MIDDLE,
                 POPUP
             };
             virtual void draw() = 0;

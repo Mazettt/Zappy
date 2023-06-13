@@ -12,11 +12,10 @@ using namespace ZappyGui;
 
 Game::Game(const std::string &ip, int port):
     _manager(ResourceManager()),
-    _camera({ 0.0f, 10.0f, 10.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0),
+    _camera({ 10.0f, 10.0f, 5.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0),
     _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")),
     _skyboxMesh(Skybox(1.0, 1.0, 1.0)),
     _raylibdrawing(),
-    _parallax(),
     _ip(ip),
     _port(port),
     _map(this->_manager),
@@ -49,8 +48,6 @@ void Game::switchToGame()
 
 void Game::initialize() {
     this->_popup.setTexture(this->_manager.getTexture(IResource::resourceType::POPUP));
-    this->_parallax.setTexture(this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_BACKGROUND),
-    this->_manager.getTexture(IResource::resourceType::PARALLAX_MENU_MIDDLE));
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_BoolCloseWin = false;
@@ -131,8 +128,6 @@ void Game::run() {
     this->_skyboxMesh.MyUnloadShader(this->_skyboxMesh._skybox.materials[0].shader);
     this->_skyboxMesh.MyUnloadTexture(this->_skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
     this->_skyboxMesh.MyUnloadModel(this->_skyboxMesh._skybox);
-    this->_parallax.UnLoadFont();
-    this->_parallax.UnLoadAllParallax();
 }
 
 void Game::drawMenu() {
@@ -147,9 +142,15 @@ void Game::drawMenu() {
             button1.HandleButton();
             button2.HandleButton();
         }
-
-        this->_parallax.updateInLoop();
-        this->_parallax.WriteTitle();
+        this->_camera.beginMode3D();
+        this->_skyboxMesh.MyrlDisableBackfaceCulling();
+        this->_skyboxMesh.MyrlDisableDepthMask();
+        DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+        this->_skyboxMesh.MyrlEnableBackfaceCulling();
+        this->_skyboxMesh.MyrlEnableDepthMask();
+        this->_camera.updateAuto();
+        this->_raylibdrawing.MyDrawGrid(10, 1.0f);
+        this->_camera.endMode3D();
 
         button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
         button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
