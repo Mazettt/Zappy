@@ -112,22 +112,6 @@ void Game::run() {
             }
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
-            // begin keys for test
-            if (_raylibwindow.MyIsKeyPressed(KEY_C)) {
-                int testRand;
-                testRand = rand() % 3;
-                this->_map.movePlayer(0, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-                testRand = rand() % 3;
-                this->_map.movePlayer(1, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-                testRand = rand() % 3;
-                this->_map.movePlayer(2, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-                testRand = rand() % 3;
-                this->_map.movePlayer(3, float(rand() % 9), float(rand() % 9), (testRand == 1 ? Player::orientationAxis::EAST : (testRand == 2 ? Player::orientationAxis::NORTH : (testRand == 3 ? Player::orientationAxis::SOUTH : Player::orientationAxis::WEST))));
-            }
-            if (_raylibwindow.MyIsKeyPressed(KEY_V)) {
-                this->_map.deadPlayer(0);
-            }
-            // end keys for test
             drawGame();
         }
         this->_popup.show();
