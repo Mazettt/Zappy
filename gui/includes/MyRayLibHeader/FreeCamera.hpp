@@ -39,13 +39,13 @@ namespace MyRayLib {
                     UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.1f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
 
                 if (IsKeyDown(KEY_UP))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, -0.4f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_DOWN))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.4f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_LEFT))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { -0.4f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_RIGHT))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.4f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, 0.0f);
 
                 Vector2 mouseDelta = GetMouseDelta();
                 if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
