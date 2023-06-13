@@ -143,7 +143,6 @@ void ServerLink::_bct(const std::string &str)
     this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::MENDIANE, mendiane);
     this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::PHIRAS, phiras);
     this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::THYSTAME, thystame);
-
 }
 
 void ServerLink::_tna(const std::string &str)
@@ -159,12 +158,16 @@ void ServerLink::_pnw(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
-    int id, level;
-    float x, z, rotationAngle;
+    int id, level, orientationNbr;
+    float x, z;
     std::string teamName;
 
-    iss >> tmp >> id >> x >> z >> rotationAngle >> level >> teamName; // TO CHECK orientation
-    PlayerArguments playerArgs = PlayerArguments(id, teamName, { x, 0.0, z }, {0.0f, 1.0f, 0.0f}, rotationAngle, {0.6f, 0.6f, 0.6f}, 0, Player::animationPlayerType::PLAYER_NOTHING);
+    iss >> tmp >> id >> x >> z >> orientationNbr >> level >> teamName;
+    ZappyGui::Player::orientationAxis orientation =
+        (orientationNbr == 1 ? ZappyGui::Player::orientationAxis::NORTH :
+        (orientationNbr == 2 ? ZappyGui::Player::orientationAxis::EAST :
+        (orientationNbr == 3 ? ZappyGui::Player::orientationAxis::SOUTH : ZappyGui::Player::orientationAxis::WEST)));
+    PlayerArguments playerArgs = PlayerArguments(id, teamName, { x, 0.0, z }, {0.0f, 1.0f, 0.0f}, orientation, {0.6f, 0.6f, 0.6f}, 0, Player::animationPlayerType::PLAYER_NOTHING);
     this->_game._map.addPlayerForTile(playerArgs);
 }
 
@@ -172,11 +175,15 @@ void ServerLink::_ppo(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
-    int id, orientation;
+    int id, orientationNbr;
     float x, z;
 
-    iss >> tmp >> id >> x >> z >> orientation;
-    this->_game._map.movePlayer(id, x, z, (ZappyGui::Player::orientationAxis) orientation); // TO CHECK orientation
+    iss >> tmp >> id >> x >> z >> orientationNbr;
+    ZappyGui::Player::orientationAxis orientation =
+        (orientationNbr == 1 ? ZappyGui::Player::orientationAxis::NORTH :
+        (orientationNbr == 2 ? ZappyGui::Player::orientationAxis::EAST :
+        (orientationNbr == 3 ? ZappyGui::Player::orientationAxis::SOUTH : ZappyGui::Player::orientationAxis::WEST)));
+    this->_game._map.movePlayer(id, x, z, orientation);
 }
 
 void ServerLink::_plv(const std::string &str)
