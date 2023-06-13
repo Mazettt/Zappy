@@ -53,6 +53,9 @@ namespace MyRayLib {
 
                 UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, GetMouseWheelMove());
             }
+            void updateAuto() {
+                UpdateCamera(&this->_camera, CAMERA_ORBITAL);
+            }
             void beginMode3D() {
                 ::BeginMode3D(this->_camera);
             }

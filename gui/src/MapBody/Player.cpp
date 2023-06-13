@@ -16,7 +16,7 @@ Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const 
 }
 
 void Player::addOnInventory(IResource::resourceType type, int quantity) {
-    for (std::pair<const IResource::resourceType, int> item : this->_inventory) {
+    for (std::pair<const IResource::resourceType, int> &item : this->_inventory) {
         if (item.first == type) {
             item.second += quantity;
             return;
