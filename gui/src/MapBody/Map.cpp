@@ -129,7 +129,7 @@ void Map::draw() {
             int key = y * this->_size.x + x;
             std::shared_ptr<Tile>& tile = this->_map.at(key);
 
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
             {
                 Vector3 cubePosition = tile->_cube.getPos();
                 Vector3 cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
