@@ -17,9 +17,9 @@ namespace ZappyGui {
             float _width;
             float _height;
             float _length;
-            Color _color;
 
         public:
+            Color _color;
             Cube(Vector3 pos, float width, float height, float length, Color color);
             Cube(const Cube& other);
             Cube &operator=(const Cube &cube);

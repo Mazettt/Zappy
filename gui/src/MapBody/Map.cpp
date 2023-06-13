@@ -11,7 +11,7 @@
 
 using namespace ZappyGui;
 
-Map::Map(ResourceManager &manager): _manager(manager) {}
+Map::Map(ResourceManager &manager, const MyRayLib::FreeCamera &camera): _manager(manager), _camera(camera), _selectedTileKey(-1) {}
 
 std::shared_ptr<Player> Map::findPlayerByID(int id) {
     for (std::shared_ptr<Player> p : this->_players) {
@@ -123,11 +123,42 @@ bool Map::deadPlayer(int playerID) {
 }
 
 void Map::draw() {
+    bool hit = false;
     for (int y = 0; y < this->_size.y; ++y) {
         for (int x = 0; x < this->_size.x; ++x) {
             int key = y * this->_size.x + x;
             std::shared_ptr<Tile>& tile = this->_map.at(key);
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                Vector3 cubePosition = tile->_cube.getPos();
+                Vector3 cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
+                BoundingBox box = {(Vector3){ cubePosition.x - cubeSize.x / 2, cubePosition.y - cubeSize.y / 2, cubePosition.z - cubeSize.z / 2 },
+                                   (Vector3){ cubePosition.x + cubeSize.x / 2, cubePosition.y + cubeSize.y / 2, cubePosition.z + cubeSize.z / 2 }};
+                if (GetRayCollisionBox(GetMouseRay(GetMousePosition(), _camera.getCamera()), box).hit) {
+                    _selectedTileKey = _selectedTileKey == key ? -1 : key;
+                    hit = true;
+                }
+            }
             tile->draw();
+        }
+    }
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !hit)
+        _selectedTileKey = -1;
+    for (int y = 0; y < this->_size.y; ++y) {
+        for (int x = 0; x < this->_size.x; ++x) {
+            int key = y * this->_size.x + x;
+            std::shared_ptr<Tile>& tile = this->_map.at(key);
+
+            if (key == _selectedTileKey) {
+                tile->_cube._color.r = 255;
+                tile->_cube._color.g = 0;
+                tile->_cube._color.b = 0;
+            } else {
+                tile->_cube._color.r = 120;
+                tile->_cube._color.g = 80;
+                tile->_cube._color.b = 160;
+            }
         }
     }
 

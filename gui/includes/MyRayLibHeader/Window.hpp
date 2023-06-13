@@ -14,6 +14,7 @@ namespace MyRayLib {
     class MyRayLibWindow {
         public:
             MyRayLibWindow(int width, int height, const char *title) {
+                SetConfigFlags(FLAG_WINDOW_RESIZABLE);
                 InitWindow(width, height, title);
             }
             ~MyRayLibWindow() {

@@ -59,6 +59,9 @@ namespace MyRayLib {
             void endMode3D() {
                 ::EndMode3D();
             }
+            const ::Camera3D &getCamera() const {
+                return this->_camera;
+            }
 
         private:
             ::Camera3D _camera;

@@ -11,6 +11,7 @@
 #include "Tile.hpp"
 #include "../resources/FactoryResource.hpp"
 #include "../MyRayLibHeader/Music.hpp"
+#include "../MyRayLibHeader/FreeCamera.hpp"
 
 namespace ZappyGui {
     class Map {
@@ -18,10 +19,12 @@ namespace ZappyGui {
             Vector2 _size;
             std::vector<std::shared_ptr<Tile>> _map;
             ResourceManager &_manager;
+            const MyRayLib::FreeCamera &_camera;
             std::shared_ptr<Player> findPlayerByID(int id);
+            int _selectedTileKey;
         public:
             std::vector<std::shared_ptr<Player>> _players;
-            Map(ResourceManager &manager);
+            Map(ResourceManager &manager, const MyRayLib::FreeCamera &camera);
             ~Map();
             void createMap(int x, int y);
             void addResourceForTile(const Vector2 &pos, IResource::resourceType type, int number);
