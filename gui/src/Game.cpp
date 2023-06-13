@@ -122,7 +122,6 @@ void Game::run() {
         }
         this->_popup.show();
         this->_raylibwindow.MyEndDrawing();
-        this->_raylibdrawing.~Draw();
     }
     this->_raylibwindow.MyCloseAudioDevice();
     this->_skyboxMesh.MyUnloadShader(this->_skyboxMesh._skybox.materials[0].shader);
