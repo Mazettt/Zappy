@@ -69,7 +69,7 @@ def inventoryParser(strInventory):
         tmpInv.phiras = findValue(itemList[5])
         tmpInv.thystames = findValue(itemList[6])
     except:
-        print("Error in inventoryParser")
+        print("Error in inventoryParser, received: " + strInventory)
     return tmpInv
 
 def trashStones(p: zds.Player): #Not used yet, might be deleted in the future
