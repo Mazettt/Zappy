@@ -49,6 +49,7 @@ void Game::switchToGame()
 
 void Game::initialize() {
     this->_popup.setTexture(this->_manager.getTexture(IResource::resourceType::POPUP));
+    this->_showPlayerData.setModel(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR));
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_BoolCloseWin = false;
@@ -169,6 +170,14 @@ void Game::drawGame() {
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_camera.update();
     this->_map.draw();
+    std::cout << this->_showPlayerData.getPlayerIndexSelected() << std::endl;
+    if (this->_map._players.size() != 0) {
+        std::shared_ptr<ZappyGui::Player> &selectedPlayer = this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected());
+        Vector3 selectedPos = selectedPlayer->getPosition();
+        selectedPos.y += 0.85;
+        MyRayLib::Draw::MyDrawModelEx(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR).getModel(), selectedPos, {1.0,0.0,0.0}, -90, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
+    }
+
     this->_camera.endMode3D();
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
 }

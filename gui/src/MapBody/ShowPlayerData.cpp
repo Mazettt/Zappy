@@ -25,6 +25,10 @@ MyRayLib::ShowPlayerData::~ShowPlayerData()
 {
 }
 
+void MyRayLib::ShowPlayerData::setModel(const MyRayLib::Model &model) {
+    this->_model = model.getModel();
+}
+
 std::string MyRayLib::ShowPlayerData::getRessourceName(ZappyGui::IResource::resourceType type)
 {
     if (type == ZappyGui::IResource::resourceType::BURGER)
@@ -44,6 +48,10 @@ std::string MyRayLib::ShowPlayerData::getRessourceName(ZappyGui::IResource::reso
     return "";
 }
 
+const int MyRayLib::ShowPlayerData::getPlayerIndexSelected() {
+    return this->_index;
+}
+
 void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players)
 {
     this->_posX = 30.0;
@@ -58,7 +66,6 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
         else
             this->_index++;
     }
-
     for (int i = 0; i < _players.size(); ++i) {
         if (i == this->_index) {
             DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, ORANGE);
