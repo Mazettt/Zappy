@@ -24,7 +24,7 @@ def find_food(p: zds.Player, map_str: str):
 
 def go_ai(p: zds.Player, map_str: str, map_x: int, map_y: int):
     while True:
-        map_str = zc.look(p.client.sock, map_x, map_y)
+        map_str = zc.look(p.client, map_x, map_y)
         find_food(p, map_str)
         time.sleep(1)
 
@@ -38,8 +38,6 @@ def main():
     client_num, map_x, map_y = zp.parse_player_infos(p_infos)
     p.stats.playerNB = client_num
     zma.gameLoop(p)
-    # zc.right(p.client.sock)
-    # map_str = zc.look(p.client.sock, map_x, map_y)
 
 try:
     main()

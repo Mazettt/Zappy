@@ -41,6 +41,7 @@ class Client:
         self.port = port
         self.machine = machine
         self.sock = 0
+        self.buffer = []
 
 class POV:
         vision = [Tile(0, 0, 0, 0, 0, 0, 0)]

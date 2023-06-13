@@ -29,18 +29,17 @@ def canElevate(p: zds.Player):
         return False
     if (zs.setRitual(p) == False):
         return False
-    zc.broadcast_text(p.client.sock, "I'm elevating over here!\n")
+    zc.broadcast_text(p.client, "Elevating over here!\n")
     p.stats.elevating = True
     return True
 
 def elevationTry(p: zds.Player):
-    if (zc.incantation(p.client.sock) == "Elevation underway\n"):
+    if (zc.incantation(p.client) == "Elevation underway\n"):
         p.stats.elevating = False
         p.stats.level += 1
         zi.consumeStones(p)
         zi.updatRequirement(p)
-    resps = znu.multiple_recv_from_server(p.client.sock, 300)
-    time.sleep(1)
-    if (resps == "ko\n"):
-        p.stats.elevating = False
-        return False
+    resp = znu.multiple_recv_from_server(p.client.sock, 300)
+    while (resp[:14] != "Current level:" and resp != "ko\n"):
+        p.client.buffer.append(resp)
+        resp = znu.multiple_recv_from_server(p.client.sock, 7)

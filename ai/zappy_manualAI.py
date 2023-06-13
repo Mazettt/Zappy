@@ -10,15 +10,14 @@ import ai.zappy_dataStruct as zds
 import ai.zappy_inventory as zi
 import ai.zappy_elevation as ze
 import ai.zappy_POV as zp
-import select
 
 def move(p: zds.Player):
-    zc.forward(p.client.sock)
+    zc.forward(p.client)
     if (p.remindToTurn == "R"):
-        zc.right(p.client.sock)
+        zc.right(p.client)
         p.remindToTurn = "No"
     if (p.remindToTurn == "L"):
-        zc.left(p.client.sock)
+        zc.left(p.client)
         p.remindToTurn = "No"
 
 def gameLoop(p: zds.Player):
@@ -26,15 +25,14 @@ def gameLoop(p: zds.Player):
         #select ?
         zp.POVmanager(p)
         zi.pickupFood(p)
-        p.inventory = zc.inventory(p.client.sock)
+        p.inventory = zc.inventory(p.client)
         if (ze.canElevate(p)):
             while (p.stats.elevating == True):
-                status = ze.elevationTry(p)
-                
+                ze.elevationTry(p)
         zi.pickupItems(p)
         try:
             zp.lookForFood(p)
         except:
-            # print("Pfiew ! I was about to crash!\n")
+            # print("Pfiew ! I was about to crash whie looking for food!\n")
             continue
         move(p)

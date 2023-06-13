@@ -9,7 +9,7 @@ import ai.zappy_dataStruct as zds
 import ai.zappy_commands as zc
 
 def POVmanager(p: zds.Player):
-    tmp_vision = zc.look(p.client.sock)
+    tmp_vision = zc.look(p.client)
     p.POV.vision = []
     for x in range(0, len(tmp_vision)):
         itemString = ""
