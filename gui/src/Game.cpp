@@ -12,20 +12,25 @@ using namespace ZappyGui;
 
 Game::Game(const std::string &ip, int port):
     _manager(ResourceManager()),
-    _camera({ 10.0f, 10.0f, 5.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0),
+    _camera(FreeCamera({ 10.0f, 10.0f, 5.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0)),
     _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")),
+    _stateWindow(stateWindow::MENU),
+    _buttonMenu(),
     _skyboxMesh(Skybox(1.0, 1.0, 1.0)),
     _raylibdrawing(),
+    _BoolCloseWin(false),
     _ip(ip),
     _port(port),
-    _map(this->_manager, this->_camera),
-    _link(*this),
     _popup(),
-    _showPlayerData()
+    _showPlayerData(),
+    _playerTmp(),
+    _konamiIndex(0),
+    _map(this->_manager, this->_camera),
+    _link(*this)
 {
-    this->_konamiIndex = 0;
     _manager.initialize();
 }
+
 
 Game::~Game() {
     // this->_manager.~ResourceManager();
@@ -38,7 +43,7 @@ void Game::switchToGame()
 {
     try {
         this->_link.connect(_ip, _port);
-        this->_stateMenu = false;
+        this->_stateWindow = stateWindow::GAME;
     } catch (const std::exception &e) {
         std::cerr << e.what() << '\n';
         this->_popup.setTitle("ERROR");
@@ -53,11 +58,11 @@ void Game::initialize() {
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_BoolCloseWin = false;
-    this->_stateMenu = true;
+    this->_stateWindow = stateWindow::MENU;
     Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./gui/assets/Buttons/buttonfx.wav", [&](){switchToGame();});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 700, (float)button.button.width, button.frameHeight);
     this->_buttonMenu.push_back(button);
-    Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_stateMenu = false;});
+    Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_stateWindow = stateWindow::GAME;});
     button2.ButtonSetPosition(1920/2.0f - button2.button.width/2.0f, 800, (float)button2.button.width, button2.frameHeight);
     this->_buttonMenu.push_back(button2);
     Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_BoolCloseWin = true;});
@@ -95,7 +100,7 @@ void Game::run() {
         if (_raylibwindow.MyIsKeyPressed(KEY_ESCAPE) && this->_popup.getStatus() == true) {
             this->_popup.setStatus(false);
         }
-        if (this->_stateMenu == true) {
+        if (this->_stateWindow == stateWindow::MENU) {
             musicMenu.MySetMusicVolume(volumeMusic);
             musicMenu.MyUpdateMusic();
             drawMenu();
@@ -105,7 +110,7 @@ void Game::run() {
             } catch(const std::exception &e) {
                 std::cerr << e.what() << '\n';
                 this->_map.resetGame();
-                this->_stateMenu = true;
+                this->_stateWindow = stateWindow::MENU;
             }
 
             if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {

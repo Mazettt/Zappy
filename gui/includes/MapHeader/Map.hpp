@@ -32,7 +32,7 @@ namespace ZappyGui {
             void draw();
             bool movePlayer(int playerID, float x, float z, Player::orientationAxis orientation);
             bool deadPlayer(int playerID);
-            bool setPlayerLevel(int playerID, int level);
+            void setPlayerLevel(int playerID, int level);
             bool lvlupPlayer(std::vector<int> playersID, int level);
             void StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z);
             void EndPlayersLeveling(float x, float z, bool result);

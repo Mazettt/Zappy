@@ -20,13 +20,13 @@ namespace MyRayLib {
             ::Texture2D _texture;
             float _posX;
             float _posY;
+            size_t _index;
             ::Model _model;
         public:
-            int _index;
             ShowPlayerData();
             ~ShowPlayerData();
             void setModel(const MyRayLib::Model &model);
-            const int getPlayerIndexSelected();
+            int getPlayerIndexSelected();
             void ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players);
             std::string getRessourceName(ZappyGui::IResource::resourceType type);
         };

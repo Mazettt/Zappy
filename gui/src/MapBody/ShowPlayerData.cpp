@@ -48,7 +48,7 @@ std::string MyRayLib::ShowPlayerData::getRessourceName(ZappyGui::IResource::reso
     return "";
 }
 
-const int MyRayLib::ShowPlayerData::getPlayerIndexSelected() {
+int MyRayLib::ShowPlayerData::getPlayerIndexSelected() {
     return this->_index;
 }
 
@@ -73,7 +73,7 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
             this->_index--;
     }
 
-    for (int i = 0; i < _players.size(); ++i) {
+    for (size_t i = 0; i < _players.size(); ++i) {
         if (i == this->_index) {
             DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, ORANGE);
             DrawTexture(this->_texture, 20, 830, WHITE);

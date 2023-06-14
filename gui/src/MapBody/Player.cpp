@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2022
-** gui
+** zappy
 ** File description:
 ** Player.cpp
 */
@@ -11,7 +11,13 @@
 using namespace ZappyGui;
 
 Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation):
-    PlayerArguments(playerArgs), _model(model), _texture(texture), _animation(animation), _frameCounterAnimation(-1), _animationCounter(0) {
+    PlayerArguments(playerArgs),
+    _model(model),
+    _texture(texture),
+    _frameCounterAnimation(-1),
+    _animation(animation),
+    _animationCounter(0)
+{
     this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
 }
 

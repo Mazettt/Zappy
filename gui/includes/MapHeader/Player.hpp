@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2022
-** gui
+** zappy
 ** File description:
 ** Player.hpp
 */

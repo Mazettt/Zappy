@@ -27,10 +27,14 @@ using namespace MyRayLib;
 namespace ZappyGui {
     class Game {
         private:
+            enum stateWindow {
+                GAME,
+                MENU
+            };
             ResourceManager _manager;
             FreeCamera _camera;
             MyRayLibWindow _raylibwindow;
-            bool _stateMenu;
+            stateWindow _stateWindow;
             std::vector<Button> _buttonMenu;
             MyRayLib::Skybox _skyboxMesh;
             MyRayLib::Draw _raylibdrawing;
@@ -40,7 +44,7 @@ namespace ZappyGui {
             Popup _popup;
             ShowPlayerData _showPlayerData;
             std::shared_ptr<Player> _playerTmp;
-            int _konamiIndex;
+            size_t _konamiIndex;
 
         public:
             Map _map;

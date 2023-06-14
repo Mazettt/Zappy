@@ -80,7 +80,7 @@ void Map::collectResource(int playerID, IResource::resourceType type) {
     this->_map.at(key)->removeResource(type);
 }
 
-bool Map::setPlayerLevel(int playerID, int level) {
+void Map::setPlayerLevel(int playerID, int level) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
     p->setPlayerLevel(level);

@@ -31,7 +31,7 @@ namespace ZappyGui {
 
         public:
             PlayerArguments(): _playerLevel(0), _playerNumber(0), _teamName(""), _position({0.0, 0.0, 0.0}), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _animationFrameCounter(0), _animationType(0) {};
-            PlayerArguments(Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale): _playerLevel(0), _playerNumber(0), _teamName(""), _position({0.0, 0.0, 0.0}), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _animationFrameCounter(0), _animationType(0) {};
+            PlayerArguments(Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale): _playerLevel(0), _playerNumber(0), _teamName(""), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(0), _animationType(0) {};
             PlayerArguments(int playerNumber, std::string teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale, int animationFrameCounter, int playerArgs):
                 _playerLevel(1), _playerNumber(playerNumber), _teamName(teamName), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(animationFrameCounter), _animationType(playerArgs) {
             };
