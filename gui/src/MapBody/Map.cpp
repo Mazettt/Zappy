@@ -87,8 +87,19 @@ void Map::setPlayerLevel(int playerID, int level) {
 }
 
 void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
-    while (number--) {
-        this->_map[pos.y * this->_size.x + pos.x]->addResource(this->_manager, type);
+    const int key = pos.y * this->_size.x + pos.x;
+    int count = 0;
+
+    for (const auto &r : this->_map[key]->_resources)
+        if (r->getType() == type)
+            count++;
+    while (count > number) {
+        this->_map[key]->removeResource(type);
+        count--;
+    }
+    while (count < number) {
+        this->_map[key]->addResource(this->_manager, type);
+        count++;
     }
 }
 

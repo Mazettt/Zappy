@@ -135,8 +135,6 @@ void ServerLink::_bct(const std::string &str)
 
     iss >> tmp >> x >> z >> food >> linemate >> deraumere >> sibur >> mendiane >> phiras >> thystame;
 
-    std::cout << "add resource for tile x (" << x << ") z(" << z << ") food(" << food << ") linemate(" << linemate << ") deraumere(" << deraumere << ") sibur(" << sibur << ") mendiane(" << mendiane << ") phiras(" << phiras << ") thystame(" << thystame << ")" << std::endl;
-
     this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::BURGER, food);
     this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::LINEMATE, linemate);
     this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::DERAUMERE, deraumere);
