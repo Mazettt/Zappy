@@ -123,14 +123,14 @@ bool Map::deadPlayer(int playerID) {
 }
 
 void Map::draw() {
+    const bool pressed = IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
     bool hit = false;
     for (int y = 0; y < this->_size.y; ++y) {
         for (int x = 0; x < this->_size.x; ++x) {
             int key = y * this->_size.x + x;
             std::shared_ptr<Tile>& tile = this->_map.at(key);
 
-            if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-            {
+            if (pressed) {
                 Vector3 cubePosition = tile->_cube.getPos();
                 Vector3 cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
                 BoundingBox box = {(Vector3){ cubePosition.x - cubeSize.x / 2, cubePosition.y - cubeSize.y / 2, cubePosition.z - cubeSize.z / 2 },
@@ -143,7 +143,7 @@ void Map::draw() {
             tile->draw();
         }
     }
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !hit)
+    if (pressed && !hit)
         _selectedTileKey = -1;
     for (int y = 0; y < this->_size.y; ++y) {
         for (int x = 0; x < this->_size.x; ++x) {
