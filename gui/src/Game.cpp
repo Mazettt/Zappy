@@ -71,6 +71,16 @@ void Game::initialize() {
 
 }
 
+void Game::keyEvent(float &volumeMusic) {
+    if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
+            volumeMusic += 0.1f;
+    if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
+        volumeMusic -= 0.1f;
+    if (_raylibwindow.MyIsKeyPressed(KEY_ESCAPE) && this->_popup.getStatus() == true) {
+        this->_popup.setStatus(false);
+    }
+}
+
 void Game::run() {
     SelectorPlayer selectorPlayer = SelectorPlayer(this->_manager.getNoneConstModel(IResource::resourceType::PLAYER_SELECTOR), this->_manager.getAnimation(IResource::resourceType::PLAYER_SELECTOR));
     this->_skyboxMesh.InitSkybox();
@@ -93,13 +103,6 @@ void Game::run() {
 
     ToggleFullscreen(); // TO ENCAPSULATE
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
-        if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
-                volumeMusic += 0.1f;
-        if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
-            volumeMusic -= 0.1f;
-        if (_raylibwindow.MyIsKeyPressed(KEY_ESCAPE) && this->_popup.getStatus() == true) {
-            this->_popup.setStatus(false);
-        }
         if (this->_stateWindow == stateWindow::MENU) {
             musicMenu.MySetMusicVolume(volumeMusic);
             musicMenu.MyUpdateMusic();
@@ -110,6 +113,7 @@ void Game::run() {
             } catch(const std::exception &e) {
                 std::cerr << e.what() << '\n';
                 this->_map.resetGame();
+                this->_camera.reset();
                 this->_stateWindow = stateWindow::MENU;
             }
 
@@ -121,6 +125,7 @@ void Game::run() {
             this->checkKonamiCode(musicGame);
             drawGame(selectorPlayer);
         }
+        keyEvent(volumeMusic);
         this->_popup.show();
         this->_raylibwindow.MyEndDrawing();
     }
@@ -187,7 +192,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
 
 void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
     const std::vector<int> konamiCode = {KEY_UP, KEY_UP, KEY_DOWN, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_LEFT, KEY_RIGHT, KEY_B, KEY_Q};
-    if (IsKeyPressed(konamiCode[this->_konamiIndex]) == true) {
+    if (this->_raylibwindow.MyIsKeyPressed(konamiCode[this->_konamiIndex]) == true) {
         this->_konamiIndex += 1;
         if (this->_konamiIndex == konamiCode.size()) {
             this->_konamiIndex = 0;
@@ -199,7 +204,7 @@ void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
         }
     } else {
         for (const auto &key : konamiCode) {
-            if (IsKeyPressed(key) == true) {
+            if (this->_raylibwindow.MyIsKeyPressed(key) == true) {
                 this->_konamiIndex = 0;
                 break;
             }

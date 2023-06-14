@@ -21,9 +21,18 @@ namespace MyRayLib {
                 this->_camera.up = up;
                 this->_camera.fovy = fovy;
                 this->_camera.projection = mode;
+
+                this->_cameraSave = this->_camera;
             }
             ~FreeCamera() {}
 
+            void reset() {
+                this->_camera.position = this->_cameraSave.position;
+                this->_camera.target = this->_cameraSave.target;
+                this->_camera.up = this->_cameraSave.up;
+                this->_camera.fovy = this->_cameraSave.fovy;
+                this->_camera.projection = this->_cameraSave.projection;
+            }
             void update() {
                 if (IsKeyDown(KEY_W))
                 UpdateCameraPro(&this->_camera, { 0.1f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
@@ -68,5 +77,6 @@ namespace MyRayLib {
 
         private:
             ::Camera3D _camera;
+            ::Camera3D _cameraSave;
     };
 }

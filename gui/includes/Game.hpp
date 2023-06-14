@@ -52,6 +52,7 @@ namespace ZappyGui {
             ~Game();
             void initialize();
             void run();
+            void keyEvent(float &volumeMusic);
             void drawGame(SelectorPlayer &selectorPlayer);
             void drawMenu();
             void switchToGame();
