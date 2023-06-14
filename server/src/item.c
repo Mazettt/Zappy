@@ -44,3 +44,13 @@ char *get_item_str(item_t item)
         return "thystame";
     return NULL;
 }
+
+int nbresource(zappy_t *zappy, item_t type)
+{
+    int nbr = 0;
+
+    for (int i = 0; i < zappy->game.width; ++i)
+        for (int j = 0; j < zappy->game.height; ++j)
+            nbr += zappy->game.map[i][j][type];
+    return nbr;
+}

@@ -72,6 +72,7 @@ int main(int ac, char **av)
     int ret = 0;
 
     signal(SIGPIPE, SIG_IGN);
+    srand(time(NULL));
     if (ac == 2 && (!strcmp(av[1], "-help") || !strcmp(av[1], "-h") ||
     !strcmp(av[1], "--help"))) {
         args_help();

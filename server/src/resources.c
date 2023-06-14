@@ -54,23 +54,8 @@ bool init_resources(args_t args, game_t *game)
     return true;
 }
 
-static int nbresource(zappy_t *zappy, item_t type)
+static void refill(zappy_t *zappy)
 {
-    int nbr = 0;
-
-    for (int i = 0; i < zappy->game.width; ++i)
-        for (int j = 0; j < zappy->game.height; ++j)
-            nbr += zappy->game.map[i][j][type];
-    return nbr;
-}
-
-void refill_resources(zappy_t *zappy)
-{
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    if ((now.tv_sec - zappy->game.lastRefill.tv_sec) * 1000000 +
-        (now.tv_usec - zappy->game.lastRefill.tv_usec) < TIME(20))
-        return;
     for (int i = nbresource(zappy, FOOD); i < (WIDTH * HEIGHT * 0.5); ++i)
         zappy->game.map[rand() % WIDTH][rand() % HEIGHT][FOOD] += 1;
     for (int i = nbresource(zappy, LINEMATE); i < (WIDTH * HEIGHT * 0.3); ++i)
@@ -85,5 +70,18 @@ void refill_resources(zappy_t *zappy)
         zappy->game.map[rand() % WIDTH][rand() % HEIGHT][PHIRAS] += 1;
     for (int i = nbresource(zappy, THYSTAME); i < (WIDTH * HEIGHT * 0.05); ++i)
         zappy->game.map[rand() % WIDTH][rand() % HEIGHT][THYSTAME] += 1;
+}
+
+void refill_resources(zappy_t *zappy)
+{
+    struct timeval now;
+    int i = 0;
+
+    gettimeofday(&now, NULL);
+    if ((now.tv_sec - zappy->game.lastRefill.tv_sec) * 1000000 +
+        (now.tv_usec - zappy->game.lastRefill.tv_usec) < TIME(20))
+        return;
+    refill(zappy);
     gettimeofday(&zappy->game.lastRefill, NULL);
+    NOTIF_GUIS(i, send_mct(zappy, i));
 }

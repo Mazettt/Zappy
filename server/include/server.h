@@ -363,6 +363,7 @@ void exec_action(zappy_t *zappy, action_t *action, int ci);
 // resources
 bool init_resources(args_t args, game_t *game);
 void refill_resources(zappy_t *zappy);
+int nbresource(zappy_t *zappy, item_t type);
 
 // cmd buff
 void add_cmd_buff(client_t *client, char *command);
