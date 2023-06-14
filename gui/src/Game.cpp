@@ -70,6 +70,17 @@ void Game::initialize() {
     button3.ButtonSetPosition(1820 - button2.button.width/2.0f, button.button.width/2.0f, (float)button3.button.width, button3.frameHeight);
     this->_buttonMenu.push_back(button3);
 
+    Button logo(this->_manager.getTexture(IResource::resourceType::LOGO), "./gui/assets/Buttons/buttonfx.wav", [&](){
+            Vector3 scale = _playerTmp->getScale();
+            scale.x += 0.1;
+            scale.y += 0.1;
+            scale.z += 0.1;
+            _playerTmp->setScale(scale);
+        }
+    );
+    logo.ButtonSetPosition(40, 40, (float)logo.button.width, logo.frameHeight);
+    this->_buttonMenu.push_back(logo);
+
 }
 
 void Game::keyEvent(float &volumeMusic) {
@@ -98,7 +109,7 @@ void Game::run() {
     auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
-    PlayerArguments playerArgs = PlayerArguments(0, "team2", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {1.6f, 1.6f, 1.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
+    PlayerArguments playerArgs = PlayerArguments(0, "team2", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
 
     this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
 
@@ -140,6 +151,7 @@ void Game::drawMenu() {
         Button button0 = this->_buttonMenu.at(0);
         Button button1 = this->_buttonMenu.at(1);
         Button button2 = this->_buttonMenu.at(2);
+        Button logo = this->_buttonMenu.at(3);
 
         this->_raylibwindow.MyBeginDrawing();
         this->_raylibwindow.MyClearBackground(RAYWHITE);
@@ -147,6 +159,7 @@ void Game::drawMenu() {
             button0.HandleButton();
             button1.HandleButton();
             button2.HandleButton();
+            logo.HandleButton();
         }
         this->_camera.beginMode3D();
         this->_skyboxMesh.MyrlDisableBackfaceCulling();
@@ -162,6 +175,7 @@ void Game::drawMenu() {
         button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
         button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
         button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
+        logo.MyDrawTextureRec(logo.button, logo.sourceRec, (Vector2){ logo.btnBounds.x, logo.btnBounds.y }, WHITE);
 }
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {
