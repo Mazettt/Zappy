@@ -52,6 +52,7 @@ namespace ZappyGui {
             void _pgt(const std::string &str);
             void _pdi(const std::string &str);
             void _enw(const std::string &str);
+            void _egg(const std::string &str);
             void _ebo(const std::string &str);
             void _edi(const std::string &str);
             void _sgt(const std::string &str);

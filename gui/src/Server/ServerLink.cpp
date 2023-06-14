@@ -105,6 +105,7 @@ void ServerLink::_init()
     _responseFunctions["pgt"] = &ServerLink::_pgt;
     _responseFunctions["pdi"] = &ServerLink::_pdi;
     _responseFunctions["enw"] = &ServerLink::_enw;
+    _responseFunctions["egg"] = &ServerLink::_egg;
     _responseFunctions["ebo"] = &ServerLink::_ebo;
     _responseFunctions["edi"] = &ServerLink::_edi;
     _responseFunctions["sgt"] = &ServerLink::_sgt;
@@ -300,7 +301,17 @@ void ServerLink::_enw(const std::string &str)
     int eggId, playerId, x, y;
 
     iss >> tmp >> eggId >> playerId >> x >> y;
-    std::cout << "Egg new: " << eggId << " " << playerId << " " << x << " " << y << std::endl;
+    std::cout << "Egg layed: " << eggId << " " << playerId << " " << x << " " << y << std::endl;
+}
+
+void ServerLink::_egg(const std::string &str)
+{
+    std::istringstream iss(str);
+    std::string tmp;
+    int eggId, x, y;
+
+    iss >> tmp >> eggId >> x >> y;
+    std::cout << "New egg: " << eggId << " " << x << " " << y << std::endl;
 }
 
 void ServerLink::_ebo(const std::string &str)

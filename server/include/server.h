@@ -302,6 +302,9 @@ void send_pdi(zappy_t *zappy, int ci, player_t *player);
 void send_pfk(zappy_t *zappy, int ci, player_t *player);
 // an egg was laid by a player
 void send_enw(zappy_t *zappy, int ci, player_t *player, egg_t *egg);
+// new egg
+void send_egg(zappy_t *zappy, int ci, egg_t *egg);
+void send_all_eggs(zappy_t *zappy, int ci);
 // player connection for an egg
 void send_ebo(zappy_t *zappy, int ci, egg_t *egg);
 // death of an egg

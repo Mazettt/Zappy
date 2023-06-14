@@ -89,6 +89,7 @@ static void unknown_commands(zappy_t *zappy, char *command, int ci)
         send_tna(zappy, ci);
         for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next)
             p->client ? send_pnw(zappy, ci, p) : 0;
+        send_all_eggs(zappy, ci);
         return;
     }
     for (int a = 0; a < zappy->game.nbrTeams; ++a) {
