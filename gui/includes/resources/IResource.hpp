@@ -25,7 +25,8 @@ namespace ZappyGui {
                 BUTTON_START,
                 BUTTON_HELP,
                 BUTTON_QUIT,
-                POPUP
+                POPUP,
+                LOGO
             };
             virtual void draw() = 0;
             virtual IResource::resourceType getType() = 0;

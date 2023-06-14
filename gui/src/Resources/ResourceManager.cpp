@@ -41,6 +41,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::SIBUR, "./gui/assets/Stones/sibur.png");
     this->loadTexture(IResource::resourceType::THYSTAME, "./gui/assets/Stones/thystame.png");
 
+    this->loadTexture(IResource::resourceType::LOGO, "./gui/assets/logo.png");
     this->loadTexture(IResource::resourceType::BUTTON_START, "./gui/assets/Buttons/buttonStart.png");
     this->loadTexture(IResource::resourceType::BUTTON_HELP, "./gui/assets/Buttons/buttonHelp.png");
     this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./gui/assets/Buttons/buttonQuit.png");
