@@ -60,14 +60,14 @@ void Game::initialize() {
     this->_BoolCloseWin = false;
     this->_stateWindow = stateWindow::MENU;
     Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./gui/assets/Buttons/buttonfx.wav", [&](){switchToGame();});
-    button.ButtonSetPosition(1820 - button.button.width/2.0f, 990 - button.button.width/2.0f, (float)button.button.width, button.frameHeight);
+    button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 990 - button.button.width/2.0f, (float)button.button.width, button.frameHeight);
     this->_buttonMenu.push_back(button);
-    Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_stateWindow = stateWindow::GAME;});
+    // Button button2(this->_manager.getTexture(IResource::resourceType::BUTTON_HELP), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_stateWindow = stateWindow::GAME;});
     // button2.ButtonSetPosition(button.button.width/2.0f, 990 - button.button.width/2.0f, (float)button2.button.width, button2.frameHeight);
-    button2.ButtonSetPosition(1820 - (button.button.width * 2), 990 - button.button.width/2.0f, (float)button2.button.width, button2.frameHeight);
-    this->_buttonMenu.push_back(button2);
+    // button2.ButtonSetPosition(1820 - (button.button.width * 2), 990 - button.button.width/2.0f, (float)button2.button.width, button2.frameHeight);
+    // this->_buttonMenu.push_back(button2);
     Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_BoolCloseWin = true;});
-    button3.ButtonSetPosition(1820 - button2.button.width/2.0f, button.button.width/2.0f, (float)button3.button.width, button3.frameHeight);
+    button3.ButtonSetPosition(1860, button.button.width/3.4f, (float)button3.button.width, button3.frameHeight);
     this->_buttonMenu.push_back(button3);
 
 }
@@ -139,14 +139,14 @@ void Game::run() {
 void Game::drawMenu() {
         Button button0 = this->_buttonMenu.at(0);
         Button button1 = this->_buttonMenu.at(1);
-        Button button2 = this->_buttonMenu.at(2);
+        // Button button2 = this->_buttonMenu.at(2);
 
         this->_raylibwindow.MyBeginDrawing();
         this->_raylibwindow.MyClearBackground(RAYWHITE);
         if (this->_popup.getStatus() == false) {
             button0.HandleButton();
             button1.HandleButton();
-            button2.HandleButton();
+            // button2.HandleButton();
         }
         this->_camera.beginMode3D();
         this->_skyboxMesh.MyrlDisableBackfaceCulling();
@@ -161,7 +161,7 @@ void Game::drawMenu() {
 
         button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
         button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
-        button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
+        // button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
 }
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {
