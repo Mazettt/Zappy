@@ -39,35 +39,35 @@ namespace MyRayLib {
             void setTarget(Vector3 target) {
                 this->_camera.target = target;
             }
-            void updateSync() {
+            void updateSync(float deltaTime) {
                 if (IsKeyDown(KEY_W))
-                    UpdateCameraPro(&this->_camera, { 0.1f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 10.f * deltaTime, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_S))
-                    UpdateCameraPro(&this->_camera, { -0.1f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { -10.f * deltaTime, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_A))
-                    UpdateCameraPro(&this->_camera, { 0.0f, -0.1f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, -10.f * deltaTime, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_D))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.1f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 10.f * deltaTime, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_Q) || IsKeyDown(KEY_LEFT_CONTROL))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, -0.1f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, -10.f * deltaTime }, { 0.0f, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_E) || IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_SPACE))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.1f }, { 0.0f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 10.f * deltaTime }, { 0.0f, 0.0f, 0.0f }, 0.0f);
 
                 if (IsKeyDown(KEY_UP))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, -80.0f * deltaTime, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_DOWN))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 80.0f * deltaTime, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_LEFT))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, 0.0f);
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { -80.0f * deltaTime, 0.0f, 0.0f }, 0.0f);
                 if (IsKeyDown(KEY_RIGHT))
-                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, 0.0f);
-
-                UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, GetMouseWheelMove());
+                    UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 80.0f * deltaTime, 0.0f, 0.0f }, 0.0f);
             }
             void updateOnce() {
                 Vector2 mouseDelta = GetMouseDelta();
                 if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
                     UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { mouseDelta.x / 4.0f, mouseDelta.y / 4.0f, 0.0f }, 0.0f);
+
+                UpdateCameraPro(&this->_camera, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, -GetMouseWheelMove() * 1.5f);
             }
             void updateAuto() {
                 UpdateCamera(&this->_camera, CAMERA_ORBITAL);

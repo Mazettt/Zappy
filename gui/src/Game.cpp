@@ -107,6 +107,9 @@ void Game::keyEvent(float &volumeMusic) {
     if (_raylibwindow.MyIsKeyPressed(KEY_ESCAPE) && this->_popup.getStatus() == true) {
         this->_popup.setStatus(false);
     }
+
+    if (this->_raylibwindow.MyIsKeyPressed(KEY_F11))
+        this->_raylibwindow.MyToggleFullscreen();
 }
 
 void Game::run() {
@@ -203,8 +206,9 @@ void Game::drawMenu() {
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {
     //** fps
-    this->_camera.updateSync();
-    this->_map.update();
+    float deltaTime = GetFrameTime();
+    this->_camera.updateSync(deltaTime);
+    this->_map.update(deltaTime);
 
     //** draw
     this->_camera.updateOnce();

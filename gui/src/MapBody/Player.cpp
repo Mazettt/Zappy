@@ -49,7 +49,7 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
     return false;
 }
 
-void Player::move() {
+void Player::move(float deltaTime) { //TODO
     float moveSpeed = 0.06;
     Vector3 pos = this->getPosition();
     float moveX = 0.0f;
@@ -74,7 +74,7 @@ void Player::move() {
     this->setPosition(pos);
 }
 
-bool Player::updateAnimation() {
+bool Player::updateAnimation(float deltaTime) { //TODO
     float epsilon = 0.0001f;
 
     if (std::abs(this->_movePos.x) < epsilon && std::abs(this->_movePos.z) < epsilon) {
@@ -95,9 +95,9 @@ bool Player::updateAnimation() {
     return false;
 }
 
-bool Player::update() {
-    this->move();
-    return this->updateAnimation();
+bool Player::update(float deltaTime) {
+    this->move(deltaTime);
+    return this->updateAnimation(deltaTime);
 }
 
 const std::unordered_map<IResource::resourceType, int> &Player::getInventory() const {

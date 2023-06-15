@@ -146,10 +146,10 @@ bool Map::deadPlayer(int playerID) {
     return false;
 }
 
-void Map::update() {
+void Map::update(float deltaTime) {
     for (auto it = this->_players.begin(); it != this->_players.end();) {
         std::shared_ptr<Player> player = *it;
-        if (player->update()) {
+        if (player->update(deltaTime)) {
             it = this->_players.erase(it);
             continue;
         }
