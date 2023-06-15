@@ -45,6 +45,7 @@ namespace ZappyGui {
             void collectResource(int playerID, IResource::resourceType type);
             void updateMusic();
             void resetGame();
+            void update();
             Vector2 getSize() const { return _size; };
     };
 }

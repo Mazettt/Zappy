@@ -48,13 +48,62 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
     return false;
 }
 
+void Player::move() {
+    float moveSpeed = 0.06;
+    Vector3 pos = this->getPosition();
+    float moveX = 0.0f;
+    float moveZ = 0.0f;
+
+    if (this->_movePos.x > 0.0f) {
+        moveX = std::min(moveSpeed, this->_movePos.x);
+        this->_movePos.x -= moveX;
+    } else if (this->_movePos.x < 0.0f) {
+        moveX = std::max(-moveSpeed, this->_movePos.x);
+        this->_movePos.x -= moveX;
+    }
+    if (this->_movePos.z > 0.0f) {
+        moveZ = std::min(moveSpeed, this->_movePos.z);
+        this->_movePos.z -= moveZ;
+    } else if (this->_movePos.z < 0.0f) {
+        moveZ = std::max(-moveSpeed, this->_movePos.z);
+        this->_movePos.z -= moveZ;
+    }
+    pos.x += moveX;
+    pos.z += moveZ;
+    this->setPosition(pos);
+}
+
+bool Player::updateAnimation() {
+    float epsilon = 0.0001f;
+
+    if (std::abs(this->_movePos.x) < epsilon && std::abs(this->_movePos.z) < epsilon) {
+        if (this->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
+            this->animationWait();
+        }
+        if (this->_animationCounter > 0) {
+            this->_animationCounter -= 1;
+        } else if (this->_animationCounter <= 0) {
+            if (this->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
+                return true;
+            } else {
+                this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
+            }
+        }
+    }
+    this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
+    return false;
+}
+
+bool Player::update() {
+    this->move();
+    return this->updateAnimation();
+}
 
 const std::unordered_map<IResource::resourceType, int> &Player::getInventory() const {
     return this->_inventory;
 }
 
 void Player::draw() {
-    this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
     MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), this->getOrientationAxis(), this->getRotationAngle(), this->getScale(), MyRayLib::MyRayLibColor::White());
 }
 

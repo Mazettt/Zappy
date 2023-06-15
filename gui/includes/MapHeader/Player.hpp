@@ -19,6 +19,8 @@ namespace ZappyGui {
             int _frameCounterAnimation;
             MyRayLib::AnimationsModel &_animation;
             std::unordered_map<IResource::resourceType, int> _inventory;
+            void move();
+            bool updateAnimation();
 
         public:
             enum animationPlayerType {
@@ -51,6 +53,7 @@ namespace ZappyGui {
             void animationWalk();
             void noAnimation();
             void draw();
+            bool update();
             ~Player() {};
     };
 }

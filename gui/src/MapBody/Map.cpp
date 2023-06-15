@@ -145,6 +145,16 @@ bool Map::deadPlayer(int playerID) {
     return false;
 }
 
+void Map::update() {
+    for (auto it = this->_players.begin(); it != this->_players.end(); ++it) {
+        std::shared_ptr<Player> player = *it;
+        if (player->update()) {
+            it = this->_players.erase(it);
+            continue;
+        }
+    }
+}
+
 void Map::draw() {
     const bool pressed = IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
     bool hit = false;
@@ -188,54 +198,9 @@ void Map::draw() {
             }
         }
     }
-
-    float moveSpeed = 0.06;
-    float epsilon = 0.0001f;
-
-    for (auto it = this->_players.begin(); it != this->_players.end();) {
+    for (auto it = this->_players.begin(); it != this->_players.end(); ++it) {
         std::shared_ptr<Player> player = *it;
-        Vector3 pos = player->getPosition();
-        float moveX = 0.0f;
-        float moveZ = 0.0f;
-
-        if (player->_movePos.x > 0.0f) {
-            moveX = std::min(moveSpeed, player->_movePos.x);
-            player->_movePos.x -= moveX;
-        } else if (player->_movePos.x < 0.0f) {
-            moveX = std::max(-moveSpeed, player->_movePos.x);
-            player->_movePos.x -= moveX;
-        }
-
-        if (player->_movePos.z > 0.0f) {
-            moveZ = std::min(moveSpeed, player->_movePos.z);
-            player->_movePos.z -= moveZ;
-        } else if (player->_movePos.z < 0.0f) {
-            moveZ = std::max(-moveSpeed, player->_movePos.z);
-            player->_movePos.z -= moveZ;
-        }
-
-        pos.x += moveX;
-        pos.z += moveZ;
-        player->setPosition(pos);
-
-        if (std::abs(player->_movePos.x) < epsilon && std::abs(player->_movePos.z) < epsilon) {
-            if (player->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
-                player->animationWait();
-            }
-
-            if (player->_animationCounter > 0) {
-                player->_animationCounter -= 1;
-            } else if (player->_animationCounter <= 0) {
-                if (player->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
-                    it = this->_players.erase(it);
-                    continue;
-                } else {
-                    player->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
-                }
-            }
-        }
         player->draw();
-        ++it;
     }
 }
 

@@ -24,7 +24,10 @@ const Vector3 SelectorPlayer::getPosition() const {
     return this->_pos;
 }
 
-void SelectorPlayer::draw() {
+void SelectorPlayer::update() {
     this->_animation.MyUpdateModelAnimation(this->_model.getModel(), 0, this->_frameCounterAnimation);
+}
+
+void SelectorPlayer::draw() {
     MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), {1.0, 0.0, 0.0}, -90.0, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
 }

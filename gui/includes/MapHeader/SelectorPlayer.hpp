@@ -28,6 +28,7 @@ namespace ZappyGui {
             ~SelectorPlayer() {};
             void setPosition(const Vector3 &pos);
             const Vector3 getPosition() const;
+            void update();
             void draw();
     };
 }
