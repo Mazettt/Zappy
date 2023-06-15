@@ -44,7 +44,7 @@ void Game::switchToGame()
     try {
         this->_link.connect(_ip, _port);
         this->_stateWindow = stateWindow::GAME;
-    } catch (const std::exception &e) {
+    } catch (const ZappyGui::Socket::Error &e) {
         std::cerr << e.what() << '\n';
         this->_popup.setTitle("ERROR");
         this->_popup.setDescription(e.what());
@@ -139,8 +139,8 @@ void Game::run() {
         } else {
             try {
                 this->_link.update();
-            } catch(const std::exception &e) {
-                std::cerr << e.what() << '\n';
+            } catch(const ZappyGui::Socket::Info &e) {
+                std::cerr << e.what() << std::endl;
                 this->_map.resetGame();
                 this->_camera.reset();
                 this->_stateWindow = stateWindow::MENU;

@@ -135,13 +135,13 @@ void ServerLink::_bct(const std::string &str)
 
     iss >> tmp >> x >> z >> food >> linemate >> deraumere >> sibur >> mendiane >> phiras >> thystame;
 
-    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::BURGER, food);
-    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::LINEMATE, linemate);
-    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::DERAUMERE, deraumere);
-    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::SIBUR, sibur);
-    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::MENDIANE, mendiane);
-    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::PHIRAS, phiras);
-    this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::THYSTAME, thystame);
+    this->_game._map.updateResourceForTile({ (float)x, (float)z }, IResource::resourceType::BURGER, food);
+    this->_game._map.updateResourceForTile({ (float)x, (float)z }, IResource::resourceType::LINEMATE, linemate);
+    this->_game._map.updateResourceForTile({ (float)x, (float)z }, IResource::resourceType::DERAUMERE, deraumere);
+    this->_game._map.updateResourceForTile({ (float)x, (float)z }, IResource::resourceType::SIBUR, sibur);
+    this->_game._map.updateResourceForTile({ (float)x, (float)z }, IResource::resourceType::MENDIANE, mendiane);
+    this->_game._map.updateResourceForTile({ (float)x, (float)z }, IResource::resourceType::PHIRAS, phiras);
+    this->_game._map.updateResourceForTile({ (float)x, (float)z }, IResource::resourceType::THYSTAME, thystame);
 }
 
 void ServerLink::_tna(const std::string &str) // NOT USED
@@ -300,6 +300,7 @@ void ServerLink::_enw(const std::string &str) // TO DO
 
     iss >> tmp >> eggId >> playerId >> x >> y;
     std::cout << "Egg layed: " << eggId << " " << playerId << " " << x << " " << y << std::endl;
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::EGG);
 }
 
 void ServerLink::_egg(const std::string &str) // TO DO
@@ -310,6 +311,7 @@ void ServerLink::_egg(const std::string &str) // TO DO
 
     iss >> tmp >> eggId >> x >> y;
     std::cout << "New egg: " << eggId << " " << x << " " << y << std::endl;
+    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::EGG);
 }
 
 void ServerLink::_ebo(const std::string &str) // TO DO

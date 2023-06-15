@@ -88,7 +88,8 @@ bool Socket::tryRead(std::string &res) const
     struct timeval tv = {0, 0};
     FD_ZERO(&readfds);
     FD_SET(_socket, &readfds);
-    ::select(_socket + 1, &readfds, NULL, NULL, &tv);
+    if (::select(_socket + 1, &readfds, NULL, NULL, &tv) == -1)
+        throw Error("Socket select failed: " + std::string(strerror(errno)), "Socket::read");
     if (!FD_ISSET(_socket, &readfds))
         return false;
     char buffer[4096];

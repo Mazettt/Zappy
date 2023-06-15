@@ -8,6 +8,7 @@
 #include <cmath>
 #include <algorithm>
 #include "../../includes/MapHeader/Map.hpp"
+#include "../../Utils/MyError.hpp"
 
 using namespace ZappyGui;
 
@@ -86,7 +87,7 @@ void Map::setPlayerLevel(int playerID, int level) {
     p->setPlayerLevel(level);
 }
 
-void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
+void Map::updateResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
     const int key = pos.y * this->_size.x + pos.x;
     int count = 0;
 
@@ -101,6 +102,19 @@ void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type, i
         this->_map[key]->addResource(this->_manager, type);
         count++;
     }
+}
+
+void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
+    const int key = pos.y * this->_size.x + pos.x;
+
+    for (int i = 0; i < number; ++i)
+        this->_map[key]->addResource(this->_manager, type);
+}
+
+void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type) {
+    const int key = pos.y * this->_size.x + pos.x;
+
+    this->_map[key]->addResource(this->_manager, type);
 }
 
 void Map::addPlayerForTile(const PlayerArguments &playerArgs) {

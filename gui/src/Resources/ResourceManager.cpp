@@ -86,25 +86,25 @@ void ResourceManager::loadAnimation(IResource::resourceType type, const std::str
 
 const MyRayLib::Model &ResourceManager::getModel(IResource::resourceType type) const {
     if (_models.find(type) == _models.end())
-        throw std::runtime_error("Model not loaded: " + type);
+        throw std::runtime_error(std::string("Model not loaded: ") + std::to_string(type));
     return *_models.at(type);
 }
 
 MyRayLib::Model &ResourceManager::getNoneConstModel(IResource::resourceType type) {
     if (_models.find(type) == _models.end())
-        throw std::runtime_error("Model not loaded: " + type);
+        throw std::runtime_error(std::string("Model not loaded: ") + std::to_string(type));
     return *_models.at(type);
 }
 
 const MyRayLib::Texture2D &ResourceManager::getTexture(IResource::resourceType type) const {
     if (_textures.find(type) == _textures.end())
-        throw std::runtime_error("Texture not loaded: " + type);
+        throw std::runtime_error(std::string("Texture not loaded: ") + std::to_string(type));
     return *_textures.at(type);
 }
 
 MyRayLib::AnimationsModel &ResourceManager::getAnimation(IResource::resourceType type) {
     if (_animations.find(type) == _animations.end())
-        throw std::runtime_error("Animation not loaded: " + type);
+        throw std::runtime_error(std::string("Animation not loaded: ") + std::to_string(type));
     return *_animations.at(type);
 }
 
@@ -113,10 +113,10 @@ void ResourceManager::setMaterialTexture(IResource::resourceType type) {
     auto texture_it = _textures.find(type);
 
     if(model_it == _models.end()) {
-        throw std::runtime_error("Model not loaded: " + type);
+        throw std::runtime_error(std::string("Model not loaded: ") + std::to_string(type));
     }
     if(texture_it == _textures.end()) {
-        throw std::runtime_error("Texture not loaded: " + type);
+        throw std::runtime_error(std::string("Texture not loaded: ") + std::to_string(type));
     }
     texture_it->second->MySetMaterialTexture(model_it->second->getModel(), MATERIAL_MAP_DIFFUSE);
 }
