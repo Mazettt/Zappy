@@ -76,7 +76,6 @@ void Map::collectResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
     Vector3 pos = p->getPosition();
     int key = std::round(pos.z * this->_size.x + pos.x);
-    std::cout << "player pos: " << pos.x << " " << pos.y << " " << pos.z  << " -> key: " << key << std::endl;
     p->addOnInventory(type, 1);
     this->_map.at(key)->removeResource(type);
 }

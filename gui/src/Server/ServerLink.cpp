@@ -81,7 +81,7 @@ void ServerLink::update()
     buff = buff.substr(0, buff.size() - 1);
     std::vector<std::string> commands = split(buff, '\n');
     for (const auto &command : commands) {
-        std::cout << "command: " << command << std::endl;
+        // std::cout << "command: " << command << std::endl;
         if (_responseFunctions.find(command.substr(0, 3)) != _responseFunctions.end())
             (this->*_responseFunctions[command.substr(0, 3)])(command);
     }

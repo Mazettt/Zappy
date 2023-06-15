@@ -170,58 +170,58 @@ void Game::run() {
 }
 
 void Game::drawMenu() {
-        Button button0 = this->_buttonMenu.at(0);
-        Button button1 = this->_buttonMenu.at(1);
-        // Button button2 = this->_buttonMenu.at(2);
-        Button logo = this->_buttonMenu.at(2);
+    //** draw
+    this->_camera.updateAuto();
+    Button button0 = this->_buttonMenu.at(0);
+    Button button1 = this->_buttonMenu.at(1);
+    // Button button2 = this->_buttonMenu.at(2);
+    Button logo = this->_buttonMenu.at(2);
 
-        this->_raylibwindow.MyBeginDrawing();
-        this->_raylibwindow.MyClearBackground(RAYWHITE);
-        if (this->_popup.getStatus() == false) {
-            button0.HandleButton();
-            button1.HandleButton();
-            // button2.HandleButton();
-            logo.HandleButton();
-        }
-        this->_camera.beginMode3D();
-        this->_skyboxMesh.MyrlDisableBackfaceCulling();
-        this->_skyboxMesh.MyrlDisableDepthMask();
-        DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
-        this->_skyboxMesh.MyrlEnableBackfaceCulling();
-        this->_skyboxMesh.MyrlEnableDepthMask();
-        this->_camera.updateAuto();
-        this->_raylibdrawing.MyDrawGrid(10, 1.0f);
-        this->_playerTmp->draw();
-        this->_camera.endMode3D();
-
-        button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
-        button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
-        // button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
-        logo.MyDrawTextureRec(logo.button, logo.sourceRec, (Vector2){ logo.btnBounds.x, logo.btnBounds.y }, WHITE);
-}
-
-void Game::drawGame(SelectorPlayer &selectorPlayer) {
+    this->_raylibwindow.MyBeginDrawing();
     this->_raylibwindow.MyClearBackground(RAYWHITE);
-    this->_raylibdrawing.MyDrawFPS(10, 35);
+    if (this->_popup.getStatus() == false) {
+        button0.HandleButton();
+        button1.HandleButton();
+        // button2.HandleButton();
+        logo.HandleButton();
+    }
     this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
     this->_skyboxMesh.MyrlDisableDepthMask();
     DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
-    this->_camera.update();
+    this->_raylibdrawing.MyDrawGrid(10, 1.0f);
+    this->_playerTmp->draw();
+    this->_camera.endMode3D();
+
+    button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
+    button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
+    // button2.MyDrawTextureRec(button2.button, button2.sourceRec, (Vector2){ button2.btnBounds.x, button2.btnBounds.y }, WHITE);
+    logo.MyDrawTextureRec(logo.button, logo.sourceRec, (Vector2){ logo.btnBounds.x, logo.btnBounds.y }, WHITE);
+}
+
+void Game::drawGame(SelectorPlayer &selectorPlayer) {
+    //** fps
+    this->_camera.updateSync();
+    this->_map.update();
+
+    //** draw
+    this->_camera.updateOnce();
+    this->_raylibwindow.MyClearBackground(RAYWHITE);
+    this->_camera.beginMode3D();
+    this->_skyboxMesh.MyrlDisableBackfaceCulling();
+    this->_skyboxMesh.MyrlDisableDepthMask();
+    DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+    this->_skyboxMesh.MyrlEnableBackfaceCulling();
+    this->_skyboxMesh.MyrlEnableDepthMask();
     this->_map.draw();
-    if (this->_map._players.size() != 0) {
-        std::shared_ptr<ZappyGui::Player> &selectedPlayer = this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected());
-        Vector3 selectedPos = selectedPlayer->getPosition();
-        selectedPos.y += 0.85;
-        MyRayLib::Draw::MyDrawModelEx(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR).getModel(), selectedPos, {1.0,0.0,0.0}, -90, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
-    }
     if (this->_map._players.size() != 0) {
         selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
         selectorPlayer.draw();
     }
     this->_camera.endMode3D();
+    this->_raylibdrawing.MyDrawFPS(10, 10);
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
 }
 
