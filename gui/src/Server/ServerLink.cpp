@@ -28,47 +28,47 @@ void ServerLink::connect(const std::string &ip, uint16_t port)
     _socket << "GRAPHIC\n";
 }
 
-void ServerLink::askMapSize()
+void ServerLink::askMapSize() // NOT USED
 {
     _socket << "msz\n";
 }
 
-void ServerLink::askTileContent(int x, int y)
+void ServerLink::askTileContent(int x, int y) // TODO
 {
     _socket << "bct " + std::to_string(x) + " " + std::to_string(y) + "\n";
 }
 
-void ServerLink::askMapContent()
+void ServerLink::askMapContent() // NOT USED
 {
     _socket << "mct\n";
 }
 
-void ServerLink::askTeamNames()
+void ServerLink::askTeamNames() // NOT USED
 {
     _socket << "tna\n";
 }
 
-void ServerLink::askPlayerPosition(int id)
+void ServerLink::askPlayerPosition(int id) // NOT USED
 {
     _socket << "ppo " + std::to_string(id) + "\n";
 }
 
-void ServerLink::askPlayerLevel(int id)
+void ServerLink::askPlayerLevel(int id) // TODO
 {
     _socket << "plv " + std::to_string(id) + "\n";
 }
 
-void ServerLink::askPlayerInventory(int id)
+void ServerLink::askPlayerInventory(int id) // TODO
 {
     _socket << "pin " + std::to_string(id) + "\n";
 }
 
-void ServerLink::askTimeUnit()
+void ServerLink::askTimeUnit() // NOT USED
 {
     _socket << "sgt\n";
 }
 
-void ServerLink::modifyTimeUnit(int timeUnit)
+void ServerLink::modifyTimeUnit(int timeUnit) // NOT USED
 {
     _socket << "sst " + std::to_string(timeUnit) + "\n";
 }
@@ -144,7 +144,7 @@ void ServerLink::_bct(const std::string &str)
     this->_game._map.addResourceForTile({ (float)x, (float)z }, IResource::resourceType::THYSTAME, thystame);
 }
 
-void ServerLink::_tna(const std::string &str)
+void ServerLink::_tna(const std::string &str) // NOT USED
 {
     std::istringstream iss(str);
     std::string tmp, teamName;
@@ -195,7 +195,7 @@ void ServerLink::_plv(const std::string &str)
     this->_game._map.setPlayerLevel(id, level);
 }
 
-void ServerLink::_pin(const std::string &str)
+void ServerLink::_pin(const std::string &str) // TODO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -205,7 +205,7 @@ void ServerLink::_pin(const std::string &str)
     std::cout << "Player inventory: " << id << " " << x << " " << y << " -> " << food << " " << linemate << " " << deraumere << " " << sibur << " " << mendiane << " " << phiras << " " << thystame << std::endl;
 }
 
-void ServerLink::_pex(const std::string &str)
+void ServerLink::_pex(const std::string &str) // TODO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -215,7 +215,7 @@ void ServerLink::_pex(const std::string &str)
     std::cout << "Player explosion: " << id << std::endl;
 }
 
-void ServerLink::_pbc(const std::string &str)
+void ServerLink::_pbc(const std::string &str) // TODO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -226,7 +226,7 @@ void ServerLink::_pbc(const std::string &str)
     std::cout << "Player broadcast: " << id << " " << message << std::endl;
 }
 
-void ServerLink::_pic(const std::string &str)
+void ServerLink::_pic(const std::string &str) // TO CHECK
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -241,7 +241,7 @@ void ServerLink::_pic(const std::string &str)
     std::cout << std::endl;
 }
 
-void ServerLink::_pie(const std::string &str)
+void ServerLink::_pie(const std::string &str) // TO CHECK
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -252,7 +252,7 @@ void ServerLink::_pie(const std::string &str)
     this->_game._map.EndPlayersLeveling(x, z, result);
 }
 
-void ServerLink::_pfk(const std::string &str)
+void ServerLink::_pfk(const std::string &str) // TODO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -262,7 +262,7 @@ void ServerLink::_pfk(const std::string &str)
     std::cout << "Player fork: " << id << std::endl;
 }
 
-void ServerLink::_pdr(const std::string &str)
+void ServerLink::_pdr(const std::string &str) // TO CHECK
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -272,7 +272,7 @@ void ServerLink::_pdr(const std::string &str)
     this->_game._map.dropResource(id, (ZappyGui::IResource::resourceType) resource); // TO CHECK if resourceType work correctly
 }
 
-void ServerLink::_pgt(const std::string &str)
+void ServerLink::_pgt(const std::string &str) // TO CHECK
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -282,7 +282,7 @@ void ServerLink::_pgt(const std::string &str)
     this->_game._map.collectResource(id, (ZappyGui::IResource::resourceType) resource); // TO CHECK if resourceType work correctly
 }
 
-void ServerLink::_pdi(const std::string &str)
+void ServerLink::_pdi(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -292,7 +292,7 @@ void ServerLink::_pdi(const std::string &str)
     this->_game._map.deadPlayer(id);
 }
 
-void ServerLink::_enw(const std::string &str)
+void ServerLink::_enw(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -302,7 +302,7 @@ void ServerLink::_enw(const std::string &str)
     std::cout << "Egg layed: " << eggId << " " << playerId << " " << x << " " << y << std::endl;
 }
 
-void ServerLink::_egg(const std::string &str)
+void ServerLink::_egg(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -312,7 +312,7 @@ void ServerLink::_egg(const std::string &str)
     std::cout << "New egg: " << eggId << " " << x << " " << y << std::endl;
 }
 
-void ServerLink::_ebo(const std::string &str)
+void ServerLink::_ebo(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -322,7 +322,7 @@ void ServerLink::_ebo(const std::string &str)
     std::cout << "Egg born: " << eggId << std::endl;
 }
 
-void ServerLink::_edi(const std::string &str)
+void ServerLink::_edi(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -332,7 +332,7 @@ void ServerLink::_edi(const std::string &str)
     std::cout << "Egg death: " << eggId << std::endl;
 }
 
-void ServerLink::_sgt(const std::string &str)
+void ServerLink::_sgt(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -342,7 +342,7 @@ void ServerLink::_sgt(const std::string &str)
     std::cout << "Time unit: " << time << std::endl;
 }
 
-void ServerLink::_sst(const std::string &str)
+void ServerLink::_sst(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -352,7 +352,7 @@ void ServerLink::_sst(const std::string &str)
     std::cout << "Time unit set: " << time << std::endl;
 }
 
-void ServerLink::_seg(const std::string &str)
+void ServerLink::_seg(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -362,7 +362,7 @@ void ServerLink::_seg(const std::string &str)
     std::cout << "End of game: " << teamName << std::endl;
 }
 
-void ServerLink::_smg(const std::string &str)
+void ServerLink::_smg(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -372,7 +372,7 @@ void ServerLink::_smg(const std::string &str)
     std::cout << "Server message: " << message << std::endl;
 }
 
-void ServerLink::_suc(const std::string &str)
+void ServerLink::_suc(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -381,7 +381,7 @@ void ServerLink::_suc(const std::string &str)
     std::cout << "Unknown command" << std::endl;
 }
 
-void ServerLink::_sbp(const std::string &str)
+void ServerLink::_sbp(const std::string &str) // TO DO
 {
     std::istringstream iss(str);
     std::string tmp;

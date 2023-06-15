@@ -62,6 +62,9 @@ namespace MyRayLib {
             void MyCloseAudioDevice() {
                 CloseAudioDevice();
             }
+            void MyToggleFullscreen() {
+                ToggleFullscreen();
+            }
         protected:
         private:
     };

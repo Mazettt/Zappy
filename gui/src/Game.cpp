@@ -129,7 +129,7 @@ void Game::run() {
 
     this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
 
-    ToggleFullscreen(); // TO ENCAPSULATE
+    this->_raylibwindow.MyToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (this->_stateWindow == stateWindow::MENU) {
             musicMenu.MySetMusicVolume(volumeMusic);
