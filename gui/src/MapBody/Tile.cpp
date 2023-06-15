@@ -26,7 +26,24 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
     _availablePositions.pop_back();
     float x_pos = decalage + x_index * 0.12;
     float z_pos = decalage + z_index * 0.12;
-    this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.0, z_pos + this->_cube.getPos().z}, manager));
+    this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.0, z_pos + this->_cube.getPos().z}, manager, -1));
+}
+
+void Tile::addEgg(const ResourceManager &manager, int id) {
+    float decalage = -0.42; // TODO
+
+    if (_availablePositions.empty()) { // TODO a voir quand on remove une ressource remettre ici !!!
+        return;
+    }
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(_availablePositions.begin(), _availablePositions.end(), g);
+
+    auto [x_index, z_index] = _availablePositions.back();
+    _availablePositions.pop_back();
+    float x_pos = decalage + x_index * 0.12;
+    float z_pos = decalage + z_index * 0.12;
+    this->_resources.push_back(FactoryResource::createResource(IResource::resourceType::EGG, {x_pos + this->_cube.getPos().x, 0.0, z_pos + this->_cube.getPos().z}, manager, id));
 }
 
 void Tile::removeResource(const IResource::resourceType type) {
@@ -34,6 +51,24 @@ void Tile::removeResource(const IResource::resourceType type) {
     auto it = std::find_if(this->_resources.begin(), this->_resources.end(),
         [type](const auto& resource) {
             return resource->getType() == type;
+        }
+    );
+    if (it != this->_resources.end()) {
+        float x_pos_without_cube = it->get()->getPosition().x - this->_cube.getPos().x;
+        float z_pos_without_cube = it->get()->getPosition().z - this->_cube.getPos().z;
+
+        int x_index = static_cast<int>(round((x_pos_without_cube - decalage) / 0.12));
+        int z_index = static_cast<int>(round((z_pos_without_cube - decalage) / 0.12));
+        _availablePositions.push_back({ x_index, z_index});
+        this->_resources.erase(it);
+    }
+}
+
+void Tile::removeEgg(int id) {
+    float decalage = -0.42; // TODO
+    auto it = std::find_if(this->_resources.begin(), this->_resources.end(),
+        [id](const auto& resource) {
+            return resource->getId() == id;
         }
     );
     if (it != this->_resources.end()) {

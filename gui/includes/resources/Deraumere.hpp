@@ -25,9 +25,10 @@ namespace ZappyGui {
         public:
             Deraumere(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const Vector3 &position);
             ~Deraumere();
-            IResource::resourceType getType();
-            void setPosition(float x, float z);
-            const Vector3 &getPosition();
-            void draw();
+            virtual IResource::resourceType getType();
+            virtual void setPosition(float x, float z);
+            virtual const Vector3 &getPosition();
+            virtual void draw();
+            virtual int getId() { return -1; }
     };
 }

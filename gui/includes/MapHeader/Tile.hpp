@@ -23,7 +23,9 @@ namespace ZappyGui {
             Tile(const Cube &cube);
             ~Tile();
             void addResource(const ResourceManager &manager, IResource::resourceType type);
+            void addEgg(const ResourceManager &manager, int id);
             void removeResource(const IResource::resourceType type);
+            void removeEgg(int id);
             void addPlayer(const ResourceManager &manager, IResource::resourceType type, const PlayerArguments &playerArgs);
             void draw();
             void drawContentPopup(const MyRayLib::Texture2D &texture);

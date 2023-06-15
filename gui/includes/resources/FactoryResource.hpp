@@ -19,6 +19,6 @@ namespace ZappyGui {
         public:
             FactoryResource();
             ~FactoryResource();
-            static std::unique_ptr<IResource> createResource(IResource::resourceType type, const Vector3 &position, const ResourceManager &manager);
+            static std::unique_ptr<IResource> createResource(IResource::resourceType type, const Vector3 &position, const ResourceManager &manager, int id);
     };
 }

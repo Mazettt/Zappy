@@ -104,17 +104,15 @@ void Map::updateResourceForTile(const Vector2 &pos, IResource::resourceType type
     }
 }
 
-void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
+void Map::addEggForTile(const Vector2 &pos, int id) {
     const int key = pos.y * this->_size.x + pos.x;
 
-    for (int i = 0; i < number; ++i)
-        this->_map[key]->addResource(this->_manager, type);
+    this->_map[key]->addEgg(this->_manager, id);
 }
 
-void Map::addResourceForTile(const Vector2 &pos, IResource::resourceType type) {
-    const int key = pos.y * this->_size.x + pos.x;
-
-    this->_map[key]->addResource(this->_manager, type);
+void Map::removeEgg(int id) {
+    for (auto &tile : this->_map)
+        tile->removeEgg(id);
 }
 
 void Map::addPlayerForTile(const PlayerArguments &playerArgs) {

@@ -300,7 +300,7 @@ void ServerLink::_enw(const std::string &str) // TO DO
 
     iss >> tmp >> eggId >> playerId >> x >> y;
     std::cout << "Egg layed: " << eggId << " " << playerId << " " << x << " " << y << std::endl;
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::EGG);
+    this->_game._map.addEggForTile({ (float)x, (float)y }, eggId);
 }
 
 void ServerLink::_egg(const std::string &str) // TO DO
@@ -311,7 +311,7 @@ void ServerLink::_egg(const std::string &str) // TO DO
 
     iss >> tmp >> eggId >> x >> y;
     std::cout << "New egg: " << eggId << " " << x << " " << y << std::endl;
-    this->_game._map.addResourceForTile({ (float)x, (float)y }, IResource::resourceType::EGG);
+    this->_game._map.addEggForTile({ (float)x, (float)y }, eggId);
 }
 
 void ServerLink::_ebo(const std::string &str) // TO DO
@@ -322,6 +322,7 @@ void ServerLink::_ebo(const std::string &str) // TO DO
 
     iss >> tmp >> eggId;
     std::cout << "Egg born: " << eggId << std::endl;
+    this->_game._map.removeEgg(eggId);
 }
 
 void ServerLink::_edi(const std::string &str) // TO DO

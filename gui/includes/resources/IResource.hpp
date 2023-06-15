@@ -33,5 +33,6 @@ namespace ZappyGui {
             virtual IResource::resourceType getType() = 0;
             virtual void setPosition(float x, float z) = 0;
             virtual const Vector3 &getPosition() = 0;
+            virtual int getId() = 0;
     };
 }

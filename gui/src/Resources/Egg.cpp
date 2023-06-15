@@ -10,9 +10,10 @@
 
 using namespace ZappyGui;
 
-Egg::Egg(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const Vector3 &position):
+Egg::Egg(const MyRayLib::Model &model, const MyRayLib::Texture2D &texture, const Vector3 &position, int id):
     _model(model),
-    _texture(texture) {
+    _texture(texture),
+    _id(id) {
     this->_rotationAngle = 1.0f;
     this->_position = position;
     this->_position.y = 0.076;
