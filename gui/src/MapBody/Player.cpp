@@ -18,6 +18,7 @@ Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const 
     _animation(animation),
     _animationCounter(0)
 {
+    this->_movePos = { 0.0f, 0.0f, 0.0f };
     this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
 }
 
