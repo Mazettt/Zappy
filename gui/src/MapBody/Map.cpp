@@ -87,8 +87,8 @@ void Map::setPlayerLevel(int playerID, int level) {
 }
 
 void Map::updateResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
-    const int key = pos.y * this->_size.x + pos.x;
     int count = 0;
+    const int key = pos.y * this->_size.x + pos.x;
 
     for (const auto &r : this->_map[key]->_resources)
         if (r->getType() == type)
@@ -145,12 +145,13 @@ bool Map::deadPlayer(int playerID) {
 }
 
 void Map::update() {
-    for (auto it = this->_players.begin(); it != this->_players.end(); ++it) {
+    for (auto it = this->_players.begin(); it != this->_players.end();) {
         std::shared_ptr<Player> player = *it;
         if (player->update()) {
             it = this->_players.erase(it);
             continue;
         }
+        ++it;
     }
 }
 
