@@ -33,6 +33,12 @@ namespace MyRayLib {
                 this->_camera.fovy = this->_cameraSave.fovy;
                 this->_camera.projection = this->_cameraSave.projection;
             }
+            void setPosition(Vector3 position) {
+                this->_camera.position = position;
+            }
+            void setTarget(Vector3 target) {
+                this->_camera.target = target;
+            }
             void update() {
                 if (IsKeyDown(KEY_W))
                 UpdateCameraPro(&this->_camera, { 0.1f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f);

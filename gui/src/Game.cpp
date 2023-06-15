@@ -110,6 +110,7 @@ void Game::keyEvent(float &volumeMusic) {
 }
 
 void Game::run() {
+    bool cameraSet = false;
     SelectorPlayer selectorPlayer = SelectorPlayer(this->_manager.getNoneConstModel(IResource::resourceType::PLAYER_SELECTOR), this->_manager.getAnimation(IResource::resourceType::PLAYER_SELECTOR));
     this->_skyboxMesh.InitSkybox();
     this->_skyboxMesh.chooseSkyboxFile("./gui/assets/Skybox/roh.png");
@@ -145,6 +146,11 @@ void Game::run() {
                 this->_stateWindow = stateWindow::MENU;
             }
 
+            if (cameraSet == false && this->_map.getSize().x > 0.0f && this->_map.getSize().y > 0.0f) {
+                this->_camera.setPosition({ 0.0f, (_map.getSize().x + _map.getSize().y) / 2.0f, _map.getSize().y - 1 });
+                this->_camera.setTarget({ this->_map.getSize().x / 2.0f, 0.0f, this->_map.getSize().y / 2.0f });
+                cameraSet = true;
+            }
             if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {
                 musicGame.MyPlayMusic();
             }
