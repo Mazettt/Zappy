@@ -9,17 +9,18 @@
 
 static void add_socket_to_array(zappy_t *zappy, int new_s)
 {
+    struct timeval tv = {0, 0};
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
         if (CLIENT_S(i) == 0) {
             FD_SET(new_s, &zappy->readfds);
             FD_SET(new_s, &zappy->writefds);
-            zappy->max_fd = (new_s > zappy->max_fd) ? new_s : zappy->max_fd;
-            select(zappy->max_fd + 1, &zappy->readfds, &zappy->writefds,
-                NULL, NULL);
+            max_fd(new_s, &zappy->read_max_fd);
+            max_fd(new_s, &zappy->write_max_fd);
+            select(zappy->read_max_fd + 1, &zappy->readfds, NULL, NULL, &tv);
+            select(zappy->read_max_fd + 1, NULL, &zappy->writefds, NULL, &tv);
             CLIENT_S(i) = new_s;
             zappy->client[i].command.sa = zappy->main.sa;
             zappy->client[i].command.addrlen = zappy->main.addrlen;
-
             get_socket_infos(&zappy->client[i].command);
             DEBUG_PRINT("Host connected, ip %s, port %d\n",
                 inet_ntoa(zappy->client[i].command.sa.sin_addr),

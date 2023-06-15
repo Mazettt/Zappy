@@ -7,45 +7,37 @@
 
 #include "../include/server.h"
 
+void max_fd(int fd, int *max_fd)
+{
+    if (fd > *max_fd)
+        *max_fd = fd;
+}
+
 static void reset_fd(zappy_t *zappy)
 {
-    FD_ZERO(&zappy->readfds);FD_ZERO(&zappy->writefds);
-    FD_SET(STDOUT_FILENO, &zappy->writefds);
-    if (STDOUT_FILENO > zappy->max_fd) zappy->max_fd = STDOUT_FILENO;
-    FD_SET(STDERR_FILENO, &zappy->writefds);
-    if (STDERR_FILENO > zappy->max_fd) zappy->max_fd = STDERR_FILENO;
+    zappy->read_max_fd = 0;
+    zappy->write_max_fd = 0;
+    FD_ZERO(&zappy->readfds);
+    FD_ZERO(&zappy->writefds);
     FD_SET(zappy->main.s, &zappy->readfds);
     FD_SET(zappy->main.s, &zappy->writefds);
-    if (zappy->main.s > zappy->max_fd) zappy->max_fd = zappy->main.s;
-
+    max_fd(zappy->main.s, &zappy->read_max_fd);
+    max_fd(zappy->main.s, &zappy->write_max_fd);
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
         if (CLIENT_S(i) > 0) {
             FD_SET(CLIENT_S(i), &zappy->readfds);
             FD_SET(CLIENT_S(i), &zappy->writefds);
         }
-        if (CLIENT_S(i) > zappy->max_fd)
-            zappy->max_fd = CLIENT_S(i);
+        max_fd(CLIENT_S(i), &zappy->read_max_fd);
+        max_fd(CLIENT_S(i), &zappy->write_max_fd);
     }
     FD_SET(zappy->fd_sigint, &zappy->readfds);
-    if (zappy->fd_sigint > zappy->max_fd) zappy->max_fd = zappy->fd_sigint;
-}
-
-static void first_select(zappy_t *zappy)
-{
-    int maxSd = 0;
-
-    FD_ZERO(&zappy->writefds);
-    FD_SET(STDOUT_FILENO, &zappy->writefds);
-    if (STDOUT_FILENO > maxSd)
-        maxSd = STDOUT_FILENO;
-    FD_SET(STDERR_FILENO, &zappy->writefds);
-    if (STDERR_FILENO > maxSd)
-        maxSd = STDERR_FILENO;
-    select(maxSd + 1, NULL, &zappy->writefds, NULL, NULL);
+    max_fd(zappy->fd_sigint, &zappy->read_max_fd);
 }
 
 static void free_all(zappy_t *zappy)
 {
+    close_all(zappy);
     for (int i = 0; i < zappy->game.nbrTeams; ++i) {
         free(zappy->game.teams[i].name);
         while (zappy->game.teams[i].players)
@@ -67,14 +59,15 @@ int zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
     struct timeval tv = {0, 0};
-    if (!zappy || !init_game(zappy, args)) return 84;
-    first_select(zappy);
+
+    if (!zappy || !init_game(zappy, args))
+        return 84;
     init_main_socket(zappy, args.port);
     while (zappy->main.s) {
-        zappy->max_fd = 0;
+        tv.tv_usec = 10;
         reset_fd(zappy);
-        select(zappy->max_fd + 1, &zappy->readfds,
-            &zappy->writefds, NULL, &tv);
+        select(zappy->read_max_fd + 1, &zappy->readfds, NULL, NULL, &tv);
+        select(zappy->write_max_fd + 1, NULL, &zappy->writefds, NULL, &tv);
         if (FD_ISSET(zappy->fd_sigint, &zappy->readfds))
             break;
         accept_new_connections(zappy);
@@ -82,7 +75,6 @@ int zappy(args_t args)
         refill_resources(zappy);
     }
     printf("\n%s\n", "Quitting...");
-    close_all(zappy);
     free_all(zappy);
     return 0;
 }
