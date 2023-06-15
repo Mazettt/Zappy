@@ -12,7 +12,7 @@
 
 using namespace ZappyGui;
 
-Map::Map(ResourceManager &manager, const MyRayLib::FreeCamera &camera): _manager(manager), _camera(camera), _selectedTileKey(-1) {}
+Map::Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link): _manager(manager), _camera(camera), _selectedTileKey(-1), _link(link) {}
 
 std::shared_ptr<Player> Map::findPlayerByID(int id) {
     for (std::shared_ptr<Player> p : this->_players) {
@@ -160,9 +160,10 @@ void Map::draw() {
                 Vector3 cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
                 BoundingBox box = {(Vector3){ cubePosition.x - cubeSize.x / 2, cubePosition.y - cubeSize.y / 2, cubePosition.z - cubeSize.z / 2 },
                                    (Vector3){ cubePosition.x + cubeSize.x / 2, cubePosition.y + cubeSize.y / 2, cubePosition.z + cubeSize.z / 2 }};
-                if (GetRayCollisionBox(GetMouseRay(GetMousePosition(), _camera.getCamera()), box).hit) {
+                if (GetRayCollisionBox(GetMouseRay(GetMousePosition(), this->_camera.getCamera()), box).hit) {
                     _selectedTileKey = _selectedTileKey == key ? -1 : key;
                     hit = true;
+                    this->_link.askTileContent(cubePosition.x, cubePosition.z);
                 }
             }
             tile->draw();
@@ -176,6 +177,9 @@ void Map::draw() {
             std::shared_ptr<Tile>& tile = this->_map.at(key);
 
             if (key == _selectedTileKey) {
+                this->_camera.endMode3D();
+                tile->drawContentPopup(this->_manager.getTexture(IResource::resourceType::POPUPTILE));
+                this->_camera.beginMode3D();
                 tile->_cube._color.r = 255;
                 tile->_cube._color.g = 0;
                 tile->_cube._color.b = 0;

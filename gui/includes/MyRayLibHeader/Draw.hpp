@@ -46,6 +46,9 @@ namespace MyRayLib {
             static void MyDrawModel(::Model model, Vector3 position, float rotationAngle, Color tint) {
                 DrawModel(model, position, rotationAngle, tint);
             }
+            static void MyDrawTexture(::Texture2D texture, int posX, int posY, Color tint) {
+                DrawTexture(texture, posX, posY, tint);
+            }
         private:
     };
 }
