@@ -6,6 +6,7 @@
 */
 
 #include <cmath>
+#include <cassert>
 #include <algorithm>
 #include "../../includes/MapHeader/Map.hpp"
 #include "../../Utils/MyError.hpp"
@@ -77,6 +78,7 @@ void Map::collectResource(int playerID, IResource::resourceType type) {
     Vector3 pos = p->getPosition();
     int key = std::round(pos.z * this->_size.x + pos.x);
     p->addOnInventory(type, 1);
+    assert(key < this->_map.size());
     this->_map.at(key)->removeResource(type);
 }
 
