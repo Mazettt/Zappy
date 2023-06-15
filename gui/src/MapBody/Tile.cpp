@@ -47,6 +47,41 @@ void Tile::removeResource(const IResource::resourceType type) {
     }
 }
 
+int Tile::countSpecificResource(IResource::resourceType type) {
+    int counter = 0;
+    int nbrResource = this->_resources.size();
+
+    for (int i = 0; i < nbrResource; ++i) {
+        if (this->_resources.at(i)->getType() == type) {
+            counter += 1;
+        }
+    }
+    return counter;
+}
+
+void Tile::drawContentPopup(const MyRayLib::Texture2D &texture) {
+    int x = 1750;
+    int y = 348;
+    std::string tmp;
+
+    MyRayLib::Draw::MyDrawTexture(texture.getTexture(), 1750, y, WHITE);
+    x += 85;
+    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::BURGER));
+    DrawText(tmp.c_str(), x, y += 28, 30, BLACK);
+    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::DERAUMERE));
+    DrawText(tmp.c_str(), x, y += 52, 30, BLACK);
+    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::LINEMATE));
+    DrawText(tmp.c_str(), x, y += 54, 30, BLACK);
+    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::MENDIANE));
+    DrawText(tmp.c_str(), x, y += 56, 30, BLACK);
+    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::PHIRAS));
+    DrawText(tmp.c_str(), x, y += 52, 30, BLACK);
+    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::SIBUR));
+    DrawText(tmp.c_str(), x, y += 52, 30, BLACK);
+    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::THYSTAME));
+    DrawText(tmp.c_str(), x, y += 48, 30, BLACK);
+}
+
 void Tile::draw() {
     this->_cube.draw();
 

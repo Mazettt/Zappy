@@ -25,8 +25,8 @@ Game::Game(const std::string &ip, int port):
     _showPlayerData(),
     _playerTmp(),
     _konamiIndex(0),
-    _map(this->_manager, this->_camera),
-    _link(*this)
+    _link(*this),
+    _map(this->_manager, this->_camera, this->_link)
 {
     _manager.initialize();
 }

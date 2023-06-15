@@ -26,5 +26,7 @@ namespace ZappyGui {
             void removeResource(const IResource::resourceType type);
             void addPlayer(const ResourceManager &manager, IResource::resourceType type, const PlayerArguments &playerArgs);
             void draw();
+            void drawContentPopup(const MyRayLib::Texture2D &texture);
+            int countSpecificResource(IResource::resourceType type);
     };
 }

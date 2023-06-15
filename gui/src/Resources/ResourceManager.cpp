@@ -47,6 +47,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./gui/assets/Buttons/buttonQuit.png");
 
     this->loadTexture(IResource::resourceType::POPUP, "./gui/assets/popup.png");
+    this->loadTexture(IResource::resourceType::POPUPTILE, "./gui/assets/tileInventory.png");
 
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
