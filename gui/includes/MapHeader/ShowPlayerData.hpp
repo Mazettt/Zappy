@@ -22,6 +22,8 @@ namespace MyRayLib {
             float _posY;
             size_t _index;
             ::Model _model;
+            void drawInventory(int resourceX, int resourceY, const std::unordered_map<ZappyGui::IResource::resourceType, int>& inventory, const std::vector<ZappyGui::IResource::resourceType>& resourceTypes);
+
         public:
             ShowPlayerData();
             ~ShowPlayerData();

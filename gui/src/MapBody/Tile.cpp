@@ -97,24 +97,26 @@ int Tile::countSpecificResource(IResource::resourceType type) {
 void Tile::drawContentPopup(const MyRayLib::Texture2D &texture) {
     int x = 1750;
     int y = 348;
-    std::string tmp;
+    std::vector<IResource::resourceType> resourceTypes = {
+        IResource::resourceType::BURGER,
+        IResource::resourceType::DERAUMERE,
+        IResource::resourceType::LINEMATE,
+        IResource::resourceType::MENDIANE,
+        IResource::resourceType::PHIRAS,
+        IResource::resourceType::SIBUR,
+        IResource::resourceType::THYSTAME
+    };
 
     MyRayLib::Draw::MyDrawTexture(texture.getTexture(), 1750, y, WHITE);
     x += 85;
-    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::BURGER));
-    DrawText(tmp.c_str(), x, y += 28, 30, BLACK);
-    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::DERAUMERE));
-    DrawText(tmp.c_str(), x, y += 52, 30, BLACK);
-    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::LINEMATE));
-    DrawText(tmp.c_str(), x, y += 54, 30, BLACK);
-    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::MENDIANE));
-    DrawText(tmp.c_str(), x, y += 56, 30, BLACK);
-    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::PHIRAS));
-    DrawText(tmp.c_str(), x, y += 52, 30, BLACK);
-    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::SIBUR));
-    DrawText(tmp.c_str(), x, y += 52, 30, BLACK);
-    tmp = "x" + std::to_string(this->countSpecificResource(IResource::resourceType::THYSTAME));
-    DrawText(tmp.c_str(), x, y += 48, 30, BLACK);
+    DrawText(std::to_string(static_cast<int>(this->_cube.getPos().x)).c_str(), x - 10, y += 16, 25, BLACK);
+    DrawText(std::to_string(static_cast<int>(this->_cube.getPos().z)).c_str(), x - 10, y += 30, 25, BLACK);
+
+
+    for (const auto &type : resourceTypes) {
+        std::string tmp = "x" + std::to_string(this->countSpecificResource(type));
+        DrawText(tmp.c_str(), x, y += 50, 30, BLACK);
+    }
 }
 
 void Tile::draw() {

@@ -62,62 +62,75 @@ int MyRayLib::ShowPlayerData::getNumberOfResource(ZappyGui::IResource::resourceT
     return value;
 }
 
-void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players)
+void MyRayLib::ShowPlayerData::drawInventory(int resourceX, int resourceY, const std::unordered_map<ZappyGui::IResource::resourceType, int>& inventory, const std::vector<ZappyGui::IResource::resourceType>& resourceTypes) {
+    float originalResourceX = resourceX;
+    float originalResourceY = resourceY;
+    bool isAltLine = false;
+
+    for (const auto& type : resourceTypes) {
+        std::string tmpStr = "x" + std::to_string(this->getNumberOfResource(type, inventory));
+        DrawText(tmpStr.c_str(), resourceX, resourceY += 48, 25, BLACK);
+
+        if (isAltLine) {
+            resourceX += 125;
+            resourceY = originalResourceY;
+            isAltLine = false;  // reset for next line
+        } else {
+            isAltLine = true;
+        }
+    }
+
+    resourceX = originalResourceX;
+    resourceY += 102;
+}
+
+void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> playersList)
 {
-    std::string tmpStr;
+    std::vector<ZappyGui::IResource::resourceType> resourceTypes = {
+        ZappyGui::IResource::resourceType::BURGER,
+        ZappyGui::IResource::resourceType::DERAUMERE,
+        ZappyGui::IResource::resourceType::LINEMATE,
+        ZappyGui::IResource::resourceType::MENDIANE,
+        ZappyGui::IResource::resourceType::PHIRAS,
+        ZappyGui::IResource::resourceType::SIBUR,
+        ZappyGui::IResource::resourceType::THYSTAME
+    };
+
     this->_posX = 30.0;
     this->_posY = 60.0;
-    float resourceX = 20;
-    float resourceY = 900;
-    if (_players.size() == 0)
+    if (playersList.empty())
         return;
     if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_PAGE_DOWN)) {
-        if (this->_index >= (_players.size() - 1))
-            this->_index = 0;
-        else
-            this->_index++;
+        this->_index = (this->_index >= (playersList.size() - 1)) ? 0 : this->_index + 1;
     }
     if (IsKeyPressed(KEY_PAGE_UP)) {
-        if (this->_index <= 0)
-            this->_index = _players.size() - 1;
-        else
-            this->_index--;
+        this->_index = (this->_index <= 0) ? playersList.size() - 1 : this->_index - 1;
     }
+    for (size_t i = 0; i < playersList.size(); ++i) {
+        auto player = playersList[i];
+        auto playerNumber = std::to_string(player->getPlayerNumber()).c_str();
+        const std::unordered_map<ZappyGui::IResource::resourceType, int> &tmpInventory = player->getInventory();
 
-    for (size_t i = 0; i < _players.size(); ++i) {
         if (i == this->_index) {
-            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, ORANGE);
+            float resourceX = 20;
+            float resourceY = 910;
+            DrawText(playerNumber, this->_posX, this->_posY, 20, ORANGE);
             DrawTexture(this->_texture, resourceX, resourceY, WHITE);
-            DrawText(std::to_string(_players.at(i)->getPlayerLevel()).c_str(), resourceX += 75, resourceY += 20, 35, BLACK);
-            DrawText((_players.at(i)->getTeamName()).c_str(), resourceX + 115, resourceY, 25, BLACK);
-            const auto &tmpInventory = _players.at(i)->getInventory();
-            int tmp = 0;
+            DrawText(std::to_string(player->getPlayerLevel()).c_str(), resourceX += 75, resourceY += 20, 35, BLACK);
+            DrawText((player->getTeamName()).c_str(), resourceX + 115, resourceY, 25, BLACK);
 
             resourceX -= 10;
-            tmpStr = "x" + std::to_string(this->getNumberOfResource(ZappyGui::IResource::resourceType::BURGER, tmpInventory));
-            DrawText(tmpStr.c_str(), resourceX, resourceY += 48, 25, BLACK);
-            tmpStr = "x" + std::to_string(this->getNumberOfResource(ZappyGui::IResource::resourceType::DERAUMERE, tmpInventory));
-            DrawText(tmpStr.c_str(), resourceX, resourceY += 54, 25, BLACK);
-            resourceX += 125;
-            resourceY -= 102;
-            tmpStr = "x" + std::to_string(this->getNumberOfResource(ZappyGui::IResource::resourceType::LINEMATE, tmpInventory));
-            DrawText(tmpStr.c_str(), resourceX, resourceY += 48, 25, BLACK);
-            tmpStr = "x" + std::to_string(this->getNumberOfResource(ZappyGui::IResource::resourceType::MENDIANE, tmpInventory));
-            DrawText(tmpStr.c_str(), resourceX, resourceY += 54, 25, BLACK);
-            resourceX += 120;
-            resourceY -= 102;
-            tmpStr = "x" + std::to_string(this->getNumberOfResource(ZappyGui::IResource::resourceType::PHIRAS, tmpInventory));
-            DrawText(tmpStr.c_str(), resourceX, resourceY += 48, 25, BLACK);
-            tmpStr = "x" + std::to_string(this->getNumberOfResource(ZappyGui::IResource::resourceType::SIBUR, tmpInventory));
-            DrawText(tmpStr.c_str(), resourceX, resourceY += 54, 25, BLACK);
-            tmpStr = "x" + std::to_string(this->getNumberOfResource(ZappyGui::IResource::resourceType::THYSTAME, tmpInventory));
-            DrawText(tmpStr.c_str(), resourceX += 115, resourceY -= 54, 25, BLACK);
-        } else
-            DrawText(std::to_string(_players.at(i)->getPlayerNumber()).c_str(), this->_posX, this->_posY, 20, BLACK);
+            drawInventory(resourceX, resourceY, tmpInventory, resourceTypes);
+        } else {
+            DrawText(playerNumber, this->_posX, this->_posY, 20, BLACK);
+        }
+
         if (this->_posY >= 750) {
             this->_posY = 60.0;
             this->_posX += 60.0;
-        } else
+        } else {
             this->_posY += 60.0;
+        }
     }
 }
+
