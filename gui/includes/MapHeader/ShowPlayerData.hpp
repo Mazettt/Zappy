@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include "Player.hpp"
+#include "../Server/ServerLink.hpp"
 
 namespace MyRayLib {
     class ShowPlayerData {
@@ -23,9 +24,9 @@ namespace MyRayLib {
             size_t _index;
             ::Model _model;
             void drawInventory(int resourceX, int resourceY, const std::unordered_map<ZappyGui::IResource::resourceType, int>& inventory, const std::vector<ZappyGui::IResource::resourceType>& resourceTypes);
-
+            ZappyGui::ServerLink &_link;
         public:
-            ShowPlayerData();
+            ShowPlayerData(ZappyGui::ServerLink &link);
             ~ShowPlayerData();
             void setModel(const MyRayLib::Model &model);
             int getPlayerIndexSelected();

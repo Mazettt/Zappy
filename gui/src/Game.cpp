@@ -22,10 +22,10 @@ Game::Game(const std::string &ip, int port):
     _ip(ip),
     _port(port),
     _popup(),
-    _showPlayerData(),
     _playerTmp(),
     _konamiIndex(0),
     _link(*this),
+    _showPlayerData(_link),
     _map(this->_manager, this->_camera, this->_link)
 {
     _manager.initialize();

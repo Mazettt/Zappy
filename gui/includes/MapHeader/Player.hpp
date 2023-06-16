@@ -54,6 +54,7 @@ namespace ZappyGui {
             void noAnimation();
             void draw();
             bool update(float deltaTime);
+            void setInventory(int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame);
             ~Player() {};
     };
 }

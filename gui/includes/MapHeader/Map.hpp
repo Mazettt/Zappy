@@ -47,5 +47,6 @@ namespace ZappyGui {
             void resetGame();
             void update(float deltaTime);
             Vector2 getSize() const { return _size; };
+            void updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame);
     };
 }

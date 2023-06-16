@@ -225,6 +225,7 @@ void ServerLink::_pin(const std::string &str) // TODO
     int thystame = 0;
 
     iss >> tmp >> id >> x >> y >> food >> linemate >> deraumere >> sibur >> mendiane >> phiras >> thystame;
+    this->_game._map.updatePlayerInventory(id, food, linemate, deraumere, sibur, mendiane, phiras, thystame);
     std::cout << "Player inventory: " << id << " " << x << " " << y << " -> " << food << " " << linemate << " " << deraumere << " " << sibur << " " << mendiane << " " << phiras << " " << thystame << std::endl;
 }
 

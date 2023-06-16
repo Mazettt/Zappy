@@ -7,7 +7,10 @@
 
 #include "../../includes/MapHeader/ShowPlayerData.hpp"
 
-MyRayLib::ShowPlayerData::ShowPlayerData()
+using namespace MyRayLib;
+using namespace ZappyGui;
+
+MyRayLib::ShowPlayerData::ShowPlayerData(ZappyGui::ServerLink &link) : _link(link)
 {
     this->_image = LoadImage("./gui/assets/player_stats.png"); // TODO in manager
 
@@ -102,9 +105,11 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
         return;
     if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_PAGE_DOWN)) {
         this->_index = (this->_index >= (playersList.size() - 1)) ? 0 : this->_index + 1;
+        this->_link.askPlayerInventory(this->_index);
     }
     if (IsKeyPressed(KEY_PAGE_UP)) {
         this->_index = (this->_index <= 0) ? playersList.size() - 1 : this->_index - 1;
+        this->_link.askPlayerInventory(this->_index);
     }
     for (size_t i = 0; i < playersList.size(); ++i) {
         auto player = playersList[i];

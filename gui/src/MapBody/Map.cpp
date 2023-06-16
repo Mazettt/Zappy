@@ -206,6 +206,10 @@ void Map::draw() {
     }
 }
 
+void Map::updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame)
+{
+    this->_players.at(id)->setInventory(food, linemate, deraumere, sibur, mendiane, phiras, thystame);
+}
 
 void Map::resetGame() {
     this->_players.clear();

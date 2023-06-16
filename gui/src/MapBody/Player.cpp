@@ -20,6 +20,7 @@ Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const 
 {
     this->_movePos = { 0.0f, 0.0f, 0.0f };
     this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
+    this->setInventory(0, 0, 0, 0, 0, 0, 0);
 }
 
 void Player::addOnInventory(IResource::resourceType type, int quantity) {
@@ -142,4 +143,15 @@ void Player::animationWalk() {
 void Player::noAnimation() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_NOTHING);
     this->_frameCounterAnimation = 0;
+}
+
+void Player::setInventory(int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame)
+{
+    this->_inventory[IResource::resourceType::BURGER] = food;
+    this->_inventory[IResource::resourceType::LINEMATE] = linemate;
+    this->_inventory[IResource::resourceType::DERAUMERE] = deraumere;
+    this->_inventory[IResource::resourceType::SIBUR] = sibur;
+    this->_inventory[IResource::resourceType::MENDIANE] = mendiane;
+    this->_inventory[IResource::resourceType::PHIRAS] = phiras;
+    this->_inventory[IResource::resourceType::THYSTAME] = thystame;
 }
