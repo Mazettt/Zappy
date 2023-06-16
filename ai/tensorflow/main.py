@@ -88,7 +88,7 @@ class DQNAgent:
         self.model = load_model(name)
 
 def train_agent(p, agent, clt):
-    for episode in range(150):
+    for episode in range(500):
         action = agent.act(p.stats.get_state())
         # get_state() returns a numpy array of the player's state
         # [0] = inventory
@@ -133,6 +133,10 @@ def train_agent(p, agent, clt):
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
+            if (memory.food < 3):
+                reward = -100
+                agent.reward = reward
+                agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
         elif action == 5:
             if (zc.take(clt, "food")) == "ko\n":
                 print("NO FOOD LEFT")
@@ -202,44 +206,47 @@ def train_agent(p, agent, clt):
 
 
 def main():
-    args = zp.get_args()
-    p = zds.Player(args["port"], args["name"], args["machine"])
-    p.client.sock = znu.con_to_server(p.client.machine, p.client.port)
-    znu.recv_from_server(p.client.sock)
-    p_infos = znu.get_player_infos(p.client.sock, p.stats.team)
-    zp.print_log("Player: {}".format(p_infos))
-    client_num, map_x, map_y = zp.parse_player_infos(p_infos)
-    p.stats.playerNB = client_num
-    print("Player number: {}".format(p.stats.playerNB))
-    ai_training = True
-    clt = zds.Client(p.client.port, p.client.machine)
-    clt.sock = p.client.sock
-    if ai_training:
-        agent = DQNAgent(8, 12)
-        try:
-            agent.load("./save/ai_model.h5")
-        except:
-            pass
-        agent.epsilon = 1
-        agent.training = True
-        agent.batch_size = 32
-        agent.gamma = 0.9
-        agent.learning_rate = 0.001
-        agent.memory = []
-        agent.model = agent.build_model()
-        agent.model.summary()
-        try:
-            agent.load("./save/ai_model.h5")
-        except:
-            pass
-        agent.epsilon = 1
-        agent.training = True
-        agent.batch_size = 32
-        agent.gamma = 0.9
-        agent.learning_rate = 0.001
-        agent.memory = []
-        agent.model = agent.build_model()
-        train_agent(p, agent, clt)
+    for i in range(1):
+        print("Training number: {}".format(i))
+        args = zp.get_args()
+        p = zds.Player(args["port"], args["name"], args["machine"])
+        p.client.sock = znu.con_to_server(p.client.machine, p.client.port)
+        znu.recv_from_server(p.client.sock)
+        p_infos = znu.get_player_infos(p.client.sock, p.stats.team)
+        zp.print_log("Player: {}".format(p_infos))
+        client_num, map_x, map_y = zp.parse_player_infos(p_infos)
+        p.stats.playerNB = client_num
+        print("Player number: {}".format(p.stats.playerNB))
+        ai_training = True
+        clt = zds.Client(p.client.port, p.client.machine)
+        clt.sock = p.client.sock
+        if ai_training:
+            agent = DQNAgent(8, 12)
+            try:
+                agent.load("./save/agent.h5")
+                print("Agent loaded")
+            except:
+                pass
+            agent.epsilon = 1
+            agent.training = True
+            agent.batch_size = 32
+            agent.gamma = 0.9
+            agent.learning_rate = 0.001
+            agent.memory = []
+            agent.model = agent.build_model()
+            agent.model.summary()
+            agent.epsilon = 1
+            agent.training = True
+            agent.batch_size = 32
+            agent.gamma = 0.9
+            agent.learning_rate = 0.001
+            agent.memory = []
+            agent.model = agent.build_model()
+            try:
+                agent.load("./save/ai_model.h5")
+            except:
+                pass
+            train_agent(p, agent, clt)
 
 if __name__ == "__main__":
     main()
