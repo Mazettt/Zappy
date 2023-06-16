@@ -44,7 +44,7 @@ player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
     new->direction = rand() % 4;
     new->level = 1;
     for (int i = 0; i < NBR_ITEMS; ++i)
-        new->inventory[i] = (i == FOOD ? 1 : 0);
+        new->inventory[i] = (i == FOOD ? 10 : 0);
     new->team = egg->team;
     new->client = client;
     client->team = egg->team;

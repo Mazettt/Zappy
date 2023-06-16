@@ -15,6 +15,7 @@ namespace MyRayLib {
         private:
             ::Texture2D _texture;
         public:
+            Texture2D() : _texture() {}
             Texture2D(const std::string &path) {
                 _texture = LoadTexture(path.c_str());
             }

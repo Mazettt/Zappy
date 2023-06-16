@@ -49,6 +49,8 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::POPUP, "./gui/assets/popup.png");
     this->loadTexture(IResource::resourceType::POPUPTILE, "./gui/assets/tileInventory.png");
 
+    this->loadTexture(IResource::resourceType::SKYBOX_BACKGROUND, "./gui/assets/Skybox/background.png");
+
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
     this->loadTexture(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.png");

@@ -54,26 +54,23 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
 Vector3 Player::move(float deltaTime) {
     float moveSpeed = (1 * 1) * deltaTime;
     Vector3 currentPos = this->getPosition();
-    float currentX = currentPos.x;
-    float currentY = currentPos.y;
-    float currentZ = currentPos.z;
     float orientation = this->getRotationAngle();
     Vector3 newPos;
 
-    if ((orientationAxis::SOUTH == orientation)) {
-        newPos = { currentX, 0.0, currentZ + moveSpeed};
+    if ((float)orientationAxis::SOUTH == orientation) {
+        newPos = { currentPos.x, 0.0, currentPos.z + moveSpeed};
         if (newPos.z > this->_movePos.z)
             newPos.z = this->_movePos.z;
-    } else if ((orientationAxis::NORTH == orientation)) {
-        newPos = { currentX, 0.0, currentZ - moveSpeed};
+    } else if ((float)orientationAxis::NORTH == orientation) {
+        newPos = { currentPos.x, 0.0, currentPos.z - moveSpeed};
         if (newPos.z < this->_movePos.z)
             newPos.z = this->_movePos.z;
-    } else if ((orientationAxis::EAST == orientation)) {
-        newPos = { currentX + moveSpeed, 0.0, currentZ};
+    } else if ((float)orientationAxis::EAST == orientation) {
+        newPos = { currentPos.x + moveSpeed, 0.0, currentPos.z};
         if (newPos.x > this->_movePos.x)
             newPos.x = this->_movePos.x;
-    } else if ((orientationAxis::WEST == orientation)) {
-        newPos = { currentX - moveSpeed, 0.0, currentZ};
+    } else if ((float)orientationAxis::WEST == orientation) {
+        newPos = { currentPos.x - moveSpeed, 0.0, currentPos.z};
         if (newPos.x < this->_movePos.x)
             newPos.x = this->_movePos.x;
     }

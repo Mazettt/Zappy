@@ -13,9 +13,9 @@
 #include "raymath.h"
 
 #if defined(PLATFORM_DESKTOP)
-    #define GLSL_VERSION            330
+    #define GLSL_VERSION    330
 #else
-    #define GLSL_VERSION            100
+    #define GLSL_VERSION    100
 #endif
 
 namespace MyRayLib {
@@ -25,14 +25,14 @@ namespace MyRayLib {
             ::Mesh _cube;
             ::Model _skybox;
             ::Shader _shdrCubemap;
-            ::Texture2D _panorama;
+            MyRayLib::Texture2D _panorama;
             ::Image _img;
             bool _useHDR;
-            char _skyboxFileName[256];
+            // char _skyboxFileName[256];
             Skybox(float width, float height, float length) {
                 _cube = GenMeshCube(width, height, length);
                 _useHDR = true;
-                _skyboxFileName[256] = { 0 };
+                // _skyboxFileName[256] = { 0 };
             }
             ~Skybox() {
 
@@ -117,7 +117,7 @@ namespace MyRayLib {
                 };
                 rlViewport(0, 0, size, size);
                 rlActiveTextureSlot(0);
-                rlEnableTexture(_panorama.id);
+                rlEnableTexture(this->_panorama.getTexture().id);
                 for (int i = 0; i < 6; i++) {
                     rlSetUniformMatrix(shader.locs[SHADER_LOC_MATRIX_VIEW], fboViews[i]);
                     rlFramebufferAttach(fbo, cubemap.id, RL_ATTACHMENT_COLOR_CHANNEL0, RL_ATTACHMENT_CUBEMAP_POSITIVE_X + i, 0);
@@ -153,15 +153,15 @@ namespace MyRayLib {
                 _shdrCubemap = MyLoadShader("./gui/assets/Skybox/cubemap.vs", "./gui/assets/Skybox/cubemap.fs");
                 MySetShaderValue(_shdrCubemap, MyGetShaderLocation(_shdrCubemap, "environmentMap"), d, SHADER_UNIFORM_INT);
             }
-            void chooseSkyboxFile(const std::string filename) {
+            void chooseSkyboxFile(const MyRayLib::Texture2D &texture) {
                 if (_useHDR) {
-                    MyTextCopy(_skyboxFileName, filename.c_str());
-                    _panorama = MyLoadTexture(_skyboxFileName);
-                    _skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = MyGenTextureCubemap(_shdrCubemap, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+                    // MyTextCopy(_skyboxFileName, filename.c_str());
+                    this->_panorama = texture;
+                    this->_skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = MyGenTextureCubemap(_shdrCubemap, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
                 } else {
-                    _img = MyLoadImage(filename.c_str());
-                    _skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(_img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
-                    MyUnloadImage(_img);
+                    // _img = MyLoadImage(filename.c_str());
+                    // _skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(_img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
+                    // MyUnloadImage(_img);
                 }
             }
     };

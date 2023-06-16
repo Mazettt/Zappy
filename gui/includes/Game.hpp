@@ -42,8 +42,9 @@ namespace ZappyGui {
             std::string _ip;
             int _port;
             Popup _popup;
-            ShowPlayerData _showPlayerData;
             std::shared_ptr<Player> _playerTmp;
+            ServerLink _link;
+            ShowPlayerData _showPlayerData;
             size_t _konamiIndex;
 
         public:
@@ -57,6 +58,5 @@ namespace ZappyGui {
             void drawMenu();
             void switchToGame();
             void checkKonamiCode(MyRayLib::Music &musicGame);
-            ServerLink _link;
     };
 }

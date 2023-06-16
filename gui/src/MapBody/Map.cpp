@@ -79,7 +79,6 @@ void Map::collectResource(int playerID, IResource::resourceType type) {
     p->animationGet();
     int key = std::round(pos.z * this->_size.x + pos.x);
     p->addOnInventory(type, 1);
-    assert(key < this->_map.size());
     this->_map.at(key)->removeResource(type);
 }
 
@@ -128,7 +127,6 @@ bool Map::movePlayer(int playerID, float x, float z, Player::orientationAxis ori
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
     if (p != nullptr) {
-        Vector3 pos = p->getPosition();
         p->animationWalk();
         p->_movePos = {x, 0.0, z};
         p->setRotationAngle((float)orientation);
