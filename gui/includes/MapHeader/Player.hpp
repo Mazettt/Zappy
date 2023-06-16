@@ -19,8 +19,8 @@ namespace ZappyGui {
             int _frameCounterAnimation;
             MyRayLib::AnimationsModel &_animation;
             std::unordered_map<IResource::resourceType, int> _inventory;
-            void move(float deltaTime);
-            bool updateAnimation(float deltaTime);
+            Vector3 move(float deltaTime);
+            bool updateAnimation(Vector3 newPos, float deltaTime);
 
         public:
             enum animationPlayerType {

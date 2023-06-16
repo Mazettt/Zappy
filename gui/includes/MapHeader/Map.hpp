@@ -36,7 +36,7 @@ namespace ZappyGui {
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
             bool movePlayer(int playerID, float x, float z, Player::orientationAxis orientation);
-            bool deadPlayer(int playerID);
+            void deadPlayer(int playerID);
             void setPlayerLevel(int playerID, int level);
             bool lvlupPlayer(std::vector<int> playersID, int level);
             void StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z);
@@ -45,7 +45,7 @@ namespace ZappyGui {
             void collectResource(int playerID, IResource::resourceType type);
             void updateMusic();
             void resetGame();
-            void update(float deltaTime);
+            void updatePlayer(float deltaTime);
             Vector2 getSize() const { return _size; };
             void updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame);
     };

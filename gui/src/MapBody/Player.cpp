@@ -51,7 +51,7 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
     return false;
 }
 
-void Player::move(float deltaTime) {
+Vector3 Player::move(float deltaTime) {
     float moveSpeed = (1 * 1) * deltaTime;
     Vector3 currentPos = this->getPosition();
     float currentX = currentPos.x;
@@ -78,24 +78,20 @@ void Player::move(float deltaTime) {
             newPos.x = this->_movePos.x;
     }
     this->setPosition(newPos);
+    return newPos;
 }
 
-
-bool Player::updateAnimation(float deltaTime) { //TODO
-    float epsilon = 0.0001f;
-
-    if (std::abs(this->_movePos.x) < epsilon && std::abs(this->_movePos.z) < epsilon) {
-        if (this->getAnimationType() == Player::animationPlayerType::PLAYER_WALK) {
+bool Player::updateAnimation(Vector3 newPos, float deltaTime) {
+    if (this->getAnimationType() == animationPlayerType::PLAYER_WALK
+        && newPos.x == this->_movePos.x && newPos.z == this->_movePos.z) {
+        this->animationWait();
+    }
+    if (this->_frameCounterAnimation >= 48) {
+        if (this->getAnimationType() == animationPlayerType::PLAYER_GET) {
             this->animationWait();
         }
-        if (this->_animationCounter > 0) {
-            this->_animationCounter -= 1;
-        } else if (this->_animationCounter <= 0) {
-            if (this->getAnimationType() == Player::animationPlayerType::PLAYER_DIE) {
-                return true;
-            } else {
-                this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
-            }
+        if (this->getAnimationType() == animationPlayerType::PLAYER_DIE) {
+            return true;
         }
     }
     this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
@@ -103,8 +99,8 @@ bool Player::updateAnimation(float deltaTime) { //TODO
 }
 
 bool Player::update(float deltaTime) {
-    this->move(deltaTime);
-    return this->updateAnimation(deltaTime);
+    Vector3 newPos = this->move(deltaTime);
+    return this->updateAnimation(newPos, deltaTime);
 }
 
 const std::unordered_map<IResource::resourceType, int> &Player::getInventory() const {
@@ -143,7 +139,7 @@ void Player::animationWait() {
 
 void Player::animationWalk() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_WALK);
-    this->_frameCounterAnimation = 0;
+    // this->_frameCounterAnimation = 0;
 }
 
 void Player::noAnimation() {

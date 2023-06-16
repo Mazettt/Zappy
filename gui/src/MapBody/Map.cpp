@@ -59,7 +59,7 @@ void Map::EndPlayersLeveling(float x, float z, bool result) {
     for (std::shared_ptr<Player> p : this->_players) {
         Vector3 pos = p->getPosition();
         if (pos.x == x && pos.z == z) {
-            p->animationWait(); // TODO animation if success or not
+            p->animationWait();
         }
     }
 }
@@ -76,6 +76,7 @@ void Map::dropResource(int playerID, IResource::resourceType type) {
 void Map::collectResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
     Vector3 pos = p->getPosition();
+    p->animationGet();
     int key = std::round(pos.z * this->_size.x + pos.x);
     p->addOnInventory(type, 1);
     assert(key < this->_map.size());
@@ -128,28 +129,27 @@ bool Map::movePlayer(int playerID, float x, float z, Player::orientationAxis ori
 
     if (p != nullptr) {
         Vector3 pos = p->getPosition();
+        p->animationWalk();
         p->_movePos = {x, 0.0, z};
         p->setRotationAngle((float)orientation);
-        p->animationWalk();
         return true;
     }
     return false;
 }
 
-bool Map::deadPlayer(int playerID) {
+void Map::deadPlayer(int playerID) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
     if (p != nullptr) {
         p->animationDie();
-        return true;
     }
-    return false;
 }
 
-void Map::update(float deltaTime) {
+void Map::updatePlayer(float deltaTime) {
     for (auto it = this->_players.begin(); it != this->_players.end();) {
         std::shared_ptr<Player> player = *it;
-        if (player->update(deltaTime)) {
+        player->draw();
+        if (player->update(deltaTime) == true) {
             it = this->_players.erase(it);
             continue;
         }
@@ -199,10 +199,6 @@ void Map::draw() {
                 tile->_cube._color.b = 160;
             }
         }
-    }
-    for (auto it = this->_players.begin(); it != this->_players.end(); ++it) {
-        std::shared_ptr<Player> player = *it;
-        player->draw();
     }
 }
 

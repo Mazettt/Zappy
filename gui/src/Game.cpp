@@ -208,7 +208,6 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     //** fps
     float deltaTime = GetFrameTime();
     this->_camera.updateSync(deltaTime);
-    this->_map.update(deltaTime);
 
     //** draw
     this->_camera.updateOnce();
@@ -219,6 +218,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
+    this->_map.updatePlayer(deltaTime);
     this->_map.draw();
     if (this->_map._players.size() != 0) {
         selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
