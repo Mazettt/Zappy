@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include "../../includes/MapHeader/Player.hpp"
+#include <cmath>
 
 using namespace ZappyGui;
 
@@ -52,27 +53,46 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
 
 void Player::move(float deltaTime) { //TODO
     float moveSpeed = 0.06;
-    Vector3 pos = this->getPosition();
-    float moveX = 0.0f;
-    float moveZ = 0.0f;
+    // Vector3 currentPos = this->getPosition();
+    float currentX = this->getPosition().x;
+    float currentY = this->getPosition().y;
+    float currentZ = this->getPosition().z;
+    float orientation = this->getRotationAngle();
 
-    if (this->_movePos.x > 0.0f) {
-        moveX = std::min(moveSpeed, this->_movePos.x);
-        this->_movePos.x -= moveX;
-    } else if (this->_movePos.x < 0.0f) {
-        moveX = std::max(-moveSpeed, this->_movePos.x);
-        this->_movePos.x -= moveX;
-    }
-    if (this->_movePos.z > 0.0f) {
-        moveZ = std::min(moveSpeed, this->_movePos.z);
-        this->_movePos.z -= moveZ;
-    } else if (this->_movePos.z < 0.0f) {
-        moveZ = std::max(-moveSpeed, this->_movePos.z);
-        this->_movePos.z -= moveZ;
-    }
-    pos.x += moveX;
-    pos.z += moveZ;
-    this->setPosition(pos);
+    if ((this->_movePos.x == currentX) && (this->_movePos.y == currentY) && (this->_movePos.z == currentZ))
+        return;
+    if ((orientationAxis::SOUTH == orientation) && (std::round(currentZ) == 9))
+        this->setPosition({ currentX, 0.0, 0.0});
+    else if ((orientationAxis::NORTH == orientation) && (std::round(currentZ) == 0))
+        this->setPosition({ currentX, 0.0, 9.0});
+    else if ((orientationAxis::EAST == orientation) && (std::round(currentZ) == 9))
+        this->setPosition({ 0.0, 0.0, currentZ});
+    else if ((orientationAxis::WEST == orientation) && (std::round(currentZ) == 0))
+        this->setPosition({ 9.0, 0.0, currentZ});
+    else
+        this->setPosition(this->_movePos);
+
+
+    // float moveX = 0.0f;
+    // float moveZ = 0.0f;
+
+    // if (this->_movePos.x > 0.0f) {
+    //     moveX = std::min(moveSpeed, this->_movePos.x);
+    //     this->_movePos.x -= moveX;
+    // } else if (this->_movePos.x < 0.0f) {
+    //     moveX = std::max(-moveSpeed, this->_movePos.x);
+    //     this->_movePos.x -= moveX;
+    // }
+    // if (this->_movePos.z > 0.0f) {
+    //     moveZ = std::min(moveSpeed, this->_movePos.z);
+    //     this->_movePos.z -= moveZ;
+    // } else if (this->_movePos.z < 0.0f) {
+    //     moveZ = std::max(-moveSpeed, this->_movePos.z);
+    //     this->_movePos.z -= moveZ;
+    // }
+    // pos.x += moveX;
+    // pos.z += moveZ;
+    // this->setPosition(pos);
 }
 
 bool Player::updateAnimation(float deltaTime) { //TODO
