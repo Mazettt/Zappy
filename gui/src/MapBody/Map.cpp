@@ -128,7 +128,7 @@ bool Map::movePlayer(int playerID, float x, float z, Player::orientationAxis ori
 
     if (p != nullptr) {
         Vector3 pos = p->getPosition();
-        p->_movePos = {x - pos.x, 0.0, z - pos.z};
+        p->_movePos = {x, 0.0, z};
         p->setRotationAngle((float)orientation);
         p->animationWalk();
         return true;
