@@ -9,18 +9,13 @@ import ai.zappy_dataStruct as zds
 import ai.zappy_commands as zc
 
 def POVmanager(p: zds.Player):
-    tmp_vision = zc.look(p.client)
+    visionString = zc.look(p.client)
     p.POV.vision = []
-    for x in range(0, len(tmp_vision)):
-        itemString = ""
-        for y in range(0, len(tmp_vision[x])):
-            itemString = itemString + tmp_vision[x][y]
-        itemString = itemString.translate(str.maketrans('', '', '[]'))
-        tmpInv = itemParser(itemString)
+    visionString = visionString.translate(str.maketrans('', '', '[]'))
+    visionList = visionString.split(',')
+    for x in range(0, len(visionList)):
+        tmpInv = itemParser(visionList[x])
         p.POV.vision.append(tmpInv)
-    if (len(p.POV.vision) == 0):
-        p.POV.vision.append(zds.Tile(0,0,0,0,0,0,0))
-        print("POV was empty !\n")
 
 def itemParser(itemString):
     tmpInv = zds.Tile(0, 0, 0, 0, 0, 0, 0)
@@ -43,17 +38,6 @@ def itemParser(itemString):
         if (itemList[x] == "thystame"):
             tmpInv.thystames += 1
     return tmpInv
-
-def hasFood(p: zds.Player, tileNBR):
-    if (p.POV.vision[tileNBR].food > 0):
-        return True
-    return False
-
-def lookForFood(p: zds.Player):
-    if (hasFood(p, 1)):
-        p.remindToTurn = "L"
-    if (hasFood(p, 3)):
-        p.remindToTurn = "R"
 
     # maxRange = (p.stats.level**2 + 2 * p.stats.level)
     # for x in range (0, maxRange):

@@ -36,6 +36,9 @@ class Tile:
         self.phiras = phiras
         self.thystames = thystames
 
+    def __str__(self):
+        return f"Tile: nearbyPlayers={self.nearbyPlayers}, linemates={self.linemates}, deraumeres={self.deraumeres}, siburs={self.siburs}, mendianes={self.mendianes}, phiras={self.phiras}, thystames={self.thystames}"
+
 class Client:
     def __init__(self, port, machine):
         self.port = port

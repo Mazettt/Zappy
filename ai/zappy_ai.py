@@ -39,10 +39,10 @@ def main():
     p.stats.playerNB = client_num
     zma.gameLoop(p)
 
-try:
-    main()
-except Exception as e:
-    zp.print_log("Error: {}".format(e))
+# try:
+main()
+# except Exception as e:
+#     zp.print_log("Error: {}".format(e))
 # IA :
 # ia verif si y'en a une
 # verif buffer sellect

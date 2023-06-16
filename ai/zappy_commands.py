@@ -11,6 +11,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import ai.zappy_network_utils as znu
 import ai.zappy_inventory as zi
 import ai.zappy_dataStruct as zds
+import ai.zappy_parsing as zp
 
 class Commands:
     FORWARD = {"Forward\n", 7}
@@ -52,28 +53,13 @@ def left(client: zds.Client):
 
 def look(client: zds.Client):
     znu.send_to_server(client.sock, "Look\n")
-    resp = znu.multiple_recv_from_server(client.sock, 200)
-    while (resp[0] != '['):
-        client.buffer.append(resp)
-        resp = znu.multiple_recv_from_server(client.sock, 200)
-    res_resp = [[]]
-    resp = resp[1:]
-    resp = resp.split(',')
-    for i in range(0, len(resp)):
-        if resp[i] == "]":
-            break
-        if i % 2 == 0:
-            res_resp.append([])
-        res_resp[-1].append(resp[i])
-    for i in range(0, len(res_resp)):
-        for j in range(0, len(res_resp[i])):
-            res_resp[i][j] = res_resp[i][j].replace("\n", "")
-            res_resp[i][j] = res_resp[i][j].replace("]", "")
-    full_resp = []
-    for i in range(0, len(res_resp)):
-        for j in range(0, len(res_resp[i])):
-            full_resp.append(res_resp[i][j])
-    return full_resp
+    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = zp.lookMessageParser(client, resp)
+    while (resp == "NOTFOUND"):
+        resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.lookMessageParser(client, resp)
+    return resp
+
 
 
 def inventory(client: zds.Client):
