@@ -88,7 +88,7 @@ class DQNAgent:
         self.model = load_model(name)
 
 def train_agent(p, agent, clt):
-    for episode in range(500):
+    while True:
         action = agent.act(p.stats.get_state())
         # get_state() returns a numpy array of the player's state
         # [0] = inventory
@@ -101,6 +101,7 @@ def train_agent(p, agent, clt):
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
@@ -109,6 +110,7 @@ def train_agent(p, agent, clt):
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
@@ -117,6 +119,7 @@ def train_agent(p, agent, clt):
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
@@ -125,6 +128,7 @@ def train_agent(p, agent, clt):
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
@@ -137,60 +141,72 @@ def train_agent(p, agent, clt):
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
         elif action == 5:
-            if (zc.take(clt, "food")) == "ko\n":
-                print("NO FOOD LEFT")
+            resp = zc.take(clt, "food")
+            if resp == "dead\n":
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
+            if resp == "ko\n":
+                reward = -100
+                agent.reward = reward
+                agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
             reward = 10
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
         elif action == 6:
-            if (zc.take(clt, "linemate")) == "ko\n":
+            if (zc.take(clt, "linemate")) == "dead\n":
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
         elif action == 7:
-            if (zc.take(clt, "deraumere")) == "ko\n":
+            if (zc.take(clt, "deraumere")) == "dead\n":
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
         elif action == 8:
-            if (zc.take(clt, "sibur")) == "ko\n":
+            if (zc.take(clt, "sibur")) == "dead\n":
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False) 
         elif action == 9:
-            if (zc.take(clt, "mendiane")) == "ko\n":
+            if (zc.take(clt, "mendiane")) == "dead\n":
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False) 
         elif action == 10:
-            if (zc.take(clt, "phiras")) == "ko\n":
+            if (zc.take(clt, "phiras")) == "dead\n":
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False) 
         elif action == 11:
-            if (zc.take(clt, "thystame")) == "ko\n":
+            if (zc.take(clt, "thystame")) == "dead\n":
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
+                break
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False) 
@@ -206,7 +222,7 @@ def train_agent(p, agent, clt):
 
 
 def main():
-    for i in range(1):
+    for i in range(100):
         print("Training number: {}".format(i))
         args = zp.get_args()
         p = zds.Player(args["port"], args["name"], args["machine"])
