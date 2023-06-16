@@ -7,6 +7,31 @@
 
 import sys
 import time
+import ai.zappy_dataStruct as zds
+
+def messageParser(c: zds.Client, messageGot, awaitedMessageList):
+    messageList = messageGot.split('\n')
+    messageToReturn = "NOTFOUND"
+    for x in range (len(messageList)):
+        for y in range (len(awaitedMessageList)):
+            if (messageList[x] != awaitedMessageList[y]):
+                c.buffer.append(messageList[x])
+            else:
+                messageToReturn = messageList[x]
+    return messageToReturn
+
+def lookMessageParser(c: zds.Client, messageGot):
+    print("message got {}\n".format(messageGot))
+    messageList = messageGot.split('\n')
+    messageToReturn = "NOTFOUND"
+    for x in range (0, len(messageList)):
+        if (messageList[x] == ""):
+            continue
+        if (messageList[x][0] != '['):
+            c.buffer.append(messageList[x])
+        else:
+            messageToReturn = messageList[x]
+    return messageToReturn
 
 def print_usage():
     print("USAGE: ./zappy_ai -p port -n name -h machine\n\tport\tis the port number\n\tname\tis the name of the team\n\tmachine\tis the name of the machine; localhost by default")
