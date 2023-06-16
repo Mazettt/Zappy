@@ -53,7 +53,9 @@ static void eject(zappy_t *zappy, UNUSED char *command, int ci)
     pos_t move = get_move(zappy, player);
     bool check = false;
     player_t *p = NULL;
-
+    int it = 0;
+    NOTIF_GUIS(it, send_pex(zappy, it, player));
+    it = 0;
     for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
         if (p->client && p != player &&
         p->x == player->x && p->y == player->y) {
@@ -61,8 +63,7 @@ static void eject(zappy_t *zappy, UNUSED char *command, int ci)
             p->y = move.y;
             sdprintf(zappy, p->client->command.s, "eject: %d\n", get_direction(
             (pos_t){p->x, p->y}, (pos_t){player->x, player->y}, p->direction));
-            int it = 0;
-            NOTIF_GUIS(it, send_pex(zappy, it, p));
+            NOTIF_GUIS(it, send_ppo(zappy, it, p));
             check = true;
         }
     }
