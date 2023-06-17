@@ -9,6 +9,7 @@
 #include "./MyRayLibHeader/Texture.hpp"
 #include "./MyRayLibHeader/Color.hpp"
 #include "./MyRayLibHeader/Window.hpp"
+#include "./MyRayLibHeader/Draw.hpp"
 
 using namespace MyRayLib;
 

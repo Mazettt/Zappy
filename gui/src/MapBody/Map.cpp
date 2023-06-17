@@ -156,7 +156,7 @@ void Map::updatePlayer(float deltaTime) {
 }
 
 void Map::draw() {
-    const bool pressed = IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
+    const bool pressed = MyRayLib::Mouse::MyIsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
     bool hit = false;
     for (int y = 0; y < this->_size.y; ++y) {
         for (int x = 0; x < this->_size.x; ++x) {
@@ -168,7 +168,7 @@ void Map::draw() {
                 Vector3 cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
                 BoundingBox box = {(Vector3){ cubePosition.x - cubeSize.x / 2, cubePosition.y - cubeSize.y / 2, cubePosition.z - cubeSize.z / 2 },
                                    (Vector3){ cubePosition.x + cubeSize.x / 2, cubePosition.y + cubeSize.y / 2, cubePosition.z + cubeSize.z / 2 }};
-                if (GetRayCollisionBox(GetMouseRay(GetMousePosition(), this->_camera.getCamera()), box).hit) {
+                if (GetRayCollisionBox(MyRayLib::Mouse::MyGetMouseRay(MyRayLib::Mouse::MyGetMousePosition(), this->_camera.getCamera()), box).hit) {
                     _selectedTileKey = _selectedTileKey == key ? -1 : key;
                     hit = true;
                     this->_link.askTileContent(cubePosition.x, cubePosition.z);

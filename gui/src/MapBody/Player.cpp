@@ -136,7 +136,7 @@ void Player::animationWait() {
 
 void Player::animationWalk() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_WALK);
-    // this->_frameCounterAnimation = 0;
+    this->_frameCounterAnimation = 0;
 }
 
 void Player::noAnimation() {

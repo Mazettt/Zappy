@@ -85,14 +85,14 @@ namespace MyRayLib {
             void MyrlEnableDepthMask() {
                 rlEnableDepthMask();
             }
-            void MyUnloadShader(::Shader shader) {
-                UnloadShader(shader);
+            void MyUnloadShader() {
+                UnloadShader(this->_skybox.materials[0].shader);
             }
-            void MyUnloadTexture(::Texture2D texture) {
-                UnloadTexture(texture);
+            void MyUnloadTexture() {
+                UnloadTexture(this->_skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
             }
-            void MyUnloadModel(::Model model) {
-                UnloadModel(model);
+            void MyUnloadModel() {
+                UnloadModel(this->_skybox);
             }
             ::TextureCubemap MyGenTextureCubemap(Shader shader, int size, int format)
             {

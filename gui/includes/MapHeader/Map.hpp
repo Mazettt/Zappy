@@ -11,6 +11,7 @@
 #include "Tile.hpp"
 #include "../resources/FactoryResource.hpp"
 #include "../MyRayLibHeader/Music.hpp"
+#include "../MyRayLibHeader/Mouse.hpp"
 #include "../MyRayLibHeader/FreeCamera.hpp"
 #include "../Server/ServerLink.hpp"
 

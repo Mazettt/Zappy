@@ -163,9 +163,10 @@ void Game::run() {
         this->_raylibwindow.MyEndDrawing();
     }
     this->_raylibwindow.MyCloseAudioDevice();
-    this->_skyboxMesh.MyUnloadShader(this->_skyboxMesh._skybox.materials[0].shader);
-    this->_skyboxMesh.MyUnloadTexture(this->_skyboxMesh._skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture);
-    this->_skyboxMesh.MyUnloadModel(this->_skyboxMesh._skybox);
+    // on descructor ?
+    this->_skyboxMesh.MyUnloadShader();
+    this->_skyboxMesh.MyUnloadTexture();
+    this->_skyboxMesh.MyUnloadModel();
 }
 
 void Game::drawMenu() {
@@ -184,20 +185,20 @@ void Game::drawMenu() {
     this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
     this->_skyboxMesh.MyrlDisableDepthMask();
-    DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_raylibdrawing.MyDrawGrid(10, 1.0f);
     this->_playerTmp->draw();
     this->_camera.endMode3D();
 
-    button0.MyDrawTextureRec(button0.button, button0.sourceRec, (Vector2){ button0.btnBounds.x, button0.btnBounds.y }, WHITE);
-    button1.MyDrawTextureRec(button1.button, button1.sourceRec, (Vector2){ button1.btnBounds.x, button1.btnBounds.y }, WHITE);
-    logo.MyDrawTextureRec(logo.button, logo.sourceRec, (Vector2){ logo.btnBounds.x, logo.btnBounds.y }, WHITE);
+    button0.MyDrawTextureRec(WHITE);
+    button1.MyDrawTextureRec(WHITE);
+    logo.MyDrawTextureRec( WHITE);
 }
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {
-    float deltaTime = GetFrameTime();
+    float deltaTime = this->_raylibwindow.MyGetFrameTime();
     this->_camera.updateSync(deltaTime);
 
     this->_camera.updateOnce();
@@ -205,7 +206,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
     this->_skyboxMesh.MyrlDisableDepthMask();
-    DrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_map.updatePlayer(deltaTime);

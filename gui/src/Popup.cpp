@@ -24,8 +24,8 @@ void Popup::setTexture(const MyRayLib::Texture2D &background) {
     int width = this->_background.width;
     int height = this->_background.height;
 
-    this->_x = (GetScreenWidth() - width) / 2;
-    this->_y = (GetScreenHeight() - height) / 2;
+    this->_x = (MyRayLib::MyRayLibWindow::MyGetScreenWidth() - width) / 2;
+    this->_y = (MyRayLib::MyRayLibWindow::MyGetScreenHeight() - height) / 2;
 
 }
 
@@ -52,7 +52,7 @@ bool Popup::getStatus() {
 void Popup::show() {
     if (_show == false)
         return;
-    DrawTexture(this->_background, this->_x, this->_y, WHITE);
-    DrawText(this->_title.c_str(), this->_x + 162, this->_y + 78, 30, this->_titleColor);
-    DrawText(this->_description.c_str(), this->_x + 170, this->_y + 140, 20, this->_textColor);
+    MyRayLib::Draw::MyDrawTexture(this->_background, this->_x, this->_y, WHITE);
+    MyRayLib::Draw::MyDrawText(this->_title.c_str(), this->_x + 162, this->_y + 78, 30, this->_titleColor);
+    MyRayLib::Draw::MyDrawText(this->_description.c_str(), this->_x + 170, this->_y + 140, 20, this->_textColor);
 }

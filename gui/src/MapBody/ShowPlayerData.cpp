@@ -16,7 +16,7 @@ MyRayLib::ShowPlayerData::ShowPlayerData(ZappyGui::ServerLink &link) : _link(lin
 
     this->_font = LoadFont("./Dongle-Bold.ttf");
 
-    ImageDrawTextEx(&this->_image, this->_font, "PARROTS & CAT", (Vector2){ 300, 230 }, (float)this->_font.baseSize, -2, WHITE);
+    MyRayLib::Draw::MyImageDrawTextEx(&this->_image, this->_font, "PARROTS & CAT", (Vector2){ 300, 230 }, (float)this->_font.baseSize, -2, WHITE);
 
     this->_texture = LoadTextureFromImage(this->_image);
     this->_posX = 15.0;
@@ -72,7 +72,7 @@ void MyRayLib::ShowPlayerData::drawInventory(int resourceX, int resourceY, const
 
     for (const auto& type : resourceTypes) {
         std::string tmpStr = "x" + std::to_string(this->getNumberOfResource(type, inventory));
-        DrawText(tmpStr.c_str(), resourceX, resourceY += 48, 25, BLACK);
+        MyRayLib::Draw::MyDrawText(tmpStr.c_str(), resourceX, resourceY += 48, 25, BLACK);
 
         if (isAltLine) {
             resourceX += 125;
@@ -103,11 +103,11 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
     this->_posY = 60.0;
     if (playersList.empty())
         return;
-    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_PAGE_DOWN)) {
+    if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_ENTER) || MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_DOWN)) {
         this->_index = (this->_index >= (playersList.size() - 1)) ? 0 : this->_index + 1;
         this->_link.askPlayerInventory(this->_index);
     }
-    if (IsKeyPressed(KEY_PAGE_UP)) {
+    if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_UP)) {
         this->_index = (this->_index <= 0) ? playersList.size() - 1 : this->_index - 1;
         this->_link.askPlayerInventory(this->_index);
     }
@@ -119,15 +119,15 @@ void MyRayLib::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
         if (i == this->_index) {
             float resourceX = 20;
             float resourceY = 910;
-            DrawText(playerNumber, this->_posX, this->_posY, 20, ORANGE);
-            DrawTexture(this->_texture, resourceX, resourceY, WHITE);
-            DrawText(std::to_string(player->getPlayerLevel()).c_str(), resourceX += 75, resourceY += 20, 35, BLACK);
-            DrawText((player->getTeamName()).c_str(), resourceX + 115, resourceY, 25, BLACK);
+            MyRayLib::Draw::MyDrawText(playerNumber, this->_posX, this->_posY, 20, ORANGE);
+            MyRayLib::Draw::MyDrawTexture(this->_texture, resourceX, resourceY, WHITE);
+            MyRayLib::Draw::MyDrawText(std::to_string(player->getPlayerLevel()).c_str(), resourceX += 75, resourceY += 20, 35, BLACK);
+            MyRayLib::Draw::MyDrawText((player->getTeamName()).c_str(), resourceX + 115, resourceY, 25, BLACK);
 
             resourceX -= 10;
             drawInventory(resourceX, resourceY, tmpInventory, resourceTypes);
         } else {
-            DrawText(playerNumber, this->_posX, this->_posY, 20, BLACK);
+            MyRayLib::Draw::MyDrawText(playerNumber, this->_posX, this->_posY, 20, BLACK);
         }
 
         if (this->_posY >= 750) {

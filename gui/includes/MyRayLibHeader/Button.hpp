@@ -37,26 +37,26 @@ namespace MyRayLib {
                 this->_callback = callback;
             }
             ~Button(){};
-            void ButtonSetPosition(float x, float y, float width, float height) {
+            void ButtonSetPosition(float x, float y, float width, float height) { // MOVE TO MOUSE
                 this->btnBounds = { x, y, width, height };
             }
-            Vector2 MyGetMousePosition() {
+            Vector2 MyGetMousePosition() { // MOVE TO MOUSE
                 return this->mousePoint;
             }
             bool MyCheckCollisionPointRec(Vector2 point, Rectangle rec) {
                 return CheckCollisionPointRec(point, rec);
             }
-            bool MyIsMouseButtonDown(int button) {
+            bool MyIsMouseButtonDown(int button) { // MOVE TO MOUSE
                 return IsMouseButtonDown(button);
             }
-            bool MyIsMouseButtonReleased(int button) {
+            bool MyIsMouseButtonReleased(int button) { // MOVE TO MOUSE
                 return IsMouseButtonReleased(button);
             }
             void MyPlaySound(::Sound sound) {
                 PlaySound(sound);
             }
-            void MyDrawTextureRec(::Texture2D texture, ::Rectangle sourceRec, ::Vector2 position, ::Color tint) {
-                DrawTextureRec(texture, sourceRec, position, tint);
+            void MyDrawTextureRec(::Color tint) {
+                DrawTextureRec(this->button, this->sourceRec, { this->btnBounds.x, this->btnBounds.y }, tint);
             }
             void MyUnloadTexture(::Texture2D texture) {
                 UnloadTexture(texture);

@@ -109,13 +109,13 @@ void Tile::drawContentPopup(const MyRayLib::Texture2D &texture) {
 
     MyRayLib::Draw::MyDrawTexture(texture.getTexture(), 1750, y, WHITE);
     x += 85;
-    DrawText(std::to_string(static_cast<int>(this->_cube.getPos().x)).c_str(), x - 10, y += 16, 25, BLACK);
-    DrawText(std::to_string(static_cast<int>(this->_cube.getPos().z)).c_str(), x - 10, y += 30, 25, BLACK);
+    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().x)).c_str(), x - 10, y += 16, 25, BLACK);
+    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().z)).c_str(), x - 10, y += 30, 25, BLACK);
 
 
     for (const auto &type : resourceTypes) {
         std::string tmp = "x" + std::to_string(this->countSpecificResource(type));
-        DrawText(tmp.c_str(), x, y += 50, 30, BLACK);
+        MyRayLib::Draw::MyDrawText(tmp.c_str(), x, y += 50, 30, BLACK);
     }
 }
 

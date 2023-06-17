@@ -35,6 +35,9 @@ namespace MyRayLib {
             void MySetTargetFPS(int fps) {
                 SetTargetFPS(fps);
             }
+            float MyGetFrameTime() {
+                return GetFrameTime();
+            }
             void MyDisableCursor(void) {
                 DisableCursor();
             }
@@ -53,7 +56,7 @@ namespace MyRayLib {
             void MyUpdateCamera(Camera *camera, int mode) {
                 UpdateCamera(camera, mode);
             }
-            bool MyIsKeyPressed(int key) {
+            static bool MyIsKeyPressed(int key) {
                 return IsKeyPressed(key);
             }
             void MyInitAudioDevice() {
@@ -65,7 +68,11 @@ namespace MyRayLib {
             void MyToggleFullscreen() {
                 ToggleFullscreen();
             }
-        protected:
-        private:
+            static int MyGetScreenWidth() {
+                return GetScreenWidth();
+            }
+            static int MyGetScreenHeight() {
+                return GetScreenHeight();
+            }
     };
 }
