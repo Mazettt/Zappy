@@ -13,22 +13,19 @@
 #include "Player.hpp"
 #include "../Server/ServerLink.hpp"
 
-namespace MyRayLib {
+namespace ZappyGui {
     class ShowPlayerData {
         private:
-            ::Image _image;
-            ::Font _font;
-            ::Texture2D _texture;
+            MyRayLib::Texture2D _texture;
             float _posX;
             float _posY;
             size_t _index;
-            ::Model _model;
             void drawInventory(int resourceX, int resourceY, const std::unordered_map<ZappyGui::IResource::resourceType, int>& inventory, const std::vector<ZappyGui::IResource::resourceType>& resourceTypes);
             ZappyGui::ServerLink &_link;
         public:
             ShowPlayerData(ZappyGui::ServerLink &link);
             ~ShowPlayerData();
-            void setModel(const MyRayLib::Model &model);
+            void setTexture(const MyRayLib::Texture2D &texture);
             int getPlayerIndexSelected();
             void ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players);
             std::string getRessourceName(ZappyGui::IResource::resourceType type);

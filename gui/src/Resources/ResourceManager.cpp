@@ -25,6 +25,7 @@ void ResourceManager::initialize() {
     this->loadModel(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
     this->loadTexture(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.png");
     this->loadAnimation(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
+    this->loadTexture(IResource::resourceType::PLAYER_STATS, "./gui/assets/player_stats.png");
 
     // // load texture
     this->loadModel(IResource::resourceType::DERAUMERE, "./gui/assets/Stones/stone_model.obj");

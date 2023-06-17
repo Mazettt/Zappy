@@ -53,8 +53,8 @@ void Game::switchToGame()
 }
 
 void Game::initialize() {
+    this->_showPlayerData.setTexture(this->_manager.getTexture(IResource::resourceType::PLAYER_STATS));
     this->_popup.setTexture(this->_manager.getTexture(IResource::resourceType::POPUP));
-    this->_showPlayerData.setModel(this->_manager.getModel(IResource::resourceType::PLAYER_SELECTOR));
     this->_raylibwindow.MySetTargetFPS(60);
 
     this->_BoolCloseWin = false;
