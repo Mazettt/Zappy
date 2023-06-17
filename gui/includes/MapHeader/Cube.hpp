@@ -13,17 +13,17 @@
 namespace ZappyGui {
     class Cube {
         private:
-            Vector3 _pos;
+            MyRayLib::Vector3D _pos;
             float _width;
             float _height;
             float _length;
 
         public:
             Color _color;
-            Cube(Vector3 pos, float width, float height, float length, Color color);
+            Cube(MyRayLib::Vector3D pos, float width, float height, float length, Color color);
             Cube(const Cube& other);
             Cube &operator=(const Cube &cube);
-            Vector3 getPos() const;
+            MyRayLib::Vector3D getPos() const;
             float getWidth() const;
             float getHeight() const;
             float getLength() const;

@@ -6,7 +6,7 @@
 */
 
 #pragma once
-#include "raylib.h"
+#include "../MyRayLibHeader/Vector3D.hpp"
 
 namespace ZappyGui {
     class IResource {
@@ -33,7 +33,7 @@ namespace ZappyGui {
             virtual void draw() = 0;
             virtual IResource::resourceType getType() = 0;
             virtual void setPosition(float x, float z) = 0;
-            virtual const Vector3 &getPosition() = 0;
+            virtual const MyRayLib::Vector3D &getPosition() = 0;
             virtual int getId() = 0;
     };
 }

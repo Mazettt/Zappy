@@ -36,7 +36,7 @@ void Map::createMap(int x, int y) {
     for (int y = 0; y < this->_size.getY(); ++y) {
         for (int x = 0; x < this->_size.getX(); ++x) {
             int key = y * this->_size.getX() + x;
-            Vector3 cubePosition = { widthCube * x, 0.0f, lengthCube * y };
+            MyRayLib::Vector3D cubePosition = { widthCube * x, 0.0f, lengthCube * y };
             Cube cube(cubePosition, widthCube, heightCube, lengthCube, color);
             std::shared_ptr<Tile> tile = std::make_shared<Tile>(cube);
             this->_map[key] = std::move(tile);
@@ -57,8 +57,8 @@ void Map::StartPlayersLeveling(std::vector<int> playersID, int level, float x, f
 void Map::EndPlayersLeveling(float x, float z, bool result) {
     (void) result;
     for (std::shared_ptr<Player> p : this->_players) {
-        Vector3 pos = p->getPosition();
-        if (pos.x == x && pos.z == z) {
+        MyRayLib::Vector3D pos = p->getPosition();
+        if (pos.getX() == x && pos.getZ() == z) {
             p->animationWait();
         }
     }
@@ -66,8 +66,8 @@ void Map::EndPlayersLeveling(float x, float z, bool result) {
 
 void Map::dropResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
-    Vector3 pos = p->getPosition();
-    int key = std::round(pos.z * this->_size.getX() + pos.x);
+    MyRayLib::Vector3D pos = p->getPosition();
+    int key = std::round(pos.getZ() * this->_size.getX() + pos.getX());
 
     p->removeOnInventory(type, 1);
     this->_map.at(key)->addResource(this->_manager, type);
@@ -75,9 +75,9 @@ void Map::dropResource(int playerID, IResource::resourceType type) {
 
 void Map::collectResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
-    Vector3 pos = p->getPosition();
+    MyRayLib::Vector3D pos = p->getPosition();
     p->animationGet();
-    int key = std::round(pos.z * this->_size.getX() + pos.x);
+    int key = std::round(pos.getZ() * this->_size.getX() + pos.getX());
     p->addOnInventory(type, 1);
     this->_map.at(key)->removeResource(type);
 }
@@ -164,14 +164,14 @@ void Map::draw() {
             std::shared_ptr<Tile>& tile = this->_map.at(key);
 
             if (pressed) {
-                Vector3 cubePosition = tile->_cube.getPos();
-                Vector3 cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
-                BoundingBox box = {(Vector3){ cubePosition.x - cubeSize.x / 2, cubePosition.y - cubeSize.y / 2, cubePosition.z - cubeSize.z / 2 },
-                                   (Vector3){ cubePosition.x + cubeSize.x / 2, cubePosition.y + cubeSize.y / 2, cubePosition.z + cubeSize.z / 2 }};
+                MyRayLib::Vector3D cubePosition = tile->_cube.getPos();
+                MyRayLib::Vector3D cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
+                BoundingBox box = {{ cubePosition.getX() - cubeSize.getX() / 2, cubePosition.getY() - cubeSize.getY() / 2, cubePosition.getZ() - cubeSize.getZ() / 2 },
+                                   { cubePosition.getX() + cubeSize.getX() / 2, cubePosition.getY() + cubeSize.getY() / 2, cubePosition.getZ() + cubeSize.getZ() / 2 }};
                 if (GetRayCollisionBox(MyRayLib::Mouse::MyGetMouseRay(MyRayLib::Mouse::MyGetMousePosition(), this->_camera.getCamera()), box).hit) {
                     _selectedTileKey = _selectedTileKey == key ? -1 : key;
                     hit = true;
-                    this->_link.askTileContent(cubePosition.x, cubePosition.z);
+                    this->_link.askTileContent(cubePosition.getX(), cubePosition.getZ());
                 }
             }
             tile->draw();

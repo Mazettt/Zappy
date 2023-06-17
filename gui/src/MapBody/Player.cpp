@@ -51,36 +51,36 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
     return false;
 }
 
-Vector3 Player::move(float deltaTime) {
+MyRayLib::Vector3D Player::move(float deltaTime) {
     float moveSpeed = (1 * 1) * deltaTime;
-    Vector3 currentPos = this->getPosition();
+    MyRayLib::Vector3D currentPos = this->getPosition();
     float orientation = this->getRotationAngle();
-    Vector3 newPos;
+    MyRayLib::Vector3D newPos;
 
     if ((float)orientationAxis::SOUTH == orientation) {
-        newPos = { currentPos.x, 0.0, currentPos.z + moveSpeed};
-        if (newPos.z > this->_movePos.z)
-            newPos.z = this->_movePos.z;
+        newPos = { currentPos.getX(), 0.0, currentPos.getZ() + moveSpeed};
+        if (newPos.getZ() > this->_movePos.getZ())
+            newPos.setZ(this->_movePos.getZ());
     } else if ((float)orientationAxis::NORTH == orientation) {
-        newPos = { currentPos.x, 0.0, currentPos.z - moveSpeed};
-        if (newPos.z < this->_movePos.z)
-            newPos.z = this->_movePos.z;
+        newPos = { currentPos.getX(), 0.0, currentPos.getZ() - moveSpeed};
+        if (newPos.getZ() < this->_movePos.getZ())
+            newPos.setZ(this->_movePos.getZ());
     } else if ((float)orientationAxis::EAST == orientation) {
-        newPos = { currentPos.x + moveSpeed, 0.0, currentPos.z};
-        if (newPos.x > this->_movePos.x)
-            newPos.x = this->_movePos.x;
+        newPos = { currentPos.getX() + moveSpeed, 0.0, currentPos.getZ()};
+        if (newPos.getX() > this->_movePos.getX())
+            newPos.setX(this->_movePos.getX());
     } else if ((float)orientationAxis::WEST == orientation) {
-        newPos = { currentPos.x - moveSpeed, 0.0, currentPos.z};
-        if (newPos.x < this->_movePos.x)
-            newPos.x = this->_movePos.x;
+        newPos = { currentPos.getX() - moveSpeed, 0.0, currentPos.getZ()};
+        if (newPos.getX() < this->_movePos.getX())
+            newPos.setX(this->_movePos.getX());
     }
     this->setPosition(newPos);
     return newPos;
 }
 
-bool Player::updateAnimation(Vector3 newPos, float deltaTime) {
+bool Player::updateAnimation(MyRayLib::Vector3D newPos, float deltaTime) {
     if (this->getAnimationType() == animationPlayerType::PLAYER_WALK
-        && newPos.x == this->_movePos.x && newPos.z == this->_movePos.z) {
+        && newPos.getX() == this->_movePos.getX() && newPos.getZ() == this->_movePos.getZ()) {
         this->animationWait();
     }
     if (this->_frameCounterAnimation >= 48) {
@@ -96,7 +96,7 @@ bool Player::updateAnimation(Vector3 newPos, float deltaTime) {
 }
 
 bool Player::update(float deltaTime) {
-    Vector3 newPos = this->move(deltaTime);
+    MyRayLib::Vector3D newPos = this->move(deltaTime);
     return this->updateAnimation(newPos, deltaTime);
 }
 
@@ -105,7 +105,7 @@ const std::unordered_map<IResource::resourceType, int> &Player::getInventory() c
 }
 
 void Player::draw() {
-    MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), this->getOrientationAxis(), this->getRotationAngle(), this->getScale(), MyRayLib::MyRayLibColor::White());
+    MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition().getVector3(), this->getOrientationAxis().getVector3(), this->getRotationAngle(), this->getScale().getVector3(), MyRayLib::MyRayLibColor::White());
 }
 
 void Player::animationWin() {

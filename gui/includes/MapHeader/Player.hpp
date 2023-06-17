@@ -19,8 +19,8 @@ namespace ZappyGui {
             int _frameCounterAnimation;
             MyRayLib::AnimationsModel &_animation;
             std::unordered_map<IResource::resourceType, int> _inventory;
-            Vector3 move(float deltaTime);
-            bool updateAnimation(Vector3 newPos, float deltaTime);
+            MyRayLib::Vector3D move(float deltaTime);
+            bool updateAnimation(MyRayLib::Vector3D newPos, float deltaTime);
 
         public:
             enum animationPlayerType {
@@ -39,7 +39,7 @@ namespace ZappyGui {
                 WEST = 270
             };
 
-            Vector3 _movePos;
+            MyRayLib::Vector3D _movePos;
             int _animationCounter;
             Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
             void addOnInventory(IResource::resourceType type, int quantity);

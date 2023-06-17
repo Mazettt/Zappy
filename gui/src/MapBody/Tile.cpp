@@ -26,7 +26,7 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
     _availablePositions.pop_back();
     float x_pos = decalage + x_index * 0.12;
     float z_pos = decalage + z_index * 0.12;
-    this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().x, 0.0, z_pos + this->_cube.getPos().z}, manager, -1));
+    this->_resources.push_back(FactoryResource::createResource(type, {x_pos + this->_cube.getPos().getX(), 0.0, z_pos + this->_cube.getPos().getZ()}, manager, -1));
 }
 
 void Tile::addEgg(const ResourceManager &manager, int id) {
@@ -43,7 +43,7 @@ void Tile::addEgg(const ResourceManager &manager, int id) {
     _availablePositions.pop_back();
     float x_pos = decalage + x_index * 0.12;
     float z_pos = decalage + z_index * 0.12;
-    this->_resources.push_back(FactoryResource::createResource(IResource::resourceType::EGG, {x_pos + this->_cube.getPos().x, 0.0, z_pos + this->_cube.getPos().z}, manager, id));
+    this->_resources.push_back(FactoryResource::createResource(IResource::resourceType::EGG, {x_pos + this->_cube.getPos().getX(), 0.0, z_pos + this->_cube.getPos().getZ()}, manager, id));
 }
 
 void Tile::removeResource(const IResource::resourceType type) {
@@ -54,8 +54,8 @@ void Tile::removeResource(const IResource::resourceType type) {
         }
     );
     if (it != this->_resources.end()) {
-        float x_pos_without_cube = it->get()->getPosition().x - this->_cube.getPos().x;
-        float z_pos_without_cube = it->get()->getPosition().z - this->_cube.getPos().z;
+        float x_pos_without_cube = it->get()->getPosition().getX() - this->_cube.getPos().getX();
+        float z_pos_without_cube = it->get()->getPosition().getZ() - this->_cube.getPos().getZ();
 
         int x_index = static_cast<int>(round((x_pos_without_cube - decalage) / 0.12));
         int z_index = static_cast<int>(round((z_pos_without_cube - decalage) / 0.12));
@@ -72,8 +72,8 @@ void Tile::removeEgg(int id) {
         }
     );
     if (it != this->_resources.end()) {
-        float x_pos_without_cube = it->get()->getPosition().x - this->_cube.getPos().x;
-        float z_pos_without_cube = it->get()->getPosition().z - this->_cube.getPos().z;
+        float x_pos_without_cube = it->get()->getPosition().getX() - this->_cube.getPos().getX();
+        float z_pos_without_cube = it->get()->getPosition().getZ() - this->_cube.getPos().getZ();
 
         int x_index = static_cast<int>(round((x_pos_without_cube - decalage) / 0.12));
         int z_index = static_cast<int>(round((z_pos_without_cube - decalage) / 0.12));
@@ -109,8 +109,8 @@ void Tile::drawContentPopup(const MyRayLib::Texture2D &texture) {
 
     MyRayLib::Draw::MyDrawTexture(texture.getTexture(), 1750, y, WHITE);
     x += 85;
-    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().x)).c_str(), x - 10, y += 16, 25, BLACK);
-    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().z)).c_str(), x - 10, y += 30, 25, BLACK);
+    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().getX())).c_str(), x - 10, y += 16, 25, BLACK);
+    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().getZ())).c_str(), x - 10, y += 30, 25, BLACK);
 
 
     for (const auto &type : resourceTypes) {

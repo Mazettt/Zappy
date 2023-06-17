@@ -15,12 +15,12 @@ SelectorPlayer::SelectorPlayer(MyRayLib::Model &model, MyRayLib::AnimationsModel
     this->_pos = {0.0, 0.0, 0.0};
 }
 
-void SelectorPlayer::setPosition(const Vector3 &pos) {
+void SelectorPlayer::setPosition(const MyRayLib::Vector3D &pos) {
     this->_pos = pos;
-    this->_pos.y += 0.85;
+    this->_pos.setY(this->_pos.getY() + 0.85);
 }
 
-const Vector3 SelectorPlayer::getPosition() const {
+const MyRayLib::Vector3D SelectorPlayer::getPosition() const {
     return this->_pos;
 }
 
@@ -29,5 +29,5 @@ void SelectorPlayer::update() {
 }
 
 void SelectorPlayer::draw() {
-    MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition(), {1.0, 0.0, 0.0}, -90.0, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
+    MyRayLib::Draw::MyDrawModelEx(this->_model.getModel(), this->getPosition().getVector3(), {1.0, 0.0, 0.0}, -90.0, {0.01, 0.01, 0.01}, MyRayLib::MyRayLibColor::White());
 }

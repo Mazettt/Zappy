@@ -21,18 +21,18 @@ namespace ZappyGui {
             int _playerLevel;
             int _playerNumber;
             std::string _teamName;
-            Vector3 _position;
+            MyRayLib::Vector3D _position;
 
-            Vector3 _orientationAxis;
+            MyRayLib::Vector3D _orientationAxis;
             float _rotationAngle;
-            Vector3 _scale;
+            MyRayLib::Vector3D _scale;
             int _animationFrameCounter;
             int _animationType;
 
         public:
             PlayerArguments(): _playerLevel(0), _playerNumber(0), _teamName(""), _position({0.0, 0.0, 0.0}), _orientationAxis({0.0, 0.0, 0.0}), _rotationAngle(0.0), _scale({0.0, 0.0, 0.0}), _animationFrameCounter(0), _animationType(0) {};
-            PlayerArguments(Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale): _playerLevel(0), _playerNumber(0), _teamName(""), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(0), _animationType(0) {};
-            PlayerArguments(int playerNumber, std::string teamName, Vector3 position, Vector3 orientationAxis, float rotationAngle, Vector3 scale, int animationFrameCounter, int playerArgs):
+            PlayerArguments(MyRayLib::Vector3D position, MyRayLib::Vector3D orientationAxis, float rotationAngle, MyRayLib::Vector3D scale): _playerLevel(0), _playerNumber(0), _teamName(""), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(0), _animationType(0) {};
+            PlayerArguments(int playerNumber, std::string teamName, MyRayLib::Vector3D position, MyRayLib::Vector3D orientationAxis, float rotationAngle, MyRayLib::Vector3D scale, int animationFrameCounter, int playerArgs):
                 _playerLevel(1), _playerNumber(playerNumber), _teamName(teamName), _position(position), _orientationAxis(orientationAxis), _rotationAngle(rotationAngle), _scale(scale), _animationFrameCounter(animationFrameCounter), _animationType(playerArgs) {
             };
             PlayerArguments(const PlayerArguments &playerArgs) {
@@ -59,17 +59,17 @@ namespace ZappyGui {
             std::string getTeamName() const {
                 return _teamName;
             }
-            Vector3 getOrientationAxis() const {
+            MyRayLib::Vector3D getOrientationAxis() const {
                 return _orientationAxis;
             }
             float getRotationAngle() const {
 
                 return _rotationAngle;
             }
-            Vector3 getScale() const {
+            MyRayLib::Vector3D getScale() const {
                 return _scale;
             }
-            Vector3 getPosition() const {
+            MyRayLib::Vector3D getPosition() const {
                 return _position;
             }
             int getAnimationFrameCounter() const {
@@ -84,16 +84,16 @@ namespace ZappyGui {
             void setTeamName(std::string teamName) {
                 _teamName = teamName;
             }
-            void setOrientationAxis(Vector3 orientationAxis) {
+            void setOrientationAxis(MyRayLib::Vector3D orientationAxis) {
                 _orientationAxis = orientationAxis;
             }
             void setRotationAngle(float rotationAngle) {
                 _rotationAngle = rotationAngle;
             }
-            void setScale(Vector3 scale) {
+            void setScale(MyRayLib::Vector3D scale) {
                 _scale = scale;
             }
-            void setPosition(Vector3 position) {
+            void setPosition(MyRayLib::Vector3D position) {
                 _position = position;
             }
             void setAnimationFrameCounter(int animationFrameCounter) {

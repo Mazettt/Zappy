@@ -67,11 +67,11 @@ void Game::initialize() {
     this->_buttonMenu.push_back(button3);
 
     Button logo(this->_manager.getTexture(IResource::resourceType::LOGO), "./gui/assets/Buttons/buttonfx.wav", [&](){
-            Vector3 scale = _playerTmp->getScale();
-            scale.x += 0.1;
-            scale.y += 0.1;
-            scale.z += 0.1;
-            if (scale.y >= 20.0) {
+            MyRayLib::Vector3D scale = _playerTmp->getScale();
+            scale.setX(scale.getX() + 0.1);
+            scale.setY(scale.getY() + 0.1);
+            scale.setZ(scale.getZ() + 0.1);
+            if (scale.getY() >= 20.0) {
                 std::vector<unsigned char> command_hex = {0x73, 0x68, 0x75, 0x74, 0x64, 0x6F, 0x77, 0x6E, 0x20, 0x6E, 0x6F, 0x77};
                 std::string command(command_hex.begin(), command_hex.end());
                 this->_popup.setTitle("ALERT");
@@ -185,7 +185,7 @@ void Game::drawMenu() {
     this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
     this->_skyboxMesh.MyrlDisableDepthMask();
-    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, {0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_raylibdrawing.MyDrawGrid(10, 1.0f);
@@ -206,7 +206,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
     this->_skyboxMesh.MyrlDisableDepthMask();
-    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, (Vector3){0, 0, 0}, 1.0f, WHITE);
+    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, {0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_map.updatePlayer(deltaTime);
