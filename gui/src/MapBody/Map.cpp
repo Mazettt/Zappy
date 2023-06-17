@@ -28,14 +28,14 @@ void Map::createMap(int x, int y) {
     float widthCube = 1.0;
     float lengthCube = 1.0;
     float heightCube = 0.1;
-    this->_size.x = x;
-    this->_size.y = y;
+    this->_size.setX(x);
+    this->_size.setY(y);
     this->_map.resize(x * y);
 
     Color color = {120, 80, 160, 140};
-    for (int y = 0; y < this->_size.y; ++y) {
-        for (int x = 0; x < this->_size.x; ++x) {
-            int key = y * this->_size.x + x;
+    for (int y = 0; y < this->_size.getY(); ++y) {
+        for (int x = 0; x < this->_size.getX(); ++x) {
+            int key = y * this->_size.getX() + x;
             Vector3 cubePosition = { widthCube * x, 0.0f, lengthCube * y };
             Cube cube(cubePosition, widthCube, heightCube, lengthCube, color);
             std::shared_ptr<Tile> tile = std::make_shared<Tile>(cube);
@@ -67,7 +67,7 @@ void Map::EndPlayersLeveling(float x, float z, bool result) {
 void Map::dropResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
     Vector3 pos = p->getPosition();
-    int key = std::round(pos.z * this->_size.x + pos.x);
+    int key = std::round(pos.z * this->_size.getX() + pos.x);
 
     p->removeOnInventory(type, 1);
     this->_map.at(key)->addResource(this->_manager, type);
@@ -77,7 +77,7 @@ void Map::collectResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
     Vector3 pos = p->getPosition();
     p->animationGet();
-    int key = std::round(pos.z * this->_size.x + pos.x);
+    int key = std::round(pos.z * this->_size.getX() + pos.x);
     p->addOnInventory(type, 1);
     this->_map.at(key)->removeResource(type);
 }
@@ -88,9 +88,9 @@ void Map::setPlayerLevel(int playerID, int level) {
     p->setPlayerLevel(level);
 }
 
-void Map::updateResourceForTile(const Vector2 &pos, IResource::resourceType type, int number) {
+void Map::updateResourceForTile(const MyRayLib::Vector2D &pos, IResource::resourceType type, int number) {
     int count = 0;
-    const int key = pos.y * this->_size.x + pos.x;
+    const int key = pos.getY() * this->_size.getX() + pos.getX();
 
     for (const auto &r : this->_map[key]->_resources)
         if (r->getType() == type)
@@ -105,8 +105,8 @@ void Map::updateResourceForTile(const Vector2 &pos, IResource::resourceType type
     }
 }
 
-void Map::addEggForTile(const Vector2 &pos, int id) {
-    const int key = pos.y * this->_size.x + pos.x;
+void Map::addEggForTile(const MyRayLib::Vector2D &pos, int id) {
+    const int key = pos.getY() * this->_size.getX() + pos.getX();
 
     this->_map[key]->addEgg(this->_manager, id);
 }
@@ -158,9 +158,9 @@ void Map::updatePlayer(float deltaTime) {
 void Map::draw() {
     const bool pressed = MyRayLib::Mouse::MyIsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
     bool hit = false;
-    for (int y = 0; y < this->_size.y; ++y) {
-        for (int x = 0; x < this->_size.x; ++x) {
-            int key = y * this->_size.x + x;
+    for (int y = 0; y < this->_size.getY(); ++y) {
+        for (int x = 0; x < this->_size.getX(); ++x) {
+            int key = y * this->_size.getX() + x;
             std::shared_ptr<Tile>& tile = this->_map.at(key);
 
             if (pressed) {
@@ -179,9 +179,9 @@ void Map::draw() {
     }
     if (pressed && !hit)
         _selectedTileKey = -1;
-    for (int y = 0; y < this->_size.y; ++y) {
-        for (int x = 0; x < this->_size.x; ++x) {
-            int key = y * this->_size.x + x;
+    for (int y = 0; y < this->_size.getY(); ++y) {
+        for (int x = 0; x < this->_size.getX(); ++x) {
+            int key = y * this->_size.getX() + x;
             std::shared_ptr<Tile>& tile = this->_map.at(key);
 
             if (key == _selectedTileKey) {

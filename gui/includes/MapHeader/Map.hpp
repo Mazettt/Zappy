@@ -12,13 +12,14 @@
 #include "../resources/FactoryResource.hpp"
 #include "../MyRayLibHeader/Music.hpp"
 #include "../MyRayLibHeader/Mouse.hpp"
+#include "../MyRayLibHeader/Vector2D.hpp"
 #include "../MyRayLibHeader/FreeCamera.hpp"
 #include "../Server/ServerLink.hpp"
 
 namespace ZappyGui {
     class Map {
         private:
-            Vector2 _size;
+            MyRayLib::Vector2D _size;
             std::vector<std::shared_ptr<Tile>> _map;
             ResourceManager &_manager;
             MyRayLib::FreeCamera &_camera;
@@ -31,8 +32,8 @@ namespace ZappyGui {
             Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link);
             ~Map();
             void createMap(int x, int y);
-            void updateResourceForTile(const Vector2 &pos, IResource::resourceType type, int number);
-            void addEggForTile(const Vector2 &pos, int id);
+            void updateResourceForTile(const MyRayLib::Vector2D &pos, IResource::resourceType type, int number);
+            void addEggForTile(const MyRayLib::Vector2D &pos, int id);
             void removeEgg(int id);
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
@@ -47,7 +48,7 @@ namespace ZappyGui {
             void updateMusic();
             void resetGame();
             void updatePlayer(float deltaTime);
-            Vector2 getSize() const { return _size; };
+            MyRayLib::Vector2D getSize() const { return _size; };
             void updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame);
     };
 }

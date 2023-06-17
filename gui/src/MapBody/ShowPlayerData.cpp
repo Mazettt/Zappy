@@ -16,7 +16,7 @@ MyRayLib::ShowPlayerData::ShowPlayerData(ZappyGui::ServerLink &link) : _link(lin
 
     this->_font = LoadFont("./Dongle-Bold.ttf");
 
-    MyRayLib::Draw::MyImageDrawTextEx(&this->_image, this->_font, "PARROTS & CAT", (Vector2){ 300, 230 }, (float)this->_font.baseSize, -2, WHITE);
+    MyRayLib::Draw::MyImageDrawTextEx(&this->_image, this->_font, "PARROTS & CAT", { 300, 230 }, (float)this->_font.baseSize, -2, WHITE);
 
     this->_texture = LoadTextureFromImage(this->_image);
     this->_posX = 15.0;

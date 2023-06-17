@@ -145,9 +145,9 @@ void Game::run() {
                 this->_stateWindow = stateWindow::MENU;
             }
 
-            if (cameraSet == false && this->_map.getSize().x > 0.0f && this->_map.getSize().y > 0.0f) {
-                this->_camera.setPosition({ 0.0f, (_map.getSize().x + _map.getSize().y) / 2.0f, _map.getSize().y - 1 });
-                this->_camera.setTarget({ this->_map.getSize().x / 2.0f, 0.0f, this->_map.getSize().y / 2.0f });
+            if (cameraSet == false && this->_map.getSize().getX() > 0.0f && this->_map.getSize().getY() > 0.0f) {
+                this->_camera.setPosition({ 0.0f, (_map.getSize().getX() + _map.getSize().getY()) / 2.0f, _map.getSize().getY() - 1 });
+                this->_camera.setTarget({ this->_map.getSize().getX() / 2.0f, 0.0f, this->_map.getSize().getY() / 2.0f });
                 cameraSet = true;
             }
             if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {

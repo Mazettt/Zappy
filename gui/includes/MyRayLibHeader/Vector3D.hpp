@@ -12,52 +12,53 @@
 namespace MyRayLib {
     class Vector3D {
         private:
-            ::Vector3 vector;
+            ::Vector3 _vector;
 
         public:
-            Vector3D(): vector{0.0f, 0.0f, 0.0f} {}
-            Vector3D(float x, float y, float z): vector{x, y, z} {}
+            Vector3D(): _vector{0.0f, 0.0f, 0.0f} {}
+            Vector3D(float x, float y, float z): _vector{x, y, z} {}
+            Vector3D(const Vector3D &other): _vector(other._vector) {}
             float getX() const {
-                return vector.x;
+                return this->_vector.x;
             }
             float getY() const {
-                return vector.y;
+                return this->_vector.y;
             }
             float getZ() const {
-                return vector.z;
+                return this->_vector.z;
             }
             void setX(float x) {
-                vector.x = x;
+                this->_vector.x = x;
             }
             void setY(float y) {
-                vector.y = y;
+                this->_vector.y = y;
             }
             void setZ(float z) {
-                vector.z = z;
+                this->_vector.z = z;
             }
             Vector3 getVector3() const {
-                return vector;
+                return this->_vector;
             }
             Vector3D operator+(const Vector3D &v) const {
-                return Vector3D(vector.x + v.getX(), vector.y + v.getY(), vector.z + v.getZ());
+                return Vector3D(this->_vector.x + v.getX(), this->_vector.y + v.getY(), this->_vector.z + v.getZ());
             }
             Vector3D operator-(const Vector3D &v) const {
-                return Vector3D(vector.x - v.getX(), vector.y - v.getY(), vector.z - v.getZ());
+                return Vector3D(this->_vector.x - v.getX(), this->_vector.y - v.getY(), this->_vector.z - v.getZ());
             }
             Vector3D operator*(float scale) const {
-                return Vector3D(vector.x * scale, vector.y * scale, vector.z * scale);
+                return Vector3D(this->_vector.x * scale, this->_vector.y * scale, this->_vector.z * scale);
             }
             float dot(const Vector3D &v) const {
-                return vector.x * v.getX() + vector.y * v.getY() + vector.z * v.getZ();
+                return this->_vector.x * v.getX() + this->_vector.y * v.getY() + this->_vector.z * v.getZ();
             }
             bool operator==(const Vector3D &v) const {
-                return vector.x == v.getX() && vector.y == v.getY() && vector.z == v.getZ();
+                return this->_vector.x == v.getX() && this->_vector.y == v.getY() && this->_vector.z == v.getZ();
             }
             bool operator!=(const Vector3D &v) const {
                 return !(*this == v);
             }
             Vector3D &operator=(const Vector3D &v) {
-                vector = v.getVector3();
+                this->_vector = v.getVector3();
                 return *this;
             }
     };
