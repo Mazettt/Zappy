@@ -6,72 +6,59 @@
 */
 
 #pragma once
+#include "raylib.h"
+#include <cmath>
 
 namespace MyRayLib {
-    class MyRayLibVector3D {
+    class Vector3D {
+        private:
+            ::Vector3 vector;
+
         public:
-            float x;
-            float y;
-            MyRayLibVector3D() {
-                this->x = 0;
-                this->y = 0;
+            Vector3D(): vector{0.0f, 0.0f, 0.0f} {}
+            Vector3D(float x, float y, float z): vector{x, y, z} {}
+            float getX() const {
+                return vector.x;
             }
-
-            MyRayLibVector3D(float x, float y) {
-                this->x = x;
-                this->y = y;
+            float getY() const {
+                return vector.y;
             }
-
-            // MyRayLibVector3D operator=(const MyRayLibVector3D &other) {
-            //     this->x = other.x;
-            //     this->y = other.y;
-            //     return *this;
-            // }
-
-            // bool operator==(const MyRayLibVector3D &other) {
-            //     return (this->x == other.x && this->y == other.y);
-            // }
-
-            // MyRayLibVector3D operator+(const MyRayLibVector3D &other) {
-            //     return MyRayLibVector3D(this->x + other.x, this->y + other.y);
-            // }
-
-            // MyRayLibVector3D operator+=(const MyRayLibVector3D &other) {
-            //     this->x += other.x;
-            //     this->y += other.y;
-            //     return *this;
-            // }
-
-            // MyRayLibVector3D operator-(const MyRayLibVector3D &other) {
-            //     return MyRayLibVector3D(this->x - other.x, this->y - other.y);
-            // }
-
-            // MyRayLibVector3D operator-=(const MyRayLibVector3D &other) {
-            //     this->x -= other.x;
-            //     this->y -= other.y;
-            //     return *this;
-            // }
-
-            // MyRayLibVector3D operator*(const MyRayLibVector3D &other) {
-            //     return MyRayLibVector3D(this->x * other.x, this->y * other.y);
-            // }
-
-            // MyRayLibVector3D operator*=(const MyRayLibVector3D &other) {
-            //     this->x *= other.x;
-            //     this->y *= other.y;
-            //     return *this;
-            // }
-
-            // MyRayLibVector3D operator/(const MyRayLibVector3D &other) {
-            //     return MyRayLibVector3D(this->x / other.x, this->y / other.y);
-            // }
-
-            // MyRayLibVector3D operator/=(const MyRayLibVector3D &other) {
-            //     this->x /= other.x;
-            //     this->y /= other.y;
-            //     return *this;
-            // }
-
-            ~MyRayLibVector3D() {};
+            float getZ() const {
+                return vector.z;
+            }
+            void setX(float x) {
+                vector.x = x;
+            }
+            void setY(float y) {
+                vector.y = y;
+            }
+            void setZ(float z) {
+                vector.z = z;
+            }
+            Vector3 getVector3() const {
+                return vector;
+            }
+            Vector3D operator+(const Vector3D &v) const {
+                return Vector3D(vector.x + v.getX(), vector.y + v.getY(), vector.z + v.getZ());
+            }
+            Vector3D operator-(const Vector3D &v) const {
+                return Vector3D(vector.x - v.getX(), vector.y - v.getY(), vector.z - v.getZ());
+            }
+            Vector3D operator*(float scale) const {
+                return Vector3D(vector.x * scale, vector.y * scale, vector.z * scale);
+            }
+            float dot(const Vector3D &v) const {
+                return vector.x * v.getX() + vector.y * v.getY() + vector.z * v.getZ();
+            }
+            bool operator==(const Vector3D &v) const {
+                return vector.x == v.getX() && vector.y == v.getY() && vector.z == v.getZ();
+            }
+            bool operator!=(const Vector3D &v) const {
+                return !(*this == v);
+            }
+            Vector3D &operator=(const Vector3D &v) {
+                vector = v.getVector3();
+                return *this;
+            }
     };
 }

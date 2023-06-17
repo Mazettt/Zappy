@@ -6,72 +6,53 @@
 */
 
 #pragma once
+#include "raylib.h"
+#include <cmath>
 
 namespace MyRayLib {
-    class MyRayLibVector2D {
+    class Vector2D {
+        private:
+            ::Vector2 vector;
+
         public:
-            float x;
-            float y;
-            MyRayLibVector2D() {
-                this->x = 0;
-                this->y = 0;
+            Vector2D(): vector{0.0f, 0.0f} {}
+            Vector2D(float x, float y): vector{x, y} {}
+            float getX() const {
+                return vector.x;
             }
-
-            MyRayLibVector2D(float x, float y) {
-                this->x = x;
-                this->y = y;
+            float getY() const {
+                return vector.y;
             }
-
-            MyRayLibVector2D operator=(const MyRayLibVector2D &other) {
-                this->x = other.x;
-                this->y = other.y;
+            void setX(float x) {
+                vector.x = x;
+            }
+            void setY(float y) {
+                vector.y = y;
+            }
+            Vector2 getVector2() const {
+                return vector;
+            }
+            Vector2D operator+(const Vector2D &v) const {
+                return Vector2D(vector.x + v.getX(), vector.y + v.getY());
+            }
+            Vector2D operator-(const Vector2D &v) const {
+                return Vector2D(vector.x - v.getX(), vector.y - v.getY());
+            }
+            Vector2D operator*(float scale) const {
+                return Vector2D(vector.x * scale, vector.y * scale);
+            }
+            float dot(const Vector2D &v) const {
+                return vector.x * v.getX() + vector.y * v.getY();
+            }
+            bool operator==(const Vector2D &v) const {
+                return vector.x == v.getX() && vector.y == v.getY();
+            }
+            bool operator!=(const Vector2D &v) const {
+                return !(*this == v);
+            }
+            Vector2D &operator=(const Vector2D &v) {
+                vector = v.getVector2();
                 return *this;
             }
-
-            bool operator==(const MyRayLibVector2D &other) {
-                return (this->x == other.x && this->y == other.y);
-            }
-
-            MyRayLibVector2D operator+(const MyRayLibVector2D &other) {
-                return MyRayLibVector2D(this->x + other.x, this->y + other.y);
-            }
-
-            MyRayLibVector2D operator+=(const MyRayLibVector2D &other) {
-                this->x += other.x;
-                this->y += other.y;
-                return *this;
-            }
-
-            MyRayLibVector2D operator-(const MyRayLibVector2D &other) {
-                return MyRayLibVector2D(this->x - other.x, this->y - other.y);
-            }
-
-            MyRayLibVector2D operator-=(const MyRayLibVector2D &other) {
-                this->x -= other.x;
-                this->y -= other.y;
-                return *this;
-            }
-
-            MyRayLibVector2D operator*(const MyRayLibVector2D &other) {
-                return MyRayLibVector2D(this->x * other.x, this->y * other.y);
-            }
-
-            MyRayLibVector2D operator*=(const MyRayLibVector2D &other) {
-                this->x *= other.x;
-                this->y *= other.y;
-                return *this;
-            }
-
-            MyRayLibVector2D operator/(const MyRayLibVector2D &other) {
-                return MyRayLibVector2D(this->x / other.x, this->y / other.y);
-            }
-
-            MyRayLibVector2D operator/=(const MyRayLibVector2D &other) {
-                this->x /= other.x;
-                this->y /= other.y;
-                return *this;
-            }
-
-            ~MyRayLibVector2D() {};
     };
 }
