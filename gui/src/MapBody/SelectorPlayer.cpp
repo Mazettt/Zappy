@@ -11,7 +11,6 @@ using namespace ZappyGui;
 
 SelectorPlayer::SelectorPlayer(MyRayLib::Model &model, MyRayLib::AnimationsModel &animation): _model(model), _animation(animation) {
     this->_frameCounterAnimation = -1;
-    this->_animationCounter = 0;
     this->_pos = {0.0, 0.0, 0.0};
 }
 

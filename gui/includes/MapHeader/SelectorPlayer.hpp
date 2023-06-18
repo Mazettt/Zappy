@@ -22,7 +22,6 @@ namespace ZappyGui {
             MyRayLib::Model &_model;
             MyRayLib::AnimationsModel &_animation;
             int _frameCounterAnimation;
-            int _animationCounter;
 
         public:
             SelectorPlayer(MyRayLib::Model &model, MyRayLib::AnimationsModel &animation);

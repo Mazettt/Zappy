@@ -40,7 +40,6 @@ namespace ZappyGui {
             };
 
             MyRayLib::Vector3D _movePos;
-            int _animationCounter;
             Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const MyRayLib::Texture2D &texture, MyRayLib::AnimationsModel &animation);
             void addOnInventory(IResource::resourceType type, int quantity);
             bool removeOnInventory(IResource::resourceType type, int quantity);

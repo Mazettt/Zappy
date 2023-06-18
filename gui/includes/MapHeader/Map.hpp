@@ -37,7 +37,7 @@ namespace ZappyGui {
             void removeEgg(int id);
             void addPlayerForTile(const PlayerArguments &playerArgs);
             void draw();
-            bool movePlayer(int playerID, float x, float z, Player::orientationAxis orientation);
+            void movePlayer(int playerID, float x, float z, Player::orientationAxis orientation);
             void deadPlayer(int playerID);
             void setPlayerLevel(int playerID, int level);
             bool lvlupPlayer(std::vector<int> playersID, int level);

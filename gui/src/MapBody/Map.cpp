@@ -123,16 +123,14 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
     this->_players.push_back(std::make_shared<Player>(playerArgs, modelPlayer, texture, animation));
 }
 
-bool Map::movePlayer(int playerID, float x, float z, Player::orientationAxis orientation) {
+void Map::movePlayer(int playerID, float x, float z, Player::orientationAxis orientation) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
     if (p != nullptr) {
         p->animationWalk();
-        p->_movePos = {x, 0.0, z};
         p->setRotationAngle((float)orientation);
-        return true;
+        p->_movePos = {x, 0.0, z};
     }
-    return false;
 }
 
 void Map::deadPlayer(int playerID) {

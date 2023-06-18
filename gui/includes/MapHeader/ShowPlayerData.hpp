@@ -30,5 +30,5 @@ namespace ZappyGui {
             void ShowDataForEachPlayer(std::vector<std::shared_ptr<ZappyGui::Player>> _players);
             std::string getRessourceName(ZappyGui::IResource::resourceType type);
             int getNumberOfResource(ZappyGui::IResource::resourceType type, const std::unordered_map<ZappyGui::IResource::resourceType, int> &tmpInventory);
-        };
+    };
 }

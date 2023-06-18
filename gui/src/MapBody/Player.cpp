@@ -16,8 +16,7 @@ Player::Player(const PlayerArguments &playerArgs, MyRayLib::Model &model, const 
     _model(model),
     _texture(texture),
     _frameCounterAnimation(-1),
-    _animation(animation),
-    _animationCounter(0)
+    _animation(animation)
 {
     this->_movePos = { 0.0f, 0.0f, 0.0f };
     this->setAnimationType(Player::animationPlayerType::PLAYER_WAIT);
@@ -79,9 +78,12 @@ MyRayLib::Vector3D Player::move(float deltaTime) {
 }
 
 bool Player::updateAnimation(MyRayLib::Vector3D newPos, float deltaTime) {
-    if (this->getAnimationType() == animationPlayerType::PLAYER_WALK
-        && newPos.getX() == this->_movePos.getX() && newPos.getZ() == this->_movePos.getZ()) {
+    if (newPos.getX() == this->_movePos.getX() && newPos.getZ() == this->_movePos.getZ()) {
         this->animationWait();
+    } else {
+        if (this->getAnimationType() != animationPlayerType::PLAYER_WALK) {
+            this->animationWalk();
+        }
     }
     if (this->_frameCounterAnimation >= 48) {
         if (this->getAnimationType() == animationPlayerType::PLAYER_GET) {
@@ -121,7 +123,6 @@ void Player::animationLVLUP() {
 void Player::animationDie() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_DIE);
     this->_frameCounterAnimation = 0;
-    this->_animationCounter = 30;
 }
 
 void Player::animationGet() {
