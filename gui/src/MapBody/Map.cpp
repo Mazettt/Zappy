@@ -153,6 +153,34 @@ void Map::updatePlayer(float deltaTime) {
     }
 }
 
+void Map::updateBroadcast(float deltaTime, int timeUnit) {
+    float moveSpeed = (timeUnit / 2) * deltaTime;
+
+    for (auto it = this->_broadcasts.begin(); it != this->_broadcasts.end();) {
+        std::shared_ptr<ZappyGui::IResource> bc = *it;
+        int receiverId = bc->getId();
+        std::shared_ptr<Player> pReceiver = this->findPlayerByID(receiverId);
+        MyRayLib::Vector3D receiverPos = pReceiver->getPosition();
+        MyRayLib::Vector3D currentPos = bc->getPosition();
+        MyRayLib::Vector3D dir = (receiverPos - currentPos).normalize();
+        MyRayLib::Vector3D newPos = currentPos + dir * moveSpeed;
+
+        if ((newPos - receiverPos).length() > (currentPos - receiverPos).length())
+            newPos = receiverPos;
+        bc->setPosition(newPos.getX(), newPos.getZ());
+        if ((newPos - receiverPos).length() < 1) {
+            it = this->_broadcasts.erase(it);
+            continue;
+        }
+        ++it;
+    }
+}
+
+void Map::update(float deltaTime) {
+    this->updatePlayer(deltaTime);
+    this->updateBroadcast(deltaTime, timeUnit);
+}
+
 void Map::draw() {
     const bool pressed = MyRayLib::Mouse::MyIsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
     bool hit = false;
@@ -196,6 +224,9 @@ void Map::draw() {
             }
         }
     }
+    for  (auto &bc : this->_broadcasts) {
+        bc->draw();
+    }
 }
 
 void Map::updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame)
@@ -205,6 +236,16 @@ void Map::updatePlayerInventory(int id, int food, int linemate, int deraumere, i
 
 void Map::resetGame() {
     this->_players.clear();
+}
+
+void Map::sendBroadCast(int playerID) {
+    std::shared_ptr<Player> pSender = this->findPlayerByID(playerID);
+
+    for (auto &p : this->_players) {
+        if (p->getPlayerNumber() != playerID) {
+            this->_broadcasts.push_back(FactoryResource::createResource(IResource::resourceType::BROADCAST, pSender->getPosition(), this->_manager, p->getPlayerNumber()));
+        }
+    }
 }
 
 Map::~Map() {

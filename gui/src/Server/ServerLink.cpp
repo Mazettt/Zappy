@@ -248,6 +248,7 @@ void ServerLink::_pbc(const std::string &str) // TODO
 
     iss >> tmp >> id >> message;
     std::cout << "Player broadcast: " << id << " " << message << std::endl;
+    this->_game._map.sendBroadCast(id);
 }
 
 void ServerLink::_pic(const std::string &str) // TO CHECK

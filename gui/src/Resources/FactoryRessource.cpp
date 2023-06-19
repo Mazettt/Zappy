@@ -33,7 +33,9 @@ std::unique_ptr<IResource> FactoryResource::createResource(IResource::resourceTy
         {IResource::resourceType::THYSTAME, [](const MyRayLib::Vector3D &position, const ResourceManager &manager, __attribute__((unused)) int id)
             {return std::make_unique<Thystame>(manager.getModel(IResource::resourceType::THYSTAME), manager.getTexture(IResource::resourceType::THYSTAME), position);}},
         {IResource::resourceType::EGG, [](const MyRayLib::Vector3D &position, const ResourceManager &manager, int id)
-            {return std::make_unique<Egg>(manager.getModel(IResource::resourceType::EGG), manager.getTexture(IResource::resourceType::EGG), position, id);}}
+            {return std::make_unique<Egg>(manager.getModel(IResource::resourceType::EGG), manager.getTexture(IResource::resourceType::EGG), position, id);}},
+        {IResource::resourceType::BROADCAST, [](const MyRayLib::Vector3D &position, const ResourceManager &manager, int id)
+            {std::cout << "dddddddddd " << id << std::endl; return std::make_unique<Broadcast>(manager.getModel(IResource::resourceType::BROADCAST), manager.getTexture(IResource::resourceType::BROADCAST), position, id);}}
     };
     auto it = componentMap.find(type);
     if (it == componentMap.end())

@@ -128,7 +128,6 @@ void Game::run() {
 
     MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
 
-
     this->_raylibwindow.MyToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
         if (this->_stateWindow == stateWindow::PRELOADING) {
@@ -242,7 +241,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, {0, 0, 0}, 1.0f, WHITE);
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
-    this->_map.updatePlayer(deltaTime);
+    this->_map.update(deltaTime);
     this->_map.draw();
     if (this->_map._players.size() != 0) {
         selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());

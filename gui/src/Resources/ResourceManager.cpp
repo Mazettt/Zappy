@@ -38,6 +38,7 @@ void ResourceManager::initialize() {
     this->loadModel(IResource::resourceType::PHIRAS, "./gui/assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::SIBUR, "./gui/assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::THYSTAME, "./gui/assets/Stones/stone_model.obj");
+    this->loadModel(IResource::resourceType::BROADCAST, "./gui/assets/broadcasts/broadcastModel.obj");
 
     this->loadTexture(IResource::resourceType::DERAUMERE, "./gui/assets/Stones/deraumere.png");
     this->loadTexture(IResource::resourceType::LINEMATE, "./gui/assets/Stones/linemate.png");
@@ -45,6 +46,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::PHIRAS, "./gui/assets/Stones/phiras.png");
     this->loadTexture(IResource::resourceType::SIBUR, "./gui/assets/Stones/sibur.png");
     this->loadTexture(IResource::resourceType::THYSTAME, "./gui/assets/Stones/thystame.png");
+    this->loadTexture(IResource::resourceType::BROADCAST, "./gui/assets/broadcasts/broadcastText.png");
 
     // this->loadTexture(IResource::resourceType::LOGO, "./gui/assets/logo.png");
     this->loadTexture(IResource::resourceType::BUTTON_START, "./gui/assets/Buttons/buttonStart.png");
@@ -75,6 +77,7 @@ void ResourceManager::initialize() {
     this->setMaterialTexture(IResource::resourceType::PLAYER);
     this->setMaterialTexture(IResource::resourceType::EGG);
     this->setMaterialTexture(IResource::resourceType::PLAYER_SELECTOR);
+    this->setMaterialTexture(IResource::resourceType::BROADCAST);
     std::lock_guard<std::mutex> lock(_mtx);
     this->_isLoaded = true;
     std::cout << "YES0" << std::endl;

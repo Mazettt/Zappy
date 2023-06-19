@@ -61,5 +61,13 @@ namespace MyRayLib {
                 this->_vector = v.getVector3();
                 return *this;
             }
+            float length() const {
+                return std::sqrt(this->_vector.x * this->_vector.x + this->_vector.y * this->_vector.y + this->_vector.z * this->_vector.z);
+            }
+            Vector3D normalize() const {
+                float len = this->length();
+                return Vector3D(this->_vector.x / len, this->_vector.y / len, this->_vector.z / len);
+            }
+
     };
 }

@@ -29,7 +29,8 @@ namespace ZappyGui {
                 LOGO,
                 POPUPTILE,
                 SKYBOX_BACKGROUND,
-                PLAYER_STATS
+                PLAYER_STATS,
+                BROADCAST
             };
             virtual void draw() = 0;
             virtual IResource::resourceType getType() = 0;

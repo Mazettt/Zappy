@@ -21,6 +21,8 @@ namespace ZappyGui {
         private:
             MyRayLib::Vector2D _size;
             std::vector<std::shared_ptr<Tile>> _map;
+            std::vector<std::shared_ptr<IResource>> _broadcasts;
+
             ResourceManager &_manager;
             MyRayLib::FreeCamera &_camera;
             int _selectedTileKey;
@@ -48,7 +50,10 @@ namespace ZappyGui {
             void updateMusic();
             void resetGame();
             void updatePlayer(float deltaTime);
+            void updateBroadcast(float deltaTime, int timeUnit);
+            void update(float deltaTime);
             MyRayLib::Vector2D getSize() const { return _size; };
             void updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame);
+            void sendBroadCast(int playerID);
     };
 }
