@@ -91,10 +91,7 @@ def train_agent(p, agent, clt):
     while True:
         last_action = ""
         action = agent.act(p.stats.get_state())
-        # get_state() returns a numpy array of the player's state
-        # [0] = inventory
-        # [1] = vision
-        # [2] = level
+
         memory = []
         inv = []
         if action == 0:
