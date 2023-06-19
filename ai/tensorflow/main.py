@@ -85,9 +85,10 @@ class DQNAgent:
         self.model.fit(state, target, epochs=1, verbose=0)
 
     def load(self, name):
-        self.model = load_model(name)
+        self.model = load_model(name) 
 
 def train_agent(p, agent, clt):
+    level = 1
     while True:
         last_action = ""
         action = agent.act(p.stats.get_state())
@@ -227,12 +228,12 @@ def train_agent(p, agent, clt):
             reward = 1
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False) 
-        elif action == 12:
-            zc.fork(clt)
-        elif action == 13:
-            zc.eject(clt)
-        elif action == 14:
-            zc.broadcast(clt, "hello world")
+        # elif action == 12:
+            # zc.fork(clt)
+        # elif action == 13:
+            # zc.eject(clt)
+        # elif action == 14:
+            # zc.broadcast(clt, "hello world")
     
     print("Training done")
     agent.save_model("./save/agent.h5")
