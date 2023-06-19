@@ -49,25 +49,25 @@ static pos_t get_move(zappy_t *zappy, player_t *player)
 
 static void eject(zappy_t *zappy, UNUSED char *command, int ci)
 {
-    player_t *player = zappy->client[ci].player;
-    pos_t move = get_move(zappy, player);
+    player_t *cp = zappy->client[ci].player;
+    pos_t move = get_move(zappy, cp);
     bool check = false;
     player_t *p = NULL;
     int it = 0;
-    NOTIF_GUIS(it, send_pex(zappy, it, player));
+    NOTIF_GUIS(it, send_pex(zappy, it, cp));
     it = 0;
     for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
-        if (p->client && p != player &&
-        p->x == player->x && p->y == player->y) {
+        if (p->client && p != cp &&
+        p->x == cp->x && p->y == cp->y) {
             p->x = move.x;
             p->y = move.y;
             sdprintf(zappy, p->client->command.s, "eject: %d\n", get_direction(
-            (pos_t){p->x, p->y}, (pos_t){player->x, player->y}, p->direction));
+            zappy, (pos_t){p->x, p->y}, (pos_t){cp->x, cp->y}, p->direction));
             NOTIF_GUIS(it, send_ppo(zappy, it, p));
             check = true;
         }
     }
-    destroy_eggs(zappy, player);
+    destroy_eggs(zappy, cp);
     sdprintf(zappy, CLIENT_S(ci), (check ? "ok\n" : "ko\n"));
 }
 

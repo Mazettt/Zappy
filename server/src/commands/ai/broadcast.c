@@ -19,7 +19,7 @@ static void broadcast(zappy_t *zappy, char *command, int ci)
         if (p->client && p != player) {
             sdprintf(zappy, p->client->command.s,
                 "message %d, %s\n",
-                get_direction((pos_t){p->x, p->y},
+                get_direction(zappy, (pos_t){p->x, p->y},
                     (pos_t){player->x, player->y}, p->direction),
                 text
             );

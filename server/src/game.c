@@ -40,29 +40,6 @@ char *get_tile_content(zappy_t *zappy, int x, int y)
     return fill_tile_content(zappy, x, y, res);
 }
 
-int get_direction(pos_t p, pos_t dp, Direction d)
-{
-    if (dp.x == p.x && dp.y == p.y)
-        return 0;
-    if (dp.x == p.x && dp.y < p.y)
-        return d == NORTH ? 1 : d == SOUTH ? 5 : d == EAST ? 7 : 3;
-    if (dp.x < p.x && dp.y < p.y)
-        return d == NORTH ? 2 : d == SOUTH ? 6 : d == EAST ? 8 : 4;
-    if (dp.x < p.x && dp.y == p.y)
-        return d == NORTH ? 3 : d == SOUTH ? 7 : d == EAST ? 1 : 5;
-    if (dp.x < p.x && dp.y > p.y)
-        return d == NORTH ? 4 : d == SOUTH ? 8 : d == EAST ? 2 : 6;
-    if (dp.x == p.x && dp.y > p.y)
-        return d == NORTH ? 5 : d == SOUTH ? 1 : d == EAST ? 3 : 7;
-    if (dp.x > p.x && dp.y > p.y)
-        return d == NORTH ? 6 : d == SOUTH ? 2 : d == EAST ? 4 : 8;
-    if (dp.x > p.x && dp.y == p.y)
-        return d == NORTH ? 7 : d == SOUTH ? 3 : d == EAST ? 5 : 1;
-    if (dp.x > p.x && dp.y < p.y)
-        return d == NORTH ? 8 : d == SOUTH ? 4 : d == EAST ? 6 : 2;
-    return 0;
-}
-
 bool check_win(zappy_t *zappy)
 {
     player_t *player = NULL;

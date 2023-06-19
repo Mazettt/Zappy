@@ -24,6 +24,13 @@
     #define HEIGHT zappy->game.height
     #define WIDTH zappy->game.width
     #define UNUSED __attribute__((unused))
+    #ifndef M_PI
+        #define M_PI 3.14159265358979323846
+    #endif
+
+    #ifndef M_PI_4
+        #define M_PI_4 0.78539816339744830962
+    #endif
 
     #include "utils.h"
     #include <sys/socket.h>
@@ -38,6 +45,7 @@
     #include <uuid/uuid.h>
     #include <string.h>
     #include <stdarg.h>
+    #include <math.h>
 
 typedef enum ClientType {
     GUI,
@@ -51,6 +59,18 @@ typedef enum Direction {
     SOUTH,
     WEST
 } Direction;
+
+typedef enum DirectionTile {
+    SAME,
+    FRONT,
+    FRONT_LEFT,
+    LEFT,
+    BACK_LEFT,
+    BACK,
+    BACK_RIGHT,
+    RIGHT,
+    FRONT_RIGHT,
+} DirectionTile;
 
 typedef enum item_e {
     FOOD,
@@ -342,14 +362,13 @@ char *get_tile_content(zappy_t *zappy, int x, int y);
 /**
  * @brief get the cell around a point where the direction is coming
  *
- * @param x x coordinate of the point to get the direction
- * @param y y coordinate of the point to get the direction
- * @param dx x coordinate of the pointthe direction is coming from
- * @param dy y coordinate of the pointthe direction is coming from
- * @param direction direction of the object
+ * @param zappy struct of the game
+ * @param recv_pos position of the reciever
+ * @param send_pos position of the sender
+ * @param direction direction of the reciever
  * @return int = the cell around the point
  */
-int get_direction(pos_t p, pos_t dp, Direction direction);
+int get_direction(zappy_t *zappy, pos_t recv_pos, pos_t send_pos, Direction direction);
 bool check_win(zappy_t *zappy);
 bool init_game(zappy_t *zappy, args_t args);
 

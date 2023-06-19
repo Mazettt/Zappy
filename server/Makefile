@@ -67,7 +67,7 @@ all:	$(NAME)
 
 $(NAME):	$(OBJ)
 	@echo -e "$(BOLD_BLUE)Files compilation ok\n$(RESET)"
-	$(CC) -o $(NAME) $(OBJ) $(FLAGS) $(CFLAGS)
+	$(CC) -o $(NAME) $(OBJ) $(FLAGS) $(CFLAGS) -lm
 	@echo -e "$(BOLD_GREEN)Compilation done$(RESET)"
 
 %.o: %.c
