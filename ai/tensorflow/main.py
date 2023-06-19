@@ -119,6 +119,9 @@ def train_agent(p, agent, clt):
             reward = 1
             if (last_action == "right"):
                 reward = -50
+            if (last_action == "left"):
+                reward = -5000
+            zc.forward(clt)
             last_action = "right"
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
@@ -131,6 +134,9 @@ def train_agent(p, agent, clt):
             reward = 1
             if (last_action == "left"):
                 reward = -50
+            if (last_action == "right"):
+                reward = -5000
+            zc.forward(clt)
             last_action = "left"
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
@@ -149,7 +155,7 @@ def train_agent(p, agent, clt):
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
             if (memory.food < 3):
-                reward = -100
+                reward = -500
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
                 break
@@ -164,7 +170,7 @@ def train_agent(p, agent, clt):
                 reward = -100
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
-            reward = 10
+            reward = 555
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
         elif action == 6:
@@ -233,7 +239,7 @@ def train_agent(p, agent, clt):
 
 
 def main():
-    for i in range(10):
+    for i in range(200):
         print("Training number: {}".format(i))
         args = zp.get_args()
         p = zds.Player(args["port"], args["name"], args["machine"])
