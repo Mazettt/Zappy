@@ -107,9 +107,9 @@ def train_agent(p, agent, clt):
             if (last_action == "forward"):
                 reward = -2
             if (last_action == "right"):
-                reward = -10
+                reward = 10
             if (last_action == "left"):
-                reward = -10
+                reward = 10
             last_action = "forward"
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
