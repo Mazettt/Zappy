@@ -89,11 +89,9 @@ class DQNAgent:
 
 def train_agent(p, agent, clt):
     while True:
+        last_action = ""
         action = agent.act(p.stats.get_state())
-        # get_state() returns a numpy array of the player's state
-        # [0] = inventory
-        # [1] = vision
-        # [2] = level
+
         memory = []
         inv = []
         if action == 0:
@@ -103,6 +101,13 @@ def train_agent(p, agent, clt):
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
                 break
             reward = 1
+            if (last_action == "forward"):
+                reward = -2
+            if (last_action == "right"):
+                reward = 10
+            if (last_action == "left"):
+                reward = 10
+            last_action = "forward"
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
         elif action == 1:
@@ -112,6 +117,9 @@ def train_agent(p, agent, clt):
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
                 break
             reward = 1
+            if (last_action == "right"):
+                reward = -50
+            last_action = "right"
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
         elif action == 2:
@@ -121,6 +129,9 @@ def train_agent(p, agent, clt):
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
                 break
             reward = 1
+            if (last_action == "left"):
+                reward = -50
+            last_action = "left"
             agent.reward = reward
             agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), False)
         elif action == 3:
@@ -222,7 +233,7 @@ def train_agent(p, agent, clt):
 
 
 def main():
-    for i in range(100):
+    for i in range(10):
         print("Training number: {}".format(i))
         args = zp.get_args()
         p = zds.Player(args["port"], args["name"], args["machine"])
