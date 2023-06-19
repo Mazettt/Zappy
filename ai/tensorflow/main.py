@@ -233,7 +233,7 @@ def train_agent(p, agent, clt):
 
 
 def main():
-    for i in range(100):
+    for i in range(10):
         print("Training number: {}".format(i))
         args = zp.get_args()
         p = zds.Player(args["port"], args["name"], args["machine"])
