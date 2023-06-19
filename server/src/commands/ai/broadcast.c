@@ -9,11 +9,14 @@
 
 static void broadcast(zappy_t *zappy, char *command, int ci)
 {
-    char *text = command + 10;
+    char *text = NULL;
     player_t *player = zappy->client[ci].player;
     int it = 0;
     player_t *p = NULL;
 
+    if (strlen(command) < 11)
+        return sdprintf(zappy, CLIENT_S(ci), "ko\n");
+    text = command + 10;
     NOTIF_GUIS(it, send_pbc(zappy, it, player, text));
     for (int i = -1; (p = parse_players(zappy, &i, p)); p = p->next) {
         if (p->client && p != player) {
