@@ -120,6 +120,8 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
     this->_players.push_back(std::make_shared<Player>(playerArgs, modelPlayer, texture, animation));
+    auto &joinEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_JOIN);
+    joinEffect.play();
 }
 
 void Map::movePlayer(int playerID, float x, float z, Player::orientationAxis orientation) {

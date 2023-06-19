@@ -126,11 +126,11 @@ void Game::run() {
 
     float volumeMusic = 0.0;
     this->_raylibwindow.MyInitAudioDevice();
-    MyRayLib::Music musicMenu("./gui/assets/GénériqueGarf.mp3");
+    MyRayLib::Music musicMenu("./gui/assets/audio/GénériqueGarf.mp3");
     if (musicMenu.MyIsMusicReady())
         musicMenu.MyPlayMusic();
 
-    MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
+    MyRayLib::Music musicGame("./gui/assets/audio/GarfieldCoolCat.mp3");
 
     this->_raylibwindow.MyToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
@@ -263,7 +263,7 @@ void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
             this->_konamiIndex = 0;
             if (musicGame.MyIsMusicPlaying()) {
                 musicGame.MyStopMusic();
-                musicGame.MyLoadMusic("./gui/assets/tkt.mp3");
+                musicGame.MyLoadMusic("./gui/assets/audio/tkt.mp3");
                 musicGame.MyPlayMusic();
             }
         }

@@ -5,6 +5,8 @@
 ** Music.hpp
 */
 
+#pragma once
+
 #include <iostream>
 #include "raylib.h"
 
