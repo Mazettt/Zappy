@@ -41,36 +41,36 @@ void ServerLink::right() {
     _read();
 }
 
-std::vector<std::vector<Resource>> ServerLink::look() {
+std::vector<Tile> ServerLink::look() {
     _socket.write("Look\n");
     auto responses = _read();
     if (responses.size() != 1)
         throw my::MyError("ServerLink::look", "Wrong response");
     std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::splitWithEmpty(response, ",");
-    std::vector<std::vector<Resource>> res;
+    std::vector<Tile> res;
     for (auto &line: map) {
-        std::vector<Resource> tmp;
+        Tile tmp;
         auto resources = my::split(line, " ");
         for (auto &resource: resources) {
             if (resource == "player")
-                tmp.push_back(Resource::PLAYER);
+                tmp.addResource(Resource::PLAYER);
             else if (resource == "food")
-                tmp.push_back(Resource::FOOD);
+                tmp.addResource(Resource::FOOD);
             else if (resource == "linemate")
-                tmp.push_back(Resource::LINEMATE);
+                tmp.addResource(Resource::LINEMATE);
             else if (resource == "deraumere")
-                tmp.push_back(Resource::DERAUMERE);
+                tmp.addResource(Resource::DERAUMERE);
             else if (resource == "sibur")
-                tmp.push_back(Resource::SIBUR);
+                tmp.addResource(Resource::SIBUR);
             else if (resource == "mendiane")
-                tmp.push_back(Resource::MENDIANE);
+                tmp.addResource(Resource::MENDIANE);
             else if (resource == "phiras")
-                tmp.push_back(Resource::PHIRAS);
+                tmp.addResource(Resource::PHIRAS);
             else if (resource == "thystame")
-                tmp.push_back(Resource::THYSTAME);
+                tmp.addResource(Resource::THYSTAME);
             else
-                tmp.push_back(Resource::NONE);
+                tmp.addResource(Resource::NONE);
         }
         res.push_back(tmp);
     }

@@ -4,12 +4,13 @@
 #include <vector>
 #include <map>
 #include <thread>
+#include <optional>
 #include "Socket.hpp"
 #include "MyError.hpp"
 #include "String.hpp"
 #include "Args.hpp"
 #include "Utils.hpp"
-#include <optional>
+#include "Tile.hpp"
 
 namespace my {
     class ServerLink {
@@ -28,7 +29,7 @@ namespace my {
             void forward();
             void left();
             void right();
-            std::vector<std::vector<Resource>> look();
+            std::vector<Tile> look();
             std::map<Resource, int> inventory();
             void broadcast(const std::string &message);
             int connectNbr();

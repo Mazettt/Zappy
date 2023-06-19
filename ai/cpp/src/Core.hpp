@@ -23,8 +23,6 @@ namespace my {
 
         protected:
         private:
-            bool _isResourceInTile(const std::vector<Resource> &tile, Resource type) const;
-
             ServerLink _s;
             ElevCond _elevcond;
             size_t _foodEaten;
