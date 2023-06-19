@@ -47,6 +47,7 @@ namespace ZappyGui {
             void EndPlayersLeveling(float x, float z, bool result);
             void dropResource(int playerID, IResource::resourceType type);
             void collectResource(int playerID, IResource::resourceType type);
+            void expulsion(int playerID);
             void updateMusic();
             void resetGame();
             void updatePlayer(float deltaTime);

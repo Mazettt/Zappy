@@ -133,6 +133,14 @@ void Map::movePlayer(int playerID, float x, float z, Player::orientationAxis ori
     }
 }
 
+void Map::expulsion(int playerID) {
+    std::shared_ptr<Player> p = this->findPlayerByID(playerID);
+
+    if (p != nullptr) {
+        p->animationExpulsion();
+    }
+}
+
 void Map::deadPlayer(int playerID) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
@@ -154,7 +162,7 @@ void Map::updatePlayer(float deltaTime) {
 }
 
 void Map::updateBroadcast(float deltaTime, int timeUnit) {
-    float moveSpeed = (timeUnit / 2) * deltaTime;
+    float moveSpeed = (timeUnit / 1.6) * deltaTime;
 
     for (auto it = this->_broadcasts.begin(); it != this->_broadcasts.end();) {
         std::shared_ptr<ZappyGui::IResource> bc = *it;

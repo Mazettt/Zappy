@@ -51,6 +51,7 @@ namespace ZappyGui {
             void animationGet();
             void animationWait();
             void animationWalk();
+            void animationExpulsion();
             void noAnimation();
             void draw();
             bool update(float deltaTime, int timeUnit);

@@ -237,6 +237,7 @@ void ServerLink::_pex(const std::string &str) // TODO
 
     iss >> tmp >> id;
     std::cout << "Player explosion: " << id << std::endl;
+    this->_game._map.expulsion(id);
 }
 
 void ServerLink::_pbc(const std::string &str) // TODO
@@ -247,7 +248,6 @@ void ServerLink::_pbc(const std::string &str) // TODO
     std::string message;
 
     iss >> tmp >> id >> message;
-    std::cout << "Player broadcast: " << id << " " << message << std::endl;
     this->_game._map.sendBroadCast(id);
 }
 

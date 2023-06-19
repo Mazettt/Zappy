@@ -85,12 +85,10 @@ bool Player::updateAnimation(MyRayLib::Vector3D newPos) {
             this->animationWalk();
     }
     if (this->_frameCounterAnimation >= 48) {
-        if (this->getAnimationType() == animationPlayerType::PLAYER_GET) {
-            this->animationWait();
-        }
         if (this->getAnimationType() == animationPlayerType::PLAYER_DIE) {
             return true;
         }
+        this->animationWait();
     }
     this->_animation.MyUpdateModelAnimation(this->_model.getModel(), this->getAnimationType(), this->_frameCounterAnimation);
     return false;
@@ -136,6 +134,11 @@ void Player::animationWait() {
 
 void Player::animationWalk() {
     this->setAnimationType(Player::animationPlayerType::PLAYER_WALK);
+    this->_frameCounterAnimation = 0;
+}
+
+void Player::animationExpulsion() {
+    this->setAnimationType(Player::animationPlayerType::PLAYER_EXPULSION);
     this->_frameCounterAnimation = 0;
 }
 
