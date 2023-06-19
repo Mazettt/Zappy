@@ -23,7 +23,7 @@ namespace my {
 
         protected:
         private:
-            bool _isResourceInTile(const std::vector<ServerLink::Type> &tile, ServerLink::Type type) const;
+            bool _isResourceInTile(const std::vector<Resource> &tile, Resource type) const;
 
             ServerLink _s;
             ElevCond _elevcond;

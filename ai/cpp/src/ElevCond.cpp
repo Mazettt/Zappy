@@ -4,73 +4,73 @@ using namespace my;
 
 ElevCond::ElevCond() {
     _one_two = {
-        {ServerLink::Type::PLAYER, 1},
-        {ServerLink::Type::LINEMATE, 1},
-        {ServerLink::Type::DERAUMERE, 0},
-        {ServerLink::Type::SIBUR, 0},
-        {ServerLink::Type::MENDIANE, 0},
-        {ServerLink::Type::PHIRAS, 0},
-        {ServerLink::Type::THYSTAME, 0}
+        {Resource::PLAYER, 1},
+        {Resource::LINEMATE, 1},
+        {Resource::DERAUMERE, 0},
+        {Resource::SIBUR, 0},
+        {Resource::MENDIANE, 0},
+        {Resource::PHIRAS, 0},
+        {Resource::THYSTAME, 0}
     };
     _two_three = {
-        {ServerLink::Type::PLAYER, 2},
-        {ServerLink::Type::LINEMATE, 1},
-        {ServerLink::Type::DERAUMERE, 1},
-        {ServerLink::Type::SIBUR, 1},
-        {ServerLink::Type::MENDIANE, 0},
-        {ServerLink::Type::PHIRAS, 0},
-        {ServerLink::Type::THYSTAME, 0}
+        {Resource::PLAYER, 2},
+        {Resource::LINEMATE, 1},
+        {Resource::DERAUMERE, 1},
+        {Resource::SIBUR, 1},
+        {Resource::MENDIANE, 0},
+        {Resource::PHIRAS, 0},
+        {Resource::THYSTAME, 0}
     };
     _three_four = {
-        {ServerLink::Type::PLAYER, 2},
-        {ServerLink::Type::LINEMATE, 2},
-        {ServerLink::Type::DERAUMERE, 0},
-        {ServerLink::Type::SIBUR, 1},
-        {ServerLink::Type::MENDIANE, 0},
-        {ServerLink::Type::PHIRAS, 2},
-        {ServerLink::Type::THYSTAME, 0}
+        {Resource::PLAYER, 2},
+        {Resource::LINEMATE, 2},
+        {Resource::DERAUMERE, 0},
+        {Resource::SIBUR, 1},
+        {Resource::MENDIANE, 0},
+        {Resource::PHIRAS, 2},
+        {Resource::THYSTAME, 0}
     };
     _four_five = {
-        {ServerLink::Type::PLAYER, 4},
-        {ServerLink::Type::LINEMATE, 1},
-        {ServerLink::Type::DERAUMERE, 1},
-        {ServerLink::Type::SIBUR, 2},
-        {ServerLink::Type::MENDIANE, 0},
-        {ServerLink::Type::PHIRAS, 1},
-        {ServerLink::Type::THYSTAME, 0}
+        {Resource::PLAYER, 4},
+        {Resource::LINEMATE, 1},
+        {Resource::DERAUMERE, 1},
+        {Resource::SIBUR, 2},
+        {Resource::MENDIANE, 0},
+        {Resource::PHIRAS, 1},
+        {Resource::THYSTAME, 0}
     };
     _five_six = {
-        {ServerLink::Type::PLAYER, 4},
-        {ServerLink::Type::LINEMATE, 1},
-        {ServerLink::Type::DERAUMERE, 2},
-        {ServerLink::Type::SIBUR, 1},
-        {ServerLink::Type::MENDIANE, 3},
-        {ServerLink::Type::PHIRAS, 0},
-        {ServerLink::Type::THYSTAME, 0}
+        {Resource::PLAYER, 4},
+        {Resource::LINEMATE, 1},
+        {Resource::DERAUMERE, 2},
+        {Resource::SIBUR, 1},
+        {Resource::MENDIANE, 3},
+        {Resource::PHIRAS, 0},
+        {Resource::THYSTAME, 0}
     };
     _six_seven = {
-        {ServerLink::Type::PLAYER, 6},
-        {ServerLink::Type::LINEMATE, 1},
-        {ServerLink::Type::DERAUMERE, 2},
-        {ServerLink::Type::SIBUR, 3},
-        {ServerLink::Type::MENDIANE, 0},
-        {ServerLink::Type::PHIRAS, 1},
-        {ServerLink::Type::THYSTAME, 0}
+        {Resource::PLAYER, 6},
+        {Resource::LINEMATE, 1},
+        {Resource::DERAUMERE, 2},
+        {Resource::SIBUR, 3},
+        {Resource::MENDIANE, 0},
+        {Resource::PHIRAS, 1},
+        {Resource::THYSTAME, 0}
     };
     _seven_eight = {
-        {ServerLink::Type::PLAYER, 6},
-        {ServerLink::Type::LINEMATE, 2},
-        {ServerLink::Type::DERAUMERE, 2},
-        {ServerLink::Type::SIBUR, 2},
-        {ServerLink::Type::MENDIANE, 2},
-        {ServerLink::Type::PHIRAS, 2},
-        {ServerLink::Type::THYSTAME, 1}
+        {Resource::PLAYER, 6},
+        {Resource::LINEMATE, 2},
+        {Resource::DERAUMERE, 2},
+        {Resource::SIBUR, 2},
+        {Resource::MENDIANE, 2},
+        {Resource::PHIRAS, 2},
+        {Resource::THYSTAME, 1}
     };
 }
 
 ElevCond::~ElevCond() {}
 
-int ElevCond::get(int currentLevel, ServerLink::Type type) const {
+int ElevCond::get(int currentLevel, Resource type) const {
     switch (currentLevel) {
         case 1:
             return _one_two.at(type);

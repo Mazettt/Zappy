@@ -2,29 +2,6 @@
 
 using namespace my;
 
-std::string ServerLink::typeToString(Type type) {
-    switch (type) {
-        case PLAYER:
-            return "player";
-        case FOOD:
-            return "food";
-        case LINEMATE:
-            return "linemate";
-        case DERAUMERE:
-            return "deraumere";
-        case SIBUR:
-            return "sibur";
-        case MENDIANE:
-            return "mendiane";
-        case PHIRAS:
-            return "phiras";
-        case THYSTAME:
-            return "thystame";
-        default:
-            return "none";
-    }
-}
-
 ServerLink::ServerLink(const Args &args): _socket(args.getFlagValue<std::string>("-h"), args.getFlagValue<int>("-p")) {
     if (_socket.read() != "WELCOME\n")
         throw my::MyError("Wrong welcome message", "main");
@@ -41,11 +18,11 @@ ServerLink::ServerLink(const Args &args): _socket(args.getFlagValue<std::string>
 
 ServerLink::~ServerLink() {}
 
-const std::string &ServerLink::team() const {
+const std::string &ServerLink::getTeam() const {
     return _team;
 }
 
-const std::pair<int, int> &ServerLink::mapSize() const {
+const std::pair<int, int> &ServerLink::getMapSize() const {
     return _mapSize;
 }
 
@@ -64,68 +41,68 @@ void ServerLink::right() {
     _read();
 }
 
-std::vector<std::vector<ServerLink::Type>> ServerLink::look() {
+std::vector<std::vector<Resource>> ServerLink::look() {
     _socket.write("Look\n");
     auto responses = _read();
     if (responses.size() != 1)
         throw my::MyError("ServerLink::look", "Wrong response");
     std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::splitWithEmpty(response, ",");
-    std::vector<std::vector<ServerLink::Type>> res;
+    std::vector<std::vector<Resource>> res;
     for (auto &line: map) {
-        std::vector<ServerLink::Type> tmp;
+        std::vector<Resource> tmp;
         auto resources = my::split(line, " ");
         for (auto &resource: resources) {
             if (resource == "player")
-                tmp.push_back(ServerLink::Type::PLAYER);
+                tmp.push_back(Resource::PLAYER);
             else if (resource == "food")
-                tmp.push_back(ServerLink::Type::FOOD);
+                tmp.push_back(Resource::FOOD);
             else if (resource == "linemate")
-                tmp.push_back(ServerLink::Type::LINEMATE);
+                tmp.push_back(Resource::LINEMATE);
             else if (resource == "deraumere")
-                tmp.push_back(ServerLink::Type::DERAUMERE);
+                tmp.push_back(Resource::DERAUMERE);
             else if (resource == "sibur")
-                tmp.push_back(ServerLink::Type::SIBUR);
+                tmp.push_back(Resource::SIBUR);
             else if (resource == "mendiane")
-                tmp.push_back(ServerLink::Type::MENDIANE);
+                tmp.push_back(Resource::MENDIANE);
             else if (resource == "phiras")
-                tmp.push_back(ServerLink::Type::PHIRAS);
+                tmp.push_back(Resource::PHIRAS);
             else if (resource == "thystame")
-                tmp.push_back(ServerLink::Type::THYSTAME);
+                tmp.push_back(Resource::THYSTAME);
             else
-                tmp.push_back(ServerLink::Type::NONE);
+                tmp.push_back(Resource::NONE);
         }
         res.push_back(tmp);
     }
     return res;
 }
 
-std::map<ServerLink::Type, int> ServerLink::inventory() {
+std::map<Resource, int> ServerLink::inventory() {
     _socket.write("Inventory\n");
     auto responses = _read();
     if (responses.size() != 1)
         throw my::MyError("ServerLink::inventory", "Wrong response");
     std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::split(response, ",");
-    std::map<ServerLink::Type, int> res;
+    std::map<Resource, int> res;
     for (auto &line: map) {
         auto resources = my::split(line, " ");
         if (resources[0] == "player")
-            res[ServerLink::Type::PLAYER] = std::stoi(resources[1]);
+            res[Resource::PLAYER] = std::stoi(resources[1]);
         else if (resources[0] == "food")
-            res[ServerLink::Type::FOOD] = std::stoi(resources[1]);
+            res[Resource::FOOD] = std::stoi(resources[1]);
         else if (resources[0] == "linemate")
-            res[ServerLink::Type::LINEMATE] = std::stoi(resources[1]);
+            res[Resource::LINEMATE] = std::stoi(resources[1]);
         else if (resources[0] == "deraumere")
-            res[ServerLink::Type::DERAUMERE] = std::stoi(resources[1]);
+            res[Resource::DERAUMERE] = std::stoi(resources[1]);
         else if (resources[0] == "sibur")
-            res[ServerLink::Type::SIBUR] = std::stoi(resources[1]);
+            res[Resource::SIBUR] = std::stoi(resources[1]);
         else if (resources[0] == "mendiane")
-            res[ServerLink::Type::MENDIANE] = std::stoi(resources[1]);
+            res[Resource::MENDIANE] = std::stoi(resources[1]);
         else if (resources[0] == "phiras")
-            res[ServerLink::Type::PHIRAS] = std::stoi(resources[1]);
+            res[Resource::PHIRAS] = std::stoi(resources[1]);
         else if (resources[0] == "thystame")
-            res[ServerLink::Type::THYSTAME] = std::stoi(resources[1]);
+            res[Resource::THYSTAME] = std::stoi(resources[1]);
     }
     return res;
 }
@@ -156,7 +133,7 @@ bool ServerLink::eject() {
     return responses[0] == "ok";
 }
 
-bool ServerLink::take(Type type) {
+bool ServerLink::take(Resource type) {
     _socket.write("Take " + typeToString(type) + "\n");
     auto responses = _read();
     if (responses.size() != 1)
@@ -164,7 +141,7 @@ bool ServerLink::take(Type type) {
     return responses[0] == "ok";
 }
 
-bool ServerLink::set(Type type) {
+bool ServerLink::set(Resource type) {
     _socket.write("Set " + typeToString(type) + "\n");
     auto responses = _read();
     if (responses.size() != 1)

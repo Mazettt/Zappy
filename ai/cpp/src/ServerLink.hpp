@@ -8,25 +8,12 @@
 #include "MyError.hpp"
 #include "String.hpp"
 #include "Args.hpp"
+#include "Utils.hpp"
 #include <optional>
 
 namespace my {
     class ServerLink {
         public:
-            enum Type {
-                PLAYER,
-                FOOD,
-                LINEMATE,
-                DERAUMERE,
-                SIBUR,
-                MENDIANE,
-                PHIRAS,
-                THYSTAME,
-                NONE
-            };
-
-            static std::string typeToString(Type type);
-
             ServerLink(const Args &args);
             ServerLink(const ServerLink &other) = delete;
             ServerLink(ServerLink &&other) = delete;
@@ -35,20 +22,20 @@ namespace my {
             ServerLink &operator=(const ServerLink &other) = delete;
             ServerLink &operator=(ServerLink &&other) = delete;
 
-            const std::string &team() const;
-            const std::pair<int, int> &mapSize() const;
+            const std::string &getTeam() const;
+            const std::pair<int, int> &getMapSize() const;
 
             void forward();
             void left();
             void right();
-            std::vector<std::vector<Type>> look();
-            std::map<Type, int> inventory();
+            std::vector<std::vector<Resource>> look();
+            std::map<Resource, int> inventory();
             void broadcast(const std::string &message);
             int connectNbr();
             void fork();
             bool eject();
-            bool take(Type type);
-            bool set(Type type);
+            bool take(Resource type);
+            bool set(Resource type);
             int incantation();
 
             std::optional<std::string> getBroadcast();
