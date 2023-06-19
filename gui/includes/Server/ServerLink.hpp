@@ -65,5 +65,7 @@ namespace ZappyGui {
             Game &_game;
             Socket _socket;
             std::map<std::string, void (ServerLink::*)(const std::string &str)> _responseFunctions;
+
+            std::string _backup;
     };
 }

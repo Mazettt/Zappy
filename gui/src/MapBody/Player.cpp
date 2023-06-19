@@ -57,19 +57,19 @@ MyRayLib::Vector3D Player::move(float deltaTime, int timeUnit) {
     MyRayLib::Vector3D newPos;
 
     if ((float)orientationAxis::SOUTH == orientation) {
-        newPos = { currentPos.getX(), 0.0, currentPos.getZ() + moveSpeed};
+        newPos = {currentPos.getX(), 0.0, currentPos.getZ() + moveSpeed};
         if (newPos.getZ() > this->_movePos.getZ())
             newPos.setZ(this->_movePos.getZ());
     } else if ((float)orientationAxis::NORTH == orientation) {
-        newPos = { currentPos.getX(), 0.0, currentPos.getZ() - moveSpeed};
+        newPos = {currentPos.getX(), 0.0, currentPos.getZ() - moveSpeed};
         if (newPos.getZ() < this->_movePos.getZ())
             newPos.setZ(this->_movePos.getZ());
     } else if ((float)orientationAxis::EAST == orientation) {
-        newPos = { currentPos.getX() + moveSpeed, 0.0, currentPos.getZ()};
+        newPos = {currentPos.getX() + moveSpeed, 0.0, currentPos.getZ()};
         if (newPos.getX() > this->_movePos.getX())
             newPos.setX(this->_movePos.getX());
     } else if ((float)orientationAxis::WEST == orientation) {
-        newPos = { currentPos.getX() - moveSpeed, 0.0, currentPos.getZ()};
+        newPos = {currentPos.getX() - moveSpeed, 0.0, currentPos.getZ()};
         if (newPos.getX() < this->_movePos.getX())
             newPos.setX(this->_movePos.getX());
     }

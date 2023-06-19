@@ -141,7 +141,6 @@ void Game::run() {
                 continue;
             } else {
                 this->initializeButton();
-                std::cout << "YES1" << std::endl;
                 auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
                 auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
                 auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
@@ -151,7 +150,6 @@ void Game::run() {
                 this->_stateWindow = stateWindow::MENU;
             }
         } else if (this->_stateWindow == stateWindow::MENU) {
-            std::cout << "YES2" << std::endl;
             musicMenu.MySetMusicVolume(volumeMusic);
             musicMenu.MyUpdateMusic();
             drawMenu();

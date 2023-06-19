@@ -78,10 +78,17 @@ void ServerLink::update()
     std::string buff;
     if (!_socket.tryRead(buff))
         return;
-    buff = buff.substr(0, buff.size() - 1);
+    if (_backup.size()) {
+        buff = _backup + buff;
+        _backup.clear();
+    }
+    if (buff.back() != '\n') {
+        _backup = buff.substr(buff.find_last_of('\n'));
+        buff = buff.substr(0, buff.find_last_of('\n'));
+    }
     std::vector<std::string> commands = split(buff, '\n');
     for (const auto &command : commands) {
-        // std::cerr << "command: " << command << std::endl;
+        std::cerr << "command: " << command << std::endl;
         if (_responseFunctions.find(command.substr(0, 3)) != _responseFunctions.end())
             (this->*_responseFunctions[command.substr(0, 3)])(command);
     }
@@ -376,7 +383,6 @@ void ServerLink::_sgt(const std::string &str) // TO DO
     int time = 0;
 
     iss >> tmp >> time;
-    std::cout << "Time unit: " << time << std::endl;
     this->_game._map.timeUnit = time;
 }
 

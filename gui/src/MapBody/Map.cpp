@@ -47,7 +47,6 @@ void Map::createMap(int x, int y) {
 void Map::StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z) {
     for (std::shared_ptr<Player> p : this->_players) {
         if (std::find(playersID.begin(), playersID.end(), p->getPlayerNumber()) != playersID.end()) {
-            p->setPlayerLevel(level);
             p->setPosition({ x, 0.0, z });
             p->animationLVLUP();
         }
