@@ -66,16 +66,14 @@ void ZappyGui::ShowPlayerData::drawInventory(int resourceX, int resourceY, const
     for (const auto& type : resourceTypes) {
         std::string tmpStr = "x" + std::to_string(this->getNumberOfResource(type, inventory));
         MyRayLib::Draw::MyDrawText(tmpStr.c_str(), resourceX, resourceY += 48, 25, BLACK);
-
         if (isAltLine) {
             resourceX += 125;
             resourceY = originalResourceY;
-            isAltLine = false;  // reset for next line
+            isAltLine = false;
         } else {
             isAltLine = true;
         }
     }
-
     resourceX = originalResourceX;
     resourceY += 102;
 }
@@ -99,10 +97,12 @@ void ZappyGui::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
     if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_ENTER) || MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_DOWN)) {
         this->_index = (this->_index >= (playersList.size() - 1)) ? 0 : this->_index + 1;
         this->_link.askPlayerInventory(this->_index);
+        this->_link.askPlayerLevel(this->_index);
     }
     if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_UP)) {
         this->_index = (this->_index <= 0) ? playersList.size() - 1 : this->_index - 1;
         this->_link.askPlayerInventory(this->_index);
+        this->_link.askPlayerLevel(this->_index);
     }
     for (size_t i = 0; i < playersList.size(); ++i) {
         auto player = playersList[i];

@@ -186,6 +186,11 @@ void ServerLink::_pnw(const std::string &str)
         (orientationNbr == 3 ? ZappyGui::Player::orientationAxis::SOUTH : ZappyGui::Player::orientationAxis::WEST)));
     PlayerArguments playerArgs = PlayerArguments(id, teamName, { x, 0.0, z }, {0.0f, 1.0f, 0.0f}, orientation, {0.6f, 0.6f, 0.6f}, 0, Player::animationPlayerType::PLAYER_NOTHING);
     this->_game._map.addPlayerForTile(playerArgs);
+    this->askPlayerPosition(id);
+    this->askPlayerLevel(id);
+    std::cout << "iddd " << id << std::endl;
+    // if (id != 5)
+        this->askPlayerInventory(id);
 }
 
 void ServerLink::_ppo(const std::string &str)
@@ -233,7 +238,6 @@ void ServerLink::_pin(const std::string &str) // TODO
 
     iss >> tmp >> id >> x >> y >> food >> linemate >> deraumere >> sibur >> mendiane >> phiras >> thystame;
     this->_game._map.updatePlayerInventory(id, food, linemate, deraumere, sibur, mendiane, phiras, thystame);
-    std::cout << "Player inventory: " << id << " " << x << " " << y << " -> " << food << " " << linemate << " " << deraumere << " " << sibur << " " << mendiane << " " << phiras << " " << thystame << std::endl;
 }
 
 void ServerLink::_pex(const std::string &str) // TODO
