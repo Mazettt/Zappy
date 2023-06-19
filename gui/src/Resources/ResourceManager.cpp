@@ -8,8 +8,7 @@
 #include "../../includes/resources/ResourceManager.hpp"
 using namespace ZappyGui;
 
-ResourceManager::ResourceManager() {
-}
+ResourceManager::ResourceManager(): _isLoaded(false) {}
 
 ResourceManager::~ResourceManager() {
     _models.clear();
@@ -17,14 +16,19 @@ ResourceManager::~ResourceManager() {
     _animations.clear();
 }
 
+void ResourceManager::loadBasicResource() {
+    this->loadTexture(IResource::resourceType::LOGO, "./gui/assets/logo.png");
+    this->loadTexture(IResource::resourceType::SKYBOX_BACKGROUND, "./gui/assets/Skybox/background.png");
+    this->loadModel(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
+    this->loadTexture(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.png");
+    this->loadAnimation(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
+}
+
 void ResourceManager::initialize() {
     // // load player
     this->loadModel(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
     this->loadTexture(IResource::resourceType::PLAYER, "./gui/assets/T_Garfield_BC.png");
     this->loadAnimation(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
-    this->loadModel(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
-    this->loadTexture(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.png");
-    this->loadAnimation(IResource::resourceType::PLAYER_SELECTOR, "./gui/assets/player_selector.iqm");
     this->loadTexture(IResource::resourceType::PLAYER_STATS, "./gui/assets/player_stats.png");
 
     // // load texture
@@ -42,7 +46,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::SIBUR, "./gui/assets/Stones/sibur.png");
     this->loadTexture(IResource::resourceType::THYSTAME, "./gui/assets/Stones/thystame.png");
 
-    this->loadTexture(IResource::resourceType::LOGO, "./gui/assets/logo.png");
+    // this->loadTexture(IResource::resourceType::LOGO, "./gui/assets/logo.png");
     this->loadTexture(IResource::resourceType::BUTTON_START, "./gui/assets/Buttons/buttonStart.png");
     this->loadTexture(IResource::resourceType::BUTTON_HELP, "./gui/assets/Buttons/buttonHelp.png");
     this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./gui/assets/Buttons/buttonQuit.png");
@@ -50,7 +54,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::POPUP, "./gui/assets/popup.png");
     this->loadTexture(IResource::resourceType::POPUPTILE, "./gui/assets/tileInventory.png");
 
-    this->loadTexture(IResource::resourceType::SKYBOX_BACKGROUND, "./gui/assets/Skybox/background.png");
+    // this->loadTexture(IResource::resourceType::SKYBOX_BACKGROUND, "./gui/assets/Skybox/background.png");
 
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
@@ -71,6 +75,14 @@ void ResourceManager::initialize() {
     this->setMaterialTexture(IResource::resourceType::PLAYER);
     this->setMaterialTexture(IResource::resourceType::EGG);
     this->setMaterialTexture(IResource::resourceType::PLAYER_SELECTOR);
+    std::lock_guard<std::mutex> lock(_mtx);
+    this->_isLoaded = true;
+    std::cout << "YES0" << std::endl;
+}
+
+bool ResourceManager::getIsLoaded() {
+    std::lock_guard<std::mutex> lock(_mtx);
+    return this->_isLoaded;
 }
 
 void ResourceManager::loadModel(IResource::resourceType type, const std::string &filename) {

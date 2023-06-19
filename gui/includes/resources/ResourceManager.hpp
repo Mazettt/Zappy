@@ -5,6 +5,8 @@
 ** ResourceManager.hpp
 */
 
+#pragma once
+#include <mutex>
 #include <string>
 #include <memory>
 #include <unordered_map>
@@ -16,11 +18,13 @@
 namespace ZappyGui {
     class ResourceManager {
         private:
+            std::mutex _mtx;
             std::unordered_map<IResource::resourceType, std::unique_ptr<MyRayLib::Model>> _models;
             std::unordered_map<IResource::resourceType, std::unique_ptr<MyRayLib::Texture2D>> _textures;
             std::unordered_map<IResource::resourceType, std::unique_ptr<MyRayLib::AnimationsModel>> _animations;
 
         public:
+            bool _isLoaded;
             ResourceManager();
             ~ResourceManager();
             void loadModel(IResource::resourceType type, const std::string &filename);
@@ -31,6 +35,8 @@ namespace ZappyGui {
             MyRayLib::AnimationsModel &getAnimation(IResource::resourceType type);
             void setMaterialTexture(IResource::resourceType type);
             MyRayLib::Model &getNoneConstModel(IResource::resourceType type);
+            bool getIsLoaded();
             void initialize();
+            void loadBasicResource();
     };
 }

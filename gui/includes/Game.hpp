@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include <thread>
 #include <vector>
 #include <functional>
 
@@ -29,7 +30,8 @@ namespace ZappyGui {
         private:
             enum stateWindow {
                 GAME,
-                MENU
+                MENU,
+                PRELOADING
             };
             ResourceManager _manager;
             FreeCamera _camera;
@@ -46,16 +48,18 @@ namespace ZappyGui {
             ServerLink _link;
             ShowPlayerData _showPlayerData;
             size_t _konamiIndex;
+            std::thread _resourceThread;
 
         public:
             Map _map;
             Game(const std::string &ip, int port);
             ~Game();
-            void initialize();
+            void initializeButton();
             void run();
             void keyEvent(float &volumeMusic);
             void drawGame(SelectorPlayer &selectorPlayer);
             void drawMenu();
+            void drawLoading();
             void switchToGame();
             void checkKonamiCode(MyRayLib::Music &musicGame);
     };

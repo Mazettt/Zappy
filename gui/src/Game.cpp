@@ -28,11 +28,20 @@ Game::Game(const std::string &ip, int port):
     _konamiIndex(0),
     _map(this->_manager, this->_camera, this->_link)
 {
-    _manager.initialize();
+    _manager.loadBasicResource();
+    this->_BoolCloseWin = false;
+    this->_stateWindow = stateWindow::PRELOADING;
+    // this->_resourceThread = std::thread([this]() { // TO DO
+    //     this->_manager.initialize();
+    // });
+    this->_manager.initialize();
+    this->_manager._isLoaded = true;
 }
 
-
 Game::~Game() {
+    if (this->_resourceThread.joinable()) {
+        this->_resourceThread.join();
+    }
     // this->_manager.~ResourceManager();
     // this->_raylibwindow.~MyRayLibWindow();
     // this->_skyboxMesh.~Skybox();
@@ -52,26 +61,23 @@ void Game::switchToGame()
     }
 }
 
-void Game::initialize() {
+void Game::initializeButton() {
     this->_showPlayerData.setTexture(this->_manager.getTexture(IResource::resourceType::PLAYER_STATS));
     this->_popup.setTexture(this->_manager.getTexture(IResource::resourceType::POPUP));
     this->_raylibwindow.MySetTargetFPS(60);
 
-    this->_BoolCloseWin = false;
-    this->_stateWindow = stateWindow::MENU;
     Button button(this->_manager.getTexture(IResource::resourceType::BUTTON_START), "./gui/assets/Buttons/buttonfx.wav", [&](){switchToGame();});
     button.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 990 - button.button.width/2.0f, (float)button.button.width, button.frameHeight);
     this->_buttonMenu.push_back(button);
     Button button3(this->_manager.getTexture(IResource::resourceType::BUTTON_QUIT), "./gui/assets/Buttons/buttonfx.wav", [&](){this->_BoolCloseWin = true;});
     button3.ButtonSetPosition(1860, button.button.width/3.4f, (float)button3.button.width, button3.frameHeight);
     this->_buttonMenu.push_back(button3);
-
     Button logo(this->_manager.getTexture(IResource::resourceType::LOGO), "./gui/assets/Buttons/buttonfx.wav", [&](){
             MyRayLib::Vector3D scale = _playerTmp->getScale();
             scale.setX(scale.getX() + 0.1);
             scale.setY(scale.getY() + 0.1);
             scale.setZ(scale.getZ() + 0.1);
-            if (scale.getY() >= 20.0) {
+            if (scale.getY() >= 10.0) {
                 std::vector<unsigned char> command_hex = {0x73, 0x68, 0x75, 0x74, 0x64, 0x6F, 0x77, 0x6E, 0x20, 0x6E, 0x6F, 0x77};
                 std::string command(command_hex.begin(), command_hex.end());
                 this->_popup.setTitle("ALERT");
@@ -92,7 +98,6 @@ void Game::initialize() {
     );
     logo.ButtonSetPosition(40, 40, (float)logo.button.width, logo.frameHeight);
     this->_buttonMenu.push_back(logo);
-
 }
 
 void Game::keyEvent(float &volumeMusic) {
@@ -108,6 +113,7 @@ void Game::keyEvent(float &volumeMusic) {
         this->_raylibwindow.MyToggleFullscreen();
 }
 
+
 void Game::run() {
     bool cameraSet = false;
     SelectorPlayer selectorPlayer = SelectorPlayer(this->_manager.getNoneConstModel(IResource::resourceType::PLAYER_SELECTOR), this->_manager.getAnimation(IResource::resourceType::PLAYER_SELECTOR));
@@ -122,16 +128,27 @@ void Game::run() {
 
     MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
 
-    auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
-    auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
-    auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
-    PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WIN);
-
-    this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
 
     this->_raylibwindow.MyToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
-        if (this->_stateWindow == stateWindow::MENU) {
+        if (this->_stateWindow == stateWindow::PRELOADING) {
+            if (this->_manager.getIsLoaded() == false) {
+                drawLoading();
+                this->_raylibwindow.MyEndDrawing();
+                continue;
+            } else {
+                this->initializeButton();
+                std::cout << "YES1" << std::endl;
+                auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
+                auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
+                auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
+                PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WAIT);
+
+                this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
+                this->_stateWindow = stateWindow::MENU;
+            }
+        } else if (this->_stateWindow == stateWindow::MENU) {
+            std::cout << "YES2" << std::endl;
             musicMenu.MySetMusicVolume(volumeMusic);
             musicMenu.MyUpdateMusic();
             drawMenu();
@@ -169,8 +186,24 @@ void Game::run() {
     this->_skyboxMesh.MyUnloadModel();
 }
 
+void Game::drawLoading() {
+    this->_camera.updateAuto();
+    this->_raylibwindow.MyBeginDrawing();
+    this->_raylibwindow.MyClearBackground(RAYWHITE);
+    this->_camera.beginMode3D();
+    this->_skyboxMesh.MyrlDisableBackfaceCulling();
+    this->_skyboxMesh.MyrlDisableDepthMask();
+    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, {0, 0, 0}, 1.0f, WHITE);
+    this->_skyboxMesh.MyrlEnableBackfaceCulling();
+    this->_skyboxMesh.MyrlEnableDepthMask();
+    this->_raylibdrawing.MyDrawGrid(10, 1.0f);
+    // this->_playerTmp->draw();
+    this->_camera.endMode3D();
+}
+
 void Game::drawMenu() {
     this->_camera.updateAuto();
+
     Button button0 = this->_buttonMenu.at(0);
     Button button1 = this->_buttonMenu.at(1);
     Button logo = this->_buttonMenu.at(2);
