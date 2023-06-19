@@ -144,7 +144,7 @@ void Game::run() {
                 auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
                 auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
                 auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
-                PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WAIT);
+                PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_NOTHING);
 
                 this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
                 this->_stateWindow = stateWindow::MENU;
