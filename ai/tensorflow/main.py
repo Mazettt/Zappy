@@ -159,7 +159,6 @@ def train_agent(p, agent, clt):
                 reward = -500
                 agent.reward = reward
                 agent.remember(p.stats.get_state(), action, reward, p.stats.get_state(), True)
-                break
         elif action == 5:
             resp = zc.take(clt, "food")
             if resp == "dead\n":
