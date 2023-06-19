@@ -368,7 +368,8 @@ char *get_tile_content(zappy_t *zappy, int x, int y);
  * @param direction direction of the reciever
  * @return int = the cell around the point
  */
-int get_direction(zappy_t *zappy, pos_t recv_pos, pos_t send_pos, Direction direction);
+int get_direction(zappy_t *zappy, pos_t recv_pos, pos_t send_pos,
+    Direction direction);
 bool check_win(zappy_t *zappy);
 bool init_game(zappy_t *zappy, args_t args);
 

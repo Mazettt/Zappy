@@ -54,7 +54,6 @@ static pos_t get_new_recv(pos_t map_size, pos_t recv_pos, pos_t send_pos)
         { map_size.x, 0 }, { -map_size.x, map_size.y }, { 0, map_size.y },
         { map_size.x, map_size.y }
     };
-
     for (int i = 0; i < 9; i++) {
         buffpos.x = map_extrems[i].x + recv_pos.x;
         buffpos.y = map_extrems[i].y + recv_pos.y;
