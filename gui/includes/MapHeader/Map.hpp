@@ -55,5 +55,6 @@ namespace ZappyGui {
             MyRayLib::Vector2D getSize() const { return _size; };
             void updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame);
             void sendBroadCast(int playerID);
+            int timeUnit;
     };
 }

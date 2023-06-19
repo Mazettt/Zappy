@@ -102,9 +102,13 @@ void Game::initializeButton() {
 
 void Game::keyEvent(float &volumeMusic) {
     if (_raylibwindow.MyIsKeyPressed(KEY_P) && volumeMusic < 0.9f)
-            volumeMusic += 0.1f;
-    if (_raylibwindow.MyIsKeyPressed(KEY_L) && volumeMusic > 0.1f)
+        volumeMusic += 0.1f;
+    if (_raylibwindow.MyIsKeyPressed(KEY_SEMICOLON) && volumeMusic > 0.1f)
         volumeMusic -= 0.1f;
+    if (_raylibwindow.MyIsKeyPressed(KEY_O) || (IsKeyDown(KEY_RIGHT_CONTROL) && IsKeyDown(KEY_O)))
+        this->_link.modifyTimeUnit(this->_map.timeUnit + 1);
+    if ((_raylibwindow.MyIsKeyPressed(KEY_L) || (IsKeyDown(KEY_RIGHT_CONTROL) && IsKeyDown(KEY_L))) && this->_map.timeUnit > 1)
+        this->_link.modifyTimeUnit(this->_map.timeUnit - 1);
     if (_raylibwindow.MyIsKeyPressed(KEY_ESCAPE) && this->_popup.getStatus() == true) {
         this->_popup.setStatus(false);
     }
@@ -249,6 +253,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     }
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
+    this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.timeUnit)).c_str(), 10, 40, 20, WHITE);
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
 }
 

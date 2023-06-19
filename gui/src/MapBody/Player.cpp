@@ -50,8 +50,8 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
     return false;
 }
 
-MyRayLib::Vector3D Player::move(float deltaTime) {
-    float moveSpeed = (1 * 1) * deltaTime;
+MyRayLib::Vector3D Player::move(float deltaTime, int timeUnit) {
+    float moveSpeed = static_cast<float>(timeUnit) / 2 * deltaTime;
     MyRayLib::Vector3D currentPos = this->getPosition();
     float orientation = this->getRotationAngle();
     MyRayLib::Vector3D newPos;
@@ -77,13 +77,12 @@ MyRayLib::Vector3D Player::move(float deltaTime) {
     return newPos;
 }
 
-bool Player::updateAnimation(MyRayLib::Vector3D newPos, float deltaTime) {
-    if (newPos.getX() == this->_movePos.getX() && newPos.getZ() == this->_movePos.getZ()) {
-        this->animationWait();
-    } else {
-        if (this->getAnimationType() != animationPlayerType::PLAYER_WALK) {
+bool Player::updateAnimation(MyRayLib::Vector3D newPos) {
+    if (this->getAnimationType() != animationPlayerType::PLAYER_DIE) {
+        if (newPos.getX() == this->_movePos.getX() && newPos.getZ() == this->_movePos.getZ())
+            this->animationWait();
+        else if (this->getAnimationType() != animationPlayerType::PLAYER_WALK)
             this->animationWalk();
-        }
     }
     if (this->_frameCounterAnimation >= 48) {
         if (this->getAnimationType() == animationPlayerType::PLAYER_GET) {
@@ -97,9 +96,9 @@ bool Player::updateAnimation(MyRayLib::Vector3D newPos, float deltaTime) {
     return false;
 }
 
-bool Player::update(float deltaTime) {
-    MyRayLib::Vector3D newPos = this->move(deltaTime);
-    return this->updateAnimation(newPos, deltaTime);
+bool Player::update(float deltaTime, int timeUnit) {
+    MyRayLib::Vector3D newPos = this->move(deltaTime, timeUnit);
+    return this->updateAnimation(newPos);
 }
 
 const std::unordered_map<IResource::resourceType, int> &Player::getInventory() const {

@@ -81,7 +81,7 @@ void ServerLink::update()
     buff = buff.substr(0, buff.size() - 1);
     std::vector<std::string> commands = split(buff, '\n');
     for (const auto &command : commands) {
-        // std::cout << "command: " << command << std::endl;
+        // std::cerr << "command: " << command << std::endl;
         if (_responseFunctions.find(command.substr(0, 3)) != _responseFunctions.end())
             (this->*_responseFunctions[command.substr(0, 3)])(command);
     }
@@ -377,6 +377,7 @@ void ServerLink::_sgt(const std::string &str) // TO DO
 
     iss >> tmp >> time;
     std::cout << "Time unit: " << time << std::endl;
+    this->_game._map.timeUnit = time;
 }
 
 void ServerLink::_sst(const std::string &str) // TO DO
@@ -387,6 +388,7 @@ void ServerLink::_sst(const std::string &str) // TO DO
 
     iss >> tmp >> time;
     std::cout << "Time unit set: " << time << std::endl;
+    this->_game._map.timeUnit = time;
 }
 
 void ServerLink::_seg(const std::string &str) // TO DO
