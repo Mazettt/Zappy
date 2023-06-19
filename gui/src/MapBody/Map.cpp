@@ -13,7 +13,7 @@
 
 using namespace ZappyGui;
 
-Map::Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link): _manager(manager), _camera(camera), _selectedTileKey(-1), _link(link) {}
+Map::Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link): _manager(manager), _camera(camera), _selectedTileKey(-1), _link(link), timeUnit(100) {}
 
 std::shared_ptr<Player> Map::findPlayerByID(int id) {
     for (std::shared_ptr<Player> p : this->_players) {
@@ -144,11 +144,11 @@ void Map::deadPlayer(int playerID) {
 void Map::updatePlayer(float deltaTime) {
     for (auto it = this->_players.begin(); it != this->_players.end();) {
         std::shared_ptr<Player> player = *it;
-        player->draw();
-        if (player->update(deltaTime) == true) {
+        if (player->update(deltaTime, this->timeUnit) == true) {
             it = this->_players.erase(it);
             continue;
         }
+        player->draw();
         ++it;
     }
 }
