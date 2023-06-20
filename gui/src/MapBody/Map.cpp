@@ -197,7 +197,6 @@ void Map::draw() {
         for (int x = 0; x < this->_size.getX(); ++x) {
             int key = y * this->_size.getX() + x;
             std::shared_ptr<Tile>& tile = this->_map.at(key);
-
             if (pressed) {
                 MyRayLib::Vector3D cubePosition = tile->_cube.getPos();
                 MyRayLib::Vector3D cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
@@ -233,6 +232,7 @@ void Map::draw() {
             }
         }
     }
+
     for  (auto &bc : this->_broadcasts) {
         bc->draw();
     }

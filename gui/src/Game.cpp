@@ -228,7 +228,57 @@ void Game::drawMenu() {
 
     button0.MyDrawTextureRec(WHITE);
     button1.MyDrawTextureRec(WHITE);
-    logo.MyDrawTextureRec( WHITE);
+    logo.MyDrawTextureRec(WHITE);
+}
+
+void Game::drawMapData()
+{
+    MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::MAPDATA).getTexture(), 370, 10, WHITE);
+    std::string tmp = ("x " + std::to_string(this->_map._players.size()));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 420, 35, 20, WHITE);
+    tmp = std::to_string(static_cast<int>(this->_map.getSize().getX()));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 525, 35, 20, WHITE);
+    tmp = std::to_string(static_cast<int>(this->_map.getSize().getY()));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 625, 35, 20, WHITE);
+
+    std::vector<IResource::resourceType> resourceTypes = {
+        IResource::resourceType::BURGER,
+        IResource::resourceType::DERAUMERE,
+        IResource::resourceType::LINEMATE,
+        IResource::resourceType::MENDIANE,
+        IResource::resourceType::PHIRAS,
+        IResource::resourceType::SIBUR,
+        IResource::resourceType::THYSTAME
+    };
+
+    std::map<IResource::resourceType, int> _inventoryMap;
+
+    for (int y = 0; y < this->_map.getSize().getY(); ++y) {
+        for (int x = 0; x < this->_map.getSize().getX(); ++x) {
+            int key = y * this->_map.getSize().getX() + x;
+             for (const auto &type : resourceTypes) {
+                _inventoryMap[type] += this->_map._map[key]->countSpecificResource(type);
+            }
+        }
+    }
+    // int pos = 600;
+    for (auto &it : _inventoryMap) {
+        std::string tmp = ( "x " + std::to_string(it.second));
+        if (it.first == IResource::resourceType::BURGER)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (735), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::DERAUMERE)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (850), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::LINEMATE)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (975), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::MENDIANE)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1085), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::PHIRAS)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1210), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::SIBUR)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1330), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::THYSTAME)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1448), 35, 20, WHITE);
+    }
 }
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {
@@ -251,8 +301,9 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     }
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
-    this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.timeUnit)).c_str(), 10, 40, 20, WHITE);
+    this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.timeUnit)).c_str(), 105, 10, 20, WHITE);
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
+    this->drawMapData();
 }
 
 void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
