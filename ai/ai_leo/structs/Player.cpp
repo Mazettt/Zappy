@@ -53,14 +53,157 @@ std::vector<std::string> ZappyAI::Player::getVision()
 
 ZappyAI::Player::~Player() {}
 
+void ZappyAI::Player::moveTo(int x, int y)
+{
+    if (x > 0) {
+        for (int i = 0; i < x; i++) {
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer();
+        }
+    } else if (x < 0) {
+        for (int i = 0; i < -x; i++) {
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer();
+        }
+    }
+
+    if (y > 0) {
+        _conn.sendToServer("Left\n");
+        _conn.receiveFromServer();
+        for (int i = 0; i < y; i++) {
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer();
+        }
+    } else if (y < 0) {
+        _conn.sendToServer("Right\n");
+        _conn.receiveFromServer();
+        for (int i = 0; i < -y; i++) {
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer();
+        }
+    }
+}
+
+void ZappyAI::Player::get_pos_from_vision(int i)
+{
+    int x = 0;
+    int y = 0;
+
+    if (i == 0) {
+        x = 0;
+        y = 0;
+    } else if (i == 1) {
+        x = 1;
+        y = -1;
+    } else if (i == 2) {
+        x = 1;
+        y = 0;
+    } else if (i == 3) {
+        x = 1;
+        y = 1;
+    } else if (i == 4) {
+        x = 2;
+        y = -2;
+    } else if (i == 5) {
+        x = 2;
+        y = -1;
+    } else if (i == 6) {
+        x = 2;
+        y = 0;
+    } else if (i == 7) {
+        x = 2;
+        y = 1;
+    } else if (i == 8) {
+        x = 2;
+        y = 2;
+    } else if (i == 9) {
+        x = 3;
+        y = -3;
+    } else if (i == 10) {
+        x = 3;
+        y = -2;
+    } else if (i == 11) {
+        x = 3;
+        y = -1;
+    } else if (i == 12) {
+        x = 3;
+        y = 0;
+    } else if (i == 13) {
+        x = 3;
+        y = 1;
+    } else if (i == 14) {
+        x = 3;
+        y = 2;
+    } else if (i == 15) {
+        x = 3;
+        y = 3;
+    } else if (i == 16) {
+        x = 4;
+        y = -4;
+    } else if (i == 17) {
+        x = 4;
+        y = -3;
+    } else if (i == 18) {
+        x = 4;
+        y = -2;
+    } else if (i == 19) {
+        x = 4;
+        y = -1;
+    } else if (i == 20) {
+        x = 4;
+        y = 0;
+    } else if (i == 21) {
+        x = 4;
+        y = 1;
+    } else if (i == 22) {
+        x = 4;
+        y = 2;
+    } else if (i == 23) {
+        x = 4;
+        y = 3;
+    } else if (i == 24) {
+        x = 4;
+        y = 4;
+    }
+    std::cout << "Player " << _player_number << " is moving to " << x << " " << y << std::endl;
+    moveTo(x, y);
+}
+
+void ZappyAI::Player::emergencyFood()
+{
+    std::cout << "Player " << _player_number << " is starving" << std::endl;
+    while (_inventory["food"] < 9) {
+        std::vector<std::string> vision = getVision();
+        for (int i = 0; i < vision.size(); i++) {
+            std::cout << vision[i] << std::endl;
+            if (vision[i].find("food") != std::string::npos) {
+                std::cout << "Player " << _player_number << " is moving to food" << std::endl;
+                get_pos_from_vision(i);
+                _conn.sendToServer("Take food\n");
+                if (_conn.receiveFromServer() == "ok\n") {
+                    _inventory["food"]++;
+                    std::cout << "Player " << _player_number << " took food" << std::endl;
+                }
+            }
+        }
+
+        std::cout << "Player " << _player_number << " is moving forward" << std::endl;
+        forward();
+    }
+}
+
 void ZappyAI::Player::play()
 {
     _is_dead = false;
     std::cout << "Player " << _player_number << " is playing" << std::endl;
     std::vector<std::string> vision = getVision();
+    getInventory();
 
     while (!_is_dead) {
-        forward();
+        
+        getInventory();
+        if (_inventory["food"] <= 8)
+            emergencyFood();
     }
     std::cout << "Player " << _player_number << " is dead" << std::endl;
     exit(0);
@@ -73,6 +216,115 @@ void ZappyAI::Player::forward()
         std::cout << "Player " << _player_number << " moved forward" << std::endl;
     else {
         std::cout << "Player " << _player_number << " failed to move forward" << std::endl;
+        _is_dead = true;
+    }
+}
+
+void ZappyAI::Player::left()
+{
+    _conn.sendToServer("Left\n");
+    if (_conn.receiveFromServer() == "ok\n")
+        std::cout << "Player " << _player_number << " turned left" << std::endl;
+    else {
+        std::cout << "Player " << _player_number << " failed to turn left" << std::endl;
+        _is_dead = true;
+    }
+}
+
+void ZappyAI::Player::right()
+{
+    _conn.sendToServer("Right\n");
+    if (_conn.receiveFromServer() == "ok\n")
+        std::cout << "Player " << _player_number << " turned right" << std::endl;
+    else {
+        std::cout << "Player " << _player_number << " failed to turn right" << std::endl;
+        _is_dead = true;
+    }
+}
+
+void ZappyAI::Player::refresh_inventory()
+{
+    _inventory["food"] = _food;
+    _inventory["linemate"] = _linemate;
+    _inventory["deraumere"] = _deraumere;
+    _inventory["sibur"] = _sibur;
+    _inventory["mendiane"] = _mendiane;
+    _inventory["phiras"] = _phiras;
+    _inventory["thystame"] = _thystame;
+    std::cout << "Player " << _player_number << " inventory: " << std::endl;
+    for (auto it = _inventory.begin(); it != _inventory.end(); it++) {
+        std::cout << it->first << ": " << it->second << std::endl;
+    }
+}
+
+void ZappyAI::Player::getInventory()
+{
+    _conn.sendToServer("Inventory\n");
+    std::string response = _conn.receiveInventory();
+    std::cout << "Player " << _player_number << " inventory: " << response << std::endl;
+    for (int i = 0; i < response.length(); i++) {
+        if (response[i] == '[' || response[i] == ']')
+            response.erase(i, 1);
+    }
+    std::vector<std::string> inventory;
+    std::string tmp = "";
+    for (int i = 0; i < response.length(); i++) {
+        if (response[i] == ',') {
+            inventory.push_back(tmp);
+            tmp = "";
+        } else {
+            tmp += response[i];
+        }
+    }
+    inventory.push_back(tmp);
+    for (int i = 0; i < inventory.size(); i++) {
+        if (inventory[i][0] == ' ')
+            inventory[i].erase(0, 1);
+    }
+    for (int i = 0; i < inventory.size(); i++) {
+        std::string object = inventory[i].substr(0, inventory[i].find(' '));
+        int quantity = std::stoi(inventory[i].substr(inventory[i].find(' ') + 1, inventory[i].length()));
+        if (object == "food")
+            _food = quantity;
+        else if (object == "linemate")
+            _linemate = quantity;
+        else if (object == "deraumere")
+            _deraumere = quantity;
+        else if (object == "sibur")
+            _sibur = quantity;
+        else if (object == "mendiane")
+            _mendiane = quantity;
+        else if (object == "phiras")
+            _phiras = quantity;
+        else if (object == "thystame")
+            _thystame = quantity;
+    }
+    refresh_inventory();
+}
+
+void ZappyAI::Player::take(std::string const &object)
+{
+    _conn.sendToServer("Take " + object + "\n");
+    if (_conn.receiveFromServer() == "ok\n") {
+        std::cout << "Player " << _player_number << " took " << object << std::endl;
+        if (object == "food")
+            _food++;
+        else if (object == "linemate")
+            _linemate++;
+        else if (object == "deraumere")
+            _deraumere++;
+        else if (object == "sibur")
+            _sibur++;
+        else if (object == "mendiane")
+            _mendiane++;
+        else if (object == "phiras")
+            _phiras++;
+        else if (object == "thystame")
+            _thystame++;
+        refresh_inventory();
+    }
+    else {
+        std::cout << "Player " << _player_number << " failed to take " << object << std::endl;
         _is_dead = true;
     }
 }

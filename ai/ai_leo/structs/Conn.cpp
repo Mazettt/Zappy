@@ -60,6 +60,15 @@ std::string ZappyAI::Conn::receiveVision()
     return response;
 }
 
+std::string ZappyAI::Conn::receiveInventory()
+{
+    std::string response = receiveFromServer();
+    while (response.find("]") == std::string::npos) {
+        response += receiveFromServer();
+    }
+    return response;
+}
+
 int ZappyAI::Conn::getFd() const
 {
     return _fd;

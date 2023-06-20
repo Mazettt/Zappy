@@ -27,10 +27,18 @@ namespace ZappyAI {
             std::map<std::string, int> _inventory;
             std::vector<std::string> _vision;
             ZappyAI::Conn _conn;
+            void left();
+            void right();
             void forward();
+            void take(std::string const &object);
+            void refresh_inventory();
             void play();
+            void getInventory();
+            void emergencyFood();
+            void moveTo(int x, int y);
             Player(int player_number, ZappyAI::Conn conn);
             ~Player();
             std::vector<std::string> getVision();
+            void get_pos_from_vision(int i);
     };
 }
