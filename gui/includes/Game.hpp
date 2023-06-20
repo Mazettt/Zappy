@@ -62,5 +62,6 @@ namespace ZappyGui {
             void drawLoading();
             void switchToGame();
             void checkKonamiCode(MyRayLib::Music &musicGame);
+            void drawMapData();
     };
 }
