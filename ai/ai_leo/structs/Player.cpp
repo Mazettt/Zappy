@@ -211,23 +211,27 @@ bool ZappyAI::Player::check_interest()
 {
     std::vector<std::string> vision = getVision();
 
+    // check each cell of the vision
+    // if there is something interesting, go to it
+    // something interesting is something that is not a player or a food and that is not empty
+    // check if it is something present in _to_take
+    // if yes, take it and remove it from _to_take
+
     for (int i = 0; i < vision.size(); i++) {
-        // check each case of vision and check if it contains something needed in _current_requirements
-        // strings value are in _requirements
-        for (int j = 0; _requirements[j] != ""; j++) {
-            if (vision[i].find(_requirements[j]) != std::string::npos && _current_requirements[j] > 0 && _requirements[j] != "player") {
-                std::cout << "Player " << _player_number << " found " << _requirements[j] << std::endl;
+        for (int j = 0; j < 7; j++) {
+            if (vision[i].find(_to_take[j]) != std::string::npos) {
                 get_pos_from_vision(i);
                 _conn.sendToServer("Take " + _requirements[j] + "\n");
                 if (_conn.receiveFromServer() == "ok\n") {
-                    std::cout << "Player " << _player_number << " took " << _requirements[j] << std::endl;
                     _inventory[_requirements[j]]++;
-                    _current_requirements[j]--;
+                    _to_take[j]--;
+                    return true;
                 }
                 return true;
             }
         }
     }
+            
 }
 
 void ZappyAI::Player::vaccuum(std::string const &content)
@@ -238,7 +242,6 @@ void ZappyAI::Player::vaccuum(std::string const &content)
 void ZappyAI::Player::wander()
 {
     std::vector<std::string> vis = getVision();
-    // take everything on the player's case
     for (int i = 0; i < vis[0].length(); i++) {
         if (vis[0][i] != ' ') {
             std::string word = "";
@@ -323,6 +326,7 @@ void ZappyAI::Player::play()
         vision = getVision();
         getInventory();
         set_current_requirements();
+        std::cout << "Player " << _player_number << " is level " << _level << " and needs " << _current_requirements[0] << " players, " << _current_requirements[1] << " linemate, " << _current_requirements[2] << " deraumere, " << _current_requirements[3] << " sibur, " << _current_requirements[4] << " mendiane, " << _current_requirements[5] << " phiras, " << _current_requirements[6] << " thystame" << std::endl;
         if (_inventory["food"] <= 2)
             emergencyFood();
         if (check_requirements()) {
