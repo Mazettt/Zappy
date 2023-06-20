@@ -28,6 +28,7 @@ Game::Game(const std::string &ip, int port):
     _konamiIndex(0),
     _map(this->_manager, this->_camera, this->_link)
 {
+    this->_raylibwindow.MyInitAudioDevice();
     _manager.loadBasicResource();
     this->_BoolCloseWin = false;
     this->_stateWindow = stateWindow::PRELOADING;
@@ -125,7 +126,6 @@ void Game::run() {
     this->_skyboxMesh.chooseSkyboxFile(this->_manager.getTexture(IResource::resourceType::SKYBOX_BACKGROUND));
 
     float volumeMusic = 0.0;
-    this->_raylibwindow.MyInitAudioDevice();
     MyRayLib::Music musicMenu("./gui/assets/audio/GénériqueGarf.mp3");
     if (musicMenu.MyIsMusicReady())
         musicMenu.MyPlayMusic();

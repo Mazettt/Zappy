@@ -82,9 +82,10 @@ void ServerLink::update()
         buff = _backup + buff;
         _backup.clear();
     }
-    if (buff.back() != '\n') {
-        _backup = buff.substr(buff.find_last_of('\n'));
-        buff = buff.substr(0, buff.find_last_of('\n'));
+    size_t pos = buff.find_last_of('\n');
+    if (pos != std::string::npos) {
+        _backup = buff.substr(pos);
+        buff = buff.substr(0, pos);
     }
     std::vector<std::string> commands = split(buff, '\n');
     for (const auto &command : commands) {
