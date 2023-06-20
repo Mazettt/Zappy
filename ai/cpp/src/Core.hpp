@@ -23,10 +23,13 @@ namespace my {
 
         protected:
         private:
+            void _handleBroadcast();
             void _fork();
-            void _lookForFood(Player &player);
+            void _askNbrPlayers();
+            ElevCond _elevcond;
             const Args &_args;
             Player _player;
             std::vector<Player> _childs;
+            int _nbrPlayers;
     };
 }

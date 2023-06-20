@@ -19,7 +19,7 @@ namespace my {
             bool canElevate();
             int getLevel() const;
 
-            void lookForFood();
+            void lookForResource(Resource type);
             void goToTile(int tileIndex);
 
             void forward();
@@ -35,6 +35,8 @@ namespace my {
             bool set(Resource type);
             int incantation();
 
+            std::optional<std::pair<std::string, int>> getBroadcast();
+
         protected:
         private:
             ServerLink _s;
@@ -42,7 +44,5 @@ namespace my {
             std::map<Resource, int> _inventory;
             std::vector<Tile> _lastLook;
             size_t _foodEaten;
-            int _lvl;
-            bool _inventoryUpdated;
     };
 }

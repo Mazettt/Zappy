@@ -4,7 +4,9 @@ using namespace my;
 
 ServerLink::ServerLink(const Args &args):
     _socket(args.getFlagValue<std::string>("-h"),
-    args.getFlagValue<int>("-p"))
+    args.getFlagValue<int>("-p")),
+    _broadcast(std::make_pair(std::string(), -1)),
+    _lvl(1)
 {
     if (_socket.read() != "WELCOME\n")
         throw my::MyError("Wrong welcome message", "main");
@@ -42,6 +44,10 @@ const std::string &ServerLink::getTeam() const {
 
 const std::pair<int, int> &ServerLink::getMapSize() const {
     return _mapSize;
+}
+
+int ServerLink::getLvl() const {
+    return _lvl;
 }
 
 void ServerLink::forward() {
@@ -170,24 +176,23 @@ bool ServerLink::set(Resource type) {
 int ServerLink::incantation() {
     _socket.write("Incantation\n");
     _read();
-    auto responses = _read();
-    if (responses.size() != 1)
-        throw my::MyError("ServerLink::incantation", "Wrong response");
-    std::string res = responses[0];
-    if (res == "ko")
-        return -1;
-    return std::stoi(res.substr(15));
+    int backupLvl = _lvl;
+    _read(true);
+    if (_lvl == backupLvl + 1)
+        return _lvl;
+    return -1;
 }
 
-std::optional<std::string> ServerLink::getBroadcast() {
-    if (_broadcast.empty())
+std::optional<std::pair<std::string, int>> ServerLink::getBroadcast() {
+    if (_broadcast.first.empty() || _broadcast.second == -1)
         return std::nullopt;
-    std::string res = _broadcast;
-    _broadcast.clear();
+    std::pair<std::string, int> res = _broadcast;
+    _broadcast.first.clear();
+    _broadcast.second = -1;
     return res;
 }
 
-std::vector<std::string> ServerLink::_read() {
+std::vector<std::string> ServerLink::_read(bool incantation) {
     std::vector<std::string> res;
     while (res.size() == 0) {
         std::string tmp;
@@ -201,6 +206,12 @@ std::vector<std::string> ServerLink::_read() {
                 _setBroadcast(*it);
                 it = res.erase(it);
                 continue;
+            } else if (it->find("Current level") == 0) {
+                _lvl = std::stoi(it->substr(15));
+                it = res.erase(it);
+                if (incantation)
+                    return res;
+                continue;
             } else if (it->find("dead") == 0)
                 throw Socket::Error("Dead", "ServerLink::_read");
             ++it;
@@ -210,5 +221,6 @@ std::vector<std::string> ServerLink::_read() {
 }
 
 void ServerLink::_setBroadcast(const std::string &command) {
-    _broadcast = command.substr(11);
+    _broadcast.first = command.substr(11);
+    _broadcast.second = std::stoi(command.substr(8, 1));
 }

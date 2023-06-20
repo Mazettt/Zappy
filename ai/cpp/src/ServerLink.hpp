@@ -25,6 +25,7 @@ namespace my {
 
             const std::string &getTeam() const;
             const std::pair<int, int> &getMapSize() const;
+            int getLvl() const;
 
             void forward();
             void left();
@@ -39,16 +40,17 @@ namespace my {
             bool set(Resource type);
             int incantation();
 
-            std::optional<std::string> getBroadcast();
+            std::optional<std::pair<std::string, int>> getBroadcast();
 
         protected:
         private:
-            std::vector<std::string> _read();
+            std::vector<std::string> _read(bool incantation = false);
             void _setBroadcast(const std::string &command);
 
             my::Socket _socket;
             std::string _team;
             std::pair<int, int> _mapSize;
-            std::string _broadcast;
+            std::pair<std::string, int> _broadcast;
+            int _lvl;
     };
 }

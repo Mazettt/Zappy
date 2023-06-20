@@ -4,9 +4,7 @@ using namespace my;
 
 Player::Player(const Args &args):
     _s(args),
-    _foodEaten(0),
-    _lvl(1),
-    _inventoryUpdated(true)
+    _foodEaten(0)
 {}
 
 Player::Player(Player &&other):
@@ -14,13 +12,9 @@ Player::Player(Player &&other):
     _elevcond(std::move(other._elevcond)),
     _inventory(std::move(other._inventory)),
     _lastLook(std::move(other._lastLook)),
-    _foodEaten(other._foodEaten),
-    _lvl(other._lvl),
-    _inventoryUpdated(other._inventoryUpdated)
+    _foodEaten(other._foodEaten)
 {
     other._foodEaten = 0;
-    other._lvl = 1;
-    other._inventoryUpdated = false;
 }
 
 Player::~Player() {}
@@ -32,19 +26,15 @@ Player &Player::operator=(Player &&other)
     _inventory = std::move(other._inventory);
     _lastLook = std::move(other._lastLook);
     _foodEaten = other._foodEaten;
-    _lvl = other._lvl;
-    _inventoryUpdated = other._inventoryUpdated;
     other._foodEaten = 0;
-    other._lvl = 1;
-    other._inventoryUpdated = false;
     return *this;
 }
 
 bool Player::canElevate()
 {
     look();
-    for (Resource i = Resource::FOOD; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1)) {
-        if (_elevcond.get(_lvl, i) > _lastLook[0].getNbr(i))
+    for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1)) {
+        if (_elevcond.get(getLevel(), i) > _lastLook[0].getNbr(i))
             return false;
     }
     return true;
@@ -52,21 +42,21 @@ bool Player::canElevate()
 
 int Player::getLevel() const
 {
-    return _lvl;
+    return _s.getLvl();
 }
 
-void Player::lookForFood()
+void Player::lookForResource(Resource type)
 {
     int begins[9] = {0, 1, 4, 9, 16, 25, 36, 49, 64};
     int middle[9] = {0, 2, 6, 12, 20, 30, 42, 56, 72};
     int ends[9] = {0, 3, 8, 15, 24, 35, 48, 63, 80};
     const auto &l = look();
 
-    for (int i = 0; i <= _lvl; ++i) {
+    for (int i = 0; i <= getLevel(); ++i) {
         for (int j = begins[i]; j <= ends[i]; ++j) {
-            if (l[j].getNbr(Resource::FOOD)) {
+            if (l[j].getNbr(type)) {
                 goToTile(j);
-                take(Resource::FOOD);
+                take(type);
                 return;
             }
         }
@@ -124,9 +114,7 @@ const std::vector<Tile> &Player::look()
 
 const std::map<Resource, int> &Player::inventory()
 {
-    if (_inventoryUpdated)
-        _inventory = _s.inventory();
-    _inventoryUpdated = false;
+    _inventory = _s.inventory();
     return _inventory;
 }
 
@@ -152,13 +140,11 @@ bool Player::eject()
 
 bool Player::take(Resource type)
 {
-    _inventoryUpdated = true;
     return _s.take(type);
 }
 
 bool Player::set(Resource type)
 {
-    _inventoryUpdated = true;
     return _s.set(type);
 }
 
@@ -167,9 +153,15 @@ int Player::incantation()
     if (canElevate()) {
         int newlvl = _s.incantation();
         if (newlvl != -1) {
-            _lvl = newlvl;
-            return _lvl;
+            std::cout << "Incantation ok" << std::endl;
+            return newlvl;
         }
     }
+    std::cout << "Incantation failed" << std::endl;
     return -1;
+}
+
+std::optional<std::pair<std::string, int>> Player::getBroadcast()
+{
+    return _s.getBroadcast();
 }
