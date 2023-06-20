@@ -24,6 +24,13 @@ namespace ZappyAI {
             int _mendiane;
             int _phiras;
             int _thystame;
+            int _players_on_tile;
+            int _current_requirements[7];
+            // variable that has requirements string
+            std::string _requirements[7];
+            int _to_take[7];
+            void vacuum(std::vector<std::string> &vision, std::string const &object);
+            bool check_requirements();
             std::map<std::string, int> _inventory;
             std::vector<std::string> _vision;
             ZappyAI::Conn _conn;
@@ -36,9 +43,15 @@ namespace ZappyAI {
             void getInventory();
             void emergencyFood();
             void moveTo(int x, int y);
+            void set_current_requirements();
+            void levelUp();
             Player(int player_number, ZappyAI::Conn conn);
             ~Player();
             std::vector<std::string> getVision();
             void get_pos_from_vision(int i);
+            void wander();
+            void vaccuum(std::string const &object);
+            bool check_interest();
+            void drop_required_items();
     };
 }

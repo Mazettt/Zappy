@@ -26,6 +26,13 @@ ZappyAI::Player::Player(int player_number, ZappyAI::Conn conn) : _conn(conn)
     _inventory["phiras"] = _phiras;
     _inventory["thystame"] = _thystame;
     _conn = conn;
+    _requirements[0] = "player";
+    _requirements[1] = "linemate";
+    _requirements[2] = "deraumere";
+    _requirements[3] = "sibur";
+    _requirements[4] = "mendiane";
+    _requirements[5] = "phiras";
+    _requirements[6] = "thystame";
 }
 
 std::vector<std::string> ZappyAI::Player::getVision()
@@ -48,6 +55,11 @@ std::vector<std::string> ZappyAI::Player::getVision()
         }
     }
     vision.push_back(tmp);
+    _players_on_tile = 0;
+    for (int i = 0; i < vision[0].length(); i++) {
+        if (vision[0][i] == 'p')
+            _players_on_tile++;
+    }
     return vision;
 }
 
@@ -171,12 +183,11 @@ void ZappyAI::Player::get_pos_from_vision(int i)
 void ZappyAI::Player::emergencyFood()
 {
     std::cout << "Player " << _player_number << " is starving" << std::endl;
-    while (_inventory["food"] < 10) {
+    while (_inventory["food"] < 15) {
         std::vector<std::string> vision = getVision();
         for (int i = 0; i < vision.size(); i++) {
             if (vision[i].find("food") != std::string::npos) {
                 get_pos_from_vision(i);
-                // count the number of food
                 int food = 0;
                 for (int j = 0; j < vision[i].length(); j++) {
                     if (vision[i][j] == 'f')
@@ -191,8 +202,107 @@ void ZappyAI::Player::emergencyFood()
             }
         }
         forward();
+        getInventory();
     }
     std::cout << "Player " << _player_number << " is not starving anymore" << std::endl;
+}
+
+bool ZappyAI::Player::check_interest()
+{
+    std::vector<std::string> vision = getVision();
+
+    for (int i = 0; i < vision.size(); i++) {
+        // check each case of vision and check if it contains something needed in _current_requirements
+        // strings value are in _requirements
+        for (int j = 0; _requirements[j] != ""; j++) {
+            if (vision[i].find(_requirements[j]) != std::string::npos && _current_requirements[j] > 0 && _requirements[j] != "player") {
+                std::cout << "Player " << _player_number << " found " << _requirements[j] << std::endl;
+                get_pos_from_vision(i);
+                _conn.sendToServer("Take " + _requirements[j] + "\n");
+                if (_conn.receiveFromServer() == "ok\n") {
+                    std::cout << "Player " << _player_number << " took " << _requirements[j] << std::endl;
+                    _inventory[_requirements[j]]++;
+                    _current_requirements[j]--;
+                }
+                return true;
+            }
+        }
+    }
+}
+
+void ZappyAI::Player::vaccuum(std::string const &content)
+{
+    std::cout << "PLAYER CELL CONTENT : " << content << std::endl;
+}
+
+void ZappyAI::Player::wander()
+{
+    std::vector<std::string> vis = getVision();
+    // take everything on the player's case
+    for (int i = 0; i < vis[0].length(); i++) {
+        if (vis[0][i] != ' ') {
+            std::string word = "";
+            while (vis[0][i] != ' ' && i < vis[0].length()) {
+                word += vis[0][i];
+                i++;
+            }
+            _conn.sendToServer("Take " + word + "\n");
+            if (_conn.receiveFromServer() == "ok\n") {
+                std::cout << "Player " << _player_number << " took " << word << std::endl;
+                _inventory[word]++;
+            }
+        }
+    }
+    forward();
+    left();
+    if (check_interest() == true) {
+        return;
+    }
+    right();
+    right();
+    if (check_interest() == true) {
+        return;
+    }
+    left();
+}
+
+void ZappyAI::Player::drop_required_items()
+{
+    for (int i = 0; _requirements[i] != ""; i++) {
+        if (_requirements[i] == "player")
+            continue;
+        while (_inventory[_requirements[i]] > 0) {
+            _conn.sendToServer("Set " + _requirements[i] + "\n");
+            if (_conn.receiveFromServer() == "ok\n") {
+                _inventory[_requirements[i]]--;
+            }
+        }
+    }
+}
+
+void ZappyAI::Player::levelUp()
+{
+    if (_level == 1) {
+        drop_required_items();
+        _conn.sendToServer("Incantation\n");
+        std::string resp = _conn.receiveFromServer();
+        while (resp != "Current level: 2\n") {
+            std::cout << resp << std::endl;
+            resp = _conn.receiveFromServer();
+            if (resp == "ko\n") {
+                std::cout << "Player " << _player_number << " can't level up" << std::endl;
+                return;
+            }
+            if (resp == "Elevation underway\n") {
+                std::cout << "Player " << _player_number << " is leveling up" << std::endl;
+                _level++;
+                set_current_requirements();
+                return;
+            }
+        }
+        std::cout << resp << std::endl;
+    }
+    getInventory();
 }
 
 void ZappyAI::Player::play()
@@ -203,13 +313,104 @@ void ZappyAI::Player::play()
     getInventory();
 
     while (!_is_dead) {
-        
+        vision = getVision();
         getInventory();
+        set_current_requirements();
         if (_inventory["food"] <= 2)
             emergencyFood();
+        if (check_requirements()) {
+            std::cout << "Player " << _player_number << " can level up" << std::endl;
+            levelUp();
+        }
+        wander();
+
     }
     std::cout << "Player " << _player_number << " is dead" << std::endl;
     exit(0);
+}
+
+void ZappyAI::Player::set_current_requirements()
+{
+    // 0 = players, 1 = linemate, 2 = deraumere, 3 = sibur, 4 = mendiane, 5 = phiras, 6 = thystame
+    if (_level == 1) {
+        _current_requirements[0] = 1;
+        _current_requirements[1] = 1;
+        _current_requirements[2] = 0;
+        _current_requirements[3] = 0;
+        _current_requirements[4] = 0;
+        _current_requirements[5] = 0;
+        _current_requirements[6] = 0;
+    } else if (_level == 2) {
+        _current_requirements[0] = 2;
+        _current_requirements[1] = 1;
+        _current_requirements[2] = 1;
+        _current_requirements[3] = 1;
+        _current_requirements[4] = 0;
+        _current_requirements[5] = 0;
+        _current_requirements[6] = 0;
+    } else if (_level == 3) {
+        _current_requirements[0] = 2;
+        _current_requirements[1] = 2;
+        _current_requirements[2] = 0;
+        _current_requirements[3] = 1;
+        _current_requirements[4] = 0;
+        _current_requirements[5] = 2;
+        _current_requirements[6] = 0;
+    } else if (_level == 4) {
+        _current_requirements[0] = 4;
+        _current_requirements[1] = 1;
+        _current_requirements[2] = 1;
+        _current_requirements[3] = 2;
+        _current_requirements[4] = 0;
+        _current_requirements[5] = 1;
+        _current_requirements[6] = 0;
+    } else if (_level == 5) {
+        _current_requirements[0] = 4;
+        _current_requirements[1] = 1;
+        _current_requirements[2] = 2;
+        _current_requirements[3] = 1;
+        _current_requirements[4] = 3;
+        _current_requirements[5] = 0;
+        _current_requirements[6] = 0;
+    } else if (_level == 6) {
+        _current_requirements[0] = 6;
+        _current_requirements[1] = 1;
+        _current_requirements[2] = 2;
+        _current_requirements[3] = 3;
+        _current_requirements[4] = 0;
+        _current_requirements[5] = 1;
+        _current_requirements[6] = 0;
+    } else if (_level == 7) {
+        _current_requirements[0] = 6;
+        _current_requirements[1] = 2;
+        _current_requirements[2] = 2;
+        _current_requirements[3] = 2;
+        _current_requirements[4] = 2;
+        _current_requirements[5] = 2;
+        _current_requirements[6] = 1;
+    }
+    for (int i = 0; i < 7; i++) {
+        _to_take[i] = _current_requirements[i];
+    }
+}
+
+bool ZappyAI::Player::check_requirements()
+{
+    if (_current_requirements[0] > _players_on_tile)
+        return false;
+    if (_current_requirements[1] > _inventory["linemate"])
+        return false;
+    if (_current_requirements[2] > _inventory["deraumere"])
+        return false;
+    if (_current_requirements[3] > _inventory["sibur"])
+        return false;
+    if (_current_requirements[4] > _inventory["mendiane"])
+        return false;
+    if (_current_requirements[5] > _inventory["phiras"])
+        return false;
+    if (_current_requirements[6] > _inventory["thystame"])
+        return false;
+    return true;
 }
 
 void ZappyAI::Player::forward()
@@ -260,6 +461,7 @@ void ZappyAI::Player::getInventory()
 {
     _conn.sendToServer("Inventory\n");
     std::string response = _conn.receiveInventory();
+    std::cout << "Player " << _player_number << " inventory: " << response << std::endl;
     for (int i = 0; i < response.length(); i++) {
         if (response[i] == '[' || response[i] == ']')
             response.erase(i, 1);
