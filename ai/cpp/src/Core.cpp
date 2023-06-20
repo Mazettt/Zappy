@@ -5,7 +5,8 @@ using namespace my;
 Core::Core(const Args &args):
     _args(args),
     _player(args),
-    _nbrPlayers(0)
+    _nbrPlayers(0),
+    _waitIncantation(false)
 {}
 
 Core::~Core() {}
@@ -57,7 +58,11 @@ void Core::run()
 
     while (true) {
         std::map<my::Resource, int> inv = _player.inventory();
-        if (inv.at(Resource::FOOD) < 15) {
+        if (inv.at(Resource::FOOD) < (_waitIncantation ? 5 : 20)) {
+            if (_waitIncantation) {
+                _player.broadcast("abort incantation");
+                _waitIncantation = false;
+            }
             _player.lookForResource(Resource::FOOD);
         } else {
             bool check = false;
@@ -78,8 +83,9 @@ void Core::run()
                     }
                     _player.incantation();
                     _player.broadcast("dir0: incantation done");
-                } else {
+                } else if (!_waitIncantation) {
                     _player.broadcast(std::string("can incant: lvl ") + std::to_string(_player.getLevel()));
+                    _waitIncantation = true;
                 }
             }
         }

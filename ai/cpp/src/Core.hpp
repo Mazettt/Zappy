@@ -31,5 +31,6 @@ namespace my {
             Player _player;
             std::vector<Player> _childs;
             int _nbrPlayers;
+            bool _waitIncantation;
     };
 }
