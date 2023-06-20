@@ -5,7 +5,6 @@ using namespace my;
 ServerLink::ServerLink(const Args &args):
     _socket(args.getFlagValue<std::string>("-h"),
     args.getFlagValue<int>("-p")),
-    _broadcast(std::make_pair(std::string(), -1)),
     _lvl(1)
 {
     if (_socket.read() != "WELCOME\n")
@@ -184,11 +183,10 @@ int ServerLink::incantation() {
 }
 
 std::optional<std::pair<std::string, int>> ServerLink::getBroadcast() {
-    if (_broadcast.first.empty() || _broadcast.second == -1)
+    if (_broadcast.empty())
         return std::nullopt;
-    std::pair<std::string, int> res = _broadcast;
-    _broadcast.first.clear();
-    _broadcast.second = -1;
+    std::pair<std::string, int> res = _broadcast.front();
+    _broadcast.pop();
     return res;
 }
 
@@ -221,6 +219,5 @@ std::vector<std::string> ServerLink::_read(bool incantation) {
 }
 
 void ServerLink::_setBroadcast(const std::string &command) {
-    _broadcast.first = command.substr(11);
-    _broadcast.second = std::stoi(command.substr(8, 1));
+    _broadcast.push(std::make_pair(command.substr(11), std::stoi(command.substr(8, 1))));
 }

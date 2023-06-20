@@ -21,6 +21,7 @@ namespace my {
 
             void lookForResource(Resource type);
             void goToTile(int tileIndex);
+            void goToDirection(int direction);
 
             void forward();
             void left();

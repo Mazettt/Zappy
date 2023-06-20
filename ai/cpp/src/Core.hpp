@@ -25,12 +25,13 @@ namespace my {
         private:
             void _handleBroadcast();
             void _fork();
-            void _askNbrPlayers();
             ElevCond _elevcond;
             const Args &_args;
             Player _player;
             std::vector<Player> _childs;
-            int _nbrPlayers;
+            int _comingPlayers;
             bool _waitIncantation;
+            bool _comingToIncantation;
+            int _comingDir;
     };
 }

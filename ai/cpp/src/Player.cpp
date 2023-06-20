@@ -91,6 +91,54 @@ void Player::goToTile(int tileIndex)
     }
 }
 
+void Player::goToDirection(int direction)
+{
+    switch (direction) {
+        case 0:
+            break;
+        case 1:
+            forward();
+            break;
+        case 2:
+            forward();
+            left();
+            forward();
+            break;
+        case 3:
+            left();
+            forward();
+            break;
+        case 4:
+            left();
+            forward();
+            left();
+            forward();
+            break;
+        case 5:
+            left();
+            left();
+            forward();
+            break;
+        case 6:
+            right();
+            forward();
+            right();
+            forward();
+            break;
+        case 7:
+            right();
+            forward();
+            break;
+        case 8:
+            forward();
+            right();
+            forward();
+            break;
+        default:
+            break;
+    }
+}
+
 void Player::forward()
 {
     _s.forward();

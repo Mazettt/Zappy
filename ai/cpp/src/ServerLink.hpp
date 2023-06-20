@@ -5,6 +5,7 @@
 #include <map>
 #include <thread>
 #include <optional>
+#include <queue>
 #include "Socket.hpp"
 #include "MyError.hpp"
 #include "String.hpp"
@@ -50,7 +51,7 @@ namespace my {
             my::Socket _socket;
             std::string _team;
             std::pair<int, int> _mapSize;
-            std::pair<std::string, int> _broadcast;
+            std::queue<std::pair<std::string, int>> _broadcast;
             int _lvl;
     };
 }
