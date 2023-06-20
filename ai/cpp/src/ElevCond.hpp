@@ -8,12 +8,12 @@ namespace my {
     class ElevCond {
         public:
             ElevCond();
-            ElevCond(const ElevCond &other) = delete;
-            ElevCond(ElevCond &&other) = delete;
+            ElevCond(const ElevCond &other) = default;
+            ElevCond(ElevCond &&other) = default;
             ~ElevCond();
 
-            ElevCond &operator=(const ElevCond &other) = delete;
-            ElevCond &operator=(ElevCond &&other) = delete;
+            ElevCond &operator=(const ElevCond &other) = default;
+            ElevCond &operator=(ElevCond &&other) = default;
 
             int get(int currentLevel, Resource type) const;
 

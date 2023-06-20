@@ -17,11 +17,11 @@ namespace my {
         public:
             ServerLink(const Args &args);
             ServerLink(const ServerLink &other) = delete;
-            ServerLink(ServerLink &&other) = delete;
+            ServerLink(ServerLink &&other);
             ~ServerLink();
 
             ServerLink &operator=(const ServerLink &other) = delete;
-            ServerLink &operator=(ServerLink &&other) = delete;
+            ServerLink &operator=(ServerLink &&other);
 
             const std::string &getTeam() const;
             const std::pair<int, int> &getMapSize() const;

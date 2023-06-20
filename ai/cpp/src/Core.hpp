@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-#include "ServerLink.hpp"
+#include "Player.hpp"
 #include "Args.hpp"
 #include "MyError.hpp"
 #include "String.hpp"
@@ -23,8 +23,10 @@ namespace my {
 
         protected:
         private:
-            ServerLink _s;
-            ElevCond _elevcond;
-            size_t _foodEaten;
+            void _fork();
+            void _lookForFood(Player &player);
+            const Args &_args;
+            Player _player;
+            std::vector<Player> _childs;
     };
 }

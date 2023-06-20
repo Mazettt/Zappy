@@ -3,40 +3,55 @@
 using namespace my;
 
 Core::Core(const Args &args):
-    _s(args),
-    _foodEaten(0)
+    _args(args),
+    _player(args)
 {}
 
 Core::~Core() {}
 
 void Core::run()
 {
+    bool forked = false;
     while (true) {
-        auto look = _s.look();
+        auto oui = _player.inventory();
+        if (!forked && oui[Resource::FOOD] >= 15) {
+            _fork();
+            forked = true;
+        }
 
-        if (look[0].getNbr(Resource::FOOD)) {
-            if (_s.take(Resource::FOOD))
-                ++_foodEaten;
-        } else if (look[2].getNbr(Resource::FOOD)) {
-            _s.forward();
-            if (_s.take(Resource::FOOD))
-                ++_foodEaten;
-        } else if (look[1].getNbr(Resource::FOOD)) {
-            _s.forward();
-            _s.left();
-            _s.forward();
-            if (_s.take(Resource::FOOD))
-                ++_foodEaten;
-        } else if (look[3].getNbr(Resource::FOOD)) {
-            _s.forward();
-            _s.right();
-            _s.forward();
-            if (_s.take(Resource::FOOD))
-                ++_foodEaten;
-        } else
-            _s.forward();
-
-        auto oui = _s.inventory();
-        std::cout << "Food eaten: " << _foodEaten << " | Food left: " << oui[Resource::FOOD] << " Message: " << _s.getBroadcast().value_or("") << "\r"  << std::flush;
+        _lookForFood(_player);
+        std::cout << "Player food: " << _player.inventory().at(Resource::FOOD) << std::endl;
+        for (auto &i : _childs) {
+            _lookForFood(i);
+            std::cout << "Child food: " << i.inventory().at(Resource::FOOD) << std::endl;
+        }
     }
+}
+
+void Core::_fork() {
+    _player.fork();
+    _childs.push_back(Player(_args));
+}
+
+void Core::_lookForFood(Player &player)
+{
+    const auto &look = player.look();
+
+    if (look[0].getNbr(Resource::FOOD))
+        player.take(Resource::FOOD);
+    else if (look[2].getNbr(Resource::FOOD)) {
+        player.forward();
+        player.take(Resource::FOOD);
+    } else if (look[1].getNbr(Resource::FOOD)) {
+        player.forward();
+        player.left();
+        player.forward();
+        player.take(Resource::FOOD);
+    } else if (look[3].getNbr(Resource::FOOD)) {
+        player.forward();
+        player.right();
+        player.forward();
+        player.take(Resource::FOOD);
+    } else
+        player.forward();
 }

@@ -2,7 +2,10 @@
 
 using namespace my;
 
-ServerLink::ServerLink(const Args &args): _socket(args.getFlagValue<std::string>("-h"), args.getFlagValue<int>("-p")) {
+ServerLink::ServerLink(const Args &args):
+    _socket(args.getFlagValue<std::string>("-h"),
+    args.getFlagValue<int>("-p"))
+{
     if (_socket.read() != "WELCOME\n")
         throw my::MyError("Wrong welcome message", "main");
     _team = args.getFlagValue<std::string>("-n");
@@ -16,7 +19,22 @@ ServerLink::ServerLink(const Args &args): _socket(args.getFlagValue<std::string>
     std::cout << "map: " << _mapSize.first << " " << _mapSize.second << std::endl;
 }
 
+ServerLink::ServerLink(ServerLink &&other):
+    _socket(std::move(other._socket)),
+    _team(std::move(other._team)),
+    _mapSize(std::move(other._mapSize)),
+    _broadcast(std::move(other._broadcast))
+{}
+
 ServerLink::~ServerLink() {}
+
+ServerLink &ServerLink::operator=(ServerLink &&other) {
+    _socket = std::move(other._socket);
+    _team = std::move(other._team);
+    _mapSize = std::move(other._mapSize);
+    _broadcast = std::move(other._broadcast);
+    return *this;
+}
 
 const std::string &ServerLink::getTeam() const {
     return _team;
@@ -184,7 +202,7 @@ std::vector<std::string> ServerLink::_read() {
                 it = res.erase(it);
                 continue;
             } else if (it->find("dead") == 0)
-                throw std::runtime_error("Dead");
+                throw Socket::Error("Dead", "ServerLink::_read");
             ++it;
         }
     }

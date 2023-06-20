@@ -5,6 +5,7 @@ using namespace my;
 ElevCond::ElevCond() {
     _one_two = {
         {Resource::PLAYER, 1},
+        {Resource::FOOD, 0},
         {Resource::LINEMATE, 1},
         {Resource::DERAUMERE, 0},
         {Resource::SIBUR, 0},
@@ -14,6 +15,7 @@ ElevCond::ElevCond() {
     };
     _two_three = {
         {Resource::PLAYER, 2},
+        {Resource::FOOD, 0},
         {Resource::LINEMATE, 1},
         {Resource::DERAUMERE, 1},
         {Resource::SIBUR, 1},
@@ -23,6 +25,7 @@ ElevCond::ElevCond() {
     };
     _three_four = {
         {Resource::PLAYER, 2},
+        {Resource::FOOD, 0},
         {Resource::LINEMATE, 2},
         {Resource::DERAUMERE, 0},
         {Resource::SIBUR, 1},
@@ -32,6 +35,7 @@ ElevCond::ElevCond() {
     };
     _four_five = {
         {Resource::PLAYER, 4},
+        {Resource::FOOD, 0},
         {Resource::LINEMATE, 1},
         {Resource::DERAUMERE, 1},
         {Resource::SIBUR, 2},
@@ -41,6 +45,7 @@ ElevCond::ElevCond() {
     };
     _five_six = {
         {Resource::PLAYER, 4},
+        {Resource::FOOD, 0},
         {Resource::LINEMATE, 1},
         {Resource::DERAUMERE, 2},
         {Resource::SIBUR, 1},
@@ -50,6 +55,7 @@ ElevCond::ElevCond() {
     };
     _six_seven = {
         {Resource::PLAYER, 6},
+        {Resource::FOOD, 0},
         {Resource::LINEMATE, 1},
         {Resource::DERAUMERE, 2},
         {Resource::SIBUR, 3},
@@ -59,6 +65,7 @@ ElevCond::ElevCond() {
     };
     _seven_eight = {
         {Resource::PLAYER, 6},
+        {Resource::FOOD, 0},
         {Resource::LINEMATE, 2},
         {Resource::DERAUMERE, 2},
         {Resource::SIBUR, 2},
