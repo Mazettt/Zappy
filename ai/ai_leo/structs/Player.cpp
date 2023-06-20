@@ -287,7 +287,6 @@ void ZappyAI::Player::levelUp()
         _conn.sendToServer("Incantation\n");
         std::string resp = _conn.receiveFromServer();
         while (resp != "Current level: 2\n") {
-            std::cout << resp << std::endl;
             resp = _conn.receiveFromServer();
             if (resp == "ko\n") {
                 std::cout << "Player " << _player_number << " can't level up" << std::endl;
@@ -301,6 +300,14 @@ void ZappyAI::Player::levelUp()
             }
         }
         std::cout << resp << std::endl;
+        if (resp == "Current level: 2\n") {
+            std::cout << "Player " << _player_number << " leveled up" << std::endl;
+            _level++;
+            set_current_requirements();
+            return;
+        }
+    } else {
+        std::cout << "NEED TO IMPLEMENT LEVEL 2" << std::endl;
     }
     getInventory();
 }
