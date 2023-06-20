@@ -13,7 +13,6 @@
 #include "structs/MyError.hpp"
 #include "structs/Player.hpp"
 
-
 int main(int ac, char **av)
 {
     ZappyAI::Args args(ac, av);
@@ -45,5 +44,7 @@ int main(int ac, char **av)
     int map_x = std::stoi(infos[1].substr(0, infos[1].find(" ")));
     int map_y = std::stoi(infos[1].substr(infos[1].find(" ") + 1, infos[1].length()));
     ZappyAI::Player player(player_number, conn);
-    player.getVision();
+    player.play();
+
+    return 0;
 }

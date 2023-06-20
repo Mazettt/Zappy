@@ -51,6 +51,15 @@ void ZappyAI::Conn::closeConnection()
     close(_fd);
 }
 
+std::string ZappyAI::Conn::receiveVision()
+{
+    std::string response = receiveFromServer();
+    while (response.find("]") == std::string::npos) {
+        response += receiveFromServer();
+    }
+    return response;
+}
+
 int ZappyAI::Conn::getFd() const
 {
     return _fd;

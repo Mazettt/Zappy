@@ -14,6 +14,7 @@
 namespace ZappyAI {
     class Player {
         public:
+            bool _is_dead;
             int _player_number;
             int _level;
             int _food;
@@ -25,9 +26,10 @@ namespace ZappyAI {
             int _thystame;
             std::map<std::string, int> _inventory;
             std::vector<std::string> _vision;
-            ZappyAI::Conn &_conn;
-
-            Player(int player_number, ZappyAI::Conn &conn);
+            ZappyAI::Conn _conn;
+            void forward();
+            void play();
+            Player(int player_number, ZappyAI::Conn conn);
             ~Player();
             std::vector<std::string> getVision();
     };

@@ -28,7 +28,7 @@ namespace ZappyAI {
             int getFd() const;
             int getPort() const;
             std::vector<std::string> initPlayer(std::string const &teamName);
-
+            std::string receiveVision();
         private:
             int _fd;
             int _port;
