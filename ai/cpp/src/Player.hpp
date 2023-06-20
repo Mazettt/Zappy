@@ -17,6 +17,10 @@ namespace my {
             Player &operator=(Player &&other);
 
             bool canElevate();
+            int getLevel() const;
+
+            void lookForFood();
+            void goToTile(int tileIndex);
 
             void forward();
             void left();

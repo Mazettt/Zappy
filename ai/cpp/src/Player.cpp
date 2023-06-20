@@ -50,6 +50,57 @@ bool Player::canElevate()
     return true;
 }
 
+int Player::getLevel() const
+{
+    return _lvl;
+}
+
+void Player::lookForFood()
+{
+    int begins[9] = {0, 1, 4, 9, 16, 25, 36, 49, 64};
+    int middle[9] = {0, 2, 6, 12, 20, 30, 42, 56, 72};
+    int ends[9] = {0, 3, 8, 15, 24, 35, 48, 63, 80};
+    const auto &l = look();
+
+    for (int i = 0; i <= _lvl; ++i) {
+        for (int j = begins[i]; j <= ends[i]; ++j) {
+            if (l[j].getNbr(Resource::FOOD)) {
+                goToTile(j);
+                take(Resource::FOOD);
+                return;
+            }
+        }
+    }
+    forward();
+}
+
+void Player::goToTile(int tileIndex)
+{
+    int begins[9] = {0, 1, 4, 9, 16, 25, 36, 49, 64};
+    int middle[9] = {0, 2, 6, 12, 20, 30, 42, 56, 72};
+    int ends[9] = {0, 3, 8, 15, 24, 35, 48, 63, 80};
+
+    int line = 0;
+
+    for (int i = 0; i < 9; i++) {
+        if (tileIndex >= begins[i] && tileIndex <= ends[i]) {
+            line = i;
+            break;
+        }
+    }
+    for (int i = 0; i < line; i++)
+        forward();
+    if (tileIndex < middle[line]) {
+        left();
+        for (int i = middle[line]; i > tileIndex; i--)
+            forward();
+    } else if (tileIndex > middle[line]) {
+        right();
+        for (int i = middle[line]; i < tileIndex; i++)
+            forward();
+    }
+}
+
 void Player::forward()
 {
     _s.forward();

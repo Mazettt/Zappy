@@ -174,9 +174,9 @@ int ServerLink::incantation() {
     if (responses.size() != 1)
         throw my::MyError("ServerLink::incantation", "Wrong response");
     std::string res = responses[0];
-    if (res == "ko\n")
+    if (res == "ko")
         return -1;
-    return std::stoi(res.substr(15, res.size() - 15 - 1));
+    return std::stoi(res.substr(15));
 }
 
 std::optional<std::string> ServerLink::getBroadcast() {
@@ -210,5 +210,5 @@ std::vector<std::string> ServerLink::_read() {
 }
 
 void ServerLink::_setBroadcast(const std::string &command) {
-    _broadcast = command.substr(11, command.size() - 11 - 1);
+    _broadcast = command.substr(11);
 }

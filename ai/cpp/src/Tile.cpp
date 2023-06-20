@@ -54,7 +54,7 @@ int Tile::getNbr(Resource type) const
 
 void Tile::_fillEmpty()
 {
-    for (Resource r = Resource::FOOD; r < Resource::NONE; r = static_cast<Resource>(static_cast<int>(r) + 1))
+    for (Resource r = Resource::PLAYER; r < Resource::NONE; r = static_cast<Resource>(static_cast<int>(r) + 1))
         if (_resources.find(r) == _resources.end())
             _resources[r] = 0;
 }
