@@ -1,6 +1,7 @@
 #include "Core.hpp"
 #include <thread>
 
+#define unused __attribute__((unused))
 using namespace my;
 
 Core::Core(const Args &args):
@@ -88,7 +89,7 @@ void Core::_findFood(const std::map<my::Resource, int> &inventory)
     _player.lookForResource(Resource::FOOD);
 }
 
-void Core::_comeToIncantation(const std::map<my::Resource, int> &inventory)
+void Core::_comeToIncantation(unused const std::map<my::Resource, int> &inventory)
 {
     if (_comingDir > 0) {
         _player.goToDirection(_comingDir);
@@ -109,13 +110,12 @@ void Core::_findResources(const std::map<my::Resource, int> &inventory)
     _state = State::TRY_INCANT;
 }
 
-void Core::_incant(const std::map<my::Resource, int> &inventory)
+void Core::_incant(unused const std::map<my::Resource, int> &inventory)
 {
     const auto &look = _player.look();
     if (look[0].getNbr(Resource::PLAYER) >= _elevcond.get(_player.getLevel(), Resource::PLAYER)) {
-        std::cout << "begin: " << look[0].getNbr(Resource::PLAYER) << std::endl;
         _player.broadcast("dir0: wait");
-        std::cout << "incanting..." << std::endl;
+        std::cout << "Incanting..." << std::endl;
         for (Resource i = Resource::LINEMATE; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1)) {
             for (int it = look[0].getNbr(i); it < _elevcond.get(_player.getLevel(), i); it++)
                 _player.set(i);
@@ -133,7 +133,7 @@ void Core::_handleBroadcast()
 {
     std::optional<std::pair<std::string, int>> msg = _player.getBroadcast();
     while (msg) {
-        std::cout << "Recieved broadcast1: " << msg->first << " | dir: " << msg->second << std::endl;
+        // std::cout << "Recieved broadcast1: " << msg->first << " | dir: " << msg->second << std::endl;
         if (msg->first == "abort incantation")
             _state = State::FIND_RESOURCES;
         else if (msg->first.find("can incant: lvl ") == 0 && std::stoi(msg->first.substr(16)) == _player.getLevel()) {
@@ -144,25 +144,32 @@ void Core::_handleBroadcast()
         } else if (msg->first == "coming" && _state == State::TRY_INCANT)
             _comingPlayers++;
         else if (msg->first == "dir0: wait" && msg->second == 0) {
-            std::cout << "Waiting for incantation" << std::endl;
-            while (true) {
-                _player.inventory();
-                std::optional<std::pair<std::string, int>> msg = _player.getBroadcast();
-                if (msg && msg->first == "dir0: incantation done" && msg->second == 0) {
+            _waitBroadcast("dir0: incantation done", [this](std::pair<std::string, int> msg){
+                if (msg.second == 0) {
                     _state = State::FIND_RESOURCES;
                     std::cout << "Current lvl: " << _player.getLevel() << std::endl;
-                    break;
-                } else if (msg) {
-                    std::cout << "Recieved broadcast2: " << msg->first << " | dir: " << msg->second << std::endl;
+                    return true;
                 }
-                if (_player.inventory().at(Resource::FOOD) < 5) {
-                    _state = State::FIND_RESOURCES;
-                    break;
-                }
-            }
+                return false;
+            });
         }
 
         msg = _player.getBroadcast();
+    }
+}
+
+void Core::_waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback) {
+    std::cout << "Waiting for broadcast (" << toFind << ")" << std::endl;
+    while (true) {
+        std::map<my::Resource, int> inv = _player.inventory();
+        if (inv.at(Resource::FOOD) < 5) {
+            _state = State::FIND_RESOURCES;
+            break;
+        }
+        std::optional<std::pair<std::string, int>> msg = _player.getBroadcast();
+        if (msg && msg->first.find(toFind) == 0)
+            if (callback(*msg))
+                break;
     }
 }
 

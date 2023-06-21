@@ -43,7 +43,6 @@ int Player::getLevel() const
 void Player::lookForResource(Resource type)
 {
     int begins[9] = {0, 1, 4, 9, 16, 25, 36, 49, 64};
-    int middle[9] = {0, 2, 6, 12, 20, 30, 42, 56, 72};
     int ends[9] = {0, 3, 8, 15, 24, 35, 48, 63, 80};
     const auto &l = look();
 

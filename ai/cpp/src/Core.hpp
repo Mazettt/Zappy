@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <functional>
 #include "Player.hpp"
 #include "Args.hpp"
 #include "MyError.hpp"
@@ -36,7 +37,9 @@ namespace my {
             void _incant(const std::map<my::Resource, int> &inventory);
 
             void _handleBroadcast();
+            void _waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback);
             void _fork();
+
             ElevCond _elevcond;
             const Args &_args;
             Player _player;
