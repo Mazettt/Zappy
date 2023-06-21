@@ -28,12 +28,12 @@ void ServerLink::connect(const std::string &ip, uint16_t port)
     _socket << "GRAPHIC\n";
 }
 
-void ServerLink::askMapSize() // NOT USED
+void ServerLink::askMapSize()
 {
     _socket << "msz\n";
 }
 
-void ServerLink::askTileContent(int x, int y) // TODO
+void ServerLink::askTileContent(int x, int y)
 {
     _socket << "bct " + std::to_string(x) + " " + std::to_string(y) + "\n";
 }
@@ -48,17 +48,17 @@ void ServerLink::askTeamNames() // NOT USED
     _socket << "tna\n";
 }
 
-void ServerLink::askPlayerPosition(int id) // NOT USED
+void ServerLink::askPlayerPosition(int id)
 {
     _socket << "ppo " + std::to_string(id) + "\n";
 }
 
-void ServerLink::askPlayerLevel(int id) // TODO
+void ServerLink::askPlayerLevel(int id)
 {
     _socket << "plv " + std::to_string(id) + "\n";
 }
 
-void ServerLink::askPlayerInventory(int id) // TODO
+void ServerLink::askPlayerInventory(int id)
 {
     _socket << "pin " + std::to_string(id) + "\n";
 }
@@ -68,7 +68,7 @@ void ServerLink::askTimeUnit() // NOT USED
     _socket << "sgt\n";
 }
 
-void ServerLink::modifyTimeUnit(int timeUnit) // NOT USED
+void ServerLink::modifyTimeUnit(int timeUnit)
 {
     _socket << "sst " + std::to_string(timeUnit) + "\n";
 }
@@ -220,7 +220,7 @@ void ServerLink::_plv(const std::string &str)
     this->_game._map.setPlayerLevel(id, level);
 }
 
-void ServerLink::_pin(const std::string &str) // TODO
+void ServerLink::_pin(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -239,7 +239,7 @@ void ServerLink::_pin(const std::string &str) // TODO
     this->_game._map.updatePlayerInventory(id, food, linemate, deraumere, sibur, mendiane, phiras, thystame);
 }
 
-void ServerLink::_pex(const std::string &str) // TODO
+void ServerLink::_pex(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -249,7 +249,7 @@ void ServerLink::_pex(const std::string &str) // TODO
     this->_game._map.expulsion(id);
 }
 
-void ServerLink::_pbc(const std::string &str) // TODO
+void ServerLink::_pbc(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -320,7 +320,7 @@ void ServerLink::_pgt(const std::string &str) // TO CHECK
     this->_game._map.collectResource(id, (ZappyGui::IResource::resourceType) resource); // TO CHECK if resourceType work correctly
 }
 
-void ServerLink::_pdi(const std::string &str) // TO DO
+void ServerLink::_pdi(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -330,7 +330,7 @@ void ServerLink::_pdi(const std::string &str) // TO DO
     this->_game._map.deadPlayer(id);
 }
 
-void ServerLink::_enw(const std::string &str) // TO DO
+void ServerLink::_enw(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -340,11 +340,10 @@ void ServerLink::_enw(const std::string &str) // TO DO
     int y = 0;
 
     iss >> tmp >> eggId >> playerId >> x >> y;
-    std::cout << "Egg layed: " << eggId << " " << playerId << " " << x << " " << y << std::endl;
     this->_game._map.addEggForTile({ (float)x, (float)y }, eggId);
 }
 
-void ServerLink::_egg(const std::string &str) // TO DO
+void ServerLink::_egg(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -353,18 +352,16 @@ void ServerLink::_egg(const std::string &str) // TO DO
     int y = 0;
 
     iss >> tmp >> eggId >> x >> y;
-    std::cout << "New egg: " << eggId << " " << x << " " << y << std::endl;
     this->_game._map.addEggForTile({ (float)x, (float)y }, eggId);
 }
 
-void ServerLink::_ebo(const std::string &str) // TO DO
+void ServerLink::_ebo(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
     int eggId = 0;
 
     iss >> tmp >> eggId;
-    std::cout << "Egg born: " << eggId << std::endl;
     this->_game._map.removeEgg(eggId);
 }
 
@@ -378,7 +375,7 @@ void ServerLink::_edi(const std::string &str) // TO DO
     std::cout << "Egg death: " << eggId << std::endl;
 }
 
-void ServerLink::_sgt(const std::string &str) // TO DO
+void ServerLink::_sgt(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -388,7 +385,7 @@ void ServerLink::_sgt(const std::string &str) // TO DO
     this->_game._map.timeUnit = time;
 }
 
-void ServerLink::_sst(const std::string &str) // TO DO
+void ServerLink::_sst(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;

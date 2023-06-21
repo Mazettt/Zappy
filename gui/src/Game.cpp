@@ -266,7 +266,6 @@ void Game::drawMapData()
             }
         }
     }
-    // int pos = 600;
     for (auto &it : _inventoryMap) {
         std::string tmp = ( "x " + std::to_string(it.second));
         if (it.first == IResource::resourceType::BURGER)

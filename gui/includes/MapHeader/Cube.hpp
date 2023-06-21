@@ -8,7 +8,6 @@
 #include "../MyRayLibHeader/Vector3D.hpp"
 #include "../MyRayLibHeader/Draw.hpp"
 #include "../MyRayLibHeader/Color.hpp"
-// #include "raylib.h"
 
 namespace ZappyGui {
     class Cube {

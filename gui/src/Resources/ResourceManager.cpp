@@ -53,7 +53,6 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::THYSTAME, "./gui/assets/Stones/thystame.png");
     this->loadTexture(IResource::resourceType::BROADCAST, "./gui/assets/broadcasts/broadcastText.png");
 
-    // this->loadTexture(IResource::resourceType::LOGO, "./gui/assets/logo.png");
     this->loadTexture(IResource::resourceType::BUTTON_START, "./gui/assets/Buttons/buttonStart.png");
     this->loadTexture(IResource::resourceType::BUTTON_HELP, "./gui/assets/Buttons/buttonHelp.png");
     this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./gui/assets/Buttons/buttonQuit.png");
@@ -62,8 +61,6 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::POPUPTILE, "./gui/assets/tileInventory.png");
     this->loadTexture(IResource::resourceType::MAPDATA, "./gui/assets/mapData.png");
     this->loadTexture(IResource::resourceType::TEAMSDATA, "./gui/assets/teamInfo.png");
-
-    // this->loadTexture(IResource::resourceType::SKYBOX_BACKGROUND, "./gui/assets/Skybox/background.png");
 
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
