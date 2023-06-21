@@ -172,6 +172,10 @@ void Game::run() {
             if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {
                 musicGame.MyPlayMusic();
             }
+            auto &joinEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_JOIN);
+            joinEffect.setVolume(volumeMusic);
+            auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_LEAVE);
+            leaveEffect.setVolume(volumeMusic);
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
             this->checkKonamiCode(musicGame);
