@@ -67,7 +67,6 @@ void Map::dropResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
     MyRayLib::Vector3D pos = p->getPosition();
     int key = std::round(pos.getZ() * this->_size.getX() + pos.getX());
-
     p->removeOnInventory(type, 1);
     this->_map.at(key)->addResource(this->_manager, type);
 }

@@ -189,9 +189,7 @@ void ServerLink::_pnw(const std::string &str)
     this->_game._map.addPlayerForTile(playerArgs);
     this->askPlayerPosition(id);
     this->askPlayerLevel(id);
-    std::cout << "iddd " << id << std::endl;
-    // if (id != 5)
-        this->askPlayerInventory(id);
+    this->askPlayerInventory(id);
 }
 
 void ServerLink::_ppo(const std::string &str)
@@ -248,7 +246,6 @@ void ServerLink::_pex(const std::string &str) // TODO
     int id = 0;
 
     iss >> tmp >> id;
-    std::cout << "Player explosion: " << id << std::endl;
     this->_game._map.expulsion(id);
 }
 
