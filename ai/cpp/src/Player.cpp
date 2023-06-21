@@ -10,8 +10,6 @@ Player::Player(const Args &args):
 Player::Player(Player &&other):
     _s(std::move(other._s)),
     _elevcond(std::move(other._elevcond)),
-    _inventory(std::move(other._inventory)),
-    _lastLook(std::move(other._lastLook)),
     _foodEaten(other._foodEaten)
 {
     other._foodEaten = 0;
@@ -23,8 +21,6 @@ Player &Player::operator=(Player &&other)
 {
     _s = std::move(other._s);
     _elevcond = std::move(other._elevcond);
-    _inventory = std::move(other._inventory);
-    _lastLook = std::move(other._lastLook);
     _foodEaten = other._foodEaten;
     other._foodEaten = 0;
     return *this;
@@ -32,11 +28,10 @@ Player &Player::operator=(Player &&other)
 
 bool Player::canElevate()
 {
-    look();
-    for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1)) {
-        if (_elevcond.get(getLevel(), i) > _lastLook[0].getNbr(i))
+    auto l = look();
+    for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1))
+        if (_elevcond.get(getLevel(), i) > l[0].getNbr(i))
             return false;
-    }
     return true;
 }
 
@@ -154,16 +149,14 @@ void Player::right()
     _s.right();
 }
 
-const std::vector<Tile> &Player::look()
+std::vector<Tile> Player::look()
 {
-    _lastLook = _s.look();
-    return _lastLook;
+    return _s.look();
 }
 
-const std::map<Resource, int> &Player::inventory()
+std::map<Resource, int> Player::inventory()
 {
-    _inventory = _s.inventory();
-    return _inventory;
+    return _s.inventory();
 }
 
 void Player::broadcast(const std::string &message)
@@ -212,4 +205,9 @@ int Player::incantation()
 std::optional<std::pair<std::string, int>> Player::getBroadcast()
 {
     return _s.getBroadcast();
+}
+
+void Player::clearBroadcast()
+{
+    _s.clearBroadcast();
 }

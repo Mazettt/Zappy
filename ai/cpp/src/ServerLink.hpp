@@ -16,6 +16,19 @@
 namespace my {
     class ServerLink {
         public:
+            class Error: public MyError {
+                public:
+                    Error(const std::string &message, const std::string &className = "ServerLink"): MyError(className, message, true, "ERROR") {}
+            };
+            class Warning: public MyError {
+                public:
+                    Warning(const std::string &message, const std::string &className = "ServerLink"): MyError(className, message, true, "WARN") {}
+            };
+            class Info: public MyError {
+                public:
+                    Info(const std::string &message, const std::string &className = "ServerLink"): MyError(className, message, false, "INFO") {}
+            };
+
             ServerLink(const Args &args);
             ServerLink(const ServerLink &other) = delete;
             ServerLink(ServerLink &&other);
@@ -42,6 +55,7 @@ namespace my {
             int incantation();
 
             std::optional<std::pair<std::string, int>> getBroadcast();
+            void clearBroadcast();
 
         protected:
         private:

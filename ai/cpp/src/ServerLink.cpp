@@ -8,13 +8,13 @@ ServerLink::ServerLink(const Args &args):
     _lvl(1)
 {
     if (_socket.read() != "WELCOME\n")
-        throw my::MyError("Wrong welcome message", "main");
+        throw Error("Wrong welcome message", "main");
     _team = args.getFlagValue<std::string>("-n");
     _socket.write(_team + "\n");
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     auto response = my::split(_socket.read(), " \n");
     if (response[0] == "ko")
-        throw my::MyError("main", "Wrong team " + _team);
+        throw Error("Wrong team " + _team);
     _mapSize = std::make_pair(std::stoi(response[1]), std::stoi(response[2]));
     std::cout << "nbr clients remaining: " << response[0] << std::endl;
     std::cout << "map: " << _mapSize.first << " " << _mapSize.second << std::endl;
@@ -68,7 +68,7 @@ std::vector<Tile> ServerLink::look() {
     _socket.write("Look\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw my::MyError("ServerLink::look", "Wrong response");
+        throw Error("Wrong response");
     std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::splitWithEmpty(response, ",");
     std::vector<Tile> res;
@@ -104,7 +104,7 @@ std::map<Resource, int> ServerLink::inventory() {
     _socket.write("Inventory\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw my::MyError("ServerLink::inventory", "Wrong response");
+        throw Error("Wrong response");
     std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::split(response, ",");
     std::map<Resource, int> res;
@@ -139,7 +139,7 @@ int ServerLink::connectNbr() {
     _socket.write("Connect_nbr\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw my::MyError("ServerLink::connectNbr", "Wrong response");
+        throw Error("Wrong response");
     return std::stoi(responses[0]);
 }
 
@@ -152,7 +152,7 @@ bool ServerLink::eject() {
     _socket.write("Eject\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw my::MyError("ServerLink::eject", "Wrong response");
+        throw Error("Wrong response");
     return responses[0] == "ok";
 }
 
@@ -160,7 +160,7 @@ bool ServerLink::take(Resource type) {
     _socket.write("Take " + typeToString(type) + "\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw my::MyError("ServerLink::take", "Wrong response");
+        throw Error("Wrong response");
     return responses[0] == "ok";
 }
 
@@ -168,7 +168,7 @@ bool ServerLink::set(Resource type) {
     _socket.write("Set " + typeToString(type) + "\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw my::MyError("ServerLink::set", "Wrong response");
+        throw Error("Wrong response");
     return responses[0] == "ok";
 }
 
@@ -188,6 +188,17 @@ std::optional<std::pair<std::string, int>> ServerLink::getBroadcast() {
     std::pair<std::string, int> res = _broadcast.front();
     _broadcast.pop();
     return res;
+}
+
+void ServerLink::clearBroadcast() {
+    auto tmp = _broadcast;
+    _broadcast = std::queue<std::pair<std::string, int>>();
+    while (!tmp.empty()) {
+        auto backup = tmp.front();
+        tmp.pop();
+        if (backup.first.find("can incant: lvl ") != 0)
+            _broadcast.push(backup);
+    }
 }
 
 std::vector<std::string> ServerLink::_read(bool incantation) {
@@ -211,7 +222,7 @@ std::vector<std::string> ServerLink::_read(bool incantation) {
                     return res;
                 continue;
             } else if (it->find("dead") == 0)
-                throw Socket::Error("Dead", "ServerLink::_read");
+                throw Warning("Dead");
             ++it;
         }
     }
