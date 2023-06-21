@@ -40,15 +40,19 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
         }
     );
     if (it != this->_inventory.end()) {
-        if (it->second < 1) {
-            this->_inventory.erase(it);
+        if (it->second < quantity) {
+            return false;
         } else {
             it->second -= quantity;
+            if (it->second == 0) {
+                this->_inventory.erase(it);
+            }
+            return true;
         }
-        return true;
     }
     return false;
 }
+
 
 MyRayLib::Vector3D Player::move(float deltaTime, int timeUnit) {
     float moveSpeed = static_cast<float>(timeUnit) / 2 * deltaTime;

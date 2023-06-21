@@ -82,9 +82,10 @@ void ServerLink::update()
         buff = _backup + buff;
         _backup.clear();
     }
-    if (buff.back() != '\n') {
-        _backup = buff.substr(buff.find_last_of('\n'));
-        buff = buff.substr(0, buff.find_last_of('\n'));
+    size_t pos = buff.find_last_of('\n');
+    if (pos != std::string::npos) {
+        _backup = buff.substr(pos);
+        buff = buff.substr(0, pos);
     }
     std::vector<std::string> commands = split(buff, '\n');
     for (const auto &command : commands) {
@@ -188,9 +189,7 @@ void ServerLink::_pnw(const std::string &str)
     this->_game._map.addPlayerForTile(playerArgs);
     this->askPlayerPosition(id);
     this->askPlayerLevel(id);
-    std::cout << "iddd " << id << std::endl;
-    // if (id != 5)
-        this->askPlayerInventory(id);
+    this->askPlayerInventory(id);
 }
 
 void ServerLink::_ppo(const std::string &str)
@@ -247,7 +246,6 @@ void ServerLink::_pex(const std::string &str) // TODO
     int id = 0;
 
     iss >> tmp >> id;
-    std::cout << "Player explosion: " << id << std::endl;
     this->_game._map.expulsion(id);
 }
 
