@@ -20,13 +20,15 @@ class Player {
         int level;
         int mapSizeX;
         int mapSizeY;
+        bool emergency;
         std::vector<std::string> View;
         std::map<std::string, int> Inventory;
         void vacuum();
         void play();
         Socket socket;
         std::map<std::string, int> get_requirements();
-
+        void crave_food();
+        int most_x(std::string object);
         std::string forward();
         std::string right();
         std::string left();

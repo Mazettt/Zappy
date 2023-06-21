@@ -7,15 +7,50 @@
 
 #include "Player.hpp"
 
+int Player::most_x(std::string object)
+{
+    int counter = 0;
+    int tab_counter[View.size()];
+    int destination = 0;
+    int tmp = 0;
+
+    for (int i = 0; i < View.size(); i++) {
+        std::cout << View[i] << std::endl;
+        while (View[i].find(object) != std::string::npos) {
+            counter++;
+            View[i].erase(View[i].find(object), object.size());
+        }
+        tab_counter[i] = counter;
+    }
+    for (int i = 0; i < View.size(); i++) {
+        if (tab_counter[i] > tmp) {
+            tmp = tab_counter[i];
+            destination = i;
+        }
+    }
+}
+
+void Player::crave_food()
+{
+    while (Inventory["food"] < 15) {
+        View = look();
+        int destination = most_x("food");
+    }
+}
+
 void Player::play()
 {
+    View = look();
+    Inventory = inventory();
+    vacuum();
     while (true) {
-        std::cout << "Player " << playerNumber << " is playing" << std::endl;
-        View = look();
         Inventory = inventory();
-        display_inventory();
-        vacuum();
-        exit(0);
+        if (Inventory["food"] < 3)
+            emergency = true;
+    
+        if (emergency == true) {
+            crave_food();
+        }
     }
 }
 
