@@ -182,6 +182,10 @@ void Map::updateBroadcast(float deltaTime, int timeUnit) {
         std::shared_ptr<ZappyGui::IResource> bc = *it;
         int receiverId = bc->getId();
         std::shared_ptr<Player> pReceiver = this->findPlayerByID(receiverId);
+        if (pReceiver == nullptr) {
+            it = this->_broadcasts.erase(it);
+            continue;
+        }
         MyRayLib::Vector3D receiverPos = pReceiver->getPosition();
         MyRayLib::Vector3D currentPos = bc->getPosition();
         MyRayLib::Vector3D dir = (receiverPos - currentPos).normalize();
@@ -270,7 +274,8 @@ void Map::resetGame() {
 
 void Map::sendBroadCast(int playerID) {
     std::shared_ptr<Player> pSender = this->findPlayerByID(playerID);
-
+    if (pSender == nullptr)
+        return;
     for (auto &p : this->_players) {
         if (p->getPlayerNumber() != playerID) {
             this->_broadcasts.push_back(FactoryResource::createResource(IResource::resourceType::BROADCAST, pSender->getPosition(), this->_manager, p->getPlayerNumber()));
