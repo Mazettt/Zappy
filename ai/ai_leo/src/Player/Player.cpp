@@ -309,7 +309,6 @@ std::map<std::string, int> Player::inventory()
                 tmp.erase(0, 1);
             if (tmp[0] == '[')
                 tmp.erase(0, 1);
-            std::cout << tmp << std::endl;
             Inventory[tmp.substr(0, tmp.find(' '))] = std::stoi(tmp.substr(tmp.find(' ') + 1, tmp.size()));
             tmp.clear();
         } else {
