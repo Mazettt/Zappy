@@ -23,13 +23,15 @@ namespace ZappyAI {
             ~Conn() = default;
             void connectToServer();
             void sendToServer(std::string const &message);
-            std::string receiveFromServer();
+            std::string receiveFromServer(bool broadcast_interested);
+            std::string receiveFromServer(bool broadcast_interested, int timeout);
             void closeConnection();
             int getFd() const;
             int getPort() const;
             std::vector<std::string> initPlayer(std::string const &teamName);
             std::string receiveVision();
             std::string receiveInventory();
+            std::string receiveFromServerTry(bool broadcast_interested);
         private:
             int _fd;
             int _port;

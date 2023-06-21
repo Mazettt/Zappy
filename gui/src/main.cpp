@@ -11,6 +11,7 @@ using namespace ZappyGui;
 
 int main(int ac, char **av) {
     Core core;
+    MyRayLib::MyRayLibWindow::MySetTraceLogLevel(LOG_NONE);
     try {
         core.checkArgs(ac, av);
         core.run();

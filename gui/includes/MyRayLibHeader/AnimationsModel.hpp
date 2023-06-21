@@ -7,6 +7,7 @@
 
 #pragma once
 
+// #include "../MapHeader/Player.hpp"
 #include <iostream>
 #include "raylib.h"
 
@@ -25,6 +26,7 @@ namespace MyRayLib {
             }
             void MyUpdateModelAnimation(::Model model, int type, int &frameCounter) {
                 frameCounter++;
+                if (type >= 9)
                 UpdateModelAnimation(model, _animation[type], frameCounter);
                 if (frameCounter >= _animation[0].frameCount) frameCounter = 0;
             }
