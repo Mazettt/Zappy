@@ -152,6 +152,8 @@ void Map::deadPlayer(int playerID) {
 
     if (p != nullptr) {
         p->animationDie();
+        auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_LEAVE);
+        leaveEffect.play();
     }
 }
 

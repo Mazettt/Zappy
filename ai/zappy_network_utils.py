@@ -8,6 +8,23 @@
 import socket
 import time
 import ai.zappy_parsing as zp
+import select
+
+def getResponse(sock: socket.socket, timeout):
+    response = ""
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        ready, _, _ = select.select([sock], [], [], timeout - (time.time() - start_time))
+        if ready:
+            response += sock.recv(4096).decode()
+            break
+    zp.print_log("Received: {}".format(response))
+    if response == "dead\n":
+        exit(0)
+    if (response == ""):
+        print("timed out\n")
+        exit(84)
+    return response
 
 def con_to_server(machine, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,12 +40,21 @@ def send_to_server(sock: socket.socket, message: str):
 
 def recv_from_server(sock):
     response = sock.recv(4096).decode()
+    return response
+
+def maybeMultiple_recv_from_server(sock, timeout):
+    response = ""
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        ready, _, _ = select.select([sock], [], [], timeout - (time.time() - start_time))
+        if ready:
+            response += sock.recv(4096).decode()
+            break
+        if response and response [-1] == '\n':
+            break
     zp.print_log("Received: {}".format(response))
     if response == "dead\n":
         exit(0)
-    if (response == ""):
-        print("timed out\n")
-        exit(84)
     return response
 
 def multiple_recv_from_server(sock, timeout):

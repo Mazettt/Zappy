@@ -5,6 +5,8 @@
 ## zappy_dataStruct
 ##
 
+from enum import Enum
+
 class Player:
     def __init__(self, port, team="", machine="localhost"):
         self.stats = Stats(team)
@@ -12,12 +14,26 @@ class Player:
         self.requirement = Tile(1, 1, 0, 0, 0, 0, 0)
         self.client = Client(port, machine)
         self.POV = POV
-        self.remindToTurn = "No"
+        self.AI = AI
+
+class Behavior(Enum):
+    SeekFood = 1
+    SeekStones = 2
+    SeekPlayer = 3
+    Elevate = 4
+
+class AI:
+    remindToTurn = "No"
+    remindToTurnDelay = 0
+    directionToGo = -1
+    seekElevatingPlayer = 0
+    elevating = False
+    forward = False
+    behavior = Behavior.SeekFood
 
 class Stats:
     def __init__(self, team):
         self.isAlive = True
-        self.elevating = False
         self.level = 1
         self.X = 0
         self.Y = 0

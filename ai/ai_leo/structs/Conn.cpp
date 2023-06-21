@@ -37,10 +37,36 @@ void ZappyAI::Conn::sendToServer(std::string const &message)
         throw MyError("Error: send failed");
 }
 
+std::string ZappyAI::Conn::receiveFromServerTry(bool broadcast_interested)
+{
+    char buffer[1024] = {0};
+    fd_set readfds;
+    FD_ZERO(&readfds);
+    FD_SET(_fd, &readfds);
+    struct timeval tv = {0, 0};
+    int is_content = select(_fd + 1, &readfds, NULL, NULL, &tv);
+    if (FD_ISSET(_fd, &readfds)) {
+        std::cout << "is content" << std::endl;
+        int valread = read(_fd, buffer, 1024);
+        if (valread < 0)
+            throw MyError("Error: read failed");
+        if (broadcast_interested && buffer[0] == 'o' && buffer[1] == '_') {
+            return std::string(buffer);
+        } else if (broadcast_interested) {
+            return (receiveFromServer(false));
+        }
+        return std::string(buffer);
+    } else {
+        std::cout << "is not content" << std::endl;
+        return "";
+    }
+}
+
 std::string ZappyAI::Conn::receiveFromServer(bool broadcast_interested)
 {
     char buffer[1024] = {0};
     int valread = read(_fd, buffer, 1024);
+
     if (valread < 0)
         throw MyError("Error: read failed");
     if (broadcast_interested && buffer[0] == 'o' && buffer[1] == '_') {
@@ -55,9 +81,13 @@ std::string ZappyAI::Conn::receiveFromServer(bool broadcast_interested, int time
 {
     char buffer[1024] = {0};
     int valread = read(_fd, buffer, 1024);
+    time_t start = time(NULL);
 
     if (valread < 0)
         throw MyError("Error: read failed");
+    while (valread == 0 && time(NULL) - start < timeout) {
+        valread = read(_fd, buffer, 1024);
+    }
     if (broadcast_interested && buffer[0] == 'o' && buffer[1] == '_') {
         return std::string(buffer);
     } else if (broadcast_interested) {

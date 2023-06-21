@@ -27,56 +27,63 @@ class Commands:
     SET = {"Set\n", 7}
     INCANTATION = {"Incantation\n", 300}
 
+def listen(p: zds.Player):
+    print("1")
+    resp = znu.maybeMultiple_recv_from_server(p.client.sock, 5)
+    print("2")
+    resp = zp.messageParser(p.client, resp, ["ImpossibleToFound\n"])
+    print("3")
+    zp.readBufferMessage(p)
+    print("4")
+    return resp
+
 def forward(client: zds.Client):
     znu.send_to_server(client.sock, "Forward\n")
-    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = ""
     while (resp != "ok\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.messageParser(client, resp, ["ok\n"])
     return resp
 
 def right(client: zds.Client):
     znu.send_to_server(client.sock, "Right\n")
-    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = ""
     while (resp != "ok\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.messageParser(client, resp, ["ok\n"])
     return resp
 
 def left(client: zds.Client):
     znu.send_to_server(client.sock, "Left\n")
-    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = ""
     while (resp != "ok\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.messageParser(client, resp, ["ok\n"])
     return resp
 
 def look(client: zds.Client):
     znu.send_to_server(client.sock, "Look\n")
-    resp = znu.multiple_recv_from_server(client.sock, 7)
-    resp = zp.lookMessageParser(client, resp)
+    resp = "NOTFOUND"
     while (resp == "NOTFOUND"):
         resp = znu.multiple_recv_from_server(client.sock, 7)
         resp = zp.lookMessageParser(client, resp)
     return resp
 
-
-
 def inventory(client: zds.Client):
     znu.send_to_server(client.sock, "Inventory\n")
-    resp = znu.multiple_recv_from_server(client.sock, 20)
+    resp = "N"
     while (resp[0] != '['):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 20)
+        resp = zp.lookMessageParser(client, resp)
     resp = resp.translate(str.maketrans('', '', '[]'))
     return (zi.inventoryParser(resp, client.sock))
 
 def broadcast_text(client: zds.Client, text: str):
     znu.send_to_server(client.sock, "{} {}".format("Broadcast", text))
-    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = ""
     while (resp != "ok\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.messageParser(client, resp, ["ok\n"])
     return resp
 
 def isNumber(value):
@@ -88,50 +95,50 @@ def isNumber(value):
 
 def unused_connect_nbr(client: zds.Client):
     znu.send_to_server(client.sock, "Connect_nbr\n")
-    resp = znu.multiple_recv_from_server(client.sock,0)
+    resp = ""
     while (isNumber(resp) == False):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 0)
+        resp = zp.NBRmessageParser(client, resp)
     return resp
 
 def fork(client: zds.Client):
     znu.send_to_server(client.sock, "Fork\n")
-    resp = znu.multiple_recv_from_server(client.sock, 42)
+    resp = ""
     while (resp != "ok\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 42)
+        resp = zp.messageParser(client, resp, ["ok\n"])
     return resp
 
 def eject(client: zds.Client):
     znu.send_to_server(client.sock, "Eject\n")
-    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = ""
     while (resp != "ok\n" and resp != "ko\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.messageParser(client, resp, ["ok\n", "ko\n"])
     return resp
 
 def take(client: zds.Client, resource: str):
     znu.send_to_server(client.sock, "{} {}".format("Take", resource))
-    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = ""
     while (resp != "ok\n" and resp != "ko\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.messageParser(client, resp, ["ok\n", "ko\n"])
     return resp
 
 def set(client: zds.Client, resource: str):
     znu.send_to_server(client.sock, "{} {}".format("Set", resource))
-    resp = znu.multiple_recv_from_server(client.sock, 7)
+    resp = ""
     while (resp != "ok\n" and resp != "ko\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 7)
+        resp = zp.messageParser(client, resp, ["ok\n", "ko\n"])
     return resp
 
 def incantation(client: zds.Client):
     znu.send_to_server(client.sock, "Incantation\n")
-    resp = znu.multiple_recv_from_server(client.sock, 300)
+    resp = ""
     while (resp != "Elevation underway\n" and resp != "ko\n"):
-        client.buffer.append(resp)
         resp = znu.multiple_recv_from_server(client.sock, 300)
+        resp = zp.messageParser(client, resp, ["Elevation underway\n", "ko\n"])
     return resp
 
 def view_map(map: list, map_x: int, map_y: int):
