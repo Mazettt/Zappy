@@ -22,6 +22,7 @@ class Player {
         int mapSizeY;
         std::vector<std::string> View;
         std::map<std::string, int> Inventory;
+        void vacuum();
         void play();
         Socket socket;
         std::map<std::string, int> get_requirements();
@@ -30,7 +31,9 @@ class Player {
         std::string right();
         std::string left();
         std::vector<std::string> look();
+        std::string take(std::string object);
         std::map<std::string, int> inventory();
+        void display_inventory();
         ~Player() {};
         Player() {};
     private:

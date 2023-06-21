@@ -10,8 +10,44 @@
 void Player::play()
 {
     while (true) {
+        std::cout << "Player " << playerNumber << " is playing" << std::endl;
+        View = look();
         Inventory = inventory();
+        display_inventory();
+        vacuum();
         exit(0);
+    }
+}
+
+void Player::display_inventory()
+{
+    std::cout << "Player " << playerNumber << " inventory:" << std::endl;
+    for (auto it = Inventory.begin(); it != Inventory.end(); it++) {
+        std::cout << it->first << ": " << it->second << std::endl;
+    }
+}
+
+void Player::vacuum()
+{
+    std::string player_tile = View[0];
+    std::string object;
+    std::string tmp;
+
+    while (player_tile[0] == ' ')
+        player_tile.erase(0, 1);
+    for (int i = 0; i < player_tile.size() + 1; i++) {
+        if (player_tile[i] == ' ' || player_tile[i] == '\0') {
+            object = tmp;
+            if (object != "player" && object != " ") {
+                if (take(object) == "ok")
+                    std::cout << "Player " << playerNumber << " took " << object << std::endl;
+                else
+                    std::cout << "Player " << playerNumber << " failed to take " << object << std::endl;
+            }
+            tmp.clear();
+        } else {
+            tmp += player_tile[i];
+        }
     }
 }
 
@@ -67,7 +103,6 @@ std::map<std::string, int> Player::inventory()
     while (msg.find(']') == std::string::npos) {
         msg += socket.receiveSocket();
     }
-    std::cout << msg << std::endl;
     std::map<std::string, int> Inventory;
     std::string tmp;
     msg.erase(0, 1);
@@ -138,4 +173,14 @@ std::map<std::string, int> Player::get_requirements()
         requirements["thystame"] = 1;
     }
     return (requirements);
+}
+
+std::string Player::take(std::string object)
+{
+    socket.sendSocket("Take " + object + "\n");
+    if (socket.receiveSocket() == "ok\n") {
+        Inventory[object]++;
+        return ("ok");
+    }
+    return ("ko");
 }
