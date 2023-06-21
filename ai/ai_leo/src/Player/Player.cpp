@@ -83,3 +83,59 @@ std::map<std::string, int> Player::inventory()
     }
     return (Inventory);
 }
+
+std::map<std::string, int> Player::get_requirements()
+{
+    std::map<std::string, int> requirements;
+    if (level == 1) {
+        requirements["linemate"] = 1;
+        requirements["deraumere"] = 0;
+        requirements["sibur"] = 0;
+        requirements["mendiane"] = 0;
+        requirements["phiras"] = 0;
+        requirements["thystame"] = 0;
+    } else if (level == 2) {
+        requirements["linemate"] = 1;
+        requirements["deraumere"] = 1;
+        requirements["sibur"] = 1;
+        requirements["mendiane"] = 0;
+        requirements["phiras"] = 0;
+        requirements["thystame"] = 0;
+    } else if (level == 3) {
+        requirements["linemate"] = 2;
+        requirements["deraumere"] = 0;
+        requirements["sibur"] = 1;
+        requirements["mendiane"] = 0;
+        requirements["phiras"] = 2;
+        requirements["thystame"] = 0;
+    } else if (level == 4) {
+        requirements["linemate"] = 1;
+        requirements["deraumere"] = 1;
+        requirements["sibur"] = 2;
+        requirements["mendiane"] = 0;
+        requirements["phiras"] = 1;
+        requirements["thystame"] = 0;
+    } else if (level == 5) {
+        requirements["linemate"] = 1;
+        requirements["deraumere"] = 2;
+        requirements["sibur"] = 1;
+        requirements["mendiane"] = 3;
+        requirements["phiras"] = 0;
+        requirements["thystame"] = 0;
+    } else if (level == 6) {
+        requirements["linemate"] = 1;
+        requirements["deraumere"] = 2;
+        requirements["sibur"] = 3;
+        requirements["mendiane"] = 0;
+        requirements["phiras"] = 1;
+        requirements["thystame"] = 0;
+    } else if (level == 7) {
+        requirements["linemate"] = 2;
+        requirements["deraumere"] = 2;
+        requirements["sibur"] = 2;
+        requirements["mendiane"] = 2;
+        requirements["phiras"] = 2;
+        requirements["thystame"] = 1;
+    }
+    return (requirements);
+}

@@ -24,6 +24,7 @@ class Player {
         std::map<std::string, int> Inventory;
         void play();
         Socket socket;
+        std::map<std::string, int> get_requirements();
 
         std::string forward();
         std::string right();
