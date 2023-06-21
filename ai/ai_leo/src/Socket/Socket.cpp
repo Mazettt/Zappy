@@ -23,6 +23,8 @@ Socket::~Socket()
 
 void Socket::connectSocket(std::string ip, int port)
 {
+    if (ip == "localhost")
+        ip = "127.0.0.1";
     _server.sin_addr.s_addr = inet_addr(ip.c_str());
     _server.sin_family = AF_INET;
     _server.sin_port = htons(port);
