@@ -37,12 +37,32 @@ void ZappyAI::Conn::sendToServer(std::string const &message)
         throw MyError("Error: send failed");
 }
 
-std::string ZappyAI::Conn::receiveFromServer()
+std::string ZappyAI::Conn::receiveFromServer(bool broadcast_interested)
 {
     char buffer[1024] = {0};
     int valread = read(_fd, buffer, 1024);
     if (valread < 0)
         throw MyError("Error: read failed");
+    if (broadcast_interested && buffer[0] == 'o' && buffer[1] == '_') {
+        return std::string(buffer);
+    } else if (broadcast_interested) {
+        return (receiveFromServer(false));
+    }
+    return std::string(buffer);
+}
+
+std::string ZappyAI::Conn::receiveFromServer(bool broadcast_interested, int timeout)
+{
+    char buffer[1024] = {0};
+    int valread = read(_fd, buffer, 1024);
+
+    if (valread < 0)
+        throw MyError("Error: read failed");
+    if (broadcast_interested && buffer[0] == 'o' && buffer[1] == '_') {
+        return std::string(buffer);
+    } else if (broadcast_interested) {
+        return (receiveFromServer(false));
+    }
     return std::string(buffer);
 }
 
@@ -53,18 +73,18 @@ void ZappyAI::Conn::closeConnection()
 
 std::string ZappyAI::Conn::receiveVision()
 {
-    std::string response = receiveFromServer();
+    std::string response = receiveFromServer(false);
     while (response.find("]") == std::string::npos) {
-        response += receiveFromServer();
+        response += receiveFromServer(false);
     }
     return response;
 }
 
 std::string ZappyAI::Conn::receiveInventory()
 {
-    std::string response = receiveFromServer();
+    std::string response = receiveFromServer(false);
     while (response.find("]") == std::string::npos) {
-        response += receiveFromServer();
+        response += receiveFromServer(false);
     }
     return response;
 }
@@ -81,10 +101,10 @@ int ZappyAI::Conn::getPort() const
 
 std::vector<std::string> ZappyAI::Conn::initPlayer(std::string const &teamName)
 {
-    receiveFromServer();
+    receiveFromServer(false);
     std::string message = teamName + "\n";
     sendToServer(message);
-    std::string mess = receiveFromServer();
+    std::string mess = receiveFromServer(false);
     std::string client_num = mess.substr(0, mess.find("\n"));
     if (client_num == "ko") {
         std::cerr << "Error: team name is invalid or server does not accept more players" << std::endl;

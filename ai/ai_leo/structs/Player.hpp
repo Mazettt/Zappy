@@ -10,11 +10,13 @@
 #include <vector>
 #include <map>
 #include "Conn.hpp"
+#include <time.h>
 
 namespace ZappyAI {
     class Player {
         public:
             bool _is_dead;
+            bool _is_broadcaster = false;
             int _player_number;
             int _level;
             int _food;
@@ -45,6 +47,7 @@ namespace ZappyAI {
             void moveTo(int x, int y);
             void set_current_requirements();
             void levelUp();
+            void broadcast(std::string const &message);
             Player(int player_number, ZappyAI::Conn conn);
             ~Player();
             std::vector<std::string> getVision();
