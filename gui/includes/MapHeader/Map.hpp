@@ -19,13 +19,14 @@
 namespace ZappyGui {
     class Map {
         private:
-            MyRayLib::Vector2D _size;
             std::vector<std::shared_ptr<IResource>> _broadcasts;
 
             ResourceManager &_manager;
             MyRayLib::FreeCamera &_camera;
             int _selectedTileKey;
             ServerLink &_link;
+            int _timeUnit;
+            MyRayLib::Vector2D _size;
 
         public:
             std::vector<std::shared_ptr<Tile>> _map;
@@ -33,6 +34,8 @@ namespace ZappyGui {
             std::vector<std::shared_ptr<Player>> _players;
             Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link);
             ~Map();
+            void setTimeUnit(int timeUnit);
+            int getTimeUnit();
             void createMap(int x, int y);
             void updateResourceForTile(const MyRayLib::Vector2D &pos, IResource::resourceType type, int number);
             void addEggForTile(const MyRayLib::Vector2D &pos, int id);
@@ -43,7 +46,7 @@ namespace ZappyGui {
             void deadPlayer(int playerID);
             void setPlayerLevel(int playerID, int level);
             bool lvlupPlayer(std::vector<int> playersID, int level);
-            void StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z);
+            void StartPlayersLeveling(std::vector<int> playersID, float x, float z);
             void EndPlayersLeveling(float x, float z, bool result);
             void dropResource(int playerID, IResource::resourceType type);
             void collectResource(int playerID, IResource::resourceType type);
@@ -56,6 +59,5 @@ namespace ZappyGui {
             MyRayLib::Vector2D getSize() const { return _size; };
             void updatePlayerInventory(int id, int food, int linemate, int deraumere, int sibur, int mendiane, int phiras, int thystame);
             void sendBroadCast(int playerID);
-            int timeUnit;
     };
 }

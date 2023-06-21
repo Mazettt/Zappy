@@ -13,7 +13,13 @@
 
 using namespace ZappyGui;
 
-Map::Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link): _manager(manager), _camera(camera), _selectedTileKey(-1), _link(link), timeUnit(100), _size({0.0, 0.0}) {}
+Map::Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link):
+    _manager(manager),
+    _camera(camera),
+    _selectedTileKey(-1),
+    _link(link),
+    _timeUnit(100),
+    _size({0.0, 0.0}) {}
 
 std::shared_ptr<Player> Map::findPlayerByID(int id) {
     for (std::shared_ptr<Player> p : this->_players) {
@@ -44,7 +50,7 @@ void Map::createMap(int x, int y) {
     }
 }
 
-void Map::StartPlayersLeveling(std::vector<int> playersID, int level, float x, float z) {
+void Map::StartPlayersLeveling(std::vector<int> playersID, float x, float z) {
     for (std::shared_ptr<Player> p : this->_players) {
         if (std::find(playersID.begin(), playersID.end(), p->getPlayerNumber()) != playersID.end()) {
             p->setPosition({ x, 0.0, z });
@@ -149,10 +155,18 @@ void Map::deadPlayer(int playerID) {
     }
 }
 
+void Map::setTimeUnit(int timeUnit) {
+    this->_timeUnit = timeUnit;
+}
+
+int Map::getTimeUnit() {
+    return this->_timeUnit;
+}
+
 void Map::updatePlayer(float deltaTime) {
     for (auto it = this->_players.begin(); it != this->_players.end();) {
         std::shared_ptr<Player> player = *it;
-        if (player->update(deltaTime, this->timeUnit) == true) {
+        if (player->update(deltaTime, this->getTimeUnit()) == true) {
             it = this->_players.erase(it);
             continue;
         }
@@ -186,7 +200,7 @@ void Map::updateBroadcast(float deltaTime, int timeUnit) {
 
 void Map::update(float deltaTime) {
     this->updatePlayer(deltaTime);
-    this->updateBroadcast(deltaTime, timeUnit);
+    this->updateBroadcast(deltaTime, this->getTimeUnit());
 }
 
 void Map::draw() {

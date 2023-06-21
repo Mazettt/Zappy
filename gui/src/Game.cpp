@@ -108,9 +108,9 @@ void Game::keyEvent(float &volumeMusic) {
     if (_raylibwindow.MyIsKeyPressed(KEY_SEMICOLON) && volumeMusic > 0.1f)
         volumeMusic -= 0.1f;
     if (_raylibwindow.MyIsKeyPressed(KEY_O) || (IsKeyDown(KEY_RIGHT_CONTROL) && IsKeyDown(KEY_O)))
-        this->_link.modifyTimeUnit(this->_map.timeUnit + 1);
-    if ((_raylibwindow.MyIsKeyPressed(KEY_L) || (IsKeyDown(KEY_RIGHT_CONTROL) && IsKeyDown(KEY_L))) && this->_map.timeUnit > 1)
-        this->_link.modifyTimeUnit(this->_map.timeUnit - 1);
+        this->_link.modifyTimeUnit(this->_map.getTimeUnit() + 1);
+    if ((_raylibwindow.MyIsKeyPressed(KEY_L) || (IsKeyDown(KEY_RIGHT_CONTROL) && IsKeyDown(KEY_L))) && this->_map.getTimeUnit() > 1)
+        this->_link.modifyTimeUnit(this->_map.getTimeUnit() - 1);
     if (_raylibwindow.MyIsKeyPressed(KEY_ESCAPE) && this->_popup.getStatus() == true) {
         this->_popup.setStatus(false);
     }
@@ -145,7 +145,7 @@ void Game::run() {
                 auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
                 auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
                 auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
-                PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_NOTHING);
+                PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WAIT);
 
                 this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
                 this->_stateWindow = stateWindow::MENU;
@@ -330,7 +330,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     }
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
-    this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.timeUnit)).c_str(), 105, 10, 20, WHITE);
+    this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.getTimeUnit())).c_str(), 105, 10, 20, WHITE);
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();
     if (this->showTeams)
