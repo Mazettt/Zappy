@@ -162,6 +162,7 @@ void Game::run() {
                 this->_map.resetGame();
                 this->_camera.reset();
                 this->_stateWindow = stateWindow::MENU;
+                this->_playerTmp->noAnimation();
             }
 
             if (cameraSet == false && this->_map.getSize().getX() > 0.0f && this->_map.getSize().getY() > 0.0f) {
@@ -298,11 +299,11 @@ void Game::drawTeamsData()
 
     int textPosX = 0;
     for (const auto& entry : _teamPlayers) {
-        MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 240, WHITE);
-        MyRayLib::Draw::MyDrawText(entry.first.c_str(), textPosX + 40, 260, 30, BLACK);
-        int textHeight = 280;
+        MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 90, WHITE);
+        MyRayLib::Draw::MyDrawText(entry.first.c_str(), textPosX + 70, 105, 30, BLACK);
+        int textHeight = 120;
         for (const auto& player : entry.second) {
-            MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 20, (textHeight += 35), 20, BLACK);
+            MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 30, (textHeight += 35), 20, BLACK);
         }
         textPosX += 200;
     }
