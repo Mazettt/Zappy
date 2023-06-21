@@ -36,6 +36,7 @@ Game::Game(const std::string &ip, int port):
     // });
     this->_manager.initialize();
     this->_manager._isLoaded = true;
+    this->showTeams = false;
 }
 
 Game::~Game() {
@@ -174,6 +175,10 @@ void Game::run() {
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
             this->checkKonamiCode(musicGame);
+            if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == false)
+                this->showTeams = true;
+            else if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == true)
+                this->showTeams = false;
             drawGame(selectorPlayer);
         }
         keyEvent(volumeMusic);
@@ -281,6 +286,29 @@ void Game::drawMapData()
     }
 }
 
+void Game::drawTeamsData()
+{
+    std::map<std::string, std::vector<std::string>> _teamPlayers;
+
+    if (this->_map._players.empty()) {
+        return;
+    }
+
+    for (const auto& player : this->_map._players)
+        _teamPlayers[player->getTeamName()].push_back("Player" + std::to_string(player->getPlayerNumber()) + ", level: " + std::to_string(player->getPlayerLevel()));
+
+    int textPosX = 0;
+    for (const auto& entry : _teamPlayers) {
+        MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 240, WHITE);
+        MyRayLib::Draw::MyDrawText(entry.first.c_str(), textPosX + 40, 260, 30, BLACK);
+        int textHeight = 280;
+        for (const auto& player : entry.second) {
+            MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 20, (textHeight += 35), 20, BLACK);
+        }
+        textPosX += 200;
+    }
+}
+
 void Game::drawGame(SelectorPlayer &selectorPlayer) {
     float deltaTime = this->_raylibwindow.MyGetFrameTime();
     this->_camera.updateSync(deltaTime);
@@ -304,6 +332,8 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.timeUnit)).c_str(), 105, 10, 20, WHITE);
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();
+    if (this->showTeams)
+        this->drawTeamsData();
 }
 
 void Game::checkKonamiCode(MyRayLib::Music &musicGame) {

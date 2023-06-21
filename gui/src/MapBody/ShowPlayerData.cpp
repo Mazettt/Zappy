@@ -6,6 +6,7 @@
 */
 
 #include "../../includes/MapHeader/ShowPlayerData.hpp"
+#include <cassert>
 
 using namespace MyRayLib;
 using namespace ZappyGui;

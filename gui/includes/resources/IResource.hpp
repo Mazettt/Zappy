@@ -29,6 +29,7 @@ namespace ZappyGui {
                 LOGO,
                 POPUPTILE,
                 MAPDATA,
+                TEAMSDATA,
                 SKYBOX_BACKGROUND,
                 PLAYER_STATS,
                 BROADCAST
