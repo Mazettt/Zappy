@@ -67,7 +67,6 @@ void Map::dropResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
     MyRayLib::Vector3D pos = p->getPosition();
     int key = std::round(pos.getZ() * this->_size.getX() + pos.getX());
-
     p->removeOnInventory(type, 1);
     this->_map.at(key)->addResource(this->_manager, type);
 }
@@ -120,6 +119,8 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
     auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
     auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
     this->_players.push_back(std::make_shared<Player>(playerArgs, modelPlayer, texture, animation));
+    auto &joinEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_JOIN);
+    joinEffect.play();
 }
 
 void Map::movePlayer(int playerID, float x, float z, Player::orientationAxis orientation) {
@@ -195,7 +196,6 @@ void Map::draw() {
         for (int x = 0; x < this->_size.getX(); ++x) {
             int key = y * this->_size.getX() + x;
             std::shared_ptr<Tile>& tile = this->_map.at(key);
-
             if (pressed) {
                 MyRayLib::Vector3D cubePosition = tile->_cube.getPos();
                 MyRayLib::Vector3D cubeSize = {tile->_cube.getWidth(), tile->_cube.getHeight(), tile->_cube.getLength()};
@@ -231,6 +231,7 @@ void Map::draw() {
             }
         }
     }
+
     for  (auto &bc : this->_broadcasts) {
         bc->draw();
     }

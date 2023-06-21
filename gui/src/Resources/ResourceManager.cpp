@@ -25,13 +25,18 @@ void ResourceManager::loadBasicResource() {
 }
 
 void ResourceManager::initialize() {
-    // // load player
+    // load sound effect
+    this->loadSoundEffect(soundEffectType::EFFECT_JOIN, "./gui/assets/audio/sound_join.mp3");
+    this->loadSoundEffect(soundEffectType::EFFECT_LEAVE, "./gui/assets/audio/sound_leave.mp3");
+    this->loadSoundEffect(soundEffectType::EFFECT_CLICK, "./gui/assets/audio/buttonfx.wav");
+
+    // load player
     this->loadModel(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
     this->loadTexture(IResource::resourceType::PLAYER, "./gui/assets/T_Garfield_BC.png");
     this->loadAnimation(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");
     this->loadTexture(IResource::resourceType::PLAYER_STATS, "./gui/assets/player_stats.png");
 
-    // // load texture
+    // load texture
     this->loadModel(IResource::resourceType::DERAUMERE, "./gui/assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::LINEMATE, "./gui/assets/Stones/stone_model.obj");
     this->loadModel(IResource::resourceType::MENDIANE, "./gui/assets/Stones/stone_model.obj");
@@ -48,15 +53,14 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::THYSTAME, "./gui/assets/Stones/thystame.png");
     this->loadTexture(IResource::resourceType::BROADCAST, "./gui/assets/broadcasts/broadcastText.png");
 
-    // this->loadTexture(IResource::resourceType::LOGO, "./gui/assets/logo.png");
     this->loadTexture(IResource::resourceType::BUTTON_START, "./gui/assets/Buttons/buttonStart.png");
     this->loadTexture(IResource::resourceType::BUTTON_HELP, "./gui/assets/Buttons/buttonHelp.png");
     this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./gui/assets/Buttons/buttonQuit.png");
 
     this->loadTexture(IResource::resourceType::POPUP, "./gui/assets/popup.png");
     this->loadTexture(IResource::resourceType::POPUPTILE, "./gui/assets/tileInventory.png");
-
-    // this->loadTexture(IResource::resourceType::SKYBOX_BACKGROUND, "./gui/assets/Skybox/background.png");
+    this->loadTexture(IResource::resourceType::MAPDATA, "./gui/assets/mapData.png");
+    this->loadTexture(IResource::resourceType::TEAMSDATA, "./gui/assets/teamInfo.png");
 
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
@@ -80,7 +84,6 @@ void ResourceManager::initialize() {
     this->setMaterialTexture(IResource::resourceType::BROADCAST);
     std::lock_guard<std::mutex> lock(_mtx);
     this->_isLoaded = true;
-    std::cout << "YES0" << std::endl;
 }
 
 bool ResourceManager::getIsLoaded() {
@@ -103,6 +106,11 @@ void ResourceManager::loadAnimation(IResource::resourceType type, const std::str
         _animations[type] = std::make_unique<MyRayLib::AnimationsModel>(filename);
 }
 
+void ResourceManager::loadSoundEffect(soundEffectType type, const std::string &filename) {
+    if (_soundsEffect.find(type) == _soundsEffect.end())
+        _soundsEffect[type] = std::make_unique<MyRayLib::SoundEffect>(filename);
+}
+
 const MyRayLib::Model &ResourceManager::getModel(IResource::resourceType type) const {
     if (_models.find(type) == _models.end())
         throw std::runtime_error(std::string("Model not loaded: ") + std::to_string(type));
@@ -119,6 +127,12 @@ const MyRayLib::Texture2D &ResourceManager::getTexture(IResource::resourceType t
     if (_textures.find(type) == _textures.end())
         throw std::runtime_error(std::string("Texture not loaded: ") + std::to_string(type));
     return *_textures.at(type);
+}
+
+MyRayLib::SoundEffect &ResourceManager::getSoundEffect(soundEffectType type) {
+    if (_soundsEffect.find(type) == _soundsEffect.end())
+        throw std::runtime_error(std::string("Sound effect not loaded: ") + std::to_string(type));
+    return *_soundsEffect.at(type);
 }
 
 MyRayLib::AnimationsModel &ResourceManager::getAnimation(IResource::resourceType type) {

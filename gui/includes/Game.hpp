@@ -49,6 +49,7 @@ namespace ZappyGui {
             ShowPlayerData _showPlayerData;
             size_t _konamiIndex;
             std::thread _resourceThread;
+            bool showTeams;
 
         public:
             Map _map;
@@ -62,5 +63,7 @@ namespace ZappyGui {
             void drawLoading();
             void switchToGame();
             void checkKonamiCode(MyRayLib::Music &musicGame);
+            void drawMapData();
+            void drawTeamsData();
     };
 }

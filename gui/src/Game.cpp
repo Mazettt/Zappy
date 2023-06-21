@@ -28,6 +28,7 @@ Game::Game(const std::string &ip, int port):
     _konamiIndex(0),
     _map(this->_manager, this->_camera, this->_link)
 {
+    this->_raylibwindow.MyInitAudioDevice();
     _manager.loadBasicResource();
     this->_BoolCloseWin = false;
     this->_stateWindow = stateWindow::PRELOADING;
@@ -36,6 +37,7 @@ Game::Game(const std::string &ip, int port):
     // });
     this->_manager.initialize();
     this->_manager._isLoaded = true;
+    this->showTeams = false;
 }
 
 Game::~Game() {
@@ -125,12 +127,11 @@ void Game::run() {
     this->_skyboxMesh.chooseSkyboxFile(this->_manager.getTexture(IResource::resourceType::SKYBOX_BACKGROUND));
 
     float volumeMusic = 0.0;
-    this->_raylibwindow.MyInitAudioDevice();
-    MyRayLib::Music musicMenu("./gui/assets/GénériqueGarf.mp3");
+    MyRayLib::Music musicMenu("./gui/assets/audio/GénériqueGarf.mp3");
     if (musicMenu.MyIsMusicReady())
         musicMenu.MyPlayMusic();
 
-    MyRayLib::Music musicGame("./gui/assets/GarfieldCoolCat.mp3");
+    MyRayLib::Music musicGame("./gui/assets/audio/GarfieldCoolCat.mp3");
 
     this->_raylibwindow.MyToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
@@ -174,6 +175,10 @@ void Game::run() {
             musicGame.MySetMusicVolume(volumeMusic);
             musicGame.MyUpdateMusic();
             this->checkKonamiCode(musicGame);
+            if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == false)
+                this->showTeams = true;
+            else if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == true)
+                this->showTeams = false;
             drawGame(selectorPlayer);
         }
         keyEvent(volumeMusic);
@@ -228,7 +233,79 @@ void Game::drawMenu() {
 
     button0.MyDrawTextureRec(WHITE);
     button1.MyDrawTextureRec(WHITE);
-    logo.MyDrawTextureRec( WHITE);
+    logo.MyDrawTextureRec(WHITE);
+}
+
+void Game::drawMapData()
+{
+    MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::MAPDATA).getTexture(), 370, 10, WHITE);
+    std::string tmp = ("x " + std::to_string(this->_map._players.size()));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 420, 35, 20, WHITE);
+    tmp = std::to_string(static_cast<int>(this->_map.getSize().getX()));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 525, 35, 20, WHITE);
+    tmp = std::to_string(static_cast<int>(this->_map.getSize().getY()));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 625, 35, 20, WHITE);
+
+    std::vector<IResource::resourceType> resourceTypes = {
+        IResource::resourceType::BURGER,
+        IResource::resourceType::DERAUMERE,
+        IResource::resourceType::LINEMATE,
+        IResource::resourceType::MENDIANE,
+        IResource::resourceType::PHIRAS,
+        IResource::resourceType::SIBUR,
+        IResource::resourceType::THYSTAME
+    };
+
+    std::map<IResource::resourceType, int> _inventoryMap;
+
+    for (int y = 0; y < this->_map.getSize().getY(); ++y) {
+        for (int x = 0; x < this->_map.getSize().getX(); ++x) {
+            int key = y * this->_map.getSize().getX() + x;
+             for (const auto &type : resourceTypes) {
+                _inventoryMap[type] += this->_map._map[key]->countSpecificResource(type);
+            }
+        }
+    }
+    for (auto &it : _inventoryMap) {
+        std::string tmp = ( "x " + std::to_string(it.second));
+        if (it.first == IResource::resourceType::BURGER)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (735), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::DERAUMERE)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (850), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::LINEMATE)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (975), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::MENDIANE)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1085), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::PHIRAS)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1210), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::SIBUR)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1330), 35, 20, WHITE);
+        if (it.first == IResource::resourceType::THYSTAME)
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1448), 35, 20, WHITE);
+    }
+}
+
+void Game::drawTeamsData()
+{
+    std::map<std::string, std::vector<std::string>> _teamPlayers;
+
+    if (this->_map._players.empty()) {
+        return;
+    }
+
+    for (const auto& player : this->_map._players)
+        _teamPlayers[player->getTeamName()].push_back("Player" + std::to_string(player->getPlayerNumber()) + ", level: " + std::to_string(player->getPlayerLevel()));
+
+    int textPosX = 0;
+    for (const auto& entry : _teamPlayers) {
+        MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 240, WHITE);
+        MyRayLib::Draw::MyDrawText(entry.first.c_str(), textPosX + 40, 260, 30, BLACK);
+        int textHeight = 280;
+        for (const auto& player : entry.second) {
+            MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 20, (textHeight += 35), 20, BLACK);
+        }
+        textPosX += 200;
+    }
 }
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {
@@ -247,12 +324,16 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_map.draw();
     if (this->_map._players.size() != 0) {
         selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
+        selectorPlayer.update();
         selectorPlayer.draw();
     }
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
-    this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.timeUnit)).c_str(), 10, 40, 20, WHITE);
+    this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.timeUnit)).c_str(), 105, 10, 20, WHITE);
     this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
+    this->drawMapData();
+    if (this->showTeams)
+        this->drawTeamsData();
 }
 
 void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
@@ -263,7 +344,7 @@ void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
             this->_konamiIndex = 0;
             if (musicGame.MyIsMusicPlaying()) {
                 musicGame.MyStopMusic();
-                musicGame.MyLoadMusic("./gui/assets/tkt.mp3");
+                musicGame.MyLoadMusic("./gui/assets/audio/tkt.mp3");
                 musicGame.MyPlayMusic();
             }
         }

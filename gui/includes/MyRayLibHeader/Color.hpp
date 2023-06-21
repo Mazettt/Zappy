@@ -29,67 +29,6 @@ namespace MyRayLib {
                 this->blue = blue;
                 this->alpha = 255;
             };
-
-            // MyRayLibColor operator=(const MyRayLibColor &other) {
-            //     this->red = other.red;
-            //     this->green = other.green;
-            //     this->blue = other.blue;
-            //     this->alpha = other.alpha;
-            //     return *this;
-            // }
-
-            // bool operator==(const MyRayLibColor &other) {
-            //     return (this->red == other.red && this->green == other.green && this->blue == other.blue && this->alpha == other.alpha);
-            // }
-
-            // MyRayLibColor operator+(const MyRayLibColor &other) {
-            //     return MyRayLibColor(this->red + other.red, this->green + other.green, this->blue + other.blue, this->alpha + other.alpha);
-            // }
-
-            // MyRayLibColor operator+=(const MyRayLibColor &other) {
-            //     this->red += other.red;
-            //     this->green += other.green;
-            //     this->blue += other.blue;
-            //     this->alpha += other.alpha;
-            //     return *this;
-            // }
-
-            // MyRayLibColor operator-(const MyRayLibColor &other) {
-            //     return MyRayLibColor(this->red - other.red, this->green - other.green, this->blue - other.blue, this->alpha - other.alpha);
-            // }
-
-            // MyRayLibColor operator-=(const MyRayLibColor &other) {
-            //     this->red -= other.red;
-            //     this->green -= other.green;
-            //     this->blue -= other.blue;
-            //     this->alpha -= other.alpha;
-            //     return *this;
-            // }
-
-            // MyRayLibColor operator*(const MyRayLibColor &other) {
-            //     return MyRayLibColor(this->red - other.red, this->green - other.green, this->blue - other.blue, this->alpha - other.alpha);
-            // }
-
-            // MyRayLibColor operator*=(const MyRayLibColor &other) {
-            //     this->red *= other.red;
-            //     this->green *= other.green;
-            //     this->blue *= other.blue;
-            //     this->alpha *= other.alpha;
-            //     return *this;
-            // }
-
-            // MyRayLibColor operator/(const MyRayLibColor &other) {
-            //     return MyRayLibColor(this->red / other.red, this->green / other.green, this->blue / other.blue, this->alpha / other.alpha);
-            // }
-
-            // MyRayLibColor operator/=(const MyRayLibColor &other) {
-            //     this->red /= other.red;
-            //     this->green /= other.green;
-            //     this->blue /= other.blue;
-            //     this->alpha /= other.alpha;
-            //     return *this;
-            // }
-
             inline static Color LightGray() { return LIGHTGRAY; }
             inline static Color Gray() { return GRAY; }
             inline static Color DarkGray() { return DARKGRAY; }

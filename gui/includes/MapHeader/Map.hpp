@@ -20,7 +20,6 @@ namespace ZappyGui {
     class Map {
         private:
             MyRayLib::Vector2D _size;
-            std::vector<std::shared_ptr<Tile>> _map;
             std::vector<std::shared_ptr<IResource>> _broadcasts;
 
             ResourceManager &_manager;
@@ -29,6 +28,7 @@ namespace ZappyGui {
             ServerLink &_link;
 
         public:
+            std::vector<std::shared_ptr<Tile>> _map;
             std::shared_ptr<Player> findPlayerByID(int id);
             std::vector<std::shared_ptr<Player>> _players;
             Map(ResourceManager &manager, MyRayLib::FreeCamera &camera, ServerLink &link);

@@ -5,6 +5,8 @@
 ** Music.hpp
 */
 
+#pragma once
+
 #include <iostream>
 #include "raylib.h"
 
@@ -14,7 +16,6 @@ namespace MyRayLib {
             ::Music _music;
         public:
             Music(const std::string &path) {
-                // InitAudioDevice();
                 _music = LoadMusicStream(path.c_str());
             }
             ~Music() {

@@ -63,6 +63,5 @@ void Core::checkArgs(int ac, char **av)
 void Core::run()
 {
     Game game(this->_ip, this->_port);
-    // game.initialize();
     game.run();
 }

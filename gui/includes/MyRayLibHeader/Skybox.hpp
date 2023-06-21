@@ -28,11 +28,9 @@ namespace MyRayLib {
             MyRayLib::Texture2D _panorama;
             ::Image _img;
             bool _useHDR;
-            // char _skyboxFileName[256];
             Skybox(float width, float height, float length) {
                 _cube = GenMeshCube(width, height, length);
                 _useHDR = true;
-                // _skyboxFileName[256] = { 0 };
             }
             ~Skybox() {
 
@@ -155,13 +153,8 @@ namespace MyRayLib {
             }
             void chooseSkyboxFile(const MyRayLib::Texture2D &texture) {
                 if (_useHDR) {
-                    // MyTextCopy(_skyboxFileName, filename.c_str());
                     this->_panorama = texture;
                     this->_skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = MyGenTextureCubemap(_shdrCubemap, 1024, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
-                } else {
-                    // _img = MyLoadImage(filename.c_str());
-                    // _skybox.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(_img, CUBEMAP_LAYOUT_AUTO_DETECT);    // CUBEMAP_LAYOUT_PANORAMA
-                    // MyUnloadImage(_img);
                 }
             }
     };
