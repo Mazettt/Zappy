@@ -185,6 +185,7 @@ void ZappyAI::Player::emergencyFood()
     std::cout << "Player " << _player_number << " is starving" << std::endl;
     while (_inventory["food"] < 20) {
         std::vector<std::string> vision = getVision();
+        std::cout << "Player " << _player_number << " is looking for food" << std::endl;
         for (int i = 0; i < vision.size(); i++) {
             if (vision[i].find("food") != std::string::npos) {
                 get_pos_from_vision(i);
@@ -201,8 +202,24 @@ void ZappyAI::Player::emergencyFood()
                 }
             }
         }
-        forward();
-        forward();
+        int random = rand() % 4;
+        if (random == 0) {
+            _conn.sendToServer("Right\n");
+            _conn.receiveFromServer(_is_broadcaster);
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer(_is_broadcaster);
+        } else if (random == 1) {
+            _conn.sendToServer("Left\n");
+            _conn.receiveFromServer(_is_broadcaster);
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer(_is_broadcaster);
+        } else if (random == 2) {
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer(_is_broadcaster);
+        } else if (random == 3) {
+            _conn.sendToServer("Forward\n");
+            _conn.receiveFromServer(_is_broadcaster);
+        }
         getInventory();
     }
     std::cout << "Player " << _player_number << " is not starving anymore" << std::endl;
@@ -292,6 +309,7 @@ void ZappyAI::Player::drop_required_items()
 void ZappyAI::Player::broadcast(std::string const &msg)
 {
     _conn.sendToServer("Broadcast " + msg + "\n");
+    std::string resp = _conn.receiveFromServerTry(_is_broadcaster);
 }
 
 void ZappyAI::Player::levelUp()
@@ -321,9 +339,18 @@ void ZappyAI::Player::levelUp()
             return;
         }
     } else if (_level == 2) {
-        while (_food > 9) {
-            _conn.sendToServer("Broadcast Im level 2\n");
-            getInventory();
+        _is_broadcaster = true;
+        std::string resp = _conn.receiveFromServerTry(_is_broadcaster);
+        if (!resp.find("I'm level 2") != std::string::npos) {
+            while (_food > 9) {
+                std::cout << "Broadcasting & food : " << _food << std::endl;
+                broadcast("I'm level 2");
+                getInventory();
+            }
+            std::cout << "Low on food, can't level up" << std::endl;
+            return;
+        } else if (resp.find("I'm level 2") != std::string::npos) {
+            std::cout << "\n\n\nI HAVE TO JOIN SOMEONE\n\n\n" << std::endl;
         }
     }
     getInventory();
@@ -341,11 +368,12 @@ void ZappyAI::Player::play()
         getInventory();
         set_current_requirements();
         std::cout << "Player " << _player_number << " is level " << _level << " and needs " << _current_requirements[0] << " players, " << _current_requirements[1] << " linemate, " << _current_requirements[2] << " deraumere, " << _current_requirements[3] << " sibur, " << _current_requirements[4] << " mendiane, " << _current_requirements[5] << " phiras, " << _current_requirements[6] << " thystame" << std::endl;
-        if (_inventory["food"] <= 5)
+        if (_inventory["food"] <= 10)
             emergencyFood();
         if (check_requirements()) {
             std::cout << "Player " << _player_number << " can level up" << std::endl;
             levelUp();
+            emergencyFood();
         }
         wander();
 
@@ -486,7 +514,6 @@ void ZappyAI::Player::getInventory()
     std::string response = _conn.receiveInventory();
     if (response.find("ok") != std::string::npos)
         response.erase(0, 3);
-    std::cout << "!!!" << response << "!!!" << std::endl;
     for (int i = 0; i < response.length(); i++) {
         if (response[i] == '[' || response[i] == ']')
             response.erase(i, 1);

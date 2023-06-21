@@ -11,6 +11,9 @@
 #include <map>
 #include "Conn.hpp"
 #include <time.h>
+#include <future>
+#include <chrono>
+#include <thread>
 
 namespace ZappyAI {
     class Player {
