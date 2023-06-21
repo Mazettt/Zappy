@@ -23,7 +23,8 @@ namespace ZappyAI {
             ~Conn() = default;
             void connectToServer();
             void sendToServer(std::string const &message);
-            std::string receiveFromServer();
+            std::string receiveFromServer(bool broadcast_interested);
+            std::string receiveFromServer(bool broadcast_interested, int timeout);
             void closeConnection();
             int getFd() const;
             int getPort() const;
