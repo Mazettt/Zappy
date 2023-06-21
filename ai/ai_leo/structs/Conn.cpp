@@ -56,9 +56,6 @@ std::string ZappyAI::Conn::receiveFromServerTry(bool broadcast_interested)
             return (receiveFromServer(false));
         }
         return std::string(buffer);
-    } else {
-        std::cout << "is not content" << std::endl;
-        return "";
     }
 }
 
@@ -66,12 +63,19 @@ std::string ZappyAI::Conn::receiveFromServer(bool broadcast_interested)
 {
     char buffer[1024] = {0};
     int valread = read(_fd, buffer, 1024);
+    int broadcast = 0;
 
     if (valread < 0)
         throw MyError("Error: read failed");
-    if (broadcast_interested && buffer[0] == 'o' && buffer[1] == '_') {
+    for (int i = 0; buffer[i] != '\0'; i++) {
+        if (buffer[i] == 'o' && buffer[i + 1] == '_') {
+            broadcast = 1;
+            break;
+        }
+    }
+    if (broadcast_interested && broadcast == 1) {
         return std::string(buffer);
-    } else if (broadcast_interested) {
+    } else if (broadcast_interested == false && broadcast == 1) {
         return (receiveFromServer(false));
     }
     return std::string(buffer);

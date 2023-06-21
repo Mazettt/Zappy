@@ -340,20 +340,12 @@ void ZappyAI::Player::levelUp()
         }
     } else if (_level == 2) {
         _is_broadcaster = true;
-        std::string resp = _conn.receiveFromServerTry(_is_broadcaster);
-        if (!resp.find("I'm level 2") != std::string::npos) {
-            while (_food > 9) {
-                std::cout << "Broadcasting & food : " << _food << std::endl;
-                broadcast("I'm level 2");
-                getInventory();
-            }
-            std::cout << "Low on food, can't level up" << std::endl;
-            return;
-        } else if (resp.find("I'm level 2") != std::string::npos) {
-            std::cout << "\n\n\nI HAVE TO JOIN SOMEONE\n\n\n" << std::endl;
+        while (_inventory["food"] > 9) {
+            std::cout << "nothing" << std::endl;
+            getInventory();
+            broadcast("o_level_2_assemble");
         }
     }
-    getInventory();
 }
 
 void ZappyAI::Player::play()
