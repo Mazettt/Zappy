@@ -324,6 +324,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_map.draw();
     if (this->_map._players.size() != 0) {
         selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
+        selectorPlayer.update();
         selectorPlayer.draw();
     }
     this->_camera.endMode3D();
