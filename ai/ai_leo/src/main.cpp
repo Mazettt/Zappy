@@ -40,6 +40,7 @@ int main(int ac, char **av)
     ProgramArgs args(ac, av);
     Player player;
     Socket socket;
+    player.socket = socket;
     first_connection(socket, args, player);
-    return (0);
+    player.play();
 }
