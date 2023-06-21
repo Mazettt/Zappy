@@ -162,6 +162,7 @@ void Game::run() {
                 this->_map.resetGame();
                 this->_camera.reset();
                 this->_stateWindow = stateWindow::MENU;
+                this->_playerTmp->noAnimation();
             }
 
             if (cameraSet == false && this->_map.getSize().getX() > 0.0f && this->_map.getSize().getY() > 0.0f) {
