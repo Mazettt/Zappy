@@ -25,7 +25,10 @@ namespace MyRayLib {
             }
             void MyUpdateModelAnimation(::Model model, int type, int &frameCounter) {
                 frameCounter++;
-                UpdateModelAnimation(model, _animation[type], frameCounter);
+                if (type >= 9) {
+                    UpdateModelAnimation(model, _animation[type], frameCounter);
+
+                }
                 if (frameCounter >= _animation[0].frameCount) frameCounter = 0;
             }
     };
