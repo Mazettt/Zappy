@@ -31,6 +31,7 @@ namespace ZappyAI {
             int _thystame;
             int _players_on_tile;
             int _current_requirements[7];
+            std::string broadcast_message;
             // variable that has requirements string
             std::string _requirements[7];
             int _to_take[7];
@@ -39,6 +40,7 @@ namespace ZappyAI {
             std::map<std::string, int> _inventory;
             std::vector<std::string> _vision;
             ZappyAI::Conn _conn;
+            void look_for_other_players();
             void left();
             void right();
             void forward();

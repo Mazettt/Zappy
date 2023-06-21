@@ -309,7 +309,55 @@ void ZappyAI::Player::drop_required_items()
 void ZappyAI::Player::broadcast(std::string const &msg)
 {
     _conn.sendToServer("Broadcast " + msg + "\n");
-    std::string resp = _conn.receiveFromServerTry(_is_broadcaster);
+    broadcast_message = _conn.receiveFromServer(_is_broadcaster);
+    if (broadcast_message.find("o_") != std::string::npos) {
+        broadcast_message = "";
+        return;
+    }
+}
+
+void ZappyAI::Player::look_for_other_players()
+{
+    std::vector<std::string> vision = getVision();
+    for (int i = 0; i < vision.size(); i++) {
+        if (vision[i].find("player") != std::string::npos && i != 0) {
+            std::cout << "Player " << _player_number << " found another player" << std::endl;
+            get_pos_from_vision(i);
+            std::vector<std::string> re_vision = getVision();
+            int players = 0;
+            for (int j = 0; j < re_vision[0].length(); j++) {
+                if (re_vision[0][j] == 'p')
+                    players++;
+            }
+            if (_level == 2 && players >= 2) {
+                drop_required_items();
+                _conn.sendToServer("Incantation\n");
+                std::string resp = _conn.receiveFromServer(_is_broadcaster);
+                while (resp != "Current level: 3\n") {
+                    resp = _conn.receiveFromServer(_is_broadcaster);
+                    if (resp == "ko\n") {
+                        std::cout << "Player " << _player_number << " can't level up" << std::endl;
+                        return;
+                    }
+                    if (resp == "Elevation underway\n") {
+                        std::cout << "Player " << _player_number << " is leveling up" << std::endl;
+                        _level++;
+                        set_current_requirements();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    std::cout << "Player " << _player_number << " is looking for other players" << std::endl;
+    int rand = std::rand() % 5;
+    if (rand > 3) {
+        left();
+        forward();
+    } else {
+        right();
+        forward();
+    }
 }
 
 void ZappyAI::Player::levelUp()
@@ -341,9 +389,7 @@ void ZappyAI::Player::levelUp()
     } else if (_level == 2) {
         _is_broadcaster = true;
         while (_inventory["food"] > 9) {
-            std::cout << "nothing" << std::endl;
-            getInventory();
-            broadcast("o_level_2_assemble");
+            look_for_other_players();
         }
     }
 }
