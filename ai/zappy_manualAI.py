@@ -9,41 +9,49 @@ import ai.zappy_commands as zc
 import ai.zappy_dataStruct as zds
 import ai.zappy_inventory as zi
 import ai.zappy_elevation as ze
-import ai.zappy_POV as zp
+import ai.zappy_POV as zpov
 import ai.zappy_pathfinding as zpf
-
-def move(p: zds.Player):
-    zc.forward(p.client)
-    if (p.remindToTurn == "R"):
-        zc.right(p.client)
-        p.remindToTurn = "No"
-    if (p.remindToTurn == "L"):
-        zc.left(p.client)
-        p.remindToTurn = "No"
+import ai.zappy_parsing as zp
 
 def printList(list):
     for item in list:
         print(item)
         print("\n")
 
+def behaviorApply(p: zds.Player):
+    if (p.AI.behavior == zds.Behavior.SeekFood):
+        zpf.huntForFood(p)
+    if (p.AI.behavior == zds.Behavior.SeekStones):
+        zpf.huntForFood(p) #To implement a item seeker using remindToTurnDelay = NBR of tiles to go before turning
+    if (p.AI.behavior == zds.Behavior.SeekPlayer):
+        zpf.seekPlayer(p)
+        p.AI.directionToGo = -1
+    if (p.AI.behavior == zds.Behavior.Elevate):
+        while (p.AI.elevating == True):
+           ze.elevationTry(p)
+
+def behaviorSelect(p: zds.Player):
+    if (p.AI.behavior == zds.Behavior.SeekFood and p.inventory.food < p.stats.level * 8):
+        return
+    if (p.inventory.food < p.stats.level * 4):
+        p.AI.behavior = zds.Behavior.SeekFood
+        return
+    else:
+        p.AI.behavior = zds.Behavior.SeekStones
+    if (p.AI.seekElevatingPlayer > 0):
+        p.AI.seekElevatingPlayer -= 1
+        p.AI.behavior = zds.Behavior.SeekPlayer
+        return
+    elif (ze.canElevate(p)):
+        p.AI.behavior = zds.Behavior.Elevate
+
 def gameLoop(p: zds.Player):
     while True:
-        #select ?
-        zp.POVmanager(p)
+        zpov.POVmanager(p)
         zi.pickupFood(p)
         p.inventory = zc.inventory(p.client)
-        if (ze.canElevate(p)):
-            while (p.stats.elevating == True):
-                ze.elevationTry(p)
         zi.pickupItems(p)
-        # try:
-        zpf.lookForFood(p)
-        # except:
-            # print("Pfiew ! I was about to crash whie looking for food!\n")
-            # continue
-        if (p.POV.vision.__len__() != 4 and (p.POV.vision.__len__()) != 9 and (p.POV.vision.__len__() != 16)): #Debuging in case of error, not to keep for final product
-            print("POV size: ---------{}-------------\n".format(p.POV.vision.__len__()))
-            print("ERROR: POV SIZE CHANGED\n")
-            printList(p.POV.vision)
-            exit(84)
-        move(p)
+        zp.readBufferMessage(p)
+        behaviorSelect(p)
+        print("------Current behavior: {}------\n".format(p.AI.behavior))
+        behaviorApply(p)

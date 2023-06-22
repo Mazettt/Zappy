@@ -74,5 +74,8 @@ namespace MyRayLib {
             static int MyGetScreenHeight() {
                 return GetScreenHeight();
             }
+            static void MySetTraceLogLevel(int logLevel) {
+                SetTraceLogLevel(logLevel);
+            }
     };
 }
