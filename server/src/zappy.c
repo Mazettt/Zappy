@@ -13,26 +13,26 @@ void max_fd(int fd, int *max_fd)
         *max_fd = fd;
 }
 
-static void reset_fd(zappy_t *zappy)
+void reset_fd(zappy_t *zappy)
 {
-    zappy->read_max_fd = 0;
-    zappy->write_max_fd = 0;
+    zappy->r_max_fd = 0;
+    zappy->w_max_fd = 0;
     FD_ZERO(&zappy->readfds);
     FD_ZERO(&zappy->writefds);
     FD_SET(zappy->main.s, &zappy->readfds);
     FD_SET(zappy->main.s, &zappy->writefds);
-    max_fd(zappy->main.s, &zappy->read_max_fd);
-    max_fd(zappy->main.s, &zappy->write_max_fd);
+    max_fd(zappy->main.s, &zappy->r_max_fd);
+    max_fd(zappy->main.s, &zappy->w_max_fd);
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
         if (CLIENT_S(i) > 0) {
             FD_SET(CLIENT_S(i), &zappy->readfds);
             FD_SET(CLIENT_S(i), &zappy->writefds);
         }
-        max_fd(CLIENT_S(i), &zappy->read_max_fd);
-        max_fd(CLIENT_S(i), &zappy->write_max_fd);
+        max_fd(CLIENT_S(i), &zappy->r_max_fd);
+        max_fd(CLIENT_S(i), &zappy->w_max_fd);
     }
     FD_SET(zappy->fd_sigint, &zappy->readfds);
-    max_fd(zappy->fd_sigint, &zappy->read_max_fd);
+    max_fd(zappy->fd_sigint, &zappy->r_max_fd);
 }
 
 static void free_all(zappy_t *zappy)
@@ -55,25 +55,37 @@ static void free_all(zappy_t *zappy)
     free(zappy);
 }
 
+bool zappy_loop(zappy_t *zappy)
+{
+    struct timeval tv = {0, 10};
+
+    reset_fd(zappy);
+    if (select(zappy->r_max_fd + 1, &zappy->readfds, NULL, NULL, &tv) < 0) {
+        perror("select");
+        return false;
+    }
+    if (select(zappy->w_max_fd + 1, NULL, &zappy->writefds, NULL, &tv) < 0) {
+        perror("select");
+        return false;
+    }
+    if (FD_ISSET(zappy->fd_sigint, &zappy->readfds))
+        return false;
+    accept_new_connections(zappy);
+    read_connections(zappy);
+    refill_resources(zappy);
+    return true;
+}
+
 int zappy(args_t args)
 {
     zappy_t *zappy = malloc(sizeof(zappy_t));
-    struct timeval tv = {0, 0};
 
     if (!zappy || !init_game(zappy, args))
         return 84;
     init_main_socket(zappy, args.port);
-    while (zappy->main.s) {
-        tv.tv_usec = 10;
-        reset_fd(zappy);
-        select(zappy->read_max_fd + 1, &zappy->readfds, NULL, NULL, &tv);
-        select(zappy->write_max_fd + 1, NULL, &zappy->writefds, NULL, &tv);
-        if (FD_ISSET(zappy->fd_sigint, &zappy->readfds))
+    while (zappy->main.s)
+        if (!zappy_loop(zappy))
             break;
-        accept_new_connections(zappy);
-        read_connections(zappy);
-        refill_resources(zappy);
-    }
     printf("\n%s\n", "Quitting...");
     free_all(zappy);
     return 0;

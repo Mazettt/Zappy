@@ -243,13 +243,24 @@ void Game::drawMenu() {
 
 void Game::drawMapData()
 {
-    MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::MAPDATA).getTexture(), 370, 10, WHITE);
-    std::string tmp = ("x " + std::to_string(this->_map._players.size()));
-    MyRayLib::Draw::MyDrawText(tmp.c_str(), 420, 35, 20, WHITE);
+    int nbTeams = 0;
+    std::map<std::string, std::vector<std::string>> _teamPlayersForMap;
+    if (!this->_map._players.empty()) {
+        for (const auto& player : this->_map._players)
+            _teamPlayersForMap[player->getTeamName()].push_back("Player" + std::to_string(player->getPlayerNumber()) + ", level: " + std::to_string(player->getPlayerLevel()));
+        for (const auto& entry : _teamPlayersForMap)
+            nbTeams = _teamPlayersForMap.size();
+    }
+
+    MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::MAPDATA).getTexture(), 297, 10, WHITE);
+    std::string tmp = ("x " + std::to_string(nbTeams));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 360, 35, 20, WHITE);
+    tmp = ("x " + std::to_string(this->_map._players.size()));
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 480, 35, 20, WHITE);
     tmp = std::to_string(static_cast<int>(this->_map.getSize().getX()));
-    MyRayLib::Draw::MyDrawText(tmp.c_str(), 525, 35, 20, WHITE);
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 585, 35, 20, WHITE);
     tmp = std::to_string(static_cast<int>(this->_map.getSize().getY()));
-    MyRayLib::Draw::MyDrawText(tmp.c_str(), 625, 35, 20, WHITE);
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), 685, 35, 20, WHITE);
 
     std::vector<IResource::resourceType> resourceTypes = {
         IResource::resourceType::BURGER,
@@ -274,19 +285,19 @@ void Game::drawMapData()
     for (auto &it : _inventoryMap) {
         std::string tmp = ( "x " + std::to_string(it.second));
         if (it.first == IResource::resourceType::BURGER)
-            MyRayLib::Draw::MyDrawText(tmp.c_str(), (735), 35, 20, WHITE);
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (735 + 60), 35, 20, WHITE);
         if (it.first == IResource::resourceType::DERAUMERE)
-            MyRayLib::Draw::MyDrawText(tmp.c_str(), (850), 35, 20, WHITE);
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (850 + 60), 35, 20, WHITE);
         if (it.first == IResource::resourceType::LINEMATE)
-            MyRayLib::Draw::MyDrawText(tmp.c_str(), (975), 35, 20, WHITE);
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (975 + 60), 35, 20, WHITE);
         if (it.first == IResource::resourceType::MENDIANE)
-            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1085), 35, 20, WHITE);
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1085 + 60), 35, 20, WHITE);
         if (it.first == IResource::resourceType::PHIRAS)
-            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1210), 35, 20, WHITE);
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1210 + 60), 35, 20, WHITE);
         if (it.first == IResource::resourceType::SIBUR)
-            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1330), 35, 20, WHITE);
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1330 + 60), 35, 20, WHITE);
         if (it.first == IResource::resourceType::THYSTAME)
-            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1448), 35, 20, WHITE);
+            MyRayLib::Draw::MyDrawText(tmp.c_str(), (1448 + 60), 35, 20, WHITE);
     }
 }
 
@@ -298,16 +309,24 @@ void Game::drawTeamsData()
         return;
     }
 
-    for (const auto& player : this->_map._players)
+    for (const auto& player : this->_map._players) {
+        this->_link.askPlayerLevel(player->getPlayerLevel());
         _teamPlayers[player->getTeamName()].push_back("Player" + std::to_string(player->getPlayerNumber()) + ", level: " + std::to_string(player->getPlayerLevel()));
-
+    }
     int textPosX = 0;
     for (const auto& entry : _teamPlayers) {
         MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 90, WHITE);
         MyRayLib::Draw::MyDrawText(entry.first.c_str(), textPosX + 70, 105, 30, BLACK);
         int textHeight = 120;
+        int nb = 0;
         for (const auto& player : entry.second) {
-            MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 30, (textHeight += 35), 20, BLACK);
+            if (nb < 20)
+                MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 30, (textHeight += 35), 20, BLACK);
+            else {
+                MyRayLib::Draw::MyDrawText("...", textPosX + 30, (textHeight += 35), 20, BLACK);
+                break;
+            }
+            ++nb;
         }
         textPosX += 200;
     }

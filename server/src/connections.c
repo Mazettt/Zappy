@@ -7,42 +7,6 @@
 
 #include "../include/server.h"
 
-static void add_socket_to_array(zappy_t *zappy, int new_s)
-{
-    struct timeval tv = {0, 0};
-    for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (CLIENT_S(i) == 0) {
-            FD_SET(new_s, &zappy->readfds);
-            FD_SET(new_s, &zappy->writefds);
-            max_fd(new_s, &zappy->read_max_fd);
-            max_fd(new_s, &zappy->write_max_fd);
-            select(zappy->read_max_fd + 1, &zappy->readfds, NULL, NULL, &tv);
-            select(zappy->read_max_fd + 1, NULL, &zappy->writefds, NULL, &tv);
-            CLIENT_S(i) = new_s;
-            zappy->client[i].command.sa = zappy->main.sa;
-            zappy->client[i].command.addrlen = zappy->main.addrlen;
-            get_socket_infos(&zappy->client[i].command);
-            DEBUG_PRINT("Host connected, ip %s, port %d\n",
-                inet_ntoa(zappy->client[i].command.sa.sin_addr),
-                ntohs(zappy->client[i].command.sa.sin_port));
-            sdprintf(zappy, new_s, "WELCOME\n");
-            break;
-        }
-    }
-}
-
-void accept_new_connections(zappy_t *zappy)
-{
-    int new_s = 0;
-
-    if (FD_ISSET(zappy->main.s, &zappy->readfds)) {
-        if ((new_s = accept(zappy->main.s, (struct sockaddr *)&zappy->main.sa,
-            (socklen_t *)&zappy->main.addrlen)) < 0)
-            return;
-        add_socket_to_array(zappy, new_s);
-    }
-}
-
 static void parse_command(zappy_t *zappy, int ci, char *input)
 {
     char *start = strdup(input);
@@ -94,7 +58,7 @@ void read_connections(zappy_t *zappy)
         if (!CLIENT_S(i))
             continue;
         if (check_win(zappy) && zappy->client[i].type == AI)
-            continue;
+            continue; // TODO regler le CPU à 100% à cause du select non bloquant
         if (zappy->client[i].type == AI &&
         !check_food(zappy, zappy->client[i].player)) {
             sdprintf(zappy, CLIENT_S(i), "dead\n");

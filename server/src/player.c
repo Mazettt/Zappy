@@ -49,7 +49,7 @@ player_t *add_player(zappy_t *zappy, egg_t *egg, client_t *client)
     new->client = client;
     client->team = egg->team;
     client->player = new;
-    gettimeofday(&new->startTime, NULL);
+    if (gettimeofday(&new->startTime, NULL) == -1) return NULL;
     new->timeUntilDie = 0;
     new->prev = NULL;
     new->next = egg->team->players;
