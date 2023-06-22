@@ -35,6 +35,16 @@ bool Player::canElevate()
     return true;
 }
 
+const std::string &Player::getTeam() const
+{
+    return _s.getTeam();
+}
+
+const std::pair<int, int> &Player::getMapSize() const
+{
+    return _s.getMapSize();
+}
+
 int Player::getLevel() const
 {
     return _s.getLvl();

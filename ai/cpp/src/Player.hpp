@@ -17,6 +17,8 @@ namespace my {
             Player &operator=(Player &&other);
 
             bool canElevate();
+            const std::string &getTeam() const;
+            const std::pair<int, int> &getMapSize() const;
             int getLevel() const;
 
             void lookForResource(Resource type);
