@@ -6,7 +6,6 @@
 */
 
 #include <cmath>
-#include <cassert>
 #include <algorithm>
 #include "../../includes/MapHeader/Map.hpp"
 #include "../../Utils/MyError.hpp"

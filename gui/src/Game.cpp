@@ -346,8 +346,11 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_map.update(deltaTime);
     this->_map.draw();
-    if (this->_map._players.size() != 0) {
-        selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
+    if (this->_map._players.size() > 0) {
+        if (this->_showPlayerData.getPlayerIndexSelected() < this->_map._players.size())
+            selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
+        else
+            selectorPlayer.setPosition(this->_map._players.at(0)->getPosition());
         selectorPlayer.update();
         selectorPlayer.draw();
     }
