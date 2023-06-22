@@ -89,7 +89,7 @@ void ServerLink::update()
     }
     std::vector<std::string> commands = split(buff, '\n');
     for (const auto &command : commands) {
-        std::cerr << "command: " << command << std::endl;
+        // std::cerr << "command: " << command << std::endl;
         if (_responseFunctions.find(command.substr(0, 3)) != _responseFunctions.end())
             (this->*_responseFunctions[command.substr(0, 3)])(command);
     }
@@ -264,15 +264,14 @@ void ServerLink::_pic(const std::string &str) // TO CHECK
 {
     std::istringstream iss(str);
     std::string tmp;
-    int level = 0;
     float x = 0.0;
     float z = 0.0;
     std::vector<int> ids;
 
-    iss >> tmp >> x >> z >> level;
+    iss >> tmp >> x >> z;
     for (int id; iss >> id;)
         ids.push_back(id);
-    this->_game._map.StartPlayersLeveling(ids, level, x, z);
+    this->_game._map.StartPlayersLeveling(ids, x, z);
     std::cout << std::endl;
 }
 
@@ -382,7 +381,7 @@ void ServerLink::_sgt(const std::string &str)
     int time = 0;
 
     iss >> tmp >> time;
-    this->_game._map.timeUnit = time;
+    this->_game._map.setTimeUnit(time);
 }
 
 void ServerLink::_sst(const std::string &str)
@@ -393,7 +392,7 @@ void ServerLink::_sst(const std::string &str)
 
     iss >> tmp >> time;
     std::cout << "Time unit set: " << time << std::endl;
-    this->_game._map.timeUnit = time;
+    this->_game._map.setTimeUnit(time);
 }
 
 void ServerLink::_seg(const std::string &str) // TO DO

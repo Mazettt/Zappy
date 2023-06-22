@@ -9,6 +9,8 @@ NAME	=	zappy_ai
 
 # src
 SRC	=	$(shell find -type f '(' -name "*.cpp" ')')
+SRC_NO_MAIN	=	$(filter-out $(SRC_DIR)main.c, $(SRC))
+
 
 # compil
 OBJ	=	$(SRC:.cpp=.o)
@@ -71,12 +73,5 @@ fclean:	clean
 
 re:	clean all
 
-gcovr:
-		gcovr --exclude tests
-		gcovr --exclude tests --branches
 
-tests_run:	fclean
-			gcc -o $(NAME_TESTS) $(SRC_NO_MAIN) $(TESTS) $(TESTS_FLAGS) $(FLAGS)
-			./$(NAME_TESTS)
-
-.PHONY:		all clean fclean re gcovr tests_run
+.PHONY:		all clean fclean re
