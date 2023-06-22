@@ -306,8 +306,15 @@ void Game::drawTeamsData()
         MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 90, WHITE);
         MyRayLib::Draw::MyDrawText(entry.first.c_str(), textPosX + 70, 105, 30, BLACK);
         int textHeight = 120;
+        int nb = 0;
         for (const auto& player : entry.second) {
-            MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 30, (textHeight += 35), 20, BLACK);
+            if (nb < 20)
+                MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 30, (textHeight += 35), 20, BLACK);
+            else {
+                MyRayLib::Draw::MyDrawText("...", textPosX + 30, (textHeight += 35), 20, BLACK);
+                break;
+            }
+            ++nb;
         }
         textPosX += 200;
     }
