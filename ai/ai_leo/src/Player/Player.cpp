@@ -34,7 +34,10 @@ std::string Player::read()
         for (std::string line : split_message) {
             std::cout << line << std::endl;
             if (line.find("message") == 0) {
-                broadcasts.push(line);
+                std::string last_char = line.substr(line.size() - 1);
+                int last_digit = std::stoi(last_char);
+                if (last_digit == level)
+                    broadcasts.push(line);
                 return (read());
             } else {
                 return (line);
@@ -321,6 +324,208 @@ void Player::try_level_up()
             std::string x = message_x.substr(message_x.find(" ") + 1, message_x.size());
             go_to_sound(x);
         }
+    } else if (level == 3) {
+        if (broadcasts.size() == 0) {
+            broadcast("I'm level 3");
+            View = look();
+            int p_count = 0;
+
+            for (int i = 0; View[0][i] != '\0'; i++) {
+                if (View[0][i] == 'p' && View[0][i + 1] == 'l') {
+                    p_count++;
+                }
+            }
+            if (p_count >= 2) {
+                std::cout << "[Player " << playerNumber << "] Trying to level up 3" << std::endl;
+                std::map<std::string, int> reqs = get_requirements();
+                for (auto it = reqs.begin(); it != reqs.end(); it++) {
+                    if (it->second < 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < it->second; i++) {
+                        set_object(it->first);
+                    }
+                }
+                socket.sendSocket("Incantation\n");
+                std::string response = read();
+                response = read();
+                if (response.find("ko") != std::string::npos) {
+                    return;
+                } else {
+                    level++;
+                    std::cout << response << std::endl;
+                    std::cout << "[Player " << playerNumber << "] LEVEL UP 3" << std::endl;
+                    return;
+                }
+            }
+        } else {
+            std::string sound_direction = broadcasts.front();
+            std::string message_x = sound_direction.substr(0, sound_direction.find(","));
+            std::string x = message_x.substr(message_x.find(" ") + 1, message_x.size());
+            go_to_sound(x);
+        }
+    } else if (level == 4) {
+        if (broadcasts.size() == 0) {
+            broadcast("I'm level 4");
+            View = look();
+            int p_count = 0;
+
+            for (int i = 0; View[0][i] != '\0'; i++) {
+                if (View[0][i] == 'p' && View[0][i + 1] == 'l') {
+                    p_count++;
+                }
+            }
+            if (p_count >= 4) {
+                std::cout << "[Player " << playerNumber << "] Trying to level up 4" << std::endl;
+                std::map<std::string, int> reqs = get_requirements();
+                for (auto it = reqs.begin(); it != reqs.end(); it++) {
+                    if (it->second < 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < it->second; i++) {
+                        set_object(it->first);
+                    }
+                }
+                socket.sendSocket("Incantation\n");
+                std::string response = read();
+                response = read();
+                if (response.find("ko") != std::string::npos) {
+                    return;
+                } else {
+                    level++;
+                    std::cout << response << std::endl;
+                    std::cout << "[Player " << playerNumber << "] LEVEL UP 4" << std::endl;
+                    return;
+                }
+            }
+        } else {
+            std::string sound_direction = broadcasts.front();
+            std::string message_x = sound_direction.substr(0, sound_direction.find(","));
+            std::string x = message_x.substr(message_x.find(" ") + 1, message_x.size());
+            go_to_sound(x);
+        }
+    } else if (level == 5) {
+        if (broadcasts.size() == 0) {
+            broadcast("I'm level 5");
+            View = look();
+            int p_count = 0;
+
+            for (int i = 0; View[0][i] != '\0'; i++) {
+                if (View[0][i] == 'p' && View[0][i + 1] == 'l') {
+                    p_count++;
+                }
+            }
+            if (p_count >= 4) {
+                std::cout << "[Player " << playerNumber << "] Trying to level up 5" << std::endl;
+                std::map<std::string, int> reqs = get_requirements();
+                for (auto it = reqs.begin(); it != reqs.end(); it++) {
+                    if (it->second < 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < it->second; i++) {
+                        set_object(it->first);
+                    }
+                }
+                socket.sendSocket("Incantation\n");
+                std::string response = read();
+                response = read();
+                if (response.find("ko") != std::string::npos) {
+                    return;
+                } else {
+                    level++;
+                    std::cout << response << std::endl;
+                    std::cout << "[Player " << playerNumber << "] LEVEL UP 5" << std::endl;
+                    return;
+                }
+            }
+        } else {
+            std::string sound_direction = broadcasts.front();
+            std::string message_x = sound_direction.substr(0, sound_direction.find(","));
+            std::string x = message_x.substr(message_x.find(" ") + 1, message_x.size());
+            go_to_sound(x);
+        }
+    } else if (level == 6) {
+        if (broadcasts.size() == 0) {
+            broadcast("I'm level 6");
+            View = look();
+            int p_count = 0;
+
+            for (int i = 0; View[0][i] != '\0'; i++) {
+                if (View[0][i] == 'p' && View[0][i + 1] == 'l') {
+                    p_count++;
+                }
+            }
+            if (p_count >= 6) {
+                std::cout << "[Player " << playerNumber << "] Trying to level up 6" << std::endl;
+                std::map<std::string, int> reqs = get_requirements();
+                for (auto it = reqs.begin(); it != reqs.end(); it++) {
+                    if (it->second < 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < it->second; i++) {
+                        set_object(it->first);
+                    }
+                }
+                socket.sendSocket("Incantation\n");
+                std::string response = read();
+                response = read();
+                if (response.find("ko") != std::string::npos) {
+                    return;
+                } else {
+                    level++;
+                    std::cout << response << std::endl;
+                    std::cout << "[Player " << playerNumber << "] LEVEL UP 6" << std::endl;
+                    return;
+                }
+            }
+        } else {
+            std::string sound_direction = broadcasts.front();
+            std::string message_x = sound_direction.substr(0, sound_direction.find(","));
+            std::string x = message_x.substr(message_x.find(" ") + 1, message_x.size());
+            go_to_sound(x);
+        }
+    } else if (level == 7) {
+        if (broadcasts.size() == 0) {
+            broadcast("I'm level 7");
+            View = look();
+            int p_count = 0;
+
+            for (int i = 0; View[0][i] != '\0'; i++) {
+                if (View[0][i] == 'p' && View[0][i + 1] == 'l') {
+                    p_count++;
+                }
+            }
+            if (p_count >= 6) {
+                std::cout << "[Player " << playerNumber << "] Trying to level up 7" << std::endl;
+                std::map<std::string, int> reqs = get_requirements();
+                for (auto it = reqs.begin(); it != reqs.end(); it++) {
+                    if (it->second < 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < it->second; i++) {
+                        set_object(it->first);
+                    }
+                }
+                socket.sendSocket("Incantation\n");
+                std::string response = read();
+                response = read();
+                if (response.find("ko") != std::string::npos) {
+                    return;
+                } else {
+                    level++;
+                    std::cout << response << std::endl;
+                    std::cout << "[Player " << playerNumber << "] LEVEL UP 7" << std::endl;
+                    return;
+                }
+            }
+        } else {
+            std::string sound_direction = broadcasts.front();
+            std::string message_x = sound_direction.substr(0, sound_direction.find(","));
+            std::string x = message_x.substr(message_x.find(" ") + 1, message_x.size());
+            go_to_sound(x);
+        }
+    } else if (level == 8) {
+        return;
     }
 }
 
