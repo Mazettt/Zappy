@@ -7,6 +7,24 @@
 
 #include "Player.hpp"
 
+std::string Player::read()
+{
+    std::string message = socket.receiveSocket();
+    if (message.find("message") != std::string::npos) {
+        std::cout << "[Player " << playerNumber << "] re-reading..." << std::endl;
+        broadcasts.push(message);
+        return (read());
+    }
+    return (message);
+}
+
+std::string Player::broadcast(std::string message)
+{
+    std::string command = "Broadcast " + message + "\n";
+    socket.sendSocket(command);
+    return (read());
+}
+
 void Player::go_to(int destination)
 {
     int x = 0;
@@ -135,14 +153,62 @@ void Player::crave_food()
         int destination = most_x("food");
         if (destination == 0) {
             forward();
+            int rand = std::rand() % 2;
+            if (rand == 0) {
+                left();
+            } else {
+                right();
+            }
         } else {
             go_to(destination);
             View = look();
             vacuum();
             Inventory = inventory();
-        }   
+        }
     }
     emergency = false;
+}
+
+void Player::go_to_sound(std::string sound_direction)
+{
+    if (sound_direction[0] < '0' || sound_direction[0] > '9') {
+        return;
+    }
+    int direction = std::stoi(sound_direction);
+
+    if (direction == 1) {
+        forward();
+    } else if (direction == 2) {
+        forward();
+        left();
+        forward();
+    } else if (direction == 3) {
+        left();
+        forward();
+    } else if (direction == 4) {
+        left();
+        forward();
+        left();
+        forward();
+    } else if (direction == 5) {
+        left();
+        left();
+        forward();
+    } else if (direction == 6) {
+        right();
+        forward();
+        right();
+        forward();
+    } else if (direction == 7) {
+        right();
+        forward();
+    } else if (direction == 8) {
+        forward();
+        right();
+        forward();
+    } else if (direction == 0) {
+        return;
+    }
 }
 
 void Player::try_level_up()
@@ -159,7 +225,7 @@ void Player::try_level_up()
             }
         }
         socket.sendSocket("Incantation\n");
-        std::string response = socket.receiveSocket();
+        std::string response = read();
         if (response.find("ko") != std::string::npos) {
             std::cout << "LEVEL UP FAILED" << std::endl;
             return;
@@ -167,8 +233,114 @@ void Player::try_level_up()
             level++;
             std::cout << response << std::endl;
             std::cout << "LEVEL UP SUCCESS" << std::endl;
-            socket.receiveSocket();
+            read();
             return;
+        }
+    } else if (level == 2) {
+        if (broadcasts.empty()) {
+            Inventory = inventory();
+            if (Inventory["food"] < 8) {
+                return;
+            }
+            broadcast("I am level 2");
+            int p_count = 0;
+            View = look();
+            for (int i = 0; View[0][i] != '\0'; i++) {
+                if (View[0][i] == 'p' && View[0][i + 1] == 'l') {
+                    p_count++;
+                }
+            }
+            if (p_count == 2) {
+                std::map<std::string, int> reqs = get_requirements();
+                for (auto it = reqs.begin(); it != reqs.end(); it++) {
+                    if (it->second < 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < it->second; i++) {
+                        set_object(it->first);
+                    }
+                }
+                socket.sendSocket("Incantation\n");
+                std::string response = read();
+                if (response.find("ko") != std::string::npos) {
+                    std::cout << "LEVEL UP FAILED" << std::endl;
+                    return;
+                } else {
+                    level++;
+                    std::cout << response << std::endl;
+                    std::cout << "LEVEL UP SUCCESS" << std::endl;
+                    read();
+                    return;
+                }
+            }
+        } else {
+            Inventory = inventory();
+            while (broadcasts.empty() == false) {
+                std::string msg = broadcasts.front();
+                if (msg.find("level 2") != std::string::npos) {
+                    std::cout << msg << std::endl;
+                    std::string player = msg.substr(0, msg.find(","));
+                    std::string sound_direction = msg.substr(msg.find("message") + 8, 1);
+                    go_to_sound(sound_direction);
+                    while (broadcasts.empty() == false) {
+                        int broadcast_size = broadcasts.size();
+                        for (int i = 0; i < broadcast_size; i++) {
+                            broadcasts.pop();
+                        }
+                        return;
+                    }
+                    break;
+                }
+            }
+        }
+    } else if (level == 3) {
+        if (broadcasts.empty()) {
+            broadcast("I am level 3");
+            int p_count = 0;
+            View = look();
+            for (int i = 0; View[0][i] != '\0'; i++) {
+                if (View[0][i] == 'p' && View[0][i + 1] == 'l') {
+                    p_count++;
+                }
+            }
+            if (p_count == 2) {
+                std::map<std::string, int> reqs = get_requirements();
+                for (auto it = reqs.begin(); it != reqs.end(); it++) {
+                    if (it->second < 0) {
+                        continue;
+                    }
+                    for (int i = 0; i < it->second; i++) {
+                        set_object(it->first);
+                    }
+                }
+                socket.sendSocket("Incantation\n");
+                std::string response = read();
+                if (response.find("ko") != std::string::npos) {
+                    std::cout << "LEVEL UP FAILED" << std::endl;
+                    return;
+                } else {
+                    level++;
+                    std::cout << response << std::endl;
+                    std::cout << "LEVEL UP SUCCESS" << std::endl;
+                    read();
+                    return;
+                }
+            }
+        } else {
+            while (broadcasts.empty() == false) {
+                std::string msg = broadcasts.front();
+                if (msg.find("level 3") != std::string::npos) {
+                    std::cout << msg << std::endl;
+                    std::string player = msg.substr(0, msg.find(","));
+                    std::string sound_direction = msg.substr(msg.find("message") + 8, 1);
+                    std::cout << "echo: " << sound_direction << std::endl;
+                    go_to_sound(sound_direction);
+                    while (broadcasts.empty() == false) {
+                        broadcasts.pop();
+                    }
+                    break;
+                }
+            }
         }
     }
 }
@@ -176,8 +348,17 @@ void Player::try_level_up()
 std::string Player::set_object(std::string object)
 {
     socket.sendSocket("Set " + object + "\n");
-    std::string response = socket.receiveSocket();
+    std::string response = read();
     return (response);
+}
+
+void Player::harvest_interesting_stuff()
+{
+    std::cout << "[Player " << playerNumber << "]: Harvesting interesting stuff" << std::endl;
+    View = look();
+    int dest = most_x("food");
+    go_to(dest);
+    vacuum();
 }
 
 void Player::play()
@@ -188,14 +369,15 @@ void Player::play()
     vacuum();
     while (true) {
         Inventory = inventory();
-        if (Inventory["food"] < 5)
+        if (Inventory["food"] < 8)
             emergency = true;
     
         if (emergency == true) {
+            std::cout << "[Player " << playerNumber << "]: I'm hungry" << std::endl;
             crave_food();
         }
         if (check_lvl_up() == true) {
-            std::cout << "LEVEL UP" << std::endl;
+            std::cout << "[Player " << playerNumber << "]: I'm ready to level up" << std::endl;
             try_level_up();
         }
     }
@@ -236,10 +418,7 @@ void Player::vacuum()
         if (player_tile[i] == ' ' || player_tile[i] == '\0') {
             object = tmp;
             if (object != "player" && object != " ") {
-                if (take(object) == "ok")
-                    std::cout << "Player " << playerNumber << " took " << object << std::endl;
-                else
-                    std::cout << "Player " << playerNumber << " failed to take " << object << std::endl;
+                take(object);
             }
             tmp.clear();
         } else {
@@ -251,7 +430,7 @@ void Player::vacuum()
 std::string Player::forward()
 {
     socket.sendSocket("Forward\n");
-    if (socket.receiveSocket() == "ok\n")
+    if (read() == "ok")
         return ("ok");
     return ("ko");
 }
@@ -259,7 +438,7 @@ std::string Player::forward()
 std::string Player::right()
 {
     socket.sendSocket("Right\n");
-    if (socket.receiveSocket() == "ok\n")
+    if (read() == "ok")
         return ("ok");
     return ("ko");
 }
@@ -267,7 +446,7 @@ std::string Player::right()
 std::string Player::left()
 {
     socket.sendSocket("Left\n");
-    if (socket.receiveSocket() == "ok\n")
+    if (read() == "ok")
         return ("ok");
     return ("ko");
 }
@@ -277,7 +456,7 @@ std::vector<std::string> Player::look()
     socket.sendSocket("Look\n");
     std::string msg;
     while (msg.find(']') == std::string::npos) {
-        msg += socket.receiveSocket();
+        msg += read();
     }
     std::vector<std::string> view;
     std::string tmp;
@@ -298,8 +477,10 @@ std::map<std::string, int> Player::inventory()
     socket.sendSocket("Inventory\n");
     std::string msg;
     while (msg.find(']') == std::string::npos) {
-        msg += socket.receiveSocket();
+        msg += read();
     }
+    if (msg[0] != '[' && msg[msg.size() - 1] != ']')
+        return (Inventory);
     std::map<std::string, int> Inventory;
     std::string tmp;
     msg.erase(0, 1);
@@ -377,7 +558,7 @@ std::map<std::string, int> Player::get_requirements()
 std::string Player::take(std::string object)
 {
     socket.sendSocket("Take " + object + "\n");
-    if (socket.receiveSocket() == "ok\n") {
+    if (read() == "ok\n") {
         Inventory[object]++;
         return ("ok");
     }
