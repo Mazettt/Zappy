@@ -23,8 +23,8 @@ namespace my {
         public:
             FoodHandler(int x, int y);
             ~FoodHandler();
-            int getMinimumFood(int playerLevel);
-            int getMaximumFood(int playerLevel);
+            int getMinimumFood();
+            int getMaximumFood();
             void calculate(int playerLevel);
             void incantationFail();
             void incantationSuccess();

@@ -26,9 +26,9 @@ void Core::run()
 {
     while (true) {
         std::map<my::Resource, int> inv = _player.inventory();
-        if (inv.at(Resource::FOOD) <= this->_foodHandler.getMinimumFood(_player.getLevel())) {
+        if (inv.at(Resource::FOOD) <= this->_foodHandler.getMinimumFood()) {
             if (_state == State::TRY_INCANT) {
-                std::cout << "Actual food: " << inv.at(Resource::FOOD) << " minimumFood: " << this->_foodHandler.getMinimumFood(this->_player.getLevel()) << " maximumFood: " << this->_foodHandler.getMaximumFood(this->_player.getLevel()) << std::endl;
+                std::cout << "Actual food: " << inv.at(Resource::FOOD) << " minimumFood: " << this->_foodHandler.getMinimumFood() << " maximumFood: " << this->_foodHandler.getMaximumFood() << std::endl;
                 _player.broadcast("abort incantation");
                 this->_foodHandler.incantationFail();
             }
@@ -52,7 +52,7 @@ void Core::run()
 
 void Core::_findFood(const std::map<my::Resource, int> &inventory)
 {
-    if (inventory.at(Resource::FOOD) >= this->_foodHandler.getMaximumFood(_player.getLevel())) {
+    if (inventory.at(Resource::FOOD) >= this->_foodHandler.getMaximumFood()) {
         _state = State::FIND_RESOURCES;
         return;
     }
@@ -136,7 +136,7 @@ void Core::_waitBroadcast(const std::string &toFind, std::function<bool (std::pa
     std::cout << "Waiting for broadcast (" << toFind << ")" << std::endl;
     while (true) {
         std::map<my::Resource, int> inv = _player.inventory();
-        if (inv.at(Resource::FOOD) < this->_foodHandler.getMinimumFood(_player.getLevel())) {
+        if (inv.at(Resource::FOOD) < this->_foodHandler.getMinimumFood()) {
             _state = State::FIND_RESOURCES;
             break;
         }

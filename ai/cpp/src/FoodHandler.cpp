@@ -21,11 +21,11 @@ FoodHandler::FoodHandler(int x, int y):
 
 FoodHandler::~FoodHandler() {}
 
-int FoodHandler::getMinimumFood(int playerLevel) {
+int FoodHandler::getMinimumFood() {
     return this->_minimumFood;
 }
 
-int FoodHandler::getMaximumFood(int playerLevel) {
+int FoodHandler::getMaximumFood() {
     return this->_maximumFood;
 }
 
