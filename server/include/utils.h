@@ -32,4 +32,14 @@
     #define BOLD_CYAN "\033[1;36m"
     #define BOLD_WHITE "\033[1;37m"
 
+typedef struct {
+    int i;
+    int i_a;
+    int j_a;
+    int nbr_words;
+    int nbr_letters;
+    bool q;
+    char **new_arr;
+} infos_t;
+
 #endif
