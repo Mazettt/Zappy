@@ -32,12 +32,15 @@ std::string Player::read()
 
     while (true) {
         for (std::string line : split_message) {
-            std::cout << line << std::endl;
             if (line.find("message") == 0) {
                 std::string last_char = line.substr(line.size() - 1);
                 int last_digit = std::stoi(last_char);
-                if (last_digit == level)
-                    broadcasts.push(line);
+                if (last_digit == level) {
+                    std::string sound_direction = line;
+                    std::string message_x = sound_direction.substr(0, sound_direction.find(","));
+                    std::string x = message_x.substr(message_x.find(" ") + 1, message_x.size());
+                    go_to_sound(x);
+                }
                 return (read());
             } else {
                 return (line);
@@ -554,7 +557,6 @@ void Player::play()
     while (true) {
         Inventory = inventory();
         if (Inventory["food"] < 8) {
-            std::cout << "ALERTE" << std::endl;
             emergency = true;
         }
     
