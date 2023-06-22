@@ -157,7 +157,13 @@ void Game::run() {
         } else {
             try {
                 this->_link.update();
-            } catch(const ZappyGui::Socket::Info &e) {
+            } catch (const ZappyGui::Socket::Info &e) { // voir ici pour Socket::read: Socket closed. Socket: Socket connection failed: Connection refused qui close le gui au lieu de revenir au menu
+                std::cerr << e.what() << std::endl;
+                this->_map.resetGame();
+                this->_camera.reset();
+                this->_stateWindow = stateWindow::MENU;
+                this->_playerTmp->noAnimation();
+            } catch (const ZappyGui::Socket::Error &e) {
                 std::cerr << e.what() << std::endl;
                 this->_map.resetGame();
                 this->_camera.reset();

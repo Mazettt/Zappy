@@ -16,7 +16,7 @@ int main(int ac, char **av) {
         core.checkArgs(ac, av);
         core.run();
     } catch (const std::exception &e) {
-        std::cerr << e.what() << '\n';
+        std::cerr << "aaa " << e.what() << '\n';
         return 84;
     }
     return 0;
