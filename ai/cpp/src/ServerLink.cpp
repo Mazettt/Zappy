@@ -51,25 +51,51 @@ int ServerLink::getLvl() const {
 
 void ServerLink::forward() {
     _socket.write("Forward\n");
-    _read();
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses) {
+            if (it == "ok")
+                return;
+        }
+    }
 }
 
 void ServerLink::left() {
     _socket.write("Left\n");
-    _read();
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses) {
+            if (it == "ok")
+                return;
+        }
+    }
 }
 
 void ServerLink::right() {
     _socket.write("Right\n");
-    _read();
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses) {
+            if (it == "ok")
+                return;
+        }
+    }
 }
 
 std::vector<Tile> ServerLink::look() {
     _socket.write("Look\n");
-    auto responses = _read();
-    if (responses.size() != 1)
-        throw Error("Wrong response", "ServerLink::look");
-    std::string response = responses[0].substr(1, responses[0].size() - 2);
+    std::vector<std::string> responses;
+    std::string response;
+    bool ok = false;
+    while (!ok) {
+        responses = _read();
+        for (auto &it : responses)
+            if (it[0] == '[') {
+                response = it.substr(1, it.size() - 2);
+                ok = true;
+                break;
+            }
+    }
     auto map = my::splitWithEmpty(response, ",");
     std::vector<Tile> res;
     for (auto &line: map) {
@@ -102,15 +128,18 @@ std::vector<Tile> ServerLink::look() {
 
 std::map<Resource, int> ServerLink::inventory() {
     _socket.write("Inventory\n");
-    auto responses = _read();
-    if (responses.size() != 1) {
-        std::cout << "ERROOOOOOOR: ";
+    std::vector<std::string> responses;
+    std::string response;
+    bool ok = false;
+    while (!ok) {
+        responses = _read();
         for (auto &it : responses)
-            std::cout << it << " | ";
-        std::cout << std::endl;
-        throw Error("Wrong response", "ServerLink::inventory");
+            if (it[0] == '[') {
+                response = it.substr(1, it.size() - 2);
+                ok = true;
+                break;
+            }
     }
-    std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::split(response, ",");
     std::map<Resource, int> res;
     for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1))
@@ -139,7 +168,13 @@ std::map<Resource, int> ServerLink::inventory() {
 
 void ServerLink::broadcast(const std::string &message) {
     _socket.write("Broadcast " + message + "\n");
-    _read();
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses) {
+            if (it == "ok")
+                return;
+        }
+    }
 }
 
 int ServerLink::connectNbr() {
@@ -152,31 +187,53 @@ int ServerLink::connectNbr() {
 
 void ServerLink::fork() {
     _socket.write("Fork\n");
-    _read();
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses) {
+            if (it == "ok")
+                return;
+        }
+    }
 }
 
 bool ServerLink::eject() {
     _socket.write("Eject\n");
-    auto responses = _read();
-    if (responses.size() != 1)
-        throw Error("Wrong response", "ServerLink::eject");
-    return responses[0] == "ok";
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses)
+            if (it == "ok")
+                return true;
+            else if (it == "ko")
+                return false;
+    }
+    return false;
 }
 
 bool ServerLink::take(Resource type) {
     _socket.write("Take " + typeToString(type) + "\n");
-    auto responses = _read();
-    if (responses.size() != 1)
-        throw Error("Wrong response", "ServerLink::take");
-    return responses[0] == "ok";
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses) {
+            if (it == "ok")
+                return true;
+            else if (it == "ko")
+                return false;
+        }
+    }
+    return false;
 }
 
 bool ServerLink::set(Resource type) {
     _socket.write("Set " + typeToString(type) + "\n");
-    auto responses = _read();
-    if (responses.size() != 1)
-        throw Error("Wrong response", "ServerLink::set");
-    return responses[0] == "ok";
+    while (true) {
+        auto responses = _read();
+        for (auto &it : responses)
+            if (it == "ok")
+                return true;
+            else if (it == "ko")
+                return false;
+    }
+    return false;
 }
 
 int ServerLink::incantation() {
@@ -216,22 +273,26 @@ std::vector<std::string> ServerLink::_read(bool incantation) {
             tmp += _socket.read();
         } while (tmp.back() != '\n');
         tmp = tmp.substr(0, tmp.size() - 1);
-        res = my::split(tmp, "\n");
-        for (auto it = res.begin(); it != res.end();) {
+        auto tmpvect = my::split(tmp, "\n");
+        for (auto it = tmpvect.begin(); it != tmpvect.end();) {
             if (it->find("message") == 0) {
                 _setBroadcast(*it);
-                it = res.erase(it);
+                it = tmpvect.erase(it);
                 continue;
             } else if (it->find("Current level") == 0) {
                 _lvl = std::stoi(it->substr(15));
-                it = res.erase(it);
+                it = tmpvect.erase(it);
                 if (incantation)
-                    return res;
+                    return tmpvect;
+                continue;
+            } else if (it->find("eject: ") == 0) {
+                it = tmpvect.erase(it);
                 continue;
             } else if (it->find("dead") == 0)
                 throw Warning("Dead");
             ++it;
         }
+        res.insert(res.end(), tmpvect.begin(), tmpvect.end());
     }
     return res;
 }
