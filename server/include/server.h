@@ -181,9 +181,9 @@ struct zappy_s {
     int fd_sigint;
     client_t client[MAX_CONNECTIONS];
     fd_set readfds;
-    int read_max_fd;
+    int r_max_fd;
     fd_set writefds;
-    int write_max_fd;
+    int w_max_fd;
     int port;
     game_t game;
 };
@@ -239,6 +239,7 @@ char *get_new_uuid(void);
 
 // zappy.c
 void max_fd(int fd, int *max_fd);
+void reset_fd(zappy_t *zappy);
 int zappy(args_t args);
 
 // socket.c
@@ -253,8 +254,6 @@ void read_connections(zappy_t *zappy);
 
 // commands.c
 void switch_commands(zappy_t *zappy, char *command, int ci);
-void cmd_stop(zappy_t *zappy, char *command, int ci);
-void cmd_noop(zappy_t *zappy, char *command, int ci);
 
 void cmd_forward(zappy_t *zappy, char *command, int ci);
 void cmd_right(zappy_t *zappy, char *command, int ci);

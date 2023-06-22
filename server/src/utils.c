@@ -9,9 +9,10 @@
 
 void close_command_socket(zappy_t *zappy, client_t *client)
 {
-    get_socket_infos(&client->command);
     if (client->command.s != 0) {
-        close(client->command.s);
+        get_socket_infos(&client->command);
+        if (close(client->command.s) == -1)
+            perror("close");
         DEBUG_PRINT("Host disconnected, ip %s, port %d\n",
             inet_ntoa(client->command.sa.sin_addr),
             ntohs(client->command.sa.sin_port));
@@ -30,7 +31,7 @@ void close_command_socket(zappy_t *zappy, client_t *client)
 
 void free_word_array(char **arr)
 {
-    for (size_t i = 0; arr[i]; ++i)
+    for (size_t i = 0; arr && arr[i]; ++i)
         free(arr[i]);
     free(arr);
 }
@@ -46,4 +47,15 @@ size_t word_array_len(char **arr)
 int get_remaining_slots(team_t *team)
 {
     return nbr_eggs_in_team(team);
+}
+
+void close_all(zappy_t *zappy)
+{
+    for (size_t j = 0; j < MAX_CONNECTIONS; ++j)
+        close_command_socket(zappy, &zappy->client[j]);
+    if (zappy->main.s != 0) {
+        shutdown(zappy->main.s, SHUT_RDWR);
+        close(zappy->main.s);
+        zappy->main.s = 0;
+    }
 }
