@@ -298,9 +298,10 @@ void Game::drawTeamsData()
         return;
     }
 
-    for (const auto& player : this->_map._players)
+    for (const auto& player : this->_map._players) {
+        this->_link.askPlayerLevel(player->getPlayerLevel());
         _teamPlayers[player->getTeamName()].push_back("Player" + std::to_string(player->getPlayerNumber()) + ", level: " + std::to_string(player->getPlayerLevel()));
-
+    }
     int textPosX = 0;
     for (const auto& entry : _teamPlayers) {
         MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 90, WHITE);
