@@ -68,7 +68,7 @@ std::vector<Tile> ServerLink::look() {
     _socket.write("Look\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw Error("Wrong response");
+        throw Error("Wrong response", "ServerLink::look");
     std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::splitWithEmpty(response, ",");
     std::vector<Tile> res;
@@ -103,11 +103,18 @@ std::vector<Tile> ServerLink::look() {
 std::map<Resource, int> ServerLink::inventory() {
     _socket.write("Inventory\n");
     auto responses = _read();
-    if (responses.size() != 1)
-        throw Error("Wrong response");
+    if (responses.size() != 1) {
+        std::cout << "ERROOOOOOOR: ";
+        for (auto &it : responses)
+            std::cout << it << " | ";
+        std::cout << std::endl;
+        throw Error("Wrong response", "ServerLink::inventory");
+    }
     std::string response = responses[0].substr(1, responses[0].size() - 2);
     auto map = my::split(response, ",");
     std::map<Resource, int> res;
+    for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1))
+        res[i] = 0;
     for (auto &line: map) {
         auto resources = my::split(line, " ");
         if (resources[0] == "player")
@@ -139,7 +146,7 @@ int ServerLink::connectNbr() {
     _socket.write("Connect_nbr\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw Error("Wrong response");
+        throw Error("Wrong response", "ServerLink::connectNbr");
     return std::stoi(responses[0]);
 }
 
@@ -152,7 +159,7 @@ bool ServerLink::eject() {
     _socket.write("Eject\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw Error("Wrong response");
+        throw Error("Wrong response", "ServerLink::eject");
     return responses[0] == "ok";
 }
 
@@ -160,7 +167,7 @@ bool ServerLink::take(Resource type) {
     _socket.write("Take " + typeToString(type) + "\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw Error("Wrong response");
+        throw Error("Wrong response", "ServerLink::take");
     return responses[0] == "ok";
 }
 
@@ -168,7 +175,7 @@ bool ServerLink::set(Resource type) {
     _socket.write("Set " + typeToString(type) + "\n");
     auto responses = _read();
     if (responses.size() != 1)
-        throw Error("Wrong response");
+        throw Error("Wrong response", "ServerLink::set");
     return responses[0] == "ok";
 }
 
