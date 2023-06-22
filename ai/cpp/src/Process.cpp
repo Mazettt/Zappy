@@ -4,9 +4,21 @@ using namespace my;
 
 Process::Process(): _pid(::fork()) {}
 
+Process::Process(Process &&other): _pid(other._pid)
+{
+    other._pid = 0;
+}
+
 Process::~Process()
 {
     ::waitpid(_pid, NULL, 0);
+}
+
+Process &Process::operator=(Process &&other)
+{
+    _pid = other._pid;
+    other._pid = 0;
+    return *this;
 }
 
 void Process::kill()
