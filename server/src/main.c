@@ -25,6 +25,8 @@ static void get_teams(args_t *args, int ac, char **av, int *i)
     for (int count = 0; *i < ac && av[*i][0] != '-'; ++*i) {
         args->teamNames =
             realloc(args->teamNames, sizeof(char *) * (count + 2));
+        if (!args->teamNames)
+            exit(84);
         args->teamNames[count] = av[*i];
         args->teamNames[++count] = NULL;
     }
@@ -71,7 +73,10 @@ int main(int ac, char **av)
     args_t args;
     int ret = 0;
 
-    signal(SIGPIPE, SIG_IGN);
+    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {
+        perror("signal");
+        return 84;
+    }
     srand(time(NULL));
     if (ac == 2 && (!strcmp(av[1], "-help") || !strcmp(av[1], "-h") ||
     !strcmp(av[1], "--help"))) {
