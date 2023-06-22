@@ -31,6 +31,7 @@ void Core::run()
                 std::cout << "Actual food: " << inv.at(Resource::FOOD) << " minimumFood: " << this->_foodHandler.getMinimumFood() << " maximumFood: " << this->_foodHandler.getMaximumFood() << std::endl;
                 _player.broadcast("abort incantation");
                 this->_foodHandler.incantationFail();
+                _fork();
             }
             _state = State::FIND_FOOD;
             // std::cout << "I need more food" << std::endl;
@@ -149,5 +150,8 @@ void Core::_waitBroadcast(const std::string &toFind, std::function<bool (std::pa
 
 void Core::_fork() {
     _player.fork();
-    _childs.push_back(Player(_args));
+    if (::fork() == 0) {
+        tryRun(this->_args);
+        exit(0);
+    }
 }

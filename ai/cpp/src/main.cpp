@@ -48,6 +48,17 @@
 //         std::vector<std::string> tokens;
 // };
 
+int tryRun(const my::Args &args) {
+    try {
+        my::Core core(args);
+        core.run();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << '\n';
+        return 84;
+    }
+    return 0;
+}
+
 int main(int ac, char **av)
 {
     my::Args args(ac, av);
@@ -58,14 +69,5 @@ int main(int ac, char **av)
         std::cout << "\tmachine is the name of the machine; localhost by default" << std::endl;
         return 0;
     }
-
-    try {
-        my::Core core(args);
-        core.run();
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << '\n';
-        return 84;
-    }
-
-    return 0;
+    return tryRun(args);
 }

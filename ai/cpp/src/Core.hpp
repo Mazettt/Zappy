@@ -53,3 +53,5 @@ namespace my {
             int _comingDir;
     };
 }
+
+int tryRun(const my::Args &args);
