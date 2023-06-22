@@ -8,8 +8,6 @@
 #include "../include/server.h"
 
 static const command_t ai_cmds[] = {
-    {"stop", cmd_stop},
-    {"noop", cmd_noop},
     {"Forward", cmd_forward},
     {"Right", cmd_right},
     {"Left", cmd_left},
@@ -26,8 +24,6 @@ static const command_t ai_cmds[] = {
 };
 
 static const command_t gui_cmds[] = {
-    {"stop", cmd_stop},
-    {"noop", cmd_noop},
     {"msz", cmd_msz},
     {"sgt", cmd_sgt},
     {"sst", cmd_sst},

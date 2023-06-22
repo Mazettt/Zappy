@@ -91,43 +91,47 @@ void ZappyGui::ShowPlayerData::ShowDataForEachPlayer(std::vector<std::shared_ptr
         ZappyGui::IResource::resourceType::THYSTAME
     };
 
-    this->_posX = 30.0;
-    this->_posY = 60.0;
-    if (playersList.empty())
-        return;
-    if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_ENTER) || MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_DOWN)) {
-        this->_index = (this->_index >= (playersList.size() - 1)) ? 0 : this->_index + 1;
-    }
-    if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_UP)) {
-        this->_index = (this->_index <= 0) ? playersList.size() - 1 : this->_index - 1;
-    }
-    for (size_t i = 0; i < playersList.size(); ++i) {
-        auto player = playersList[i];
-        auto playerNumber = std::to_string(player->getPlayerNumber()).c_str();
-        const std::unordered_map<ZappyGui::IResource::resourceType, int> &tmpInventory = player->getInventory();
-
-        if (i == this->_index) {
-            float resourceX = 20;
-            float resourceY = 910;
-            MyRayLib::Draw::MyDrawText(playerNumber, this->_posX, this->_posY, 20, ORANGE);
-            MyRayLib::Draw::MyDrawTexture(this->_texture.getTexture(), resourceX, resourceY, WHITE);
-            MyRayLib::Draw::MyDrawText(std::to_string(player->getPlayerLevel()).c_str(), resourceX += 75, resourceY += 20, 35, BLACK);
-            MyRayLib::Draw::MyDrawText((player->getTeamName()).c_str(), resourceX + 115, resourceY, 25, BLACK);
-
-            resourceX -= 10;
-            drawInventory(resourceX, resourceY, tmpInventory, resourceTypes);
-        } else {
-            MyRayLib::Draw::MyDrawText(playerNumber, this->_posX, this->_posY, 20, BLACK);
+    try {
+        this->_posX = 30.0;
+        this->_posY = 60.0;
+        if (playersList.empty())
+            return;
+        if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_ENTER) || MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_DOWN)) {
+            this->_index = (this->_index >= (playersList.size() - 1)) ? 0 : this->_index + 1;
         }
-
-        if (this->_posY >= 750) {
-            this->_posY = 60.0;
-            this->_posX += 60.0;
-        } else {
-            this->_posY += 60.0;
+        if (MyRayLib::MyRayLibWindow::MyIsKeyPressed(KEY_PAGE_UP)) {
+            this->_index = (this->_index <= 0) ? playersList.size() - 1 : this->_index - 1;
         }
+        for (size_t i = 0; i < playersList.size(); ++i) {
+            auto player = playersList[i];
+            auto playerNumber = std::to_string(player->getPlayerNumber()).c_str();
+            const std::unordered_map<ZappyGui::IResource::resourceType, int> &tmpInventory = player->getInventory();
+
+            if (i == this->_index) {
+                float resourceX = 20;
+                float resourceY = 910;
+                MyRayLib::Draw::MyDrawText(playerNumber, this->_posX, this->_posY, 20, ORANGE);
+                MyRayLib::Draw::MyDrawTexture(this->_texture.getTexture(), resourceX, resourceY, WHITE);
+                MyRayLib::Draw::MyDrawText(std::to_string(player->getPlayerLevel()).c_str(), resourceX += 75, resourceY += 20, 35, BLACK);
+                MyRayLib::Draw::MyDrawText((player->getTeamName()).c_str(), resourceX + 115, resourceY, 25, BLACK);
+
+                resourceX -= 10;
+                drawInventory(resourceX, resourceY, tmpInventory, resourceTypes);
+            } else {
+                MyRayLib::Draw::MyDrawText(playerNumber, this->_posX, this->_posY, 20, BLACK);
+            }
+
+            if (this->_posY >= 750) {
+                this->_posY = 60.0;
+                this->_posX += 60.0;
+            } else {
+                this->_posY += 60.0;
+            }
+        }
+        this->_link.askPlayerInventory(playersList.at(this->_index)->getPlayerNumber());
+        this->_link.askPlayerLevel(playersList.at(this->_index)->getPlayerNumber());
+    } catch (const std::exception &e) {
+        this->_index = 0;
     }
-    this->_link.askPlayerInventory(playersList.at(this->_index)->getPlayerNumber());
-    this->_link.askPlayerLevel(playersList.at(this->_index)->getPlayerNumber());
 }
 

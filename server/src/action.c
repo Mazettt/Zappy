@@ -10,7 +10,8 @@
 void add_action(client_t *client, time_t duration, char *command,
 void (*func)(zappy_t *, char *, int))
 {
-    gettimeofday(&client->action.startTime, NULL);
+    if (gettimeofday(&client->action.startTime, NULL) == -1)
+        return;
     client->action.duration = duration;
     client->action.command = strdup(command);
     client->action.func = func;
@@ -26,7 +27,8 @@ void exec_action(zappy_t *zappy, action_t *action, int ci)
 {
     struct timeval now;
 
-    gettimeofday(&now, NULL);
+    if (gettimeofday(&now, NULL) == -1)
+        return;
     if ((now.tv_sec - action->startTime.tv_sec) * 1000000 +
         (now.tv_usec - action->startTime.tv_usec) >= action->duration) {
         action->func(zappy, action->command, ci);
