@@ -25,16 +25,17 @@ Core::~Core() {}
 void Core::run()
 {
     while (true) {
+        this->_foodHandler.calculate(this->_player.getLevel());
         std::map<my::Resource, int> inv = _player.inventory();
         if (inv.at(Resource::FOOD) <= this->_foodHandler.getMinimumFood()) {
             if (_state == State::TRY_INCANT) {
-                std::cout << "Actual food: " << inv.at(Resource::FOOD) << " minimumFood: " << this->_foodHandler.getMinimumFood() << " maximumFood: " << this->_foodHandler.getMaximumFood() << std::endl;
+                std::cout << "Incantation abort" << std::endl;
                 _player.broadcast("abort incantation");
                 this->_foodHandler.incantationFail();
                 _fork();
             }
             _state = State::FIND_FOOD;
-            // std::cout << "I need more food" << std::endl;
+            std::cout << "Need food: " << inv.at(Resource::FOOD) << " minimumFood (" << this->_foodHandler.getMinimumFood() << ") maximumFood (" << this->_foodHandler.getMaximumFood() << ") playerLevel (" << this->_player.getLevel() << ")" << std::endl;
         }
 
         if (_state == State::FIND_FOOD)
@@ -46,8 +47,6 @@ void Core::run()
         else if (_state == State::TRY_INCANT)
             _incant(inv);
         _handleBroadcast();
-        this->_foodHandler.calculate(this->_player.getLevel());
-        // std::cout << "Player food: " << _player.inventory().at(Resource::FOOD) << " | lvl: " << _player.getLevel() << " | coming: " << _comingPlayers << std::endl;
     }
 }
 
@@ -86,7 +85,7 @@ void Core::_incant(unused const std::map<my::Resource, int> &inventory)
     const auto &look = _player.look();
     if (look[0].getNbr(Resource::PLAYER) >= _elevcond.get(_player.getLevel(), Resource::PLAYER)) {
         _player.broadcast("dir0: wait");
-        std::cout << "Incanting..." << std::endl;
+        // std::cout << "Incanting..." << std::endl;
         for (Resource i = Resource::LINEMATE; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1)) {
             for (int it = look[0].getNbr(i); it < _elevcond.get(_player.getLevel(), i); it++)
                 _player.set(i);
@@ -134,7 +133,7 @@ void Core::_handleBroadcast()
 }
 
 void Core::_waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback) {
-    std::cout << "Waiting for broadcast (" << toFind << ")" << std::endl;
+    // std::cout << "Waiting for broadcast (" << toFind << ")" << std::endl;
     while (true) {
         std::map<my::Resource, int> inv = _player.inventory();
         if (inv.at(Resource::FOOD) < this->_foodHandler.getMinimumFood()) {

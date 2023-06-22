@@ -13,10 +13,10 @@ using namespace my;
 
 FoodHandler::FoodHandler(int x, int y):
     _incantationScore(0),
-    _mapSize(x, y),
-    _factorLevel(0.5),
-    _factorMapSize(0.03),
-    _factorIncantationScore(0.64)
+    _mapSize(x * y),
+    _factorLevel(6.4),
+    _factorMapSize(0.7),
+    _factorIncantationScore(7.2)
     {}
 
 FoodHandler::~FoodHandler() {}
@@ -31,37 +31,23 @@ int FoodHandler::getMaximumFood() {
 
 void FoodHandler::calculate(int playerLevel) {
     // MINIMUM PART
-    double levelResult = playerLevel * this->_factorLevel;
-
-    double incantationBase = (this->_incantationScore >= 0) ? this->_incantationScore : -1.0 / this->_incantationScore;
-    double incantationResult = std::pow(incantationBase, -this->_factorIncantationScore);
-
-    double mapResult = std::pow((this->_mapSize.first * this->_mapSize.second), this->_factorMapSize);
-
-    int minimumFood = std::round(levelResult + incantationResult + mapResult);
-    this->_minimumFood = ((minimumFood > 4) ? minimumFood : 4);
-
+    double levelResult = this->_factorLevel * std::log10(1.0 + playerLevel);
+    double mapResult = this->_factorMapSize * std::log10(1.0 + this->_mapSize);
+    double IncantationResult = this->_factorIncantationScore * std::log10(1.0 + (-0));
+    int finalResult = std::round(levelResult + mapResult + IncantationResult);
+    this->_minimumFood = ((finalResult >= 4) ? finalResult : 4);
 
     // MAXIMUM PART
-    double levelResult1 = playerLevel * this->_factorLevel;
-
-    double incantationBase1 = (this->_incantationScore >= 0) ? this->_incantationScore : -1.0 / this->_incantationScore;
-    double incantationResult1 = std::pow(incantationBase1, -this->_factorIncantationScore);
-
-    double mapResult1 = std::pow((this->_mapSize.first * this->_mapSize.second), this->_factorMapSize);
-
-    int maximumFood = std::round((levelResult1 + incantationResult1 + mapResult1) * 4);
-    this->_maximumFood = ((maximumFood > 4 * 4) ? maximumFood : 4 * 4);
-
-    // std::cout << "MINUMUM PART: " << levelResult << " " << incantationResult << " " << mapResult << " " << _minimumFood << " | MAXIMUM PART " << levelResult1 << " " << incantationResult1 << " " << mapResult1 << " " << _maximumFood << std::endl;
+    int maximumFood = this->_minimumFood * (1 + 30 / (levelResult + 8));
+    this->_maximumFood = maximumFood;
 }
 
 void FoodHandler::incantationFail() {
-    this->_incantationScore += 1;
+    this->_incantationScore -= 1;
 }
 
 void FoodHandler::incantationSuccess() {
-    this->_incantationScore -= 1;
+    this->_incantationScore = 0;
 }
 
 int FoodHandler::getIncantationScore() {

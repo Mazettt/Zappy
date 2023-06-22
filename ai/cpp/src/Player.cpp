@@ -30,8 +30,10 @@ bool Player::canElevate()
 {
     auto l = look();
     for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1))
-        if (_elevcond.get(getLevel(), i) > l[0].getNbr(i))
+        if (_elevcond.get(getLevel(), i) > l[0].getNbr(i)) {
+            std::cout << "Incantation failed: need " << (_elevcond.get(getLevel(), i) - l[0].getNbr(i)) << " " << my::typeToString(i) << " more" << std::endl;
             return false;
+        }
     return true;
 }
 
@@ -207,7 +209,7 @@ int Player::incantation()
             return newlvl;
         }
     }
-    std::cout << "Incantation failed" << std::endl;
+    // std::cout << "Incantation failed" << std::endl;
     return -1;
 }
 

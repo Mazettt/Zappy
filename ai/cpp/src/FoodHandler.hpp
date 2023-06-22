@@ -12,7 +12,7 @@ namespace my {
     class FoodHandler {
         private:
             int _incantationScore;
-            std::pair<int, int> _mapSize;
+            double _mapSize;
             double _factorLevel;
             double _factorMapSize;
             double _factorIncantationScore;
