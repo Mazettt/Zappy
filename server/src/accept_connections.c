@@ -27,16 +27,16 @@ static bool add_socket_to_index(zappy_t *zappy, int new_s, int i)
 static void add_socket_to_array(zappy_t *zappy, int new_s)
 {
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
-        if (CLIENT_S(i) == 0) {
-            if (!add_socket_to_index(zappy, new_s, i))
-                return;
-            get_socket_infos(&zappy->client[i].command);
-            DEBUG_PRINT("Host connected, ip %s, port %d\n",
-                inet_ntoa(zappy->client[i].command.sa.sin_addr),
-                ntohs(zappy->client[i].command.sa.sin_port));
-            sdprintf(zappy, new_s, "WELCOME\n");
-            break;
-        }
+        if (CLIENT_S(i) != 0)
+            continue;
+        if (!add_socket_to_index(zappy, new_s, i))
+            return;
+        get_socket_infos(&zappy->client[i].command);
+        DEBUG_PRINT("Host connected, ip %s, port %d\n",
+            inet_ntoa(zappy->client[i].command.sa.sin_addr),
+            ntohs(zappy->client[i].command.sa.sin_port));
+        sdprintf(zappy, new_s, "WELCOME\n");
+        break;
     }
 }
 
