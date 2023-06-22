@@ -26,7 +26,6 @@ namespace ZappyGui {
             enum animationPlayerType {
                 PLAYER_WIN,
                 PLAYER_LVLUP,
-                PLAYER_EXPULSION,
                 PLAYER_DIE,
                 PLAYER_GET,
                 PLAYER_WAIT,
