@@ -8,6 +8,7 @@
 #include "MyError.hpp"
 #include "String.hpp"
 #include "ElevCond.hpp"
+#include "FoodHandler.hpp"
 
 namespace my {
     class Core {
@@ -39,6 +40,8 @@ namespace my {
             void _handleBroadcast();
             void _waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback);
             void _fork();
+
+            FoodHandler _foodHandler;
 
             ElevCond _elevcond;
             const Args &_args;

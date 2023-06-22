@@ -39,6 +39,9 @@ namespace my {
             std::optional<std::pair<std::string, int>> getBroadcast();
             void clearBroadcast();
 
+            int checkMinimumFood();
+            int checkMaximumFood();
+
         protected:
         private:
             ServerLink _s;

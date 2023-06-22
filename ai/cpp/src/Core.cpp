@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2022
+** cpp
+** File description:
+** Core.cpp
+*/
+
 #include "Core.hpp"
 #include <thread>
 
@@ -9,62 +16,24 @@ Core::Core(const Args &args):
     _player(args),
     _state(State::FIND_FOOD),
     _comingPlayers(0),
-    _comingDir(1)
+    _comingDir(1),
+    _foodHandler(42, 42)
 {}
 
 Core::~Core() {}
 
 void Core::run()
 {
-    // bool forked = false;
-
-    // int count = -1;
-    // int dir = -1;
-    // int bestTile = -1;
-
-    // for (int i = 0; i < 4; i++) {
-    //     const auto &look = _player.look();
-    //     for (int j = 0; j < 4; j++) {
-    //         int countBuff = 0;
-    //         for (Resource resource = Resource::PLAYER; resource != Resource::NONE; resource = static_cast<Resource>(static_cast<int>(resource) + 1)) {
-    //             if (resource == Resource::PLAYER)
-    //                 countBuff++;
-    //             else if (look[j].getNbr(resource) >= _elevcond.get(_player.getLevel(), resource))
-    //                 countBuff++;
-    //         }
-    //         if (countBuff > count || count == -1) {
-    //             count = countBuff;
-    //             dir = i;
-    //             bestTile = j;
-    //         }
-    //     }
-    //     _player.right();
-    // }
-
-    // for (int i = 0; i < dir; i++)
-    //     _player.right();
-    // if (bestTile == 1) {
-    //     _player.forward();
-    //     _player.left();
-    //     _player.forward();
-    // } else if (bestTile == 2) {
-    //     _player.forward();
-    // } else if (bestTile == 3) {
-    //     _player.forward();
-    //     _player.right();
-    //     _player.forward();
-    // }
-    // if (_player.incantation() != -1)
-    //     std::cout << "Incantation ok" << std::endl;
-    // else
-    //     std::cout << "Incantation failed" << std::endl;
-
     while (true) {
         std::map<my::Resource, int> inv = _player.inventory();
-        if (inv.at(Resource::FOOD) < 5) {
-            if (_state == State::TRY_INCANT)
+        if (inv.at(Resource::FOOD) <= this->_foodHandler.getMinimumFood(_player.getLevel())) {
+            if (_state == State::TRY_INCANT) {
+                std::cout << "Actual food: " << inv.at(Resource::FOOD) << " minimumFood: " << this->_foodHandler.getMinimumFood(this->_player.getLevel()) << " maximumFood: " << this->_foodHandler.getMaximumFood(this->_player.getLevel()) << std::endl;
                 _player.broadcast("abort incantation");
+                this->_foodHandler.incantationFail();
+            }
             _state = State::FIND_FOOD;
+            // std::cout << "I need more food" << std::endl;
         }
 
         if (_state == State::FIND_FOOD)
@@ -76,13 +45,14 @@ void Core::run()
         else if (_state == State::TRY_INCANT)
             _incant(inv);
         _handleBroadcast();
+        this->_foodHandler.calculate(this->_player.getLevel());
         // std::cout << "Player food: " << _player.inventory().at(Resource::FOOD) << " | lvl: " << _player.getLevel() << " | coming: " << _comingPlayers << std::endl;
     }
 }
 
 void Core::_findFood(const std::map<my::Resource, int> &inventory)
 {
-    if (inventory.at(Resource::FOOD) >= 20) {
+    if (inventory.at(Resource::FOOD) >= this->_foodHandler.getMaximumFood(_player.getLevel())) {
         _state = State::FIND_RESOURCES;
         return;
     }
@@ -120,7 +90,11 @@ void Core::_incant(unused const std::map<my::Resource, int> &inventory)
             for (int it = look[0].getNbr(i); it < _elevcond.get(_player.getLevel(), i); it++)
                 _player.set(i);
         }
-        _player.incantation();
+        if (_player.incantation() == -1) {
+            this->_foodHandler.incantationFail();
+        } else {
+            this->_foodHandler.incantationSuccess();
+        }
         std::cout << "Current lvl: " << _player.getLevel() << std::endl;
         _player.broadcast("dir0: incantation done");
         _state = State::FIND_RESOURCES;
@@ -136,7 +110,7 @@ void Core::_handleBroadcast()
         // std::cout << "Recieved broadcast1: " << msg->first << " | dir: " << msg->second << std::endl;
         if (msg->first == "abort incantation")
             _state = State::FIND_RESOURCES;
-        else if (msg->first.find("can incant: lvl ") == 0 && std::stoi(msg->first.substr(16)) == _player.getLevel()) {
+        else if (_state != FIND_FOOD && msg->first.find("can incant: lvl ") == 0 && std::stoi(msg->first.substr(16)) == _player.getLevel()) {
             if (_state != State::COME_TO_INCANTATION)
                 _player.broadcast("coming");
             _comingDir = msg->second;
@@ -147,7 +121,7 @@ void Core::_handleBroadcast()
             _waitBroadcast("dir0: incantation done", [this](std::pair<std::string, int> msg){
                 if (msg.second == 0) {
                     _state = State::FIND_RESOURCES;
-                    std::cout << "Current lvl: " << _player.getLevel() << std::endl;
+                    // std::cout << "Current lvl: " << _player.getLevel() << std::endl;
                     return true;
                 }
                 return false;
@@ -162,7 +136,7 @@ void Core::_waitBroadcast(const std::string &toFind, std::function<bool (std::pa
     std::cout << "Waiting for broadcast (" << toFind << ")" << std::endl;
     while (true) {
         std::map<my::Resource, int> inv = _player.inventory();
-        if (inv.at(Resource::FOOD) < 5) {
+        if (inv.at(Resource::FOOD) < this->_foodHandler.getMinimumFood(_player.getLevel())) {
             _state = State::FIND_RESOURCES;
             break;
         }
