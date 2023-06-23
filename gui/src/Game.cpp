@@ -56,7 +56,7 @@ void Game::switchToGame()
         this->_link.connect(_ip, _port);
         this->_stateWindow = stateWindow::GAME;
     } catch (const ZappyGui::Socket::Error &e) {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
         this->_popup.setTitle("ERROR");
         this->_popup.setDescription(e.what());
         this->_popup.setStatus(true);
@@ -157,7 +157,13 @@ void Game::run() {
         } else {
             try {
                 this->_link.update();
-            } catch(const ZappyGui::Socket::Info &e) {
+            } catch (const ZappyGui::Socket::Info &e) { // voir ici pour Socket::read: Socket closed. Socket: Socket connection failed: Connection refused qui close le gui au lieu de revenir au menu
+                std::cerr << e.what() << std::endl;
+                this->_map.resetGame();
+                this->_camera.reset();
+                this->_stateWindow = stateWindow::MENU;
+                this->_playerTmp->noAnimation();
+            } catch (const ZappyGui::Socket::Error &e) {
                 std::cerr << e.what() << std::endl;
                 this->_map.resetGame();
                 this->_camera.reset();
@@ -346,15 +352,19 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_map.update(deltaTime);
     this->_map.draw();
-    if (this->_map._players.size() != 0) {
-        selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
+    if (this->_map._players.size() > 0) {
+        if (this->_showPlayerData.getPlayerIndexSelected() < this->_map._players.size())
+            selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
+        else
+            selectorPlayer.setPosition(this->_map._players.at(0)->getPosition());
         selectorPlayer.update();
         selectorPlayer.draw();
     }
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
     this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.getTimeUnit())).c_str(), 105, 10, 20, WHITE);
-    this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
+    if (!this->showTeams)
+        this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();
     if (this->showTeams)
         this->drawTeamsData();

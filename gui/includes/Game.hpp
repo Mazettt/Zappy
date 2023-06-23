@@ -43,7 +43,6 @@ namespace ZappyGui {
             bool _BoolCloseWin;
             std::string _ip;
             int _port;
-            Popup _popup;
             std::shared_ptr<Player> _playerTmp;
             ServerLink _link;
             ShowPlayerData _showPlayerData;
@@ -52,6 +51,7 @@ namespace ZappyGui {
             bool showTeams;
 
         public:
+            Popup _popup;
             Map _map;
             Game(const std::string &ip, int port);
             ~Game();

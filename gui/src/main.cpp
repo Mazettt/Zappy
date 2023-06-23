@@ -5,18 +5,20 @@
 ** main.c
 */
 
+#include <signal.h>
 #include "../includes/Core.hpp"
 #include "../includes/Game.hpp"
 using namespace ZappyGui;
 
 int main(int ac, char **av) {
+    signal(SIGPIPE, SIG_IGN);
     Core core;
     MyRayLib::MyRayLibWindow::MySetTraceLogLevel(LOG_NONE);
     try {
         core.checkArgs(ac, av);
         core.run();
     } catch (const std::exception &e) {
-        std::cerr << e.what() << '\n';
+        std::cerr << "aaa " << e.what() << '\n';
         return 84;
     }
     return 0;

@@ -26,8 +26,10 @@ class Player {
         std::vector<std::string> View;
         std::map<std::string, int> Inventory;
         std::queue<std::string> broadcasts;
+        std::vector<std::string> split(const std::string &str, const std::string &delimiter);
         void vacuum();
         void harvest_interesting_stuff();
+        bool do_broadcast_has(std::string message);
         void play();
         Socket socket;
         bool check_lvl_up();
@@ -46,6 +48,7 @@ class Player {
         // faire une fct read qui doit read le socket
         // si le message commence par "message", je continue de read
         std::string read();
+        std::string read_try();
         void try_level_up();
         void display_inventory();
         ~Player() {};

@@ -20,6 +20,7 @@ namespace ZappyGui {
             ServerLink &operator=(ServerLink &&other);
 
             void connect(const std::string &ip, uint16_t port);
+            void disconnect();
 
             void askMapSize();
             void askTileContent(int x, int y);

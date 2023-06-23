@@ -21,7 +21,9 @@ class Socket {
         ~Socket();
         void connectSocket(std::string ip, int port);
         void sendSocket(std::string message);
+        void sendSocket_try(std::string message);
         std::string receiveSocket();
+        std::string receiveSocket_try();
         void closeSocket();
     private:
         int _socket;

@@ -28,6 +28,10 @@ void ServerLink::connect(const std::string &ip, uint16_t port)
     _socket << "GRAPHIC\n";
 }
 
+void ServerLink::disconnect() {
+    _socket.close();
+}
+
 void ServerLink::askMapSize()
 {
     _socket << "msz\n";
@@ -89,7 +93,6 @@ void ServerLink::update()
     }
     std::vector<std::string> commands = split(buff, '\n');
     for (const auto &command : commands) {
-        // std::cerr << "command: " << command << std::endl;
         if (_responseFunctions.find(command.substr(0, 3)) != _responseFunctions.end())
             (this->*_responseFunctions[command.substr(0, 3)])(command);
     }
@@ -413,6 +416,9 @@ void ServerLink::_smg(const std::string &str) // TO DO
 
     iss >> tmp >> message;
     std::cout << "Server message: " << message << std::endl;
+    this->_game._popup.setTitle("Info");
+    this->_game._popup.setDescription(message);
+    this->_game._popup.setStatus(true);
 }
 
 void ServerLink::_suc(const std::string &str) // TO DO
@@ -422,6 +428,10 @@ void ServerLink::_suc(const std::string &str) // TO DO
 
     iss >> tmp;
     std::cout << "Unknown command" << std::endl;
+    this->_game._popup.setTitle("Error");
+    this->_game._popup.setDescription("Unknown command");
+    this->_game._popup.setStatus(true);
+    this->disconnect();
 }
 
 void ServerLink::_sbp(const std::string &str) // TO DO
@@ -431,4 +441,8 @@ void ServerLink::_sbp(const std::string &str) // TO DO
 
     iss >> tmp;
     std::cout << "Bad parameter" << std::endl;
+    this->_game._popup.setTitle("Error");
+    this->_game._popup.setDescription("Command with bad parameter");
+    this->_game._popup.setStatus(true);
+    this->disconnect();
 }

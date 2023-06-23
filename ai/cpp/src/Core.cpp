@@ -14,10 +14,10 @@ using namespace my;
 Core::Core(const Args &args):
     _args(args),
     _player(args),
+    _foodHandler(_player.getMapSize().first, _player.getMapSize().second),
     _state(State::FIND_FOOD),
     _comingPlayers(0),
     _comingDir(1),
-    _foodHandler(42, 42),
     _forkHandler()
 {}
 
