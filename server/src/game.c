@@ -12,21 +12,21 @@ static char *fill_tile_content(zappy_t *zappy, int x, int y, char *res)
     int len = 0;
 
     for (int i = 0; i < nbr_players(zappy, x, y); ++i)
-        len += sprintf(res + len, " player");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "player");
     for (int i = 0; i < zappy->game.map[x][y][FOOD]; ++i)
-        len += sprintf(res + len, " food");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "food");
     for (int i = 0; i < zappy->game.map[x][y][LINEMATE]; ++i)
-        len += sprintf(res + len, " linemate");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "linemate");
     for (int i = 0; i < zappy->game.map[x][y][DERAUMERE]; ++i)
-        len += sprintf(res + len, " deraumere");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "deraumere");
     for (int i = 0; i < zappy->game.map[x][y][SIBUR]; ++i)
-        len += sprintf(res + len, " sibur");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "sibur");
     for (int i = 0; i < zappy->game.map[x][y][MENDIANE]; ++i)
-        len += sprintf(res + len, " mendiane");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "mendiane");
     for (int i = 0; i < zappy->game.map[x][y][PHIRAS]; ++i)
-        len += sprintf(res + len, " phiras");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "phiras");
     for (int i = 0; i < zappy->game.map[x][y][THYSTAME]; ++i)
-        len += sprintf(res + len, " thystame");
+        len += sprintf(res + len, "%s%s", (len == 0 ? "" : " "), "thystame");
     res[len] = '\0';
     return res;
 }
