@@ -135,66 +135,59 @@ void Game::run() {
 
     this->_raylibwindow.MyToggleFullscreen();
     while (!this->_raylibwindow.MyWindowShouldClose() && this->_BoolCloseWin == false) {
-        if (this->_stateWindow == stateWindow::PRELOADING) {
-            if (this->_manager.getIsLoaded() == false) {
-                drawLoading();
-                this->_raylibwindow.MyEndDrawing();
-                continue;
+        try {
+            if (this->_stateWindow == stateWindow::PRELOADING) {
+                if (this->_manager.getIsLoaded() == false) {
+                    drawLoading();
+                    this->_raylibwindow.MyEndDrawing();
+                    continue;
+                } else {
+                    this->initializeButton();
+                    auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
+                    auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
+                    auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
+                    PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WAIT);
+
+                    this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
+                    this->_stateWindow = stateWindow::MENU;
+                }
+            } else if (this->_stateWindow == stateWindow::MENU) {
+                musicMenu.MySetMusicVolume(volumeMusic);
+                musicMenu.MyUpdateMusic();
+                drawMenu();
             } else {
-                this->initializeButton();
-                auto &modelPlayer = this->_manager.getNoneConstModel(IResource::resourceType::PLAYER);
-                auto &texture = this->_manager.getTexture(IResource::resourceType::PLAYER);
-                auto &animation = this->_manager.getAnimation(IResource::resourceType::PLAYER);
-                PlayerArguments playerArgs = PlayerArguments(0, "", { 0, 0.0, 0 }, {0.0f, 1.0f, 0.0f}, 0.0, {2.6f, 2.6f, 2.6f}, 0, Player::animationPlayerType::PLAYER_WAIT);
-
-                this->_playerTmp = std::make_shared<Player>(playerArgs, modelPlayer, texture, animation);
-                this->_stateWindow = stateWindow::MENU;
-            }
-        } else if (this->_stateWindow == stateWindow::MENU) {
-            musicMenu.MySetMusicVolume(volumeMusic);
-            musicMenu.MyUpdateMusic();
-            drawMenu();
-        } else {
-            try {
                 this->_link.update();
-            } catch (const ZappyGui::Socket::Info &e) { // voir ici pour Socket::read: Socket closed. Socket: Socket connection failed: Connection refused qui close le gui au lieu de revenir au menu
-                std::cerr << e.what() << std::endl;
-                this->_map.resetGame();
-                this->_camera.reset();
-                this->_stateWindow = stateWindow::MENU;
-                this->_playerTmp->noAnimation();
-            } catch (const ZappyGui::Socket::Error &e) {
-                std::cerr << e.what() << std::endl;
-                this->_map.resetGame();
-                this->_camera.reset();
-                this->_stateWindow = stateWindow::MENU;
-                this->_playerTmp->noAnimation();
+                if (cameraSet == false && this->_map.getSize().getX() > 0.0f && this->_map.getSize().getY() > 0.0f) {
+                    this->_camera.setPosition({ 0.0f, (_map.getSize().getX() + _map.getSize().getY()) / 2.0f, _map.getSize().getY() - 1 });
+                    this->_camera.setTarget({ this->_map.getSize().getX() / 2.0f, 0.0f, this->_map.getSize().getY() / 2.0f });
+                    cameraSet = true;
+                }
+                if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {
+                    musicGame.MyPlayMusic();
+                }
+                auto &joinEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_JOIN);
+                joinEffect.setVolume(volumeMusic);
+                auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_LEAVE);
+                leaveEffect.setVolume(volumeMusic);
+                musicGame.MySetMusicVolume(volumeMusic);
+                musicGame.MyUpdateMusic();
+                this->checkKonamiCode(musicGame);
+                if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == false)
+                    this->showTeams = true;
+                else if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == true)
+                    this->showTeams = false;
+                drawGame(selectorPlayer);
             }
-
-            if (cameraSet == false && this->_map.getSize().getX() > 0.0f && this->_map.getSize().getY() > 0.0f) {
-                this->_camera.setPosition({ 0.0f, (_map.getSize().getX() + _map.getSize().getY()) / 2.0f, _map.getSize().getY() - 1 });
-                this->_camera.setTarget({ this->_map.getSize().getX() / 2.0f, 0.0f, this->_map.getSize().getY() / 2.0f });
-                cameraSet = true;
-            }
-            if (!musicGame.MyIsMusicPlaying() && musicGame.MyIsMusicReady()) {
-                musicGame.MyPlayMusic();
-            }
-            auto &joinEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_JOIN);
-            joinEffect.setVolume(volumeMusic);
-            auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_LEAVE);
-            leaveEffect.setVolume(volumeMusic);
-            musicGame.MySetMusicVolume(volumeMusic);
-            musicGame.MyUpdateMusic();
-            this->checkKonamiCode(musicGame);
-            if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == false)
-                this->showTeams = true;
-            else if (this->_raylibwindow.MyIsKeyPressed(KEY_T) && this->showTeams == true)
-                this->showTeams = false;
-            drawGame(selectorPlayer);
+            keyEvent(volumeMusic);
+            this->_popup.show();
+            this->_raylibwindow.MyEndDrawing();
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
+            this->_map.resetGame();
+            this->_camera.reset();
+            this->_stateWindow = stateWindow::MENU;
+            this->_playerTmp->noAnimation();
         }
-        keyEvent(volumeMusic);
-        this->_popup.show();
-        this->_raylibwindow.MyEndDrawing();
     }
     this->_raylibwindow.MyCloseAudioDevice();
     // on descructor ?
