@@ -56,7 +56,7 @@ void Game::switchToGame()
         this->_link.connect(_ip, _port);
         this->_stateWindow = stateWindow::GAME;
     } catch (const ZappyGui::Socket::Error &e) {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
         this->_popup.setTitle("ERROR");
         this->_popup.setDescription(e.what());
         this->_popup.setStatus(true);
