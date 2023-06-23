@@ -9,6 +9,7 @@
 #include "String.hpp"
 #include "ElevCond.hpp"
 #include "FoodHandler.hpp"
+#include "ForkHandler.hpp"
 
 namespace my {
     class Core {
@@ -42,6 +43,7 @@ namespace my {
             void _fork();
 
             FoodHandler _foodHandler;
+            ForkHandler _forkHandler;
 
             ElevCond _elevcond;
             const Args &_args;

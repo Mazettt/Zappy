@@ -17,7 +17,8 @@ Core::Core(const Args &args):
     _state(State::FIND_FOOD),
     _comingPlayers(0),
     _comingDir(1),
-    _foodHandler(42, 42)
+    _foodHandler(42, 42),
+    _forkHandler()
 {}
 
 Core::~Core() {}
@@ -91,8 +92,9 @@ void Core::_incant(unused const std::map<my::Resource, int> &inventory)
                 _player.set(i);
         }
         if (_player.incantation() == -1) {
-            this->_foodHandler.incantationFail();
+            this->_forkHandler.incantationFailed();
         } else {
+            this->_forkHandler.incantationSuccess();
             this->_foodHandler.incantationSuccess();
         }
         std::cout << "Current lvl: " << _player.getLevel() << std::endl;

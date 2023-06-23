@@ -9,20 +9,19 @@ namespace my {
     class ForkHandler {
         private:
             int _failIncantationCounter;
-            int _teamMaximumSize;
-            int _teamFreeSlots;
 
             double _thresholdDecision;
             double _weightLevel;
             double _weightFails;
-            double _weightSlots;
 
             bool _decision;
 
         public:
             ForkHandler();
             ~ForkHandler();
-            void calculate(int playerLevel, int teamMaximumSize, int teamFreeSlots);
+            void calculate(int playerLevel);
             bool getForkDecision();
+            void incantationFailed();
+            void incantationSuccess();
     };
 }

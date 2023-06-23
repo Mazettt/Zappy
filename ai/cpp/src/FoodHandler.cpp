@@ -38,7 +38,7 @@ void FoodHandler::calculate(int playerLevel) {
     this->_minimumFood = ((finalResult >= 4) ? finalResult : 4);
 
     // MAXIMUM PART
-    int maximumFood = this->_minimumFood * (1 + 30 / (levelResult + 8));
+    int maximumFood = std::round(this->_minimumFood * (1 + 30 / (levelResult + 8)));
     this->_maximumFood = maximumFood;
 }
 
