@@ -33,12 +33,13 @@ static void parse_command(zappy_t *zappy, int ci, char *input)
 
 static void read_connection(zappy_t *zappy, int ci)
 {
+    bool win = check_win(zappy) && zappy->client[ci].type == AI;
     char buff[1024 * 4] = {0};
     ssize_t r = 0;
 
-    if (zappy->client[ci].action.func)
+    if (!win && zappy->client[ci].action.func)
         exec_action(zappy, &zappy->client[ci].action, ci);
-    else if (zappy->client[ci].cmdBuff) {
+    else if (!win && zappy->client[ci].cmdBuff) {
         switch_commands(zappy, zappy->client[ci].cmdBuff->c, ci);
         remove_first_cmd_buff(&zappy->client[ci]);
     }
@@ -48,7 +49,7 @@ static void read_connection(zappy_t *zappy, int ci)
     buff[r] = 0;
     if (r == 0)
         close_command_socket(zappy, &zappy->client[ci]);
-    else
+    else if (!win)
         parse_command(zappy, ci, buff);
 }
 
@@ -57,9 +58,7 @@ void read_connections(zappy_t *zappy)
     for (size_t i = 0; i < MAX_CONNECTIONS; ++i) {
         if (!CLIENT_S(i))
             continue;
-        if (check_win(zappy) && zappy->client[i].type == AI)
-            continue; // TODO regler le CPU à 100% à cause du select non bloquant
-        if (zappy->client[i].type == AI &&
+        if (zappy->client[i].type == AI && !check_win(zappy) &&
         !check_food(zappy, zappy->client[i].player)) {
             sdprintf(zappy, CLIENT_S(i), "dead\n");
             close_command_socket(zappy, &zappy->client[i]);
