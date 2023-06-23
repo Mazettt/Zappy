@@ -56,7 +56,7 @@ void Game::switchToGame()
         this->_link.connect(_ip, _port);
         this->_stateWindow = stateWindow::GAME;
     } catch (const ZappyGui::Socket::Error &e) {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
         this->_popup.setTitle("ERROR");
         this->_popup.setDescription(e.what());
         this->_popup.setStatus(true);
@@ -371,7 +371,8 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
     this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.getTimeUnit())).c_str(), 105, 10, 20, WHITE);
-    this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
+    if (!this->showTeams)
+        this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();
     if (this->showTeams)
         this->drawTeamsData();
