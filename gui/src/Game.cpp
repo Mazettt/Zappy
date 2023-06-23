@@ -316,23 +316,31 @@ void Game::drawTeamsData()
     }
 
     for (const auto& player : this->_map._players) {
-        this->_link.askPlayerLevel(player->getPlayerLevel());
-        _teamPlayers[player->getTeamName()].push_back("Player" + std::to_string(player->getPlayerNumber()) + ", level: " + std::to_string(player->getPlayerLevel()));
+        this->_link.askPlayerLevel(player->getPlayerNumber());
+        _teamPlayers[player->getTeamName()].push_back("level: " + std::to_string(player->getPlayerLevel()));
     }
     int textPosX = 0;
     for (const auto& entry : _teamPlayers) {
         MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TEAMSDATA).getTexture(), (textPosX += 50), 90, WHITE);
         MyRayLib::Draw::MyDrawText(entry.first.c_str(), textPosX + 70, 105, 30, BLACK);
         int textHeight = 120;
-        int nb = 0;
+        std::vector<int> nb;
+        for (int a = 0; a < 8; ++a)
+            nb.push_back(0);
+        std::string res;
         for (const auto& player : entry.second) {
-            if (nb < 20)
-                MyRayLib::Draw::MyDrawText(player.c_str(), textPosX + 30, (textHeight += 35), 20, BLACK);
-            else {
-                MyRayLib::Draw::MyDrawText("...", textPosX + 30, (textHeight += 35), 20, BLACK);
-                break;
-            }
-            ++nb;
+            (player == "level: 1") ? nb[0]++ : 0;
+            (player == "level: 2") ? nb[1]++ : 0;
+            (player == "level: 3") ? nb[2]++ : 0;
+            (player == "level: 4") ? nb[3]++ : 0;
+            (player == "level: 5") ? nb[4]++ : 0;
+            (player == "level: 6") ? nb[5]++ : 0;
+            (player == "level: 7") ? nb[6]++ : 0;
+            (player == "level: 8") ? nb[7]++ : 0;
+        }
+        for (int a = 0; a < 8; ++a) {
+            res = "Level " + std::to_string(a + 1) + ": x" + std::to_string(nb[a]);
+            MyRayLib::Draw::MyDrawText(res.c_str(), textPosX + 30, (textHeight += 35), 20, BLACK);
         }
         textPosX += 200;
     }
