@@ -5,28 +5,32 @@
 ## Makefile
 ##
 
+GUI_PATH	=	gui/
+SERVER_PATH	=	server/
+AI_PATH		=	ai/ai_martin_thomas/
+
 all:
-	make -C gui
-	make -C server
-	make -C ai
+	make -C $(GUI_PATH)
+	make -C $(SERVER_PATH)
+	make -C $(AI_PATH)
 
 gui:
-	make -C gui
+	make -C $(GUI_PATH)
 
 server:
-	make -C server
+	make -C $(SERVER_PATH)
 
 ai:
-	make -C ai
+	make -C $(AI_PATH)
 
 clean:
-	make clean -C gui
-	make clean -C server
-	make clean -C ai
+	make clean -C $(GUI_PATH)
+	make clean -C $(SERVER_PATH)
+	make clean -C $(AI_PATH)
 
 fclean:
-	make fclean -C gui
-	make fclean -C server
-	make fclean -C ai
+	make fclean -C $(GUI_PATH)
+	make fclean -C $(SERVER_PATH)
+	make fclean -C $(AI_PATH)
 
 re:	fclean all

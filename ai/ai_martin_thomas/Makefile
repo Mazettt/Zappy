@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME	=	../../test_zappy_ai
+NAME	=	../../zappy_ai
 NAME_TESTS	=	unit_tests
 
 # src
