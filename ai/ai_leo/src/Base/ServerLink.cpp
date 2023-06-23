@@ -255,13 +255,8 @@ std::optional<std::pair<std::string, int>> ServerLink::getBroadcast() {
 }
 
 void ServerLink::clearBroadcast() {
-    auto tmp = _broadcast;
-    _broadcast = std::queue<std::pair<std::string, int>>();
-    while (!tmp.empty()) {
-        auto backup = tmp.front();
-        tmp.pop();
-        if (backup.first.find("can incant: lvl ") != 0)
-            _broadcast.push(backup);
+    while (_broadcast.size() > 0) {
+        _broadcast.pop();
     }
 }
 

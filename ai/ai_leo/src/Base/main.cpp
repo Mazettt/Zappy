@@ -17,6 +17,48 @@
 #include <string>
 #include <vector>
 
+void vacuum(my::ServerLink &s_l)
+{
+    std::vector<my::Tile> tiles = s_l.look();
+    my::Tile first_tile = tiles[0];
+
+    if (first_tile.getNbr(my::Resource::LINEMATE) > 0) {
+        for (int i = 0; i < first_tile.getNbr(my::Resource::LINEMATE); i++) {
+            s_l.take(my::Resource::LINEMATE);
+        }
+    }
+    if (first_tile.getNbr(my::Resource::DERAUMERE) > 0) {
+        for (int i = 0; i < first_tile.getNbr(my::Resource::DERAUMERE); i++) {
+            s_l.take(my::Resource::DERAUMERE);
+        }
+    }
+    if (first_tile.getNbr(my::Resource::SIBUR) > 0) {
+        for (int i = 0; i < first_tile.getNbr(my::Resource::SIBUR); i++) {
+            s_l.take(my::Resource::SIBUR);
+        }
+    }
+    if (first_tile.getNbr(my::Resource::MENDIANE) > 0) {
+        for (int i = 0; i < first_tile.getNbr(my::Resource::MENDIANE); i++) {
+            s_l.take(my::Resource::MENDIANE);
+        }
+    }
+    if (first_tile.getNbr(my::Resource::PHIRAS) > 0) {
+        for (int i = 0; i < first_tile.getNbr(my::Resource::PHIRAS); i++) {
+            s_l.take(my::Resource::PHIRAS);
+        }
+    }
+    if (first_tile.getNbr(my::Resource::THYSTAME) > 0) {
+        for (int i = 0; i < first_tile.getNbr(my::Resource::THYSTAME); i++) {
+            s_l.take(my::Resource::THYSTAME);
+        }
+    }
+    if (first_tile.getNbr(my::Resource::FOOD) > 0) {
+        for (int i = 0; i < first_tile.getNbr(my::Resource::FOOD); i++) {
+            s_l.take(my::Resource::FOOD);
+        }
+    }
+}
+
 void disp_inventory(std::map<my::Resource, int> inventory)
 {
     std::cout << "Inventory:" << std::endl;
@@ -113,54 +155,14 @@ void go_to(my::ServerLink &s_l, int destination)
     if (y > 0) {
         s_l.right();
         for (int i = 0; i < y; i++) {
+            vacuum(s_l);
             s_l.forward();
         }
     } else if (y < 0) {
         s_l.left();
         for (int i = 0; i < y; i++) {
+            vacuum(s_l);
             s_l.forward();
-        }
-    }
-}
-
-void vacuum(my::ServerLink &s_l)
-{
-    std::vector<my::Tile> tiles = s_l.look();
-    my::Tile first_tile = tiles[0];
-
-    if (first_tile.getNbr(my::Resource::LINEMATE) > 0) {
-        for (int i = 0; i < first_tile.getNbr(my::Resource::LINEMATE); i++) {
-            s_l.take(my::Resource::LINEMATE);
-        }
-    }
-    if (first_tile.getNbr(my::Resource::DERAUMERE) > 0) {
-        for (int i = 0; i < first_tile.getNbr(my::Resource::DERAUMERE); i++) {
-            s_l.take(my::Resource::DERAUMERE);
-        }
-    }
-    if (first_tile.getNbr(my::Resource::SIBUR) > 0) {
-        for (int i = 0; i < first_tile.getNbr(my::Resource::SIBUR); i++) {
-            s_l.take(my::Resource::SIBUR);
-        }
-    }
-    if (first_tile.getNbr(my::Resource::MENDIANE) > 0) {
-        for (int i = 0; i < first_tile.getNbr(my::Resource::MENDIANE); i++) {
-            s_l.take(my::Resource::MENDIANE);
-        }
-    }
-    if (first_tile.getNbr(my::Resource::PHIRAS) > 0) {
-        for (int i = 0; i < first_tile.getNbr(my::Resource::PHIRAS); i++) {
-            s_l.take(my::Resource::PHIRAS);
-        }
-    }
-    if (first_tile.getNbr(my::Resource::THYSTAME) > 0) {
-        for (int i = 0; i < first_tile.getNbr(my::Resource::THYSTAME); i++) {
-            s_l.take(my::Resource::THYSTAME);
-        }
-    }
-    if (first_tile.getNbr(my::Resource::FOOD) > 0) {
-        for (int i = 0; i < first_tile.getNbr(my::Resource::FOOD); i++) {
-            s_l.take(my::Resource::FOOD);
         }
     }
 }
@@ -172,7 +174,7 @@ void crave_food(my::ServerLink &s_l)
     std::map<my::Resource, int> inventory = s_l.inventory();
     bool found_food = false;
 
-    while (inventory[my::Resource::FOOD] < 7) {
+    while (inventory[my::Resource::FOOD] < 20) {
         for (auto it = tiles.begin(); it != tiles.end(); it++) {
             if (it->getNbr(my::Resource::FOOD) > 0) {
                 found_food = true;
@@ -182,17 +184,11 @@ void crave_food(my::ServerLink &s_l)
         }
         if (found_food == false) {
             s_l.forward();
-            int random = rand() % 4;
+            int random = rand() % 2;
             if (random == 0) {
                 s_l.left();
             } else if (random == 1) {
                 s_l.right();
-            } else if (random == 2) {
-                s_l.right();
-                s_l.right();
-            } else if (random == 3) {
-                s_l.left();
-                s_l.left();
             }
         }
         std::cout << "Found food: " << found_food << std::endl;
@@ -203,12 +199,236 @@ void crave_food(my::ServerLink &s_l)
 
 }
 
+bool check_requirements(std::map<my::Resource, int> inventory, int level)
+{
+    int checks = 0;
+
+    if (level == 1) {
+        if (inventory[my::Resource::FOOD] >= 10) {
+            checks++;
+        }
+        if (inventory[my::Resource::LINEMATE] >= 1) {
+            checks++;
+        }
+        if (checks == 2) {
+            return true;
+        }
+    }
+    if (level == 2) {
+        if (inventory[my::Resource::FOOD] >= 10) {
+            checks++;
+        }
+        if (inventory[my::Resource::LINEMATE] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::DERAUMERE] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::SIBUR] >= 1) {
+            checks++;
+        }
+        if (checks == 4) {
+            return true;
+        }
+    }
+    if (level == 3) {
+        if (inventory[my::Resource::FOOD] >= 10) {
+            checks++;
+        }
+        if (inventory[my::Resource::LINEMATE] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::SIBUR] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::PHIRAS] >= 2) {
+            checks++;
+        }
+        if (checks == 4) {
+            return true;
+        }
+    }
+    if (level == 4) {
+        if (inventory[my::Resource::FOOD] >= 10) {
+            checks++;
+        }
+        if (inventory[my::Resource::LINEMATE] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::DERAUMERE] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::SIBUR] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::PHIRAS] >= 1) {
+            checks++;
+        }
+        if (checks == 5) {
+            return true;
+        }
+    }
+    if (level == 5) {
+        if (inventory[my::Resource::FOOD] >= 10) {
+            checks++;
+        }
+        if (inventory[my::Resource::LINEMATE] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::DERAUMERE] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::SIBUR] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::MENDIANE] >= 3) {
+            checks++;
+        }
+        if (checks == 5) {
+            return true;
+        }
+    }
+    if (level == 6) {
+        if (inventory[my::Resource::FOOD] >= 10) {
+            checks++;
+        }
+        if (inventory[my::Resource::LINEMATE] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::DERAUMERE] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::SIBUR] >= 3) {
+            checks++;
+        }
+        if (inventory[my::Resource::PHIRAS] >= 1) {
+            checks++;
+        }
+        if (inventory[my::Resource::THYSTAME] >= 1) {
+            checks++;
+        }
+        if (checks == 6) {
+            return true;
+        }
+    }
+    if (level == 7) {
+        if (inventory[my::Resource::FOOD] >= 10) {
+            checks++;
+        }
+        if (inventory[my::Resource::LINEMATE] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::DERAUMERE] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::SIBUR] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::MENDIANE] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::PHIRAS] >= 2) {
+            checks++;
+        }
+        if (inventory[my::Resource::THYSTAME] >= 1) {
+            checks++;
+        }
+        if (checks == 7) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void drop_required(my::ServerLink &s_l, int level)
+{
+    if (level == 1) {
+        s_l.set(my::Resource::LINEMATE);
+    }
+    if (level == 2) {
+        s_l.set(my::Resource::LINEMATE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::SIBUR);
+    }
+    if (level == 3) {
+        s_l.set(my::Resource::LINEMATE);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::PHIRAS);
+        s_l.set(my::Resource::PHIRAS);
+    }
+    if (level == 4) {
+        s_l.set(my::Resource::LINEMATE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::PHIRAS);
+    }
+    if (level == 5) {
+        s_l.set(my::Resource::LINEMATE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::MENDIANE);
+        s_l.set(my::Resource::MENDIANE);
+        s_l.set(my::Resource::MENDIANE);
+    }
+    if (level == 6) {
+        s_l.set(my::Resource::LINEMATE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::PHIRAS);
+        s_l.set(my::Resource::THYSTAME);
+    }
+    if (level == 7) {
+        s_l.set(my::Resource::LINEMATE);
+        s_l.set(my::Resource::LINEMATE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::DERAUMERE);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::SIBUR);
+        s_l.set(my::Resource::MENDIANE);
+        s_l.set(my::Resource::MENDIANE);
+        s_l.set(my::Resource::PHIRAS);
+        s_l.set(my::Resource::PHIRAS);
+        s_l.set(my::Resource::THYSTAME);
+    }
+}
+
+void try_level_up(my::ServerLink &s_l, int level)
+{
+    if (level == 1) {
+        drop_required(s_l, level);
+        if (s_l.incantation() != -1) {
+            std::cout << "Leveled up" << std::endl;
+            level++;
+        }
+    } else if (level == 2) {
+        // getBroadcast récup 1 broadcast
+        std::optional<std::pair<std::string, int>> broadcast = s_l.getBroadcast();
+        if (broadcast) {
+            
+            s_l.clearBroadcast();
+        } else {
+            s_l.broadcast("lvl 2");
+        }
+    }
+}
+
 void play(my::ServerLink s_l)
 {
     while (1) {
         std::map<my::Resource, int> inventory = s_l.inventory();
         if (inventory[my::Resource::FOOD] < 7) {
             crave_food(s_l);
+            inventory = s_l.inventory();
+        }
+        int level = s_l.getLvl();
+        if (check_requirements(inventory, level) == true) {
+            std::cout << "Level up Possible" << std::endl;
+            try_level_up(s_l, level);
         }
     }
 }
