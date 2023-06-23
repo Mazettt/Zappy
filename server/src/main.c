@@ -11,61 +11,12 @@ static void args_help(void)
 {
     printf("USAGE: ./zappy_server -p port -x width -y height \
 -n name1 name2 ... -c clientsNb -f freq\n");
-    printf("\tport\tis the port number\n");
-    printf("\twidth\tis the width of the world\n");
-    printf("\theight\tis the height of the world\n");
-    printf("\tnameX\tis the name of the team X\n");
+    printf("\tport\t\tis the port number\n");
+    printf("\twidth\t\tis the width of the world\n");
+    printf("\theight\t\tis the height of the world\n");
+    printf("\tnameX\t\tis the name of the team X\n");
     printf("\tclientsNb\tis the number of authorized clients per team\n");
-    printf("\tfreq\tis the reciprocal of time unit for execution of actions\n");
-}
-
-static void get_teams(args_t *args, int ac, char **av, int *i)
-{
-    ++(*i);
-    for (int count = 0; *i < ac && av[*i][0] != '-'; ++*i) {
-        args->teamNames =
-            realloc(args->teamNames, sizeof(char *) * (count + 2));
-        if (!args->teamNames)
-            exit(84);
-        args->teamNames[count] = av[*i];
-        args->teamNames[++count] = NULL;
-    }
-    --(*i);
-}
-
-args_t get_args(int ac, char **av)
-{
-    args_t args = {.port = 4242, .width = 20, .height = 20, .teamNames = NULL,
-        .clientsNb = 10, .freq = 100};
-
-    for (int i = 1; i < ac; ++i) {
-        if (!strcmp(av[i], "-p") && i + 1 < ac)
-            args.port = atoi(av[i + 1]);
-        if (!strcmp(av[i], "-x") && i + 1 < ac)
-            args.width = atoi(av[i + 1]);
-        if (!strcmp(av[i], "-y") && i + 1 < ac)
-            args.height = atoi(av[i + 1]);
-        if (!strcmp(av[i], "-n"))
-            get_teams(&args, ac, av, &i);
-        if (!strcmp(av[i], "-c") && i + 1 < ac)
-            args.clientsNb = atoi(av[i + 1]);
-        if (!strcmp(av[i], "-f") && i + 1 < ac)
-            args.freq = atoi(av[i + 1]);
-    }
-    return args;
-}
-
-void print_args(args_t args)
-{
-    DEBUG_PRINT("port: %d\n", args.port);
-    DEBUG_PRINT("width: %d\n", args.width);
-    DEBUG_PRINT("height: %d\n", args.height);
-    if (DEBUG)
-        printf("names: ");
-    for (int i = 0; args.teamNames && args.teamNames[i]; ++i)
-        DEBUG_PRINT("%s ", args.teamNames[i]);
-    DEBUG_PRINT("\nclientsNb: %d\n", args.clientsNb);
-    DEBUG_PRINT("freq: %d\n", args.freq);
+    printf("\tfreq\t\tis the reciprocal of time unit for execution of actions\n");
 }
 
 int main(int ac, char **av)
@@ -84,7 +35,9 @@ int main(int ac, char **av)
         return 0;
     }
     args = get_args(ac, av);
-    print_args(args);
+    if (!check_args(&args))
+        return 84;
+    print_args(&args);
     ret = zappy(args);
     free(args.teamNames);
     return ret;

@@ -28,10 +28,6 @@
         #define M_PI 3.14159265358979323846
     #endif
 
-    #ifndef M_PI_4
-        #define M_PI_4 0.78539816339744830962
-    #endif
-
     #include "utils.h"
     #include <sys/socket.h>
     #include <sys/select.h>
@@ -236,6 +232,11 @@ size_t word_array_len(char **arr);
 int get_remaining_slots(team_t *team);
 void close_all(zappy_t *zappy);
 char *get_new_uuid(void);
+
+// args.c
+args_t get_args(int ac, char **av);
+void print_args(args_t *args);
+bool check_args(args_t *args);
 
 // zappy.c
 void max_fd(int fd, int *max_fd);
