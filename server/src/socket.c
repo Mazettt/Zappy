@@ -9,9 +9,7 @@
 
 void get_socket_infos(socket_t *so)
 {
-    if (getpeername(so->s, (struct sockaddr *)&so->sa,
-    (socklen_t *)&so->addrlen) == -1)
-        perror("getpeername");
+    getpeername(so->s, (struct sockaddr *)&so->sa, (socklen_t *)&so->addrlen);
 }
 
 socket_t init_socket(int s, struct sockaddr_in sa)
