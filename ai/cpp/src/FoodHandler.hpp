@@ -23,6 +23,7 @@ namespace my {
         public:
             FoodHandler(int x, int y);
             ~FoodHandler();
+            void setMapSize(int x, int y);
             int getMinimumFood();
             int getMaximumFood();
             void calculate(int playerLevel);

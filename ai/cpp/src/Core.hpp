@@ -41,11 +41,11 @@ namespace my {
             void _waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback);
             void _fork();
 
-            FoodHandler _foodHandler;
 
             ElevCond _elevcond;
             const Args &_args;
             Player _player;
+            FoodHandler _foodHandler;
             std::vector<Player> _childs;
             State _state;
 

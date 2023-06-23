@@ -21,6 +21,10 @@ FoodHandler::FoodHandler(int x, int y):
 
 FoodHandler::~FoodHandler() {}
 
+void FoodHandler::setMapSize(int x, int y) {
+    this->_mapSize = x * y;
+}
+
 int FoodHandler::getMinimumFood() {
     return this->_minimumFood;
 }
