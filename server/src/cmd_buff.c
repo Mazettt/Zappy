@@ -23,9 +23,10 @@ void add_cmd_buff(client_t *client, char *command)
 {
     cmd_buff_t *new = NULL;
     cmd_buff_t *tmp = NULL;
-
     if (client->type != GUI &&
     cmd_buff_len(client) + (client->action.func != NULL) >= 10)
+        return;
+    if (client->type == GUI && cmd_buff_len(client) >= 100)
         return;
     new = malloc(sizeof(cmd_buff_t));
     if (!new)
