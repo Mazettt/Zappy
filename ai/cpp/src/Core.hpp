@@ -47,7 +47,7 @@ namespace my {
             const Args &_args;
             Player _player;
             FoodHandler _foodHandler;
-            ForkHandler _forkHandler:
+            ForkHandler _forkHandler;
             std::vector<Player> _childs;
             State _state;
 
