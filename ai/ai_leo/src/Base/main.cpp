@@ -615,7 +615,7 @@ void try_level_up(my::ServerLink &s_l, int level)
                 }
             }
         }
-        else
+        else if (s_l.getBroadcast() == std::nullopt)
         {
             std::cout << "Broadcasting" << std::endl;
             s_l.broadcast("lvl 2");
@@ -650,7 +650,7 @@ void try_level_up(my::ServerLink &s_l, int level)
                 }
             }
         }
-        else
+        else if (s_l.getBroadcast() == std::nullopt)
         {
             std::cout << "Broadcasting" << std::endl;
             s_l.broadcast("lvl 3");
@@ -685,13 +685,118 @@ void try_level_up(my::ServerLink &s_l, int level)
                 }
             }
         }
-        else
+        else if (s_l.getBroadcast() == std::nullopt)
         {
             std::cout << "Broadcasting" << std::endl;
             s_l.broadcast("lvl 4");
             std::vector<my::Tile> tiles = s_l.look();
             int p_count = tiles[0].getNbr(my::Resource::PLAYER);
             if (p_count == 4) {
+                drop_required(s_l, level);
+                if (s_l.incantation() != -1)
+                {
+                    std::cout << "Leveled up" << std::endl;
+                    level++;
+                }
+            }
+        }
+    }
+    else if (level == 5)
+    {
+        std::optional<std::pair<std::string, int>> broadcast = s_l.getBroadcast();
+        if (broadcast && broadcast->first.find("lvl 5") != std::string::npos)
+        {
+            std::cout << "Called" << std::endl;
+            go_to_sound(broadcast->second, s_l);
+            s_l.clearBroadcast();
+            std::vector<my::Tile> tiles = s_l.look();
+            int p_count = tiles[0].getNbr(my::Resource::PLAYER);
+            if (p_count == 4) {
+                drop_required(s_l, level);
+                if (s_l.incantation() != -1)
+                {
+                    std::cout << "Leveled up" << std::endl;
+                    level++;
+                }
+            }
+        }
+        else if (s_l.getBroadcast() == std::nullopt)
+        {
+            std::cout << "Broadcasting" << std::endl;
+            s_l.broadcast("lvl 5");
+            std::vector<my::Tile> tiles = s_l.look();
+            int p_count = tiles[0].getNbr(my::Resource::PLAYER);
+            if (p_count == 4) {
+                drop_required(s_l, level);
+                if (s_l.incantation() != -1)
+                {
+                    std::cout << "Leveled up" << std::endl;
+                    level++;
+                }
+            }
+        }
+    }
+    else if (level == 6)
+    {
+        std::optional<std::pair<std::string, int>> broadcast = s_l.getBroadcast();
+        if (broadcast && broadcast->first.find("lvl 6") != std::string::npos)
+        {
+            std::cout << "Called" << std::endl;
+            go_to_sound(broadcast->second, s_l);
+            s_l.clearBroadcast();
+            std::vector<my::Tile> tiles = s_l.look();
+            int p_count = tiles[0].getNbr(my::Resource::PLAYER);
+            if (p_count == 6) {
+                drop_required(s_l, level);
+                if (s_l.incantation() != -1)
+                {
+                    std::cout << "Leveled up" << std::endl;
+                    level++;
+                }
+            }
+        }
+        else if (s_l.getBroadcast() == std::nullopt)
+        {
+            std::cout << "Broadcasting" << std::endl;
+            s_l.broadcast("lvl 6");
+            std::vector<my::Tile> tiles = s_l.look();
+            int p_count = tiles[0].getNbr(my::Resource::PLAYER);
+            if (p_count == 6) {
+                drop_required(s_l, level);
+                if (s_l.incantation() != -1)
+                {
+                    std::cout << "Leveled up" << std::endl;
+                    level++;
+                }
+            }
+        }
+    }
+    else if (level == 7)
+    {
+        std::optional<std::pair<std::string, int>> broadcast = s_l.getBroadcast();
+        if (broadcast && broadcast->first.find("lvl 7") != std::string::npos)
+        {
+            std::cout << "Called" << std::endl;
+            go_to_sound(broadcast->second, s_l);
+            s_l.clearBroadcast();
+            std::vector<my::Tile> tiles = s_l.look();
+            int p_count = tiles[0].getNbr(my::Resource::PLAYER);
+            if (p_count == 6) {
+                drop_required(s_l, level);
+                if (s_l.incantation() != -1)
+                {
+                    std::cout << "Leveled up" << std::endl;
+                    level++;
+                }
+            }
+        }
+        else if (s_l.getBroadcast() == std::nullopt)
+        {
+            std::cout << "Broadcasting" << std::endl;
+            s_l.broadcast("lvl 7");
+            std::vector<my::Tile> tiles = s_l.look();
+            int p_count = tiles[0].getNbr(my::Resource::PLAYER);
+            if (p_count == 6) {
                 drop_required(s_l, level);
                 if (s_l.incantation() != -1)
                 {
