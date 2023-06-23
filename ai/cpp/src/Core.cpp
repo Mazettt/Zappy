@@ -71,6 +71,10 @@ void Core::_comeToIncantation(unused const std::map<my::Resource, int> &inventor
 
 void Core::_findResources(const std::map<my::Resource, int> &inventory)
 {
+    if (inventory.at(Resource::FOOD) < this->_foodHandler.getMaximumFood()) {
+        _player.lookForResource(Resource::FOOD);
+        return;
+    }
     for (Resource i = Resource::LINEMATE; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1)) {
         if (inventory.at(i) < _elevcond.get(_player.getLevel(), i)) {
             _player.lookForResource(i);

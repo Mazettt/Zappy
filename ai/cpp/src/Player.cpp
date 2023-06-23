@@ -60,6 +60,15 @@ void Player::lookForResource(Resource type)
 
     for (int i = 0; i <= getLevel(); ++i) {
         for (int j = begins[i]; j <= ends[i]; ++j) {
+            if (type == Resource::FOOD && l[j].getNbr(type)) {
+                int nbr = l[j].getNbr(type);
+                goToTile(j);
+                while (nbr) {
+                    take(type);
+                    nbr--;
+                }
+                return;
+            }
             if (l[j].getNbr(type)) {
                 goToTile(j);
                 take(type);
