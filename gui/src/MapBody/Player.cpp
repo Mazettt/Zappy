@@ -53,7 +53,6 @@ bool Player::removeOnInventory(IResource::resourceType type, int quantity) {
     return false;
 }
 
-
 MyRayLib::Vector3D Player::move(float deltaTime, int timeUnit) {
     float moveSpeed = static_cast<float>(timeUnit) / 2 * deltaTime;
     MyRayLib::Vector3D currentPos = this->getPosition();
