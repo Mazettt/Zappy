@@ -46,6 +46,8 @@ namespace my {
             ElevCond _elevcond;
             const Args &_args;
             Player _player;
+            FoodHandler _foodHandler;
+            ForkHandler _forkHandler:
             std::vector<Player> _childs;
             State _state;
 
