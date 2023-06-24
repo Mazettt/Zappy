@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include "Utils.hpp"
 
 namespace my {
@@ -10,7 +10,7 @@ namespace my {
         public:
             Tile();
             Tile(const std::vector<Resource> &resources);
-            Tile(const std::map<Resource, int> &resources);
+            Tile(const std::unordered_map<Resource, int> &resources);
             Tile(const Tile &other);
             Tile(Tile &&other);
             ~Tile();
@@ -24,6 +24,6 @@ namespace my {
         protected:
         private:
             void _fillEmpty();
-            std::map<Resource, int> _resources;
+            std::unordered_map<Resource, int> _resources;
     };
 }

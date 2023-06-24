@@ -174,7 +174,7 @@ std::vector<Tile> Player::look()
     return _s.look();
 }
 
-std::map<Resource, int> Player::inventory()
+std::unordered_map<Resource, int> Player::inventory()
 {
     return _s.inventory();
 }

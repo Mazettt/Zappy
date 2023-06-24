@@ -29,7 +29,7 @@ namespace my {
             void left();
             void right();
             std::vector<Tile> look();
-            std::map<Resource, int> inventory();
+            std::unordered_map<Resource, int> inventory();
             void broadcast(const std::string &message);
             int connectNbr();
             void fork();

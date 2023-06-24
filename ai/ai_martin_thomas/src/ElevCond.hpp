@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include "ServerLink.hpp"
 
 namespace my {
@@ -19,12 +19,12 @@ namespace my {
 
         protected:
         private:
-            std::map<Resource, int> _one_two;
-            std::map<Resource, int> _two_three;
-            std::map<Resource, int> _three_four;
-            std::map<Resource, int> _four_five;
-            std::map<Resource, int> _five_six;
-            std::map<Resource, int> _six_seven;
-            std::map<Resource, int> _seven_eight;
+            std::unordered_map<Resource, int> _one_two;
+            std::unordered_map<Resource, int> _two_three;
+            std::unordered_map<Resource, int> _three_four;
+            std::unordered_map<Resource, int> _four_five;
+            std::unordered_map<Resource, int> _five_six;
+            std::unordered_map<Resource, int> _six_seven;
+            std::unordered_map<Resource, int> _seven_eight;
     };
 }

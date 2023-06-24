@@ -27,7 +27,7 @@ void Core::run()
 {
     while (true) {
         this->_foodHandler.calculate(this->_player.getLevel());
-        std::map<my::Resource, int> inv = _player.inventory();
+        std::unordered_map <my::Resource, int> inv = _player.inventory();
         if (inv.at(Resource::FOOD) <= this->_foodHandler.getMinimumFood()) {
             if (_state == State::TRY_INCANT) {
                 std::cout << "Incantation abort" << std::endl;
@@ -51,7 +51,7 @@ void Core::run()
     }
 }
 
-void Core::_findFood(const std::map<my::Resource, int> &inventory)
+void Core::_findFood(const std::unordered_map <my::Resource, int> &inventory)
 {
     if (inventory.at(Resource::FOOD) >= this->_foodHandler.getMaximumFood()) {
         _state = State::FIND_RESOURCES;
@@ -60,7 +60,7 @@ void Core::_findFood(const std::map<my::Resource, int> &inventory)
     _player.lookForResource(Resource::FOOD);
 }
 
-void Core::_comeToIncantation(unused const std::map<my::Resource, int> &inventory)
+void Core::_comeToIncantation(unused const std::unordered_map <my::Resource, int> &inventory)
 {
     if (_comingDir > 0) {
         _player.goToDirection(_comingDir);
@@ -69,7 +69,7 @@ void Core::_comeToIncantation(unused const std::map<my::Resource, int> &inventor
     }
 }
 
-void Core::_findResources(const std::map<my::Resource, int> &inventory)
+void Core::_findResources(const std::unordered_map <my::Resource, int> &inventory)
 {
     if (inventory.at(Resource::FOOD) < this->_foodHandler.getMaximumFood()) {
         _player.lookForResource(Resource::FOOD);
@@ -85,7 +85,7 @@ void Core::_findResources(const std::map<my::Resource, int> &inventory)
     _state = State::TRY_INCANT;
 }
 
-void Core::_incant(unused const std::map<my::Resource, int> &inventory)
+void Core::_incant(unused const std::unordered_map <my::Resource, int> &inventory)
 {
     const auto &look = _player.look();
     if (look[0].getNbr(Resource::PLAYER) >= _elevcond.get(_player.getLevel(), Resource::PLAYER)) {
@@ -141,7 +141,7 @@ void Core::_handleBroadcast()
 void Core::_waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback) {
     // std::cout << "Waiting for broadcast (" << toFind << ")" << std::endl;
     while (true) {
-        std::map<my::Resource, int> inv = _player.inventory();
+        std::unordered_map <my::Resource, int> inv = _player.inventory();
         if (inv.at(Resource::FOOD) < this->_foodHandler.getMinimumFood()) {
             _state = State::FIND_RESOURCES;
             break;

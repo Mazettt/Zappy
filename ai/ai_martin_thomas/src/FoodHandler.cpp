@@ -14,9 +14,9 @@ using namespace my;
 FoodHandler::FoodHandler(int x, int y):
     _incantationScore(0),
     _mapSize(x * y),
-    _factorLevel(6.4),
-    _factorMapSize(0.7),
-    _factorIncantationScore(7.2)
+    _factorLevel(8.8),
+    _factorMapSize(1.9),
+    _factorIncantationScore(2.6)
     {}
 
 FoodHandler::~FoodHandler() {}
@@ -42,7 +42,7 @@ void FoodHandler::calculate(int playerLevel) {
     this->_minimumFood = ((finalResult >= 4) ? finalResult : 4);
 
     // MAXIMUM PART
-    int maximumFood = std::round(this->_minimumFood * (1 + 30 / (levelResult + 8)));
+    int maximumFood = std::round(this->_minimumFood * (1 + 10.2 / (levelResult + 6.4)));
     this->_maximumFood = maximumFood;
 }
 

@@ -23,6 +23,7 @@ namespace my {
             Core &operator=(Core &&other) = delete;
 
             void run();
+            bool shouldFork();
 
         protected:
         private:
@@ -33,10 +34,10 @@ namespace my {
                 TRY_INCANT
             };
 
-            void _findFood(const std::map<my::Resource, int> &inventory);
-            void _comeToIncantation(const std::map<my::Resource, int> &inventory);
-            void _findResources(const std::map<my::Resource, int> &inventory);
-            void _incant(const std::map<my::Resource, int> &inventory);
+            void _findFood(const std::unordered_map<my::Resource, int> &inventory);
+            void _comeToIncantation(const std::unordered_map<my::Resource, int> &inventory);
+            void _findResources(const std::unordered_map<my::Resource, int> &inventory);
+            void _incant(const std::unordered_map<my::Resource, int> &inventory);
 
             void _handleBroadcast();
             void _waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback);

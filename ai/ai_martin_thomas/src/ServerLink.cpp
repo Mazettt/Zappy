@@ -126,7 +126,7 @@ std::vector<Tile> ServerLink::look() {
     return res;
 }
 
-std::map<Resource, int> ServerLink::inventory() {
+std::unordered_map<Resource, int> ServerLink::inventory() {
     _socket.write("Inventory\n");
     std::vector<std::string> responses;
     std::string response;
@@ -141,7 +141,7 @@ std::map<Resource, int> ServerLink::inventory() {
             }
     }
     auto map = my::split(response, ",");
-    std::map<Resource, int> res;
+    std::unordered_map<Resource, int> res;
     for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1))
         res[i] = 0;
     for (auto &line: map) {

@@ -14,7 +14,7 @@ Tile::Tile(const std::vector<Resource> &resources)
     _fillEmpty();
 }
 
-Tile::Tile(const std::map<Resource, int> &resources):
+Tile::Tile(const std::unordered_map<Resource, int> &resources):
     _resources(resources)
 {
     _fillEmpty();
