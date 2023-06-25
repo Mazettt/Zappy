@@ -22,7 +22,8 @@ namespace ZappyGui {
             enum soundEffectType {
                 EFFECT_JOIN,
                 EFFECT_LEAVE,
-                EFFECT_CLICK
+                EFFECT_CLICK,
+                EFFECT_VICTORY
             };
 
         private:

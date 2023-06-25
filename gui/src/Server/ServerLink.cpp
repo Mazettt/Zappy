@@ -169,7 +169,6 @@ void ServerLink::_tna(const std::string &str) // NOT USED
     std::string tmp, teamName;
 
     iss >> tmp >> teamName;
-    std::cout << "Team name: " << teamName << std::endl;
 }
 
 void ServerLink::_pnw(const std::string &str)
@@ -275,7 +274,6 @@ void ServerLink::_pic(const std::string &str) // TO CHECK
     for (int id; iss >> id;)
         ids.push_back(id);
     this->_game._map.StartPlayersLeveling(ids, x, z);
-    std::cout << std::endl;
 }
 
 void ServerLink::_pie(const std::string &str) // TO CHECK
@@ -297,7 +295,6 @@ void ServerLink::_pfk(const std::string &str) // TODO
     int id = 0;
 
     iss >> tmp >> id;
-    std::cout << "Player fork: " << id << std::endl;
 }
 
 void ServerLink::_pdr(const std::string &str) // TO CHECK
@@ -374,7 +371,6 @@ void ServerLink::_edi(const std::string &str) // TO DO
     int eggId = 0;
 
     iss >> tmp >> eggId;
-    std::cout << "Egg death: " << eggId << std::endl;
 }
 
 void ServerLink::_sgt(const std::string &str)
@@ -394,54 +390,50 @@ void ServerLink::_sst(const std::string &str)
     int time = 0;
 
     iss >> tmp >> time;
-    std::cout << "Time unit set: " << time << std::endl;
     this->_game._map.setTimeUnit(time);
 }
 
-void ServerLink::_seg(const std::string &str) // TO DO
+void ServerLink::_seg(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
     std::string teamName;
 
     iss >> tmp >> teamName;
-    std::cout << "End of game: " << teamName << std::endl;
-    this->_game._stateWindow = Game::stateWindow::WIN;
+    this->disconnect();
+    this->_game.setWin(teamName);
 }
 
-void ServerLink::_smg(const std::string &str) // TO DO
+void ServerLink::_smg(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
     std::string message;
 
     iss >> tmp >> message;
-    std::cout << "Server message: " << message << std::endl;
     this->_game._popup.setTitle("Info");
     this->_game._popup.setDescription(message);
     this->_game._popup.setStatus(true);
 }
 
-void ServerLink::_suc(const std::string &str) // TO DO
+void ServerLink::_suc(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
 
     iss >> tmp;
-    std::cout << "Unknown command" << std::endl;
     this->_game._popup.setTitle("Error");
     this->_game._popup.setDescription("Unknown command");
     this->_game._popup.setStatus(true);
     this->disconnect();
 }
 
-void ServerLink::_sbp(const std::string &str) // TO DO
+void ServerLink::_sbp(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
 
     iss >> tmp;
-    std::cout << "Bad parameter" << std::endl;
     this->_game._popup.setTitle("Error");
     this->_game._popup.setDescription("Command with bad parameter");
     this->_game._popup.setStatus(true);
