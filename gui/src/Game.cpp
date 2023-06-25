@@ -51,6 +51,7 @@ void Game::switchToGame()
         this->_link.connect(_ip, _port);
         this->_timer.reset();
         this->_stateWindow = stateWindow::GAME;
+        this->_timer.stop();
     } catch (const ZappyGui::Socket::Error &e) {
         std::cerr << e.what() << std::endl;
         this->_popup.setTitle("ERROR");
@@ -357,11 +358,9 @@ void Game::drawTeamsData()
 
 void Game::drawWinScreen() {
     Button button1 = this->_buttonMenu.at(1);
-    // Button leave = this->_buttonMenu.at(3);
 
     this->_raylibwindow.MyBeginDrawing();
     button1.HandleButton();
-    // leave.HandleButton();
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
@@ -402,7 +401,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_raylibdrawing.MyDrawFPS(10, 10);
     this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.getTimeUnit())).c_str(), 105, 10, 20, WHITE);
     MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TIMER).getTexture(), 1780, 20, WHITE);
-    this->_raylibdrawing.MyDrawText(this->_timer.elapsedFormatted("%M:%S").c_str(), 1800, 72, 28, WHITE);
+    this->_raylibdrawing.MyDrawText(this->_timer.elapsedFormatted("%M:%S").c_str(), 1796, 72, 28, WHITE);
     if (!this->showTeams)
         this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();
@@ -430,4 +429,8 @@ void Game::checkKonamiCode(MyRayLib::Music &musicGame) {
             }
         }
     }
+}
+
+void Game::startTimer() {
+    this->_timer.start();
 }

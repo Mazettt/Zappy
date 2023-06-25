@@ -182,6 +182,8 @@ void ServerLink::_pnw(const std::string &str)
     float z = 0.0;
     std::string teamName;
 
+    if (this->_game._map._players.size() < 1)
+        this->_game.startTimer();
     iss >> tmp >> id >> x >> z >> orientationNbr >> level >> teamName;
     ZappyGui::Player::orientationAxis orientation =
         (orientationNbr == 1 ? ZappyGui::Player::orientationAxis::NORTH :

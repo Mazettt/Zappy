@@ -71,5 +71,6 @@ namespace ZappyGui {
             void drawTeamsData();
             void drawWinScreen();
             void setWin(const std::string &winnerTeam);
+            void startTimer();
     };
 }
