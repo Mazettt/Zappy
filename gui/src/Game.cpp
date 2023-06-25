@@ -11,10 +11,10 @@
 using namespace ZappyGui;
 
 Game::Game(const std::string &ip, int port):
+    _stateWindow(stateWindow::MENU),
     _manager(ResourceManager()),
     _camera(FreeCamera({ 10.0f, 10.0f, 5.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0)),
     _raylibwindow(MyRayLibWindow(1920, 1080, "ZAPPY")),
-    _stateWindow(stateWindow::MENU),
     _buttonMenu(),
     _skyboxMesh(Skybox(1.0, 1.0, 1.0)),
     _raylibdrawing(),
@@ -264,8 +264,7 @@ void Game::drawMapData()
     if (!this->_map._players.empty()) {
         for (const auto& player : this->_map._players)
             _teamPlayersForMap[player->getTeamName()].push_back("Player" + std::to_string(player->getPlayerNumber()) + ", level: " + std::to_string(player->getPlayerLevel()));
-        for (const auto& entry : _teamPlayersForMap)
-            nbTeams = _teamPlayersForMap.size();
+        nbTeams = _teamPlayersForMap.size();
     }
 
     MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::MAPDATA).getTexture(), 297, 10, WHITE);
@@ -390,7 +389,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_map.update(deltaTime);
     this->_map.draw();
     if (this->_map._players.size() > 0) {
-        if (this->_showPlayerData.getPlayerIndexSelected() < this->_map._players.size())
+        if (this->_showPlayerData.getPlayerIndexSelected() < static_cast<int>(this->_map._players.size()))
             selectorPlayer.setPosition(this->_map._players.at(this->_showPlayerData.getPlayerIndexSelected())->getPosition());
         else
             selectorPlayer.setPosition(this->_map._players.at(0)->getPosition());
