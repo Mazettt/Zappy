@@ -11,7 +11,7 @@
     #define MAX_CONNECTIONS 1024
     #define OTHER_PORT_RANGE 62000
     #define SEPARATOR " \"\t\r\n"
-    #define DEBUG 1
+    #define DEBUG 0
     #define DEBUG_PRINT(format, ...) if (DEBUG) printf(format, __VA_ARGS__);
     #define CLIENT_S(i) zappy->client[i].command.s
     #define TIME(x) ((time_t)((float)(x) / (float)(zappy->game.freq) * 1000000))
