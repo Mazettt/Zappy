@@ -7,47 +7,6 @@
 #include "Args.hpp"
 #include "Core.hpp"
 
-// class cmdline_args_parser{
-//     public:
-//         cmdline_args_parser (const int argc, char **argv){
-//             for (int i=0; i < argc; ++i)
-//                 tokens.push_back(std::string(argv[i]));
-//         }
-
-//         const std::optional<std::string> getCmdOption(const std::string &amp;option) const{
-//             auto  itr =  std::find(tokens.begin(), tokens.end(), option);
-//             if (itr != tokens.end() &amp;&amp; ++itr != tokens.end())
-//                 return std::optional(*(itr));
-//            return std::nullopt;
-//         }
-
-//         template<typename... Options>
-//         const auto get_all_options(const Options... ops) const{
-//             std::vector<std::optional<std::string>> v;
-//             (v.push_back(getCmdOption(ops)), ...);
-//             return v;
-//         }
-
-//         bool cmdOptionExists(const std::string &amp;option) const{
-//             return
-//                 std::find(tokens.begin(), tokens.end(), option) != tokens.end();
-//         }
-
-//         template<typename... Options>
-//         bool all_options_exists(const Options... opts) const{
-//             return (... &amp;&amp; cmdOptionExists(opts));
-//         }
-//         template<typename... Options>
-//         bool any_options_exists(const Options... opts) const{
-//             return (... || cmdOptionExists(opts));
-//         }
-
-//         const std::string&amp; get_program_name() const{ return tokens[0]; }
-
-//     private:
-//         std::vector<std::string> tokens;
-// };
-
 int tryRun(const my::Args &args) {
     try {
         my::Core core(args);
