@@ -30,9 +30,7 @@ int count_words(char const *str, char *sep, bool *quote)
         !is_sep(str[i + 1], sep, quote)
         && str[i + 1] != '\0')
             ++nbr_words;
-    if (str[strlen(str) - 1] != ' ')
-        ++nbr_words;
-    return (nbr_words);
+    return (nbr_words + 1);
 }
 
 int count_letters(char const *str, char *sep, bool *quote)
