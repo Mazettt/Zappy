@@ -95,6 +95,14 @@ void Game::initializeButton() {
     );
     logo.ButtonSetPosition(40, 40, (float)logo.button.width, logo.frameHeight);
     this->_buttonMenu.push_back(logo);
+
+    Button buttonBackToMenu(this->_manager.getTexture(IResource::resourceType::BUTTON_END), "./gui/assets/Buttons/buttonfx.wav", [&](){
+            this->_map.resetGame();
+            this->_stateWindow = stateWindow::MENU;
+        }
+    );
+    buttonBackToMenu.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 990 - buttonBackToMenu.button.width/2.0f, (float)buttonBackToMenu.button.width, buttonBackToMenu.frameHeight);
+    this->_buttonMenu.push_back(buttonBackToMenu);
 }
 
 void Game::keyEvent(float &volumeMusic) {
@@ -150,6 +158,8 @@ void Game::run() {
                 musicMenu.MySetMusicVolume(volumeMusic);
                 musicMenu.MyUpdateMusic();
                 drawMenu();
+            } else if (this->_stateWindow == stateWindow::WIN) {
+                drawWinScreen();
             } else {
                 this->_link.update();
                 if (cameraSet == false && this->_map.getSize().getX() > 0.0f && this->_map.getSize().getY() > 0.0f) {
@@ -332,6 +342,27 @@ void Game::drawTeamsData()
         }
         textPosX += 200;
     }
+}
+
+void Game::drawWinScreen() {
+    Button button1 = this->_buttonMenu.at(1);
+    // Button leave = this->_buttonMenu.at(3);
+
+    this->_raylibwindow.MyBeginDrawing();
+    button1.HandleButton();
+    // leave.HandleButton();
+    this->_raylibwindow.MyClearBackground(RAYWHITE);
+    this->_camera.beginMode3D();
+    this->_skyboxMesh.MyrlDisableBackfaceCulling();
+    this->_skyboxMesh.MyrlDisableDepthMask();
+    MyRayLib::Draw::MyDrawModel(this->_skyboxMesh._skybox, {0, 0, 0}, 1.0f, WHITE);
+    this->_skyboxMesh.MyrlEnableBackfaceCulling();
+    this->_skyboxMesh.MyrlEnableDepthMask();
+    this->_camera.endMode3D();
+    MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::WIN_BACKGROUND).getTexture(), 0, 0, WHITE);
+    button1.MyDrawTextureRec(WHITE);
+    // leave.MyDrawTextureRec(WHITE);
+    // this->_raylibwindow.MyEndDrawing();
 }
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {

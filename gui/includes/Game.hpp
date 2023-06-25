@@ -28,16 +28,19 @@ using namespace MyRayLib;
 
 namespace ZappyGui {
     class Game {
-        private:
+        public:
             enum stateWindow {
                 GAME,
                 MENU,
-                PRELOADING
+                PRELOADING,
+                WIN
             };
+            stateWindow _stateWindow;
+
+        private:
             ResourceManager _manager;
             FreeCamera _camera;
             MyRayLibWindow _raylibwindow;
-            stateWindow _stateWindow;
             std::vector<Button> _buttonMenu;
             MyRayLib::Skybox _skyboxMesh;
             MyRayLib::Draw _raylibdrawing;
@@ -67,5 +70,6 @@ namespace ZappyGui {
             void checkKonamiCode(MyRayLib::Music &musicGame);
             void drawMapData();
             void drawTeamsData();
+            void drawWinScreen();
     };
 }

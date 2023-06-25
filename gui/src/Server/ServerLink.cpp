@@ -406,6 +406,7 @@ void ServerLink::_seg(const std::string &str) // TO DO
 
     iss >> tmp >> teamName;
     std::cout << "End of game: " << teamName << std::endl;
+    this->_game._stateWindow = Game::stateWindow::WIN;
 }
 
 void ServerLink::_smg(const std::string &str) // TO DO

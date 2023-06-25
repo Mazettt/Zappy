@@ -33,7 +33,9 @@ namespace ZappyGui {
                 SKYBOX_BACKGROUND,
                 PLAYER_STATS,
                 BROADCAST,
-                TIMER
+                TIMER,
+                WIN_BACKGROUND,
+                BUTTON_END
             };
             virtual void draw() = 0;
             virtual IResource::resourceType getType() = 0;

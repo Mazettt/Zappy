@@ -56,6 +56,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::BUTTON_START, "./gui/assets/Buttons/buttonStart.png");
     this->loadTexture(IResource::resourceType::BUTTON_HELP, "./gui/assets/Buttons/buttonHelp.png");
     this->loadTexture(IResource::resourceType::BUTTON_QUIT, "./gui/assets/Buttons/buttonQuit.png");
+    this->loadTexture(IResource::resourceType::BUTTON_END, "./gui/assets/Buttons/buttonEnd.png");
 
     this->loadTexture(IResource::resourceType::POPUP, "./gui/assets/popup.png");
     this->loadTexture(IResource::resourceType::POPUPTILE, "./gui/assets/tileInventory.png");
@@ -63,6 +64,7 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::TEAMSDATA, "./gui/assets/teamInfo.png");
 
     this->loadTexture(IResource::resourceType::TIMER, "./gui/assets/timer.png");
+    this->loadTexture(IResource::resourceType::WIN_BACKGROUND, "./gui/assets/win_background.png");
 
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
