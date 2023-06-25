@@ -62,6 +62,8 @@ void ResourceManager::initialize() {
     this->loadTexture(IResource::resourceType::MAPDATA, "./gui/assets/mapData.png");
     this->loadTexture(IResource::resourceType::TEAMSDATA, "./gui/assets/teamInfo.png");
 
+    this->loadTexture(IResource::resourceType::TIMER, "./gui/assets/timer.png");
+
     // load food
     this->loadModel(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.obj");
     this->loadTexture(IResource::resourceType::BURGER, "./gui/assets/Food/Hamburger.png");

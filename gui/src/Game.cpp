@@ -366,7 +366,8 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
     this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.getTimeUnit())).c_str(), 105, 10, 20, WHITE);
-    this->_raylibdrawing.MyDrawText(this->_timer.elapsedFormatted("%H:%M:%S").c_str(), 105, 50, 20, WHITE);
+    MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TIMER).getTexture(), 1780, 20, WHITE);
+    this->_raylibdrawing.MyDrawText(this->_timer.elapsedFormatted("%M:%S").c_str(), 1800, 72, 28, WHITE);
     if (!this->showTeams)
         this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();

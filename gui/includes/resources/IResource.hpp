@@ -32,7 +32,8 @@ namespace ZappyGui {
                 TEAMSDATA,
                 SKYBOX_BACKGROUND,
                 PLAYER_STATS,
-                BROADCAST
+                BROADCAST,
+                TIMER
             };
             virtual void draw() = 0;
             virtual IResource::resourceType getType() = 0;
