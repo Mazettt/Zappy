@@ -16,7 +16,8 @@ static void args_help(void)
     printf("\theight\t\tis the height of the world\n");
     printf("\tnameX\t\tis the name of the team X\n");
     printf("\tclientsNb\tis the number of authorized clients per team\n");
-    printf("\tfreq\t\tis the reciprocal of time unit for execution of actions\n");
+    printf("\tfreq\t\tis the reciprocal of time unit for execution of \
+actions\n");
 }
 
 int main(int ac, char **av)
