@@ -70,6 +70,8 @@ void Map::EndPlayersLeveling(float x, float z, bool result) {
 
 void Map::dropResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
+
+    if (p == nullptr) return;
     MyRayLib::Vector3D pos = p->getPosition();
     int key = std::round(pos.getZ() * this->_size.getX() + pos.getX());
     p->removeOnInventory(type, 1);
@@ -78,6 +80,8 @@ void Map::dropResource(int playerID, IResource::resourceType type) {
 
 void Map::collectResource(int playerID, IResource::resourceType type) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
+
+    if (p == nullptr) return;
     MyRayLib::Vector3D pos = p->getPosition();
     p->animationGet();
     int key = std::round(pos.getZ() * this->_size.getX() + pos.getX());
@@ -88,6 +92,7 @@ void Map::collectResource(int playerID, IResource::resourceType type) {
 void Map::setPlayerLevel(int playerID, int level) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
+    if (p == nullptr) return;
     p->setPlayerLevel(level);
 }
 
@@ -131,29 +136,26 @@ void Map::addPlayerForTile(const PlayerArguments &playerArgs) {
 void Map::movePlayer(int playerID, float x, float z, Player::orientationAxis orientation) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
-    if (p != nullptr) {
-        p->animationWalk();
-        p->setRotationAngle((float)orientation);
-        p->_movePos = {x, 0.0, z};
-    }
+    if (p == nullptr) return;
+    p->animationWalk();
+    p->setRotationAngle((float)orientation);
+    p->_movePos = {x, 0.0, z};
 }
 
 void Map::expulsion(int playerID) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
-    if (p != nullptr) {
-        p->animationExpulsion();
-    }
+    if (p == nullptr) return;
+    p->animationExpulsion();
 }
 
 void Map::deadPlayer(int playerID) {
     std::shared_ptr<Player> p = this->findPlayerByID(playerID);
 
-    if (p != nullptr) {
-        p->animationDie();
-        auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_LEAVE);
-        leaveEffect.play();
-    }
+    if (p == nullptr) return;
+    p->animationDie();
+    auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_LEAVE);
+    leaveEffect.play();
 }
 
 void Map::setTimeUnit(int timeUnit) {
@@ -269,9 +271,8 @@ void Map::updatePlayerInventory(int id, int food, int linemate, int deraumere, i
 {
     std::shared_ptr<Player> p = this->findPlayerByID(id);
 
-    if (p != nullptr) {
-        p->setInventory(food, linemate, deraumere, sibur, mendiane, phiras, thystame);
-    }
+    if (p == nullptr) return;
+    p->setInventory(food, linemate, deraumere, sibur, mendiane, phiras, thystame);
 }
 
 void Map::resetGame() {
@@ -284,8 +285,8 @@ void Map::resetGame() {
 
 void Map::sendBroadCast(int playerID) {
     std::shared_ptr<Player> pSender = this->findPlayerByID(playerID);
-    if (pSender == nullptr)
-        return;
+
+    if (pSender == nullptr) return;
     for (auto &p : this->_players) {
         if (p->getPlayerNumber() != playerID) {
             this->_broadcasts.push_back(FactoryResource::createResource(IResource::resourceType::BROADCAST, pSender->getPosition(), this->_manager, p->getPlayerNumber()));

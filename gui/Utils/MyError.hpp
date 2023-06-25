@@ -35,3 +35,4 @@ namespace ZappyGui {
             std::string _msg;
     };
 }
+    

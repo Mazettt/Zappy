@@ -21,11 +21,12 @@ Game::Game(const std::string &ip, int port):
     _BoolCloseWin(false),
     _ip(ip),
     _port(port),
-    _popup(),
     _playerTmp(),
     _link(*this),
     _showPlayerData(_link),
     _konamiIndex(0),
+    _timer(),
+    _popup(),
     _map(this->_manager, this->_camera, this->_link)
 {
     this->_raylibwindow.MyInitAudioDevice();
@@ -54,6 +55,7 @@ void Game::switchToGame()
 {
     try {
         this->_link.connect(_ip, _port);
+        this->_timer.reset();
         this->_stateWindow = stateWindow::GAME;
     } catch (const ZappyGui::Socket::Error &e) {
         std::cerr << e.what() << std::endl;
@@ -364,6 +366,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_camera.endMode3D();
     this->_raylibdrawing.MyDrawFPS(10, 10);
     this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.getTimeUnit())).c_str(), 105, 10, 20, WHITE);
+    this->_raylibdrawing.MyDrawText(this->_timer.elapsedFormatted("%H:%M:%S").c_str(), 105, 50, 20, WHITE);
     if (!this->showTeams)
         this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();

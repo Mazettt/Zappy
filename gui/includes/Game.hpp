@@ -22,6 +22,7 @@
 #include "../includes/MapHeader/SelectorPlayer.hpp"
 
 #include "MapHeader/Map.hpp"
+#include "Timer.h"
 
 using namespace MyRayLib;
 
@@ -49,6 +50,7 @@ namespace ZappyGui {
             size_t _konamiIndex;
             std::thread _resourceThread;
             bool showTeams;
+            Timer _timer;
 
         public:
             Popup _popup;
