@@ -33,9 +33,6 @@ Game::Game(const std::string &ip, int port):
     _manager.loadBasicResource();
     this->_BoolCloseWin = false;
     this->_stateWindow = stateWindow::PRELOADING;
-    // this->_resourceThread = std::thread([this]() { // TO DO
-    //     this->_manager.initialize();
-    // });
     this->_manager.initialize();
     this->_manager._isLoaded = true;
     this->showTeams = false;
@@ -45,10 +42,6 @@ Game::~Game() {
     if (this->_resourceThread.joinable()) {
         this->_resourceThread.join();
     }
-    // this->_manager.~ResourceManager();
-    // this->_raylibwindow.~MyRayLibWindow();
-    // this->_skyboxMesh.~Skybox();
-    // this->_buttonMenu.clear();
 }
 
 void Game::switchToGame()

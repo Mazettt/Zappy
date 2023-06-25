@@ -240,16 +240,13 @@ void Map::draw() {
 
             if (key == _selectedTileKey) {
                 this->_camera.endMode3D();
-                int nbr = 0;
+                int nbrPlayer = 0;
                 for (const auto &p : this->_players) {
                     if (p->getPosition().getX() == x && p->getPosition().getZ() == y) {
-                        nbr++;
+                        nbrPlayer++;
                     }
                 }
-                std::string tmp = "nbr player " + std::to_string(nbr);
-                MyRayLib::Draw::MyDrawText(tmp.c_str(), 1700, 340, 30, BLACK);
-
-                tile->drawContentPopup(this->_manager.getTexture(IResource::resourceType::POPUPTILE));
+                tile->drawContentPopup(this->_manager.getTexture(IResource::resourceType::POPUPTILE), nbrPlayer);
                 this->_camera.beginMode3D();
                 tile->_cube._color.r = 255;
                 tile->_cube._color.g = 0;

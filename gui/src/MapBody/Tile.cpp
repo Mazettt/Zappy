@@ -94,7 +94,7 @@ int Tile::countSpecificResource(IResource::resourceType type) {
     return counter;
 }
 
-void Tile::drawContentPopup(const MyRayLib::Texture2D &texture) {
+void Tile::drawContentPopup(const MyRayLib::Texture2D &texture, int nbrPlayer) {
     int x = 1750;
     int y = 348;
     std::vector<IResource::resourceType> resourceTypes = {
@@ -108,11 +108,12 @@ void Tile::drawContentPopup(const MyRayLib::Texture2D &texture) {
     };
 
     MyRayLib::Draw::MyDrawTexture(texture.getTexture(), 1750, y, WHITE);
-    x += 85;
-    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().getX())).c_str(), x - 10, y += 16, 25, BLACK);
-    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().getZ())).c_str(), x - 10, y += 30, 25, BLACK);
+    x += 70;
+    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().getX())).c_str(), x, y += 16, 25, BLACK);
+    MyRayLib::Draw::MyDrawText(std::to_string(static_cast<int>(this->_cube.getPos().getZ())).c_str(), x, (y += 30) + 4, 25, BLACK);
 
-
+    std::string tmp = "x" + std::to_string(nbrPlayer);
+    MyRayLib::Draw::MyDrawText(tmp.c_str(), x, y += 50, 30, BLACK);
     for (const auto &type : resourceTypes) {
         std::string tmp = "x" + std::to_string(this->countSpecificResource(type));
         MyRayLib::Draw::MyDrawText(tmp.c_str(), x, y += 50, 30, BLACK);
