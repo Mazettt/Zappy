@@ -100,10 +100,11 @@ void Game::initializeButton() {
 
     Button buttonBackToMenu(this->_manager.getTexture(IResource::resourceType::BUTTON_END), "./gui/assets/Buttons/buttonfx.wav", [&](){
             this->_map.resetGame();
+            this->_timer.stop();
             this->_stateWindow = stateWindow::MENU;
         }
     );
-    buttonBackToMenu.ButtonSetPosition(1920/2.0f - button.button.width/2.0f, 990 - buttonBackToMenu.button.width/2.0f, (float)buttonBackToMenu.button.width, buttonBackToMenu.frameHeight);
+    buttonBackToMenu.ButtonSetPosition(1790, button.button.width/3.4f, (float)buttonBackToMenu.button.width, buttonBackToMenu.frameHeight);
     this->_buttonMenu.push_back(buttonBackToMenu);
 }
 
@@ -357,9 +358,12 @@ void Game::drawTeamsData()
 
 void Game::drawWinScreen() {
     Button button1 = this->_buttonMenu.at(1);
+    Button buttonEnd = this->_buttonMenu.at(3);
+
 
     this->_raylibwindow.MyBeginDrawing();
     button1.HandleButton();
+    buttonEnd.HandleButton();
     this->_raylibwindow.MyClearBackground(RAYWHITE);
     this->_camera.beginMode3D();
     this->_skyboxMesh.MyrlDisableBackfaceCulling();
@@ -370,6 +374,7 @@ void Game::drawWinScreen() {
     this->_camera.endMode3D();
     MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::WIN_BACKGROUND).getTexture(), 0, 0, WHITE);
     button1.MyDrawTextureRec(WHITE);
+    buttonEnd.MyDrawTextureRec(WHITE);
     this->_raylibdrawing.MyDrawText(this->_winnerTeam.c_str(), 1200, 460, 60, GRAY);
     this->_raylibdrawing.MyDrawText("is the winner", 1200, 540, 45, GRAY);
 }
@@ -400,7 +405,7 @@ void Game::drawGame(SelectorPlayer &selectorPlayer) {
     this->_raylibdrawing.MyDrawFPS(10, 10);
     this->_raylibdrawing.MyDrawText((std::string("Time: ") + std::to_string(this->_map.getTimeUnit())).c_str(), 105, 10, 20, WHITE);
     MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::TIMER).getTexture(), 1780, 20, WHITE);
-    this->_raylibdrawing.MyDrawText(this->_timer.elapsedFormatted("%M:%S").c_str(), 1796, 72, 28, WHITE);
+    this->_raylibdrawing.MyDrawText(this->_timer.elapsedFormatted("%M:%S").c_str(), 1800, 72, 28, WHITE);
     if (!this->showTeams)
         this->_showPlayerData.ShowDataForEachPlayer(this->_map._players);
     this->drawMapData();
