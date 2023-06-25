@@ -36,6 +36,7 @@ Game::Game(const std::string &ip, int port):
     this->_manager.initialize();
     this->_manager._isLoaded = true;
     this->showTeams = false;
+    this->_winnerTeam = "";
 }
 
 Game::~Game() {
@@ -174,6 +175,9 @@ void Game::run() {
                 joinEffect.setVolume(volumeMusic);
                 auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_LEAVE);
                 leaveEffect.setVolume(volumeMusic);
+                auto &winEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_VICTORY);
+                winEffect.setVolume(volumeMusic);
+
                 musicGame.MySetMusicVolume(volumeMusic);
                 musicGame.MyUpdateMusic();
                 this->checkKonamiCode(musicGame);
@@ -199,6 +203,13 @@ void Game::run() {
     this->_skyboxMesh.MyUnloadShader();
     this->_skyboxMesh.MyUnloadTexture();
     this->_skyboxMesh.MyUnloadModel();
+}
+
+void Game::setWin(const std::string &winnerTeam) {
+    auto &leaveEffect = this->_manager.getSoundEffect(ResourceManager::soundEffectType::EFFECT_VICTORY);
+    leaveEffect.play();
+    this->_stateWindow = Game::stateWindow::WIN;
+    this->_winnerTeam = winnerTeam;
 }
 
 void Game::drawLoading() {
@@ -361,8 +372,8 @@ void Game::drawWinScreen() {
     this->_camera.endMode3D();
     MyRayLib::Draw::MyDrawTexture(this->_manager.getTexture(IResource::resourceType::WIN_BACKGROUND).getTexture(), 0, 0, WHITE);
     button1.MyDrawTextureRec(WHITE);
-    // leave.MyDrawTextureRec(WHITE);
-    // this->_raylibwindow.MyEndDrawing();
+    this->_raylibdrawing.MyDrawText(this->_winnerTeam.c_str(), 1200, 460, 60, GRAY);
+    this->_raylibdrawing.MyDrawText("is the winner", 1200, 540, 45, GRAY);
 }
 
 void Game::drawGame(SelectorPlayer &selectorPlayer) {

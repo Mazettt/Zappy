@@ -29,6 +29,7 @@ void ResourceManager::initialize() {
     this->loadSoundEffect(soundEffectType::EFFECT_JOIN, "./gui/assets/audio/sound_join.mp3");
     this->loadSoundEffect(soundEffectType::EFFECT_LEAVE, "./gui/assets/audio/sound_leave.mp3");
     this->loadSoundEffect(soundEffectType::EFFECT_CLICK, "./gui/assets/audio/buttonfx.wav");
+    this->loadSoundEffect(soundEffectType::EFFECT_VICTORY, "./gui/assets/audio/garfield_victory.mp3");
 
     // load player
     this->loadModel(IResource::resourceType::PLAYER, "./gui/assets/thegarfrotated.iqm");

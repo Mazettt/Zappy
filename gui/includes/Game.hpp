@@ -28,7 +28,7 @@ using namespace MyRayLib;
 
 namespace ZappyGui {
     class Game {
-        public:
+        private:
             enum stateWindow {
                 GAME,
                 MENU,
@@ -36,8 +36,6 @@ namespace ZappyGui {
                 WIN
             };
             stateWindow _stateWindow;
-
-        private:
             ResourceManager _manager;
             FreeCamera _camera;
             MyRayLibWindow _raylibwindow;
@@ -54,6 +52,7 @@ namespace ZappyGui {
             std::thread _resourceThread;
             bool showTeams;
             Timer _timer;
+            std::string _winnerTeam;
 
         public:
             Popup _popup;
@@ -71,5 +70,6 @@ namespace ZappyGui {
             void drawMapData();
             void drawTeamsData();
             void drawWinScreen();
+            void setWin(const std::string &winnerTeam);
     };
 }
