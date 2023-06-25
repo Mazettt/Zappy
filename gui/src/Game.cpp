@@ -337,7 +337,7 @@ void Game::drawTeamsData()
         for (int a = 0; a < 8; ++a)
             nb.push_back(0);
         std::string res;
-        for (const auto& player : entry.second) {
+        for (const auto &player : entry.second) {
             (player == "level: 1") ? nb[0]++ : 0;
             (player == "level: 2") ? nb[1]++ : 0;
             (player == "level: 3") ? nb[2]++ : 0;

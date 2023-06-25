@@ -22,7 +22,7 @@
 #include "../includes/MapHeader/SelectorPlayer.hpp"
 
 #include "MapHeader/Map.hpp"
-#include "Timer.h"
+#include "Timer.hpp"
 
 using namespace MyRayLib;
 

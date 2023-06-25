@@ -7,7 +7,7 @@
 
 #include <sstream>
 #include <iomanip>
-#include "../includes/Timer.h"
+#include "../includes/Timer.hpp"
 
 using namespace ZappyGui;
 
