@@ -29,11 +29,16 @@ Player &Player::operator=(Player &&other)
 bool Player::canElevate()
 {
     auto l = look();
-    for (Resource i = Resource::PLAYER; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1))
+    std::cout << "nbr player: " << l[0].getNbr(Resource::PLAYER) << std::endl;
+    for (Resource i = Resource::LINEMATE; i != Resource::NONE; i = static_cast<Resource>(static_cast<int>(i) + 1))
         if (_elevcond.get(getLevel(), i) > l[0].getNbr(i)) {
             std::cout << "Incantation failed: need " << (_elevcond.get(getLevel(), i) - l[0].getNbr(i)) << " " << my::typeToString(i) << " more" << std::endl;
             return false;
         }
+    if (this->getLevel() > 3 && _elevcond.get(getLevel(), Resource::PLAYER) > 6) {
+        std::cout << "Incantation failed: need " << (_elevcond.get(getLevel(), Resource::PLAYER) - l[0].getNbr(Resource::PLAYER)) << " " << my::typeToString(Resource::PLAYER) << " more" << std::endl;
+            return false;
+    }
     return true;
 }
 
@@ -60,15 +65,15 @@ void Player::lookForResource(Resource type)
 
     for (int i = 0; i <= getLevel(); ++i) {
         for (int j = begins[i]; j <= ends[i]; ++j) {
-            if (type == Resource::FOOD && l[j].getNbr(type)) {
-                int nbr = l[j].getNbr(type);
-                goToTile(j);
-                while (nbr) {
-                    take(type);
-                    nbr--;
-                }
-                return;
-            }
+            // if (type == Resource::FOOD && l[j].getNbr(type)) {
+            //     int nbr = l[j].getNbr(type);
+            //     goToTile(j);
+            //     while (nbr) {
+            //         take(type);
+            //         nbr--;
+            //     }
+            //     return;
+            // }
             if (l[j].getNbr(type)) {
                 goToTile(j);
                 take(type);
@@ -78,6 +83,52 @@ void Player::lookForResource(Resource type)
     }
     forward();
 }
+
+void Player::lookForResources(const std::unordered_map<my::Resource, int> &needs)
+{
+    const auto &tiles = look();
+
+    int begins[9] = {0, 1, 4, 9, 16, 25, 36, 49, 64};
+    int ends[9] = {0, 3, 8, 15, 24, 35, 48, 63, 80};
+    std::unordered_map<int, int> tileValues;
+
+    for (int i = 0; i <= this->getLevel(); ++i) {
+        for (int j = begins[i]; j <= ends[i]; ++j) {
+            for (const auto &need : needs) {
+                int amount = std::min(need.second, tiles[j].getNbr(need.first));
+                tileValues[j] += amount;
+            }
+        }
+    }
+
+    auto maxElementIt = std::max_element(
+        tileValues.begin(),
+        tileValues.end(),
+        [](const auto &a, const auto &b) {
+            return a.second < b.second;
+        }
+    );
+    int maxIndex = maxElementIt->first;
+
+    goToTile(maxIndex);
+
+    // Always collect food when it's available
+    int foodInTile = tiles[maxIndex].getNbr(Resource::FOOD);
+    for (int i = 0; i < foodInTile; ++i) {
+        take(Resource::FOOD);
+    }
+
+    // Then take only the resources we need from the tile
+    for (const auto &need : needs) {
+        int amountInTile = tiles[maxIndex].getNbr(need.first);
+        int amountToTake = std::min(amountInTile, need.second);
+
+        for (int i = 0; i < amountToTake; ++i) {
+            take(need.first);
+        }
+    }
+}
+
 
 void Player::goToTile(int tileIndex)
 {

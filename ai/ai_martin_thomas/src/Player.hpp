@@ -40,6 +40,7 @@ namespace my {
 
             std::optional<std::pair<std::string, int>> getBroadcast();
             void clearBroadcast();
+            void lookForResources(const std::unordered_map<my::Resource, int> &needs);
 
         protected:
         private:

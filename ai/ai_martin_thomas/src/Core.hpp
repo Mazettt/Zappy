@@ -42,6 +42,7 @@ namespace my {
             void _handleBroadcast();
             void _waitBroadcast(const std::string &toFind, std::function<bool (std::pair<std::string, int>)> callback);
             void _fork();
+            void levelUp();
 
 
             ElevCond _elevcond;
@@ -54,6 +55,13 @@ namespace my {
 
             int _comingPlayers;
             int _comingDir;
+
+            std::chrono::time_point<std::chrono::system_clock> _broadcastTime;
+            int _levelResponses;
+            void checkResponses();
+            bool hasReceivedCheck;
+            bool hasRequestedCheck;
+            bool check;
     };
 }
 
