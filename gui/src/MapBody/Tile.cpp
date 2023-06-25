@@ -13,9 +13,9 @@ Tile::Tile(const Cube &cube): _cube(cube) {
 }
 
 void Tile::addResource(const ResourceManager &manager, IResource::resourceType type) {
-    float decalage = -0.42; // TODO
+    float decalage = -0.42;
 
-    if (_availablePositions.empty()) { // TODO a voir quand on remove une ressource remettre ici !!!
+    if (_availablePositions.empty()) {
         return;
     }
     std::random_device rd;
@@ -30,9 +30,9 @@ void Tile::addResource(const ResourceManager &manager, IResource::resourceType t
 }
 
 void Tile::addEgg(const ResourceManager &manager, int id) {
-    float decalage = -0.42; // TODO
+    float decalage = -0.42;
 
-    if (_availablePositions.empty()) { // TODO a voir quand on remove une ressource remettre ici !!!
+    if (_availablePositions.empty()) {
         return;
     }
     std::random_device rd;
@@ -47,7 +47,7 @@ void Tile::addEgg(const ResourceManager &manager, int id) {
 }
 
 void Tile::removeResource(const IResource::resourceType type) {
-    float decalage = -0.42; // TODO
+    float decalage = -0.42;
     auto it = std::find_if(this->_resources.begin(), this->_resources.end(),
         [type](const auto& resource) {
             return resource->getType() == type;
@@ -65,7 +65,7 @@ void Tile::removeResource(const IResource::resourceType type) {
 }
 
 void Tile::removeEgg(int id) {
-    float decalage = -0.42; // TODO
+    float decalage = -0.42;
     auto it = std::find_if(this->_resources.begin(), this->_resources.end(),
         [id](const auto& resource) {
             return resource->getId() == id;

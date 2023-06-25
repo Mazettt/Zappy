@@ -25,7 +25,6 @@ void ForkHandler::calculate(int playerLevel) {
     double normalizedLevel = this->_weightLevel * std::exp(-0.06 * std::pow((playerLevel - 3.7), 2));
     double normalizedFails = this->_weightFails * std::exp(0.2 * this->_failIncantationCounter);
     double thresholdFork = std::round((normalizedLevel + normalizedFails) * 100) / 100;
-    // std::cout << playerLevel << " " << this->_failIncantationCounter << " " << normalizedLevel << " " << normalizedFails << " " << thresholdFork << std::endl;
     this->_decision = (thresholdFork >= this->_thresholdDecision) ? true : false;
 }
 

@@ -37,19 +37,19 @@ namespace MyRayLib {
                 this->_callback = callback;
             }
             ~Button(){};
-            void ButtonSetPosition(float x, float y, float width, float height) { // MOVE TO MOUSE
+            void ButtonSetPosition(float x, float y, float width, float height) {
                 this->btnBounds = { x, y, width, height };
             }
-            Vector2 MyGetMousePosition() { // MOVE TO MOUSE
+            Vector2 MyGetMousePosition() {
                 return this->mousePoint;
             }
             bool MyCheckCollisionPointRec(Vector2 point, Rectangle rec) {
                 return CheckCollisionPointRec(point, rec);
             }
-            bool MyIsMouseButtonDown(int button) { // MOVE TO MOUSE
+            bool MyIsMouseButtonDown(int button) {
                 return IsMouseButtonDown(button);
             }
-            bool MyIsMouseButtonReleased(int button) { // MOVE TO MOUSE
+            bool MyIsMouseButtonReleased(int button) {
                 return IsMouseButtonReleased(button);
             }
             void MyPlaySound(::Sound sound) {

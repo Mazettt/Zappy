@@ -264,7 +264,7 @@ void ServerLink::_pbc(const std::string &str)
     this->_game._map.sendBroadCast(id);
 }
 
-void ServerLink::_pic(const std::string &str) // TO CHECK
+void ServerLink::_pic(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -278,7 +278,7 @@ void ServerLink::_pic(const std::string &str) // TO CHECK
     this->_game._map.StartPlayersLeveling(ids, x, z);
 }
 
-void ServerLink::_pie(const std::string &str) // TO CHECK
+void ServerLink::_pie(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -290,7 +290,7 @@ void ServerLink::_pie(const std::string &str) // TO CHECK
     this->_game._map.EndPlayersLeveling(x, z, result);
 }
 
-void ServerLink::_pfk(const std::string &str) // TODO
+void ServerLink::_pfk(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -299,7 +299,7 @@ void ServerLink::_pfk(const std::string &str) // TODO
     iss >> tmp >> id;
 }
 
-void ServerLink::_pdr(const std::string &str) // TO CHECK
+void ServerLink::_pdr(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -307,10 +307,10 @@ void ServerLink::_pdr(const std::string &str) // TO CHECK
     int resource = 0;
 
     iss >> tmp >> id >> resource;
-    this->_game._map.dropResource(id, (ZappyGui::IResource::resourceType) resource); // TO CHECK if resourceType work correctly
+    this->_game._map.dropResource(id, (ZappyGui::IResource::resourceType) resource);
 }
 
-void ServerLink::_pgt(const std::string &str) // TO CHECK
+void ServerLink::_pgt(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;
@@ -318,7 +318,7 @@ void ServerLink::_pgt(const std::string &str) // TO CHECK
     int resource = 0;
 
     iss >> tmp >> id >> resource;
-    this->_game._map.collectResource(id, (ZappyGui::IResource::resourceType) resource); // TO CHECK if resourceType work correctly
+    this->_game._map.collectResource(id, (ZappyGui::IResource::resourceType) resource);
 }
 
 void ServerLink::_pdi(const std::string &str)
@@ -366,7 +366,7 @@ void ServerLink::_ebo(const std::string &str)
     this->_game._map.removeEgg(eggId);
 }
 
-void ServerLink::_edi(const std::string &str) // TO DO
+void ServerLink::_edi(const std::string &str)
 {
     std::istringstream iss(str);
     std::string tmp;

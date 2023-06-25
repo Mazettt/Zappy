@@ -201,7 +201,6 @@ void Game::run() {
         }
     }
     this->_raylibwindow.MyCloseAudioDevice();
-    // on descructor ?
     this->_skyboxMesh.MyUnloadShader();
     this->_skyboxMesh.MyUnloadTexture();
     this->_skyboxMesh.MyUnloadModel();
@@ -225,7 +224,7 @@ void Game::drawLoading() {
     this->_skyboxMesh.MyrlEnableBackfaceCulling();
     this->_skyboxMesh.MyrlEnableDepthMask();
     this->_raylibdrawing.MyDrawGrid(10, 1.0f);
-    // this->_playerTmp->draw();
+    this->_playerTmp->draw();
     this->_camera.endMode3D();
 }
 

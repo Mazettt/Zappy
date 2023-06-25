@@ -8,18 +8,6 @@
 namespace my {
     class Args {
         public:
-            // enum Mode {
-            //     REQUIRED,
-            //     OPTIONAL
-            // };
-            // enum Type {
-            //     INT,
-            //     FLOAT,
-            //     STRING,
-            //     BOOL,
-            //     NONE
-            // };
-
             class Error: public MyError {
                 public:
                     Error(const std::string &message, const std::string &className = "Args"): MyError(className, message, true, "ERROR") {}

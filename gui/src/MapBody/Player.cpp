@@ -141,7 +141,6 @@ void Player::animationWalk() {
 }
 
 void Player::animationExpulsion() {
-    // this->setAnimationType(Player::animationPlayerType::PLAYER_EXPULSION);
     this->_frameCounterAnimation = 0;
 }
 
